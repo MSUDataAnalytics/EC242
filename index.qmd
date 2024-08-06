@@ -1,5 +1,11 @@
 ---
 title: "Title of Your Workshop Session"
+linktitle: "Linktitle for index"
+format: 
+  html:
+    code-fold: false
+    code-tools: false
+editor: source
 ---
 
 Date: **Date and time**
@@ -64,6 +70,6 @@ It can be useful to include a tabular schedule with links.
 :::
 
 |     Time      |                       Topic                       |    Presenter    |
-|:---------------:|:------------------------------------:|:---------------:|
+|:----------------:|:-----------------------------------:|:----------------:|
 | 9:00 - 10:30  |     [Session 1: Preparation](part_1_prep.qmd)     |  Instructor A   |
 | 10:45 - 12:00 | [Session 2: Exploratory Analysis](part_2_eda.qmd) | Instructor B, C |

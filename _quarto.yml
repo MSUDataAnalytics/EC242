@@ -1,10 +1,31 @@
 project:
   type: website
-  output-dir: docs
+  render:
+    - "*.qmd"
+    - "!slides/"
+    - "!projects/"
+  output-dir: _docs
+  resources:
+    - "files/"
+    - "content/"
+    - "projects/"
+    - "slides/*.html"
+    - "slides/*.pdf"
+    - "slides/img/"
+    - "slides/libs/"
+    - "slides/css/"
+    - "slides/*_files/"
+  preview:
+    port: 4321
+
+execute:
+  freeze: auto
 
 website:
-  title: "Workshop Title"
+  title: "EC242"
   navbar:
+    logo: "/images/Spartan-Helmet_White.png"
+    background: "#18453b"
     left:
       - href: index.qmd
         text: Home
@@ -15,17 +36,19 @@ website:
         href: https://github.com
   sidebar:
     style: "docked"
-    search: true
+    search: false
     contents:
       - part_1_prep.qmd
       - part_2_eda.qmd
-  page-navigation: true
+  page-navigation: false
 
 format:
   html:
-    theme: yeti
+    theme: 
+      - yeti
+      - yetiADD.scss
     css: styles.css
     toc: true
 
-editor: visual
+editor: source
 

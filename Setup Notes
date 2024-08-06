@@ -1,0 +1,24 @@
+
+
+
+
+###########
+## Building the website
+
+
+## Build
+Builds to _docs
+Have not yet set it to search files. Will need to scan content/Week* folders.
+
+## Images inserted
+Right now, using here() to top of directory, then pointing to here('/images/...') or data for images. Copying to website seems to work fine.
+
+
+
+
+
+
+## Themes
+The default was yeti. I wanted to change $primary defined in yeti (https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/formats/html/bootstrap/themes/yeti.scss) to MSU green #18453b, so I added a yetiADD.scss file and updated the $primary and defined $MSUgreen
+
+
