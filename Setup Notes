@@ -18,6 +18,14 @@ https://main--earnest-crostata-11dc6a.netlify.app
 Builds to _docs
 Have not yet set it to search files. Will need to scan content/Week* folders.
 
+
+## Sidebar
+the `content` folder will automatically add files (incl. in subdirectories) to the "contents" sidebar defined in _quarto.yml. It'll follow folders and will name based on folder name (e.g. Week 00 from Week_00). Title on the sidebar comes from title on the .qmd files. For the "content" folder, a index.qmd file there sets the title (and provides main content page content)
+
+Show a sidebar (of specific id) on a page by adding `sidebar` in the yml header.
+
+I think the 
+
 ## Images inserted
 Right now, using here() to top of directory, then pointing to here('/images/...') or data for images. Copying to website seems to work fine.
 
@@ -27,6 +35,9 @@ Right now, using here() to top of directory, then pointing to here('/images/...'
 
 
 ## Themes
-The default was yeti. I wanted to change $primary defined in yeti (https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/formats/html/bootstrap/themes/yeti.scss) to MSU green #18453b, so I added a yetiADD.scss file and updated the $primary and defined $MSUgreen
+The default was yeti. I wanted to change $primary defined in yeti (https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/formats/html/bootstrap/themes/yeti.scss) to MSU green #18453b, so I added a `yetiADD.scss` file and updated the $primary and defined $MSUgreen
+
+Yeti theme samplesheet: https://bootswatch.com/yeti/
+
 
 

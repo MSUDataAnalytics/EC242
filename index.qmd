@@ -1,6 +1,7 @@
 ---
-title: "EC242 - Data Analytics"
+title: "EC242 - Social Science Data Analytics"
 linktitle: "Linktitle for index"
+sidebar: main
 format: 
   html:
     code-fold: false
@@ -29,7 +30,9 @@ Two content pages
 
 -   Page without code: `part_1_prep.qmd`
 
--   Page with R code: `part_2_eda.qmd`
+-   Page with R code: [`part_2_eda.qmd`](part_2_eda.qmd)
+
+-   And another: [`content/Week 00/00a.qmd`](/content/Week 00/00a.qmd)
 
 It is straightforward to add more content pages: you need to create a new `.qmd` file (or copy/paste the existing ones), then link the new page inside `_quarto.yml`.
 :::

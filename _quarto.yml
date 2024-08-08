@@ -31,16 +31,27 @@ website:
         text: Home
       - href: about.qmd
         text: About
+      - href: content/index.qmd
+        text: "Course Content"
     right:
       - icon: github
         href: https://github.com
   sidebar:
-    style: "docked"
-    search: false
-    contents:
-      - part_1_prep.qmd
-      - part_2_eda.qmd
+    - id: contentsf
+      title: "help"
+      style: "docked"
+      search: false
+      contents: content
+    
+    - id: main
+      title: "maintitle"
+      style: "docked"
+      search: false
+      contents:
+        - text: "Welcome"
+  
   page-navigation: false
+  
 
 format:
   html:
