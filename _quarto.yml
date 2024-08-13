@@ -33,15 +33,23 @@ website:
         text: About
       - href: content/index.qmd
         text: "Course Content"
+      - href: assignment/index.qmd
+        text: "Lab Assignments"
     right:
       - icon: github
         href: https://github.com
   sidebar:
-    - id: contentsf
+    - id: contents
       title: "help"
       style: "docked"
       search: false
       contents: content
+      
+    - id: assignments
+      title: "Lab Assignments"
+      style: "docked"
+      search: false
+      contents: assignment
     
     - id: main
       title: "maintitle"
@@ -59,6 +67,7 @@ format:
       - yeti
       - yetiADD.scss
     css: styles.css
+    mainfont: "Fira Sans Condensed"
     toc: true
 
 editor: source

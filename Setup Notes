@@ -24,14 +24,18 @@ the `content` folder will automatically add files (incl. in subdirectories) to t
 
 Show a sidebar (of specific id) on a page by adding `sidebar` in the yml header.
 
-I think the 
+## Shortcodes
+  favicons shortcodes are enabled (added as extention in terminal) 
+    -->   {{< fa file-arrow-down title=Alt description">}}
+
+
 
 ## Images inserted
 Right now, using here() to top of directory, then pointing to here('/images/...') or data for images. Copying to website seems to work fine.
 
 
 ## Data and Static Files
-Following images, using here('data/...') I think
+Following images, using here('data/...') and copying all the old static/data contents over. Should have one source for all site data with static address for linking for assignments.
 
 
 

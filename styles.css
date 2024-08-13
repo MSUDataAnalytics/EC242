@@ -3,3 +3,7 @@
     background-color: #93c951 !important;
     border-color: #222222;
 }
+
+h1, .title {
+  font-weight: bold;
+}
