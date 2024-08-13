@@ -30,6 +30,8 @@ I think the
 Right now, using here() to top of directory, then pointing to here('/images/...') or data for images. Copying to website seems to work fine.
 
 
+## Data and Static Files
+Following images, using here('data/...') I think
 
 
 
@@ -38,6 +40,5 @@ Right now, using here() to top of directory, then pointing to here('/images/...'
 The default was yeti. I wanted to change $primary defined in yeti (https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/formats/html/bootstrap/themes/yeti.scss) to MSU green #18453b, so I added a `yetiADD.scss` file and updated the $primary and defined $MSUgreen
 
 Yeti theme samplesheet: https://bootswatch.com/yeti/
-
 
 
