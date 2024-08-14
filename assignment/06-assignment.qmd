@@ -1,27 +1,15 @@
 ---
 title: "6: Correlations and Simple Models"
 linktitle: "6: Correlations and Simple Models"
-output:
-  blogdown::html_page:
-    toc: true
-menu:
-  assignment:
-    parent: Labs
-    weight: 2
-type: docs
-weight: 1
-editor_options:
-  chunk_output_type: console
+duedate: "{{< var duedates.lab3 >}}"
 ---
 
-
-:::fyi
-
-**NOTE**
-
-You must turn in a PDF document of your `R Markdown` code. Submit this to D2L by 11:59 PM Eastern Time on Monday, February 19th.
-
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
 :::
+
+{{< var blurbs.homeworkdue >}}
 
 
 ## Backstory and Set Up

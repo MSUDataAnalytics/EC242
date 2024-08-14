@@ -1,0 +1,5 @@
+
+format:
+  html:
+    toc: false
+# see "Directory Metadata"" on Quarto site -- this will change the toc for everything in the assignment directory, hopefully.

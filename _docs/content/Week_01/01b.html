@@ -102,12 +102,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
-  "type": "overlay",
+  "type": "textbox",
   "limit": 20,
   "language": {
     "search-no-results-text": "No results",
@@ -190,6 +192,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
@@ -419,15 +426,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="r-basics" class="level1">
 <h1><code>R</code> basics</h1>
-<div class="fyi">
-<p><strong>ALERT</strong></p>
+<p>asd</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Keys to success
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>The course content below should be considered a prerequisite for success. For those concerned about basics of <code>R</code>, you absolutely must read this content and attempt the coding exercises. If you struggle to follow the content, please contact the professor or TA.</p>
+</div>
 </div>
 <p>In this class, we will be using <code>R</code> software environment for all our analyses. You will learn <code>R</code> and data analysis techniques simultaneously. To follow along you will therefore need access to <code>R</code>. We also recommend the use of an <em>integrated development environment</em> (IDE), such as RStudio, to save your work.</p>
 <p>Note that it is common for a course or workshop to offer access to an <code>R</code> environment and an IDE through your web browser, as done by RStudio/Posit cloud<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. If you have access to such a resource, you don’t need to install <code>R</code> and RStudio. However, if you intend on becoming a practicing data analyst, we highly recommend installing these tools on your computer<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. This is not hard.</p>
-<div class="fyi">
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p><strong>ALERT</strong></p>
 <p>RStudio, the separate <em>integrated development environment</em> (IDE) commonly used to run <code>R</code> has re-branded. I haven’t the foggiest as to why. The name is now <strong>Posit</strong>, so if you clicked on a link that says <strong>RStudio</strong> and you got <strong>Posit</strong>, that’s fine.</p>
+</div>
 </div>
 <section id="installing-r-and-r-studio-posit-and-review-resources" class="level2">
 <h2 class="anchored" data-anchor-id="installing-r-and-r-studio-posit-and-review-resources">Installing R and <del>R Studio</del> Posit and Review Resources</h2>
@@ -452,9 +479,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>which stores the values for later use. We use <code>&lt;-</code> to assign values to the variables.</p>
 <p>We can also assign values using <code>=</code> instead of <code>&lt;-</code>, but some recommend against using <code>=</code> to avoid confusion.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
-<div class="fyi">
-<p><strong>TRY IT</strong></p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+TRY IT
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Copy and paste the code above into your console to define the three variables. Note that <code>R</code> does not print anything when we make this assignment. This means the objects were defined successfully. Had you made a mistake, you would have received an error message. Throughout these written notes, you’ll have the most success if you continue to copy code into your own console.</p>
+</div>
 </div>
 <p>To see the value stored in a variable, we simply ask <code>R</code> to evaluate <code>a</code> and it shows the stored value:</p>
 <div class="cell">
@@ -478,7 +514,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "a"         "b"         "BASE"      "c"         "GIS.files" "jLoad"    </code></pre>
+<pre><code>[1] "a"      "b"      "c"      "filter"</code></pre>
 </div>
 </div>
 <p>(Note that one of <em>my</em> variables listed above comes from generating the graphs above). In <del>RStudio</del> Posit, the <em>Environment</em> tab shows the values:</p>

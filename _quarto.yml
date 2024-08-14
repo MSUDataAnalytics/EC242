@@ -4,6 +4,7 @@ project:
     - "*.qmd"
     - "!slides/"
     - "!projects/"
+    - "!templates/"
   output-dir: _docs
   resources:
     - "files/"
@@ -17,12 +18,20 @@ project:
     - "slides/*_files/"
   preview:
     port: 4321
+    browser: true
 
 execute:
   freeze: auto
+  warning: false
+  message: false
+  
 
 website:
   title: "EC242"
+  search: 
+    # show-item-context: tree invalid for some reason?
+    location: navbar
+    type: textbox
   navbar:
     logo: "/images/Spartan-Helmet_White.png"
     background: "#18453b"
@@ -42,13 +51,13 @@ website:
     - id: contents
       title: "help"
       style: "docked"
-      search: false
+      search: true
       contents: content
       
     - id: assignments
       title: "Lab Assignments"
       style: "docked"
-      search: false
+      search: true
       contents: assignment
     
     - id: main
@@ -59,7 +68,9 @@ website:
         - text: "Welcome"
   
   page-navigation: false
-  
+
+
+
 
 format:
   html:
@@ -69,6 +80,8 @@ format:
     css: styles.css
     mainfont: "Fira Sans Condensed"
     toc: true
+    code-copy: true
+    code-overflow: wrap
 
 editor: source
 

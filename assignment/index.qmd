@@ -16,13 +16,13 @@ This course is the capstone of the Data Analytics Minor in the College of Social
 1. Engage with the readings and lecture materials
 2. Regularly use `R` (aka engage daily or almost every day in some way)
 
-Each type of assignment in this class helps with one of these strategies.
+Assignments consist of **Weekly Writings** and **Lab Assignments**. Each type of assignment in this class helps with one of these strategies. Weekly writings engage with the materials, and lab assignments engage directly with `R`. The assignments are described below.
 
-Download and save the following files (right-click to Save Link As...)
+To get started, download and save the following files (**right-click** to Save Link As...)
 
-- [{{< fa file-arrow-down title="Download Weekly Writing Template">}} Weekly writing template](/templates/EC242_Weekly_Writing_Template.Rmd)
+- {{< var blurbs.labtemplate >}}
 
-- [{{< fa file-arrow-down title="Download Assignment Template">}} Lab assignment template](/templates/EC242_Lab_Assignment_Template.Rmd)
+- {{< var blurbs.writingtemplate >}}
 
 
 ## Weekly Writings 
@@ -49,11 +49,14 @@ The TA will grade these mini-exercises using a very simple system:
 
 ### Weekly Writing Template
 
-You will turn these reflections in via D2L. You will write them using `R Markdown` and this [weekly writing template (right-click to Save Link As...) <i class="fas fa-file-download"></i>](/files/SSC442_Weekly_Writing_Template.Rmd). You must `knit` your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc. 
+You will turn these reflections in via D2L. You will write them using `R Markdown` and this template {{< var blurbs.writingtemplate >}}. You must `knit` your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc. 
+
+
+
 
 ## Lab Assignments
 
-Each week of the course has [fully annotated examples](/example/) of code that teach and demonstrate how to do specific tasks in `R`. However, without practicing these principles and making graphics on your own, you won't remember what you learn.
+Each week of the course has examples of code that teach and demonstrate how to do specific tasks in `R`. However, without practicing these principles and making graphics on your own, you won't remember what you learn.
 
 Please do not do labs more than one week ahead of time. **I am updating the assignments as the semester proceeds, and you may do an entire assignment that is completely changed**. 
 
@@ -69,7 +72,7 @@ You may work together on the labs, but you must turn in your own answers.
 
 ### Lab Template
 
-You will turn these labs in via D2L. You will write them using `R Markdown` and this [<i class="fas fa-file-download"></i> lab assignment template](/files/SSC442_Lab_Assignment_Template.Rmd). You must `knit` your work to a PDF document (this will be what you turn in). Your output must be rendered in latex. I do not accept rendering to HTML or Word and then converting to PDF. 
+You will turn these labs in via D2L. You will write them using `R Markdown` and this {{< var blurbs.labtemplate >}}. You must `knit` your work to a PDF document (this will be what you turn in). Your output must be rendered in latex. I do not accept rendering to HTML or Word and then converting to PDF and unrendered `.rmd` files are not allowed.
 
 
 ## Projects
@@ -87,7 +90,7 @@ Because these mini projects give you practice for the final project, we will pro
 
 ## Final project
 
-At the end of the course, you will demonstrate your skills by completing a final project. [Complete details for the final project (including past examples of excellent projects) are here.](/lab/final-project) In brief, the final project has the following elements:
+At the end of the course, you will demonstrate your skills by completing a final project. [Complete details for the final project (including past examples of excellent projects) are here.](/projects/final-project) In brief, the final project has the following elements:
 
 1. You must find existing data to analyze.[^3] Aggregating data from multiple sources is encouraged, but is not required.
 

@@ -1,28 +1,21 @@
 ---
 title: "5: Statistical Models and Uncertainty"
 linktitle: "5: Statistical Models and Uncertainty"
-output:
-  blogdown::html_page:
-    toc: true
-menu:
-  assignment:
-    parent: Labs
-    weight: 2
-type: docs
-weight: 1
-editor_options:
-  chunk_output_type: console
+duedate: "{{< var duedates.lab5 >}}"
 ---
 
-:::fyi
-
-**NOTE**
-
-You must turn in a PDF document of your `R Markdown` code. Submit this to D2L by 11:59 PM Eastern Time on Monday, February 12th.
-
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
 :::
 
+{{< var blurbs.homeworkdue >}}
+
+
+::: {.callout-tip}
+# Note:
 For this exercise you will need to ensure that you've carefully read this week's content and example. We will build on both. The exercises (which you will turn in as this week's lab) are at the bottom. Note that this week's lab is much more theoretical than any other week in this class. This is to ensure that you have the foundations necessary to build rich statistical models and apply them to real-world data.
+:::
 
 # Statistical models {#models}
 

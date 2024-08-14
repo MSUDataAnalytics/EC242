@@ -46,20 +46,19 @@ I'm also aware that my writing is dry and lifeless. If you're reading this onlin
 
 
 # `R` basics {#r-basics}
+asd
 
-
-:::fyi
-**ALERT**
-  
+::: {.callout-tip}
+# Keys to success
 The course content below should be considered a prerequisite for success. For those concerned about basics of `R`, you absolutely must read this content and attempt the coding exercises. If you struggle to follow the content, please contact the professor or TA.
 :::
   
   
-  In this class, we will be using `R` software environment for all our analyses. You will learn `R` and data analysis techniques simultaneously. To follow along you will therefore need access to `R`. We also recommend the use of an _integrated development environment_ (IDE), such as RStudio, to save your work.
+In this class, we will be using `R` software environment for all our analyses. You will learn `R` and data analysis techniques simultaneously. To follow along you will therefore need access to `R`. We also recommend the use of an _integrated development environment_ (IDE), such as RStudio, to save your work.
 
 Note that it is common for a course or workshop to offer access to an `R` environment and an IDE through your web browser, as done by RStudio/Posit cloud^[https://posit.cloud]. If you have access to such a resource, you don't need to install `R` and RStudio. However, if you intend on becoming a practicing data analyst, we highly recommend installing these tools on your computer^[https://rafalab.github.io/dsbook/installing-r-rstudio.html]. This is not hard.
 
-:::fyi
+::: {.callout-tip}
 **ALERT**
 
 RStudio, the separate _integrated development environment_ (IDE) commonly used to run `R` has re-branded. I haven't the foggiest as to why. The name is now **Posit**, so if you clicked on a link that says **RStudio** and you got **Posit**, that's fine.
@@ -98,9 +97,9 @@ which stores the values for later use. We use `<-` to assign values to the varia
 
 We can also assign values using `=` instead of `<-`, but some recommend against using `=` to avoid confusion.^[This is, without a doubt, my least favorite aspect of `R`. I'd even venture to call it stupid. The logic behind this pesky `<-` is a total mystery to me, but there *is* logic to avoiding `=`. But, you do you.]
 
-:::fyi
+::: {.callout-tip}
 
-**TRY IT**
+## TRY IT
 
 Copy and paste the code above into your console to define the three variables. Note that `R` does not print anything when we make this assignment. This means the objects were defined successfully. Had you made a mistake, you would have received an error message. Throughout these written notes, you'll have the most success if you continue to copy code into your own console.
 :::

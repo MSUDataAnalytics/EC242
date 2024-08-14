@@ -1,28 +1,23 @@
 ---
 title: "2: More Programming in R"
 linktitle: "2: More Programming in R"
-output:
-  blogdown::html_page:
-    toc: true
-menu:
-  assignment:
-    parent: Labs
-    weight: 2
-type: docs
-weight: 1
-editor_options:
-  chunk_output_type: console
+duedate: "{{< var duedates.lab2 >}}"
 ---
 
-You must turn in a PDF document knitted from your R Markdown code. Submit this to "Lab 1" on D2L by 11:59 PM on Monday January 15th. You do not need to submit your .rmd file code - just the properly-knitted PDF.
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
+:::
+
+{{< var blurbs.homeworkdue >}}
 
  
-:::fyi
-**NOTE:** 
+::: {.callout-tip}
+## Note:
 
 As you read through this assignment, practice with each of the examples (copy-paste them into an empty R script and run them). At the bottom of this page you will find the questions that comprise the assignment. These questions apply and expand on the topics and R functions in the assignment.
 
-[Right-click to download the homework .Rmd template <i class="fas fa-file-download"></i>](/files/SSC442_Lab_Assignment_Template.Rmd). Please save the template into the labs folder in the SSC442 folder on your local hard drive. If you don't have a nice file structure setup for the course, please do so now. *It will save you headaches in the future*.
+Download the {{< var blurbs.labtemplate >}}. Please save the template into a labs folder in the EC242 folder on your local hard drive. If you don't have a nice file structure setup for the course, please do so now. *It will save you headaches in the future*.
 :::
 
 If you have not yet done so, you'll need to install both R and RStudio. See the [Installing page of our course resources](/resource/install/) for instructions.
