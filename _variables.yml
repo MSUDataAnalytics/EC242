@@ -14,15 +14,22 @@ names:
   TA: "TA Placeholder"
 
 officehours: 
-  instructor: "Tuesday 3:30-4:30am, Smarch-Sjune (this is placeholder text)"
-  instructorzoom: "[zoom link](zoomlink)"
-  TA: "TBA"
+  instructor: "Thursdays 2:45 (after class) till 4:00pm"
+  instructorzoom: "[zoom](https://msu.zoom.us/j/92054231037?pwd=OiRKvESN4M8ZbvjVbV5J9hLye9AA7G.1)"
+  instructoroffice: "Old Botany 105 (off W. Circle Ave)"
+  TA: "TA Office Hours TBA"
   TAzoom: "[zoomlink](zoomlink)"
 
 email:
   instructor: "[jkirk@msu.edu](mailto:jkirk@msu.edu)"  
-  TA: "TA TBA@msu.edu"
+  TA: "[TBA@msu.edu](mailto: TA@msu.edu)"
   
+slack:
+  link: "[Slack](ec242.slack.com)"
+  invite: "[Join EC242 Slack](https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ)"
+  # https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ Fall 2024 invite
+
+
 aboutme:
   instructor: "I am an environmental economist working primarily on household energy consumption and quantifying the environmental benefits of renewables and increased energy efficiency. I have taught versions of this course at MSU for around five years, and have worked extensively with R for around 15 years."
   
@@ -33,16 +40,16 @@ blurbs:
   writingtemplate: '[{{< fa file-arrow-down title="Download Weekly Writing Template">}} Weekly writing template](/templates/EC242_Weekly_Writing_Template.Rmd)'
   
 duedates:
-  lab1: "Saturday, August 31, 11:59pm"
-  lab2: "Saturday, September 7th, 11:59pm"
-  lab3: "Saturday, September 14th, 11:59pm"
-  lab4: "Saturday, September 21st, 11:59pm"
-  lab5: "Saturday, September 28th, 11:59pm"
-  lab6: "Saturday, October 5th, 11:59pm"
-  lab7: "Saturday, October 12th, 11:59pm"
-  lab8: "Saturday, October 19th, 11:59pm"
-  lab9: "Saturday, October 26th, 11:59pm"
-  lab10: "Saturday, November 2nd, 11:59pm"
-  lab11: "Saturday, November 9th, 11:59pm"
-  lab12: "Saturday, November 16th, 11:59pm"
-  lab13: "Saturday, December 7th, 11:59pm"
+  lab1:  "Monday, September 2nd, 11:59pm"
+  lab2:  "Monday, September 9th, 11:59pm"
+  lab3:  "Monday, September 16th, 11:59pm"
+  lab4:  "Monday, September 23st, 11:59pm"
+  lab5:  "Monday, September 30th, 11:59pm"
+  lab6:  "Monday, October 7th, 11:59pm"
+  lab7:  "Monday, October 14th, 11:59pm"
+  lab8:  "Monday, October 21st, 11:59pm"
+  lab9:  "Monday, October 28th, 11:59pm"
+  lab10: "Monday, November 4th, 11:59pm"
+  lab11: "Monday, November 11th, 11:59pm"
+  lab12: "Monday, November 18th, 11:59pm"
+  lab13: "Monday, December 9th, 11:59pm"

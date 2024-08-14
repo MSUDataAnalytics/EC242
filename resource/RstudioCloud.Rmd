@@ -1,0 +1,71 @@
+---
+title: Using Posit (Rstudio) Cloud
+menu:
+  resource:
+    parent: Guides
+    weight: 1
+type: docs
+weight: 1
+output:
+  blogdown::html_page:
+      toc: TRUE
+---
+
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(here)
+```
+
+# What is ~~Rstudio.cloud~~ Posit.cloud? 
+
+Installing R and RStudio/Posit locally (on your computer) is the preferred method. Additionally, most MSU computer labs have R and RStudio installed. However, if your computer isn't able to run RStudio, or you run into errors that we can't troubleshoot, using RStudio Cloud is a viable alternative. Hosted at [Posit.cloud](https://posit.cloud), ~~RStudio~~ Posit Cloud is an online, web-based version of R and RStudio. On the "pro" side, it doesn't require anything of your system except a functioning browser and can be up and running in a few minutes. The "con", though, is that you must have an internet connection to use it, and it is limited to 25 hours per month for the free account (and \$5/month for up to 75 hours per month). You shouldn't need more than 25 hours per month, but if you're very new to coding, it's possible you will.
+
+Both Rstudio.cloud and Posit.cloud take you to the same site -- posit.cloud. RStudio is in the process of rebranding to Posit. I have updated some, but not all, references here.
+
+# Setting up Posit.cloud
+
+1. Start by going to [Posit.cloud](https://posit.cloud) and create a free account.
+2. Click "Your Workspace"
+3. In the top right corner, click on "New Project" and name it something like "SSC442"
+
+
+```{r, echo=FALSE, out.width="80%"}
+knitr::include_graphics(here('content','resource','RSC1.png'))
+```
+
+4. The "Files" tab in the lower-right pane shows your cloud project storage space. Let's add a `templates` folder and store the two course assignment templates there.
+  - Go to [assignments](/assignment/), scroll down, and **right-click on the Weekly Writing template and select "Save As..."** and save it to your desktop
+  - Do the same for the Lab Assignment template. Clicking on the link will open the text of the file in a browser window and you cannot just copy the text into an R file.
+  - With the files on your computer, go back to RStudio.cloud and in the Files tab, click on "New Folder" and name it `templates`
+  - Upload the templates one at a time to the folder.
+  
+5. Use the green up arrow to navigate the "Files" tab back to your main directory and create a folder for `Labs` and one for `Weekly Writings`.
+6. Open the Lab Assignment template
+7. At the top of the template in the upper-left pane, you'll see a warning that RStudio needs to install some packages. **Click "Install"**
+
+
+```{r, echo=FALSE, out.width="80%"}
+knitr::include_graphics(here('content','resource','RSC3.png'))
+```
+
+8. After R finishes installing packages (less than a minute), click the "Knit" button on the toolbar.
+9. RMarkdown will need to install a few more packages. Click "Yes".
+
+
+```{r, echo=FALSE, out.width="80%"}
+knitr::include_graphics(here('content','resource','RSC4.png'))
+```
+
+10. A pop-up window will open showing you the PDF of the rendered template. Congrats, you are ready to get to work!
+
+
+```{r, echo=FALSE, out.width="80%"}
+knitr::include_graphics(here('content','resource','RSC5.png'))
+```
+
+
+Your RStudio.cloud version of RStudio will work just like a "local" install on a computer. Make sure you "Save As..." when you do your Lab or Weekly Writing assignments so that you don't have to re-upload the templates. Keep a separate folder for each Lab inside the Labs to keep things clean in your workspace.
+
+

@@ -1,0 +1,13 @@
+---
+title: Supplemental
+menu:
+  resource:
+    parent: Guides
+type: docs
+weight: 2
+output:
+  blogdown::html_page:
+      toc: TRUE
+---
+
+## Things moved

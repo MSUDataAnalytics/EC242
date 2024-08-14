@@ -20,8 +20,6 @@ Have not yet set it to search files. Will need to scan content/Week* folders.
 
 
 
-
-
 ## Sidebar
 the `content` folder will automatically add files (incl. in subdirectories) to the "contents" sidebar defined in _quarto.yml. It'll follow folders and will name based on folder name (e.g. Week 00 from Week_00). Title on the sidebar comes from title on the .qmd files. For the "content" folder, a index.qmd file there sets the title (and provides main content page content)
 
@@ -37,10 +35,21 @@ Show a sidebar (of specific id) on a page by adding `sidebar` in the yml header.
   FOR OUR USES, I'll make a _variablesJustin and a _variablesBen, and we can switch off over-writing _variables.yml with our respective files (Quarto is hardcoded to use _variables.yml and doesn't yet have functionality to add/merge/switch).
   
   I am using _variables.yml to set the due dates for labs. Enter them under duedates.lab1, etc., and each file will refer to that for the header YML value of "duedate", which is then shortcode referred to in the body using {{< meta duedate >}} (which refers to the document's header metadata value of duedate).
+  
+  I **highly** recommend having _variables.yml open while updating the site, just to get th e {{< var xxxx >}} vars correct.
+  
+  
+
+
 
 
 ## Callouts and CSS/SCSS
-An example can be found on the quarto website under "callouts" - 
+An example can be found on the quarto website under "callouts" - to use one of the built-in ones, use 
+    
+    ::: {.callout-tips/warning/...}
+    # The header title in the callout box taken fromt he first header in the code block
+    The text in the box
+    :::
 
 
 

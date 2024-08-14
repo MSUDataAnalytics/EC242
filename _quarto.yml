@@ -10,12 +10,7 @@ project:
     - "files/"
     - "content/"
     - "projects/"
-    - "slides/*.html"
-    - "slides/*.pdf"
-    - "slides/img/"
-    - "slides/libs/"
-    - "slides/css/"
-    - "slides/*_files/"
+
   preview:
     port: 4321
     browser: true
@@ -35,18 +30,17 @@ website:
   navbar:
     logo: "/images/Spartan-Helmet_White.png"
     background: "#18453b"
-    left:
-      - href: index.qmd
-        text: Home
-      - href: about.qmd
-        text: About
+    right:
+      - href: syllabus.qmd
+        text: Syllabus
       - href: content/index.qmd
         text: "Course Content"
       - href: assignment/index.qmd
         text: "Lab Assignments"
-    right:
-      - icon: github
-        href: https://github.com
+      - href: resource/index.qmd
+        text: "Resources"
+      - icon: slack
+        href: https://ec242.slack.com
   sidebar:
     - id: contents
       title: "help"

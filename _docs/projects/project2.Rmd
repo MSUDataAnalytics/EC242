@@ -1,0 +1,92 @@
+---
+title: "Project 2"
+linktitle: "Project 2"
+date: "2024-02-01"
+due_date: "2024-03-23"
+due_time: "11:59 PM"
+output:
+  blogdown::html_page:
+    toc: true
+menu:
+  assignment:
+    parent: Projects
+    weight: 2
+type: docs
+editor_options:
+  chunk_output_type: console
+---
+
+:::fyi
+
+**Note the changed due date**.
+
+:::
+
+
+
+The United States has resettled many immigrants across the years.
+
+```{r bad-example, echo=FALSE, out.width="70%", fig.align="center"}
+# Refugees welcome, by Attila Szervác, https://commons.wikimedia.org/wiki/File:Refugees_welcome.png
+knitr::include_graphics("/img/assignments/refugees_welcome.jpg", error = FALSE)
+```
+
+In this project, you will use **R, ggplot** and some form of graphics editor to explore where these folks have come from.
+
+
+## Part 1: Instructions
+
+Here's what you need to do:
+
+#. **Access** the Yearbook of Immigration Statistics at the link below:
+
+    [<i class="fas fa-file-csv"></i> Yearbook Link](https://www.dhs.gov/ohss/topics/immigration/yearbook)
+
+#. **Choose** some subset of years and a variety of datasets to explore.
+
+#. **Clean** and merge the data. You will need to merge some nasty data. You will need to clean it up. You will need to reshape it. 
+
+#. **Summarize** the data in a series of clear and simple tables. (These need not be included in your final poster but should inform its design.)
+
+#. **Create** two appropriate visualizations based on the data.
+
+#. **Refine and polish** the saved image, adding annotations, changing colors, and otherwise enhancing it.
+
+#. **Design and create** an infographic "poster". Your poster should look like a polished image that you might see on a newspaper website like [the NYT](https://www.nytimes.com/interactive/2020/04/11/business/economy/coronavirus-us-economy-spending.html). Your infographic "poster" should include an eye-catching title, your plots, any caption(s) describing the plot, and 2-4 short paragraphs succinctly describing the insights you are sharing about the data. You can (and should consider) integrating other images like national flags or arrows to convey some semantic meaning. You may do the layout of the infographic "poster" in any software you choose - Publisher (do people still use that?), Adobe Illustrator, etc. Again, the idea is to have a polished plot with an interesting insight from the data, a **polished** layout to make it attractive, and a polished 2-4 paragraphs that sets up the plot and elaborates on your insight.
+
+#. **Upload** the following outputs to D2L:
+
+    - Your code (.Rmd) that generates the graphic.
+    - Your final poster, saved as a PDF.
+    - Your hypotheses as a separate PDF. 
+
+For this assignment, we are less concerned with the code and more concerned with the *design*. Choose good colors based on palettes. Choose good, clean fonts. Use the heck out of `theme()`. Add informative design elements. Make it look beautiful. Refer to [the design resources here](/resource/design/).
+
+**Please seek out help when you need it!** You know enough R (and have enough examples of code from class and your readings) to be able to do this. *You can do this,* and you'll feel like a budding dataviz witch/wizard when you're done.
+
+
+## Part 2: Hypotheses
+
+For this part of the assignment, you need to provide five hypotheses about the relationship between variables in one of the datasets. Ideally, this should be done on one of the datasets from your Project 1 (as a lead-in to the final project). You can (and should) consider making hypotheses about the dataset that you plan to use for your final project. However, this is not a requirement. All that is required is that you provide five hypotheses about some data. Your write-up should have an enumerated list of questions (e.g., "1. Are there more murders in states that have high unemployment.") along with a 1-2 sentence statement detailing why this hypothesis is interesting and should be studied. You will receive 2 points for each hypothesis. 
+
+### Evaluation
+
+I will evaluate these projects (not the TA). I will only give top marks to those groups showing initiative and cleverness. I will use the following weights for final scores:
+
+__Part 1__
+
+1. Technical difficulty: Does the final project show mastery of the skills we've discussed thus far? (15 points)
+
+2. Professionalism of visuals: Does the visualizations look like something you might see on TV or in the newspaper? (15 points)
+
+3. Poster clarity: Does your poster clearly convey some point? (10 points)
+
+
+
+__Part 2__
+
+Each hypothesis is worth 2 points. (This is intended to be some free points for all; 10 points)
+
+
+
+
