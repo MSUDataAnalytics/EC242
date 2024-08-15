@@ -770,6 +770,20 @@
     "text": "In these reference pages, I’ve included some useful resources to help you in the course."
   },
   {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Below is a roadmap for the semester. Note that this will inevitably change from the first day you access this course. However, whatever is listed below should be considered canon. Accordingly, you should visit this page frequently throughout the term.\nAs mentioned in the syllabus, the course is structured by topics; each week introduces a new topic. Moreover, every week is divided into three important sections that you should engage with."
+  },
+  {
+    "objectID": "schedule.html#course-calendar",
+    "href": "schedule.html#course-calendar",
+    "title": "Schedule",
+    "section": "Course Calendar",
+    "text": "Course Calendar\n\n\n\nWeek\nDates\nProgramming Foundations\nPrinciples\nApplications\nAssignment\n\n\n\n\nWeek 1\nAug 27 & Aug 29\n(Re-)introduction to R\n\n\n\n\n\nWeek 2\nSep 3 & Sep 5\nProgramming basics, tidyverse, and visualization\n\n\n\n\n\nWeek 3\nSep 10 & Sep 12\nVisualization II\n\n\n\n\n\nWeek 4\nSep 17 & Sep 19\nVisualization III\n\n\n\n\n\n\n\nData Analysis Foundations\nPrinciples\nApplications\nAssignment\n\n\nWeek 5\nSep 24 & Sep 26\nUncertainty and Probability in R\n\n\n\n\n\nWeek 6\nOct 1 & Oct 3\nLinear Regression I\n\n\n\n\n\nWeek 7\nOct 8 & Oct 10\nLinear Regression II\n\n\n\n\n\n\nSat Oct 12th\n Project 1 Due\n\n\n\n\n\nWeek 7\nOct 15 & Oct 17\nLinear Regression III\n\n\n\n\n\n\n\nApplications of Data Analysis\nPrinciples\nApplications\nAssignment\n\n\nWeek 8\nOct 22 & Oct 24\nLASSO: Least Absolute Shrinkage and Selection"
+  },
+  {
     "objectID": "syllabus.html",
     "href": "syllabus.html",
     "title": "Syllabus",

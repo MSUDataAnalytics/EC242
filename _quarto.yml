@@ -31,6 +31,8 @@ website:
     logo: "/images/Spartan-Helmet_White.png"
     background: "#18453b"
     right:
+      - href: schedule.qmd
+        text: Schedule
       - href: syllabus.qmd
         text: Syllabus
       - href: content/index.qmd
@@ -76,6 +78,7 @@ format:
     toc: true
     code-copy: true
     code-overflow: wrap
+    link-external-newwindow: true
 
 editor: source
 

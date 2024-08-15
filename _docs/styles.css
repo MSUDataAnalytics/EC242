@@ -7,3 +7,9 @@
 h1, .title {
   font-weight: bold;
 }
+
+
+
+.text-red {
+  color: #ff0000;
+}

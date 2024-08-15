@@ -1,0 +1,84 @@
+---
+title: "Schedule"
+toc: false
+---
+
+Below is a roadmap for the semester. Note that this will inevitably change from the first day you access this course. However, whatever is listed below should be considered canon. Accordingly, you should visit this page frequently throughout the term.
+
+As mentioned in the syllabus, the course is structured by topics; each week introduces a new topic. Moreover, every week is divided into three important sections that you should engage with. 
+
+### Overview
+
+The class is structured in the following way: each week, you will have two readings - generally a "principles" first, then an "applications" second. Read the first reading for the Week under [**Course Content**](/content/) before our first meeting, and the second before our second meeting of the week. In either Tuesday or Thursday class, you'll be given a prompt for your weekly writing, which is due at 11:59pm on Saturday (see [**assignments**](/assignments/) and the [**syllabus**](/syllabus/) for more info.
+
+You lab assignment will be due the following Monday, again at 11:59pm.
+
+- [**Principles**](/content/) (<i class="fas fa-book-reader"></i>): This page contains the readings for the topic. These pages should be read completely. Lectures are *not* an exact replication of the written content; on the contrary, the lectures are intended to keep you focused on the high-level ideas, while the readings are broader and more comprehensive. Accordingly, lectures are shorter than the (often quite lengthy) written content.
+
+- [**Applications**](/content/) (<i class="fas fa-laptop-code"></i>): This page the material that we will discuss in Thursday classes. In addition to teaching specific content, there are many more `R` code examples. These are intended as a useful reference to various functions that you will need when working on (nearly) weekly labs and your group project.
+
+- [**Assignments**](/assignment/) (<i class="fas fa-pencil-ruler"></i>): This page contains the instructions for the weekly lab (1–3 brief tasks) and for the two mini projects + final project. **Labs are due by 11:59 PM (Eastern) on the following Monday.** Labs are in addition to weekly writings and projects.
+
+
+
+
+::: {.callout-note}
+## You should follow this general process (in order) each week:
+
+- Do everything on the principles (<i class="fas fa-book-reader"></i>) page before Tuesday
+- Come to the lecture on Tuesday.
+- While "in class" on Thursday, work through the applications (<i class="fas fa-laptop-code"></i>) page
+- Complete the weekly writing by Saturday - topic assigned in class, see [assignments](/assignment/index.qmd#weekly-writings) for details and template
+- Complete the lab (<i class="fas fa-pencil-ruler"></i>) by Monday.
+- As needed, attend the lab hours hosted by the TA
+:::
+
+---
+
+## Course Calendar
+
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week    |  Dates           | [Programming Foundations   ]{.h4}                                        | Principles                                         | Applications                                      | Assignment                                               |
++:========+:=================+:=========================================================================+:==================================================:+:=================================================:+:========================================================:+
+| Week 1  | Aug 27 & Aug 29  |  (Re-)introduction to R                                                  | [{{< fa book-reader >}}](/content/Week_01/01a.qmd) | [{{< fa laptop-code >}}](/content/Week_01/01b.qmd)| [{{< fa pencil-ruler >}}](/assignment/01-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week 2  | Sep 3 & Sep 5    |  Programming basics, tidyverse, and visualization                        | [{{< fa book-reader >}}](/content/Week_02/02a.html)| [{{< fa laptop-code >}}](/content/Week_02/02b.qmd)| [{{< fa pencil-ruler >}}](/assignment/02-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week 3  | Sep 10 & Sep 12  |  Visualization II                                                        | [{{< fa book-reader >}}](/content/Week_03/03a.html)| [{{< fa laptop-code >}}](/content/Week_03/03b.qmd)| [{{< fa pencil-ruler >}}](/assignment/03-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week 4  | Sep 17 & Sep 19  |  Visualization III                                                       | [{{< fa book-reader >}}](/content/Week_04/04a.html)| [{{< fa laptop-code >}}](/content/Week_04/04b.qmd)| [{{< fa pencil-ruler >}}](/assignment/04-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+|         |                  |  [Data Analysis Foundations]{.h4}                                        |  **Principles**                                    | **Applications**                                  |   **Assignment**                                         |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week 5  | Sep 24 & Sep 26  |  Uncertainty and Probability in R                                        | [{{< fa book-reader >}}](/content/Week_05/05a.html)| [{{< fa laptop-code >}}](/content/Week_05/05b.qmd)| [{{< fa pencil-ruler >}}](/assignment/05-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week 6  | Oct 1 & Oct 3    |  Linear Regression I                                                     | [{{< fa book-reader >}}](/content/Week_06/06a.html)| [{{< fa laptop-code >}}](/content/Week_06/06b.qmd)| [{{< fa pencil-ruler >}}](/assignment/06-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week 7  | Oct 8 & Oct 10   |  Linear Regression II                                                    | [{{< fa book-reader >}}](/content/Week_07/07a.html)| [{{< fa laptop-code >}}](/content/Week_07/07b.qmd)| [{{< fa pencil-ruler >}}](/assignment/07-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+|         | Sat Oct 12th     |  {{< fa star >}} Project 1 Due                                           | [{{< fa book-reader >}}]{.text-light}              | [{{< fa laptop-code >}}]{.text-light}             | [{{< fa pencil-ruler >}}](/projects/project1.qmd)        |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week 7  | Oct 15 & Oct 17  |  Linear Regression III                                                   | [{{< fa book-reader >}}](/content/Week_08/08a.html)| [{{< fa laptop-code >}}](/content/Week_08/08b.qmd)| [{{< fa pencil-ruler >}}](/assignment/08-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+|         |                  |  [Applications of Data Analysis]{.h4}                                    |  **Principles**                                    | **Applications**                                  |   **Assignment**                                         |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+| Week 8  | Oct 22 & Oct 24  |  LASSO: Least Absolute Shrinkage and Selection                           | [{{< fa book-reader >}}](/content/Week_09/09a.html)| [{{< fa laptop-code >}}]{.text-light}             | [{{< fa pencil-ruler >}}](/assignment/09-assignment.qmd) |
++---------+------------------+--------------------------------------------------------------------------+----------------------------------------------------+---------------------------------------------------+----------------------------------------------------------+
+
+
+
+
+```{r setup-calendar, echo=F, eval = F}
+library(knitr)
+library(kableExtra)
+
+cat(data.frame(
+  Week = paste0(1:4),
+  Title = c('(Re-)Introduction to R','Programming basics, the tidyverse, and visualization','Visualization II','Visualization III'),
+  Principles = paste0('[{{< fa book-reader >}}]',c(paste0('(/content/Week_0',1:4,'/0',1:4,'a.html)'))),
+  Applications = paste0('[{{< fa laptop-code >}}]',c(paste0('(/content/Week_0',1:4,'/0',1:4,'b.html)'))),
+  Assignment = paste0('[{{< fa pencil-ruler >}}]',c(paste0('(/content/Week_0',1:4,'/0',1:4,'b.html)')))) %>%
+  kbl(format = 'html', escape = FALSE, align = "llccc"))
+
+
+```

@@ -69,5 +69,6 @@ Following images, using here('data/...') and copying all the old static/data con
 The default was yeti. I wanted to change $primary defined in yeti (https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/formats/html/bootstrap/themes/yeti.scss) to MSU green #18453b, so I added a `yetiADD.scss` file and updated the $primary and defined $MSUgreen
 
 Yeti theme samplesheet: https://bootswatch.com/yeti/
+Yeti (bootstrap) css: https://github.com/thomaspark/bootswatch/blob/v5/dist/yeti/bootstrap.css
 
 
