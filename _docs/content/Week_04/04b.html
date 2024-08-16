@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>EC242 - Visualizations</title>
+<title>Visualizations – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,11 +17,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -32,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -110,7 +81,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -119,15 +95,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
-
 <script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+
 <link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -136,9 +143,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     <img src="../../images/Spartan-Helmet_White.png" alt="" class="navbar-logo">
     </a>
@@ -146,165 +153,192 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <span class="navbar-title">EC242</span>
     </a>
   </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../schedule.html">
- <span class="menu-text">Schedule</span></a>
+    <a class="nav-link" href="../../syllabus.html"> 
+<span class="menu-text">Syllabus</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../syllabus.html">
- <span class="menu-text">Syllabus</span></a>
+    <a class="nav-link" href="../../schedule.html"> <i class="bi bi-calendar" role="img">
+</i> 
+<span class="menu-text">Schedule</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../content/index.html" aria-current="page">
- <span class="menu-text">Course Content</span></a>
+    <a class="nav-link active" href="../../content/index.html" aria-current="page"> 
+<span class="menu-text">Course Content</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../assignment/index.html">
- <span class="menu-text">Lab Assignments</span></a>
+    <a class="nav-link" href="../../assignment/index.html"> 
+<span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../resource/index.html">
- <span class="menu-text">Resources</span></a>
+    <a class="nav-link" href="../../resource/index.html"> 
+<span class="menu-text">Resources</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://ec242.slack.com"><i class="bi bi-slack" role="img">
+    <a class="nav-link" href="https://ec242.slack.com"> <i class="bi bi-slack" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Visualizations</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_04/04a.html">Week 04</a></li><li class="breadcrumb-item"><a href="../../content/Week_04/04b.html">Visualizations</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
+  <div id="quarto-announcement" data-announcement-id="af5b26b66d85ed4921241b62b501b43f" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>Alert</strong> - this site is still under construction</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
-      <div class="mt-2 flex-shrink-0 align-items-center">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../content/index.html" class="sidebar-item-text sidebar-link">Course Content</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a href="../../content/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course Content</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Week 01</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 01</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_01/01a.html" class="sidebar-item-text sidebar-link">Welcome Back to R</a>
+  <a href="../../content/Week_01/01a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome Back to R</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_01/01b.html" class="sidebar-item-text sidebar-link">Working with R and RStudio</a>
+  <a href="../../content/Week_01/01b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with R and RStudio</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">Week 02</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 02</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_02/02a.html" class="sidebar-item-text sidebar-link">Introduction to the tidyverse</a>
+  <a href="../../content/Week_02/02a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the tidyverse</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_02/02b.html" class="sidebar-item-text sidebar-link">Introduction to Visualization</a>
+  <a href="../../content/Week_02/02b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Visualization</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Week 03</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 03</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_03/03a.html" class="sidebar-item-text sidebar-link">Effective Visualizations</a>
+  <a href="../../content/Week_03/03a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Effective Visualizations</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_03/03b.html" class="sidebar-item-text sidebar-link">ggplot2: Everything you ever wanted to know</a>
+  <a href="../../content/Week_03/03b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ggplot2: Everything you ever wanted to know</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Week 04</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Week 04</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_04/04b.html" class="sidebar-item-text sidebar-link active">Visualizations</a>
+  <a href="../../content/Week_04/04a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizations in Practice</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_04/04a.html" class="sidebar-item-text sidebar-link">Visualizations in Practice</a>
+  <a href="../../content/Week_04/04b.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Visualizations</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Week 05</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 05</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_05/05a.html" class="sidebar-item-text sidebar-link">Probability and Statistics</a>
+  <a href="../../content/Week_05/05a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability and Statistics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_05/05b.html" class="sidebar-item-text sidebar-link">Visualizing Uncertainty</a>
+  <a href="../../content/Week_05/05b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing Uncertainty</span></a>
   </div>
 </li>
       </ul>
@@ -314,6 +348,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -324,12 +359,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#from-the-web" id="toc-from-the-web" class="nav-link" data-scroll-target="#from-the-web">From the web</a></li>
   <li><a href="#images-inserted-in-code-chunks" id="toc-images-inserted-in-code-chunks" class="nav-link" data-scroll-target="#images-inserted-in-code-chunks">Images inserted in code chunks</a></li>
+  <li><a href="#images-inserted-via-markdown" id="toc-images-inserted-via-markdown" class="nav-link" data-scroll-target="#images-inserted-via-markdown">Images inserted via Markdown</a></li>
+  <li><a href="#images-from-a-local-file" id="toc-images-from-a-local-file" class="nav-link" data-scroll-target="#images-from-a-local-file">Images from a local file</a></li>
+  </ul></li>
+  <li><a href="#gapminder" id="toc-gapminder" class="nav-link" data-scroll-target="#gapminder">Data visualization in practice</a>
+  <ul class="collapse">
+  <li><a href="#case-study-new-insights-on-poverty" id="toc-case-study-new-insights-on-poverty" class="nav-link" data-scroll-target="#case-study-new-insights-on-poverty">Case study: new insights on poverty</a>
+  <ul class="collapse">
   <li><a href="#exploring-the-data" id="toc-exploring-the-data" class="nav-link" data-scroll-target="#exploring-the-data">Exploring the Data</a></li>
   <li><a href="#slope-charts" id="toc-slope-charts" class="nav-link" data-scroll-target="#slope-charts">Slope charts</a></li>
   <li><a href="#bland-altman-plot" id="toc-bland-altman-plot" class="nav-link" data-scroll-target="#bland-altman-plot">Bland-Altman plot</a></li>
   <li><a href="#bump-charts" id="toc-bump-charts" class="nav-link" data-scroll-target="#bump-charts">Bump charts</a></li>
   <li><a href="#themes" id="toc-themes" class="nav-link" data-scroll-target="#themes">Themes</a></li>
   <li><a href="#small-multiples" id="toc-small-multiples" class="nav-link" data-scroll-target="#small-multiples">Small multiples</a></li>
+  </ul></li>
   <li><a href="#the-ecological-fallacy-and-importance-of-showing-the-data" id="toc-the-ecological-fallacy-and-importance-of-showing-the-data" class="nav-link" data-scroll-target="#the-ecological-fallacy-and-importance-of-showing-the-data">The ecological fallacy and importance of showing the data</a>
   <ul class="collapse">
   <li><a href="#logit" id="toc-logit" class="nav-link" data-scroll-target="#logit">Logit transformation</a></li>
@@ -344,9 +387,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_04/04a.html">Week 04</a></li><li class="breadcrumb-item"><a href="../../content/Week_04/04b.html">Visualizations</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Visualizations</h1>
+<h1 class="title">Visualizations</h1>
 </div>
 
 
@@ -359,11 +402,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
+
 </header>
 
-<div class="cell">
 
-</div>
 <section id="adding-graphics-to-an-rmarkdown-file" class="level1">
 <h1>Adding graphics to an Rmarkdown file</h1>
 <section id="from-the-web" class="level3">
@@ -376,69 +418,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="images-inserted-in-code-chunks">Images inserted in code chunks</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.width = '75%', fig.align='center', echo = TRUE}</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg"</span>, <span class="at">destfile =</span> <span class="st">'temporary.jpg'</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="at">path =</span> <span class="st">'temporary.jpg'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>:::
-
-
-::: {.cell layout-align="center"}
-::: {.cell-output-display}
-![](https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg){fig-align='center'}
-:::
-:::
-
-The file you specify with `destfile` doesn't matter - R will create that file, but you do need to use the corresponding suffix (don't use `temporary.jpg` if you're downloading a `.png`). By default, the file will be saved in the same folder as your .rmd file. When `include_graphics` goes to read the file, it will start looking relative to the folder that contains your .rmd file. That is, `download.file` will copy the image to the same place that `include_graphics` looks for it. See below for more on relative filepaths. 
-
-Note the code chunk option set above as well - `fig.width='75%'`, which is stated in the curly-brackets that head the chunk. This is where Knitr finds details about how you want to handle the output. Before, we saw that `echo=T` would add a copy of the code itself to the output (vs. `echo=F` which output only the result). Similarly, `fig.width='75%'` should size the output to take up about 75\% of the text width. You can also use `fig.width=8` to set the output to 8 inches wide (closet to the width of a sheet of paper), which will maximize the space used for your plot. You may need this if/when you start plotting larger things. Hint. 
-
-### Images inserted via Markdown
-The markdown language is what controls the text outside of the R code chunks. It has its own way of inserting images. Here the image is inserted in the text, **not** in a code chunk.
-</code></pre>
-<p><img src="https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg%22" class="img-fluid"></p>
-<pre><code>
-![](https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg")
-
-
-### Images from a local file
-Whether you have the file on your hard drive already, right-click and download from the web to keep a copy for posterity, or save the image from a screenshot, you will often need to insert an image from a local file. In Rmarkdown, the path will always be *relative to the folder containing your .Rmd file*. So if you keep your .Rmd in `/Users/jkirk/SSC442/Example3` and you have a folder `/Users/jkirk/SSC442/Example3/images` that contains a file `picture.png`, then you would tell Rmarkdown to find the file at `./images/picture.png` (which implies its filepath is `/Users/jkirk/SSC442/Example3/images/picture.png`). The `./` tells R to start looking in the local directory holding the .Rmd file you're working on.
-
-Once you know your local relative path, you can use either of the above methods `knitr::include_graphics('./images/picture.png')` or `![](./images/picture.png)`.
-
-It is possible for R to find your image with an incorrect filepath when you click the "run chunk" button, but then not be able to find it when you knit. This can be very frustrating. It is almost always because you do not have the right *relative* filepath.
-
-
-
-# Data visualization in practice {#gapminder}
-
-In this chapter, we will demonstrate how relatively simple __ggplot2__ code can create insightful and aesthetically pleasing plots. As motivation we will create plots that help us better understand trends in world health and economics. We will implement what we learned in previous sections of the class and learn how to augment the code to perfect the plots. As we go through our case study, we will describe relevant general data visualization principles.
-
-
-## Case study: new insights on poverty
-
-Hans Rosling^[https://en.wikipedia.org/wiki/Hans_Rosling] was the co-founder of the Gapminder Foundation^[http://www.gapminder.org/], an organization dedicated to educating the public by using data to dispel common myths about the so-called developing world. The organization uses data to show how actual trends in health and economics contradict the narratives that emanate from sensationalist media coverage of catastrophes, tragedies, and other unfortunate events. As stated in the Gapminder Foundation's website:
-
-&gt; Journalists and lobbyists tell dramatic stories. That’s their job. They tell stories about extraordinary events and unusual people. The piles of dramatic stories pile up in peoples' minds into an over-dramatic worldview and strong negative stress feelings: "The world is getting worse!", "It’s we vs. them!”, “Other people are strange!", "The population just keeps growing!" and "Nobody cares!"
-
-Hans Rosling conveyed actual data-based trends in a dramatic way of his own, using effective data visualization. This section is based on two talks that exemplify this approach to education: [New Insights on Poverty]^[https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en] and The Best Stats You've Ever Seen^[https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen]. Specifically, in this section, we use data to attempt to answer the following two questions:
-
-1. Is it a fair characterization of today's world to say it is divided into western rich nations and the developing world in Africa, Asia, and Latin America?
-2. Has income inequality across countries worsened during the last 40 years?
-
-To answer these questions, we will be using the `gapminder` dataset provided in __dslabs__. This dataset was created using a number of spreadsheets available from the Gapminder Foundation. You can access the table like this:
-
-::: {.cell}
-
-```{.r .cell-code}
-library(tidyverse)
-library(dslabs)
-library(ggrepel)
-library(ggthemes)
-gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="in">download.file("https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg", destfile = 'temporary.jpg')</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_graphics(path = 'temporary.jpg')</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
 </div>
+</div>
+</div>
+<p>The file you specify with <code>destfile</code> doesn’t matter - R will create that file, but you do need to use the corresponding suffix (don’t use <code>temporary.jpg</code> if you’re downloading a <code>.png</code>). By default, the file will be saved in the same folder as your .rmd file. When <code>include_graphics</code> goes to read the file, it will start looking relative to the folder that contains your .rmd file. That is, <code>download.file</code> will copy the image to the same place that <code>include_graphics</code> looks for it. See below for more on relative filepaths.</p>
+<p>Note the code chunk option set above as well - <code>fig.width='75%'</code>, which is stated in the curly-brackets that head the chunk. This is where Knitr finds details about how you want to handle the output. Before, we saw that <code>echo=T</code> would add a copy of the code itself to the output (vs.&nbsp;<code>echo=F</code> which output only the result). Similarly, <code>fig.width='75%'</code> should size the output to take up about 75% of the text width. You can also use <code>fig.width=8</code> to set the output to 8 inches wide (closet to the width of a sheet of paper), which will maximize the space used for your plot. You may need this if/when you start plotting larger things. Hint.</p>
 </section>
+<section id="images-inserted-via-markdown" class="level3">
+<h3 class="anchored" data-anchor-id="images-inserted-via-markdown">Images inserted via Markdown</h3>
+<p>The markdown language is what controls the text outside of the R code chunks. It has its own way of inserting images. Here the image is inserted in the text, <strong>not</strong> in a code chunk.</p>
+<pre><code>![](https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg")</code></pre>
+<p><img src="https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg%22" class="img-fluid"></p>
+</section>
+<section id="images-from-a-local-file" class="level3">
+<h3 class="anchored" data-anchor-id="images-from-a-local-file">Images from a local file</h3>
+<p>Whether you have the file on your hard drive already, right-click and download from the web to keep a copy for posterity, or save the image from a screenshot, you will often need to insert an image from a local file. In Rmarkdown, the path will always be <em>relative to the folder containing your .Rmd file</em>. So if you keep your .Rmd in <code>/Users/jkirk/SSC442/Example3</code> and you have a folder <code>/Users/jkirk/SSC442/Example3/images</code> that contains a file <code>picture.png</code>, then you would tell Rmarkdown to find the file at <code>./images/picture.png</code> (which implies its filepath is <code>/Users/jkirk/SSC442/Example3/images/picture.png</code>). The <code>./</code> tells R to start looking in the local directory holding the .Rmd file you’re working on.</p>
+<p>Once you know your local relative path, you can use either of the above methods <code>knitr::include_graphics('./images/picture.png')</code> or <code>![](./images/picture.png)</code>.</p>
+<p>It is possible for R to find your image with an incorrect filepath when you click the “run chunk” button, but then not be able to find it when you knit. This can be very frustrating. It is almost always because you do not have the right <em>relative</em> filepath.</p>
+</section>
+</section>
+<section id="gapminder" class="level1">
+<h1>Data visualization in practice</h1>
+<p>In this chapter, we will demonstrate how relatively simple <strong>ggplot2</strong> code can create insightful and aesthetically pleasing plots. As motivation we will create plots that help us better understand trends in world health and economics. We will implement what we learned in previous sections of the class and learn how to augment the code to perfect the plots. As we go through our case study, we will describe relevant general data visualization principles.</p>
+<section id="case-study-new-insights-on-poverty" class="level2">
+<h2 class="anchored" data-anchor-id="case-study-new-insights-on-poverty">Case study: new insights on poverty</h2>
+<p>Hans Rosling<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> was the co-founder of the Gapminder Foundation<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, an organization dedicated to educating the public by using data to dispel common myths about the so-called developing world. The organization uses data to show how actual trends in health and economics contradict the narratives that emanate from sensationalist media coverage of catastrophes, tragedies, and other unfortunate events. As stated in the Gapminder Foundation’s website:</p>
+<blockquote class="blockquote">
+<p>Journalists and lobbyists tell dramatic stories. That’s their job. They tell stories about extraordinary events and unusual people. The piles of dramatic stories pile up in peoples’ minds into an over-dramatic worldview and strong negative stress feelings: “The world is getting worse!”, “It’s we vs.&nbsp;them!”, “Other people are strange!”, “The population just keeps growing!” and “Nobody cares!”</p>
+</blockquote>
+<p>Hans Rosling conveyed actual data-based trends in a dramatic way of his own, using effective data visualization. This section is based on two talks that exemplify this approach to education: [New Insights on Poverty]<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> and The Best Stats You’ve Ever Seen<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Specifically, in this section, we use data to attempt to answer the following two questions:</p>
+<ol type="1">
+<li>Is it a fair characterization of today’s world to say it is divided into western rich nations and the developing world in Africa, Asia, and Latin America?</li>
+<li>Has income inequality across countries worsened during the last 40 years?</li>
+</ol>
+<p>To answer these questions, we will be using the <code>gapminder</code> dataset provided in <strong>dslabs</strong>. This dataset was created using a number of spreadsheets available from the Gapminder Foundation. You can access the table like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">=</span> dslabs<span class="sc">::</span>gapminder <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="exploring-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="exploring-the-data">Exploring the Data</h3>
 <p>Taking an exercise from the <em>New Insights on Poverty</em> video, we start by testing our knowledge regarding differences in child mortality across different countries. For each of the six pairs of countries below, which country do you think had the highest child mortality rates in 2015? Which pairs do you think are most similar?</p>
@@ -465,49 +495,49 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <p>We can use this code on all comparisons and find the following:</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> country </th>
-   <th style="text-align:right;"> infant mortality </th>
-   <th style="text-align:left;"> country </th>
-   <th style="text-align:right;"> infant mortality </th>
-  </tr>
- </thead>
+<table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">country</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">infant mortality</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">country</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">infant mortality</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> Sri Lanka </td>
-   <td style="text-align:right;"> 8.4 </td>
-   <td style="text-align:left;"> Turkey </td>
-   <td style="text-align:right;"> 11.6 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Poland </td>
-   <td style="text-align:right;"> 4.5 </td>
-   <td style="text-align:left;"> South Korea </td>
-   <td style="text-align:right;"> 2.9 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Malaysia </td>
-   <td style="text-align:right;"> 6.0 </td>
-   <td style="text-align:left;"> Russia </td>
-   <td style="text-align:right;"> 8.2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Pakistan </td>
-   <td style="text-align:right;"> 65.8 </td>
-   <td style="text-align:left;"> Vietnam </td>
-   <td style="text-align:right;"> 17.3 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Thailand </td>
-   <td style="text-align:right;"> 10.5 </td>
-   <td style="text-align:left;"> South Africa </td>
-   <td style="text-align:right;"> 33.6 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">Sri Lanka</td>
+<td style="text-align: right;">8.4</td>
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">11.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">4.5</td>
+<td style="text-align: left;">South Korea</td>
+<td style="text-align: right;">2.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Malaysia</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">8.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: right;">65.8</td>
+<td style="text-align: left;">Vietnam</td>
+<td style="text-align: right;">17.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: right;">10.5</td>
+<td style="text-align: left;">South Africa</td>
+<td style="text-align: right;">33.6</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
@@ -540,13 +570,21 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> label_last, <span class="at">color =</span> country), <span class="at">direction =</span> <span class="st">'y'</span>, <span class="at">nudge_x =</span>  <span class="dv">1</span>, <span class="at">seed =</span> <span class="dv">1234</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Life Expectancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/slope-plot-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/slope-plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>An advantage of the slope chart is that it permits us to quickly get an idea of changes based on the slope of the lines. Although we are using angle as the visual cue, we also have position to determine the exact values. Comparing the improvements is a bit harder with a scatterplot:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/scatter-plot-instead-of-slope-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/scatter-plot-instead-of-slope-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>In the scatterplot, we have followed the principle <em>use common axes</em> since we are comparing these before and after. However, if we have many points, slope charts stop being useful as it becomes hard to see all the lines.</p>
@@ -567,7 +605,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Average of 2010 and 2015"</span>) <span class="sc">+</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Difference between 2015 and 2010"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/bland-altman-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/bland-altman-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Here, by simply looking at the y-axis, we quickly see which countries have shown the most improvement. We also get an idea of the overall value from the x-axis. You already made a similar Altman plot in an earlier problem set, so we’ll move on.</p>
@@ -589,7 +631,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/make-bump-plot-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/make-bump-plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Iran holds the number 1 spot, while Sri Lanka dropped from 2 to 6, and Bangladesh increased from 4 to 2.</p>
@@ -610,7 +656,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>bumpplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/bump-plot-fancier-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/bump-plot-fancier-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>If you want to be <em>super</em> fancy, you can use flags instead of country codes, but that’s a little more complicated (you need to install the <a href="https://github.com/rensa/ggflags"><strong>ggflags</strong> package</a>. <a href="https://dominikkoch.github.io/Bump-Chart/">See here for an example</a>.</p>
@@ -623,7 +673,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bumpplot <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The background shading is gone, which gives the plot a nice, crisp feel. It adds the black outline around the plot, but doesn’t mess with the colors in the plot.</p>
@@ -631,14 +685,22 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>bumpplot <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Themes can alter things in the plot as well. If we really want to strip it down and remove the Y-axis (which is rarely a good idea, but in a bump chart, it makes sense):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>bumpplot <span class="sc">+</span> <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Now <strong>that’s</strong> clean!</p>
@@ -646,7 +708,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>bumpplot <span class="sc">+</span> <span class="fu">theme_economist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Themes affect some of the plot elements that we haven’t gotten much into (like length of axis ticks and the color of the panel grid behind the plot). We can use a theme, then make further changes to the theme. We won’t go into a lot of detail, but here’s an example. Use the <code>?theme</code> to learn more about what you can change. Half the challenge is finding the right term for the thing you want to tweak! Theme changes occur in code order, so you can update a pre-set theme with your own details:</p>
@@ -658,7 +724,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>()) <span class="co"># turn off small x grid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/bump-plot-fancierest-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/bump-plot-fancierest-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -674,7 +744,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(country))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Small multiples! That’s all we need to do.</p>
@@ -687,10 +761,14 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/life-expectancy-small-minimalist-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/life-expectancy-small-minimalist-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>We can do a whole part of a continent (poor Syria 😢)</p>
+</div>
+<p>We can do a whole part of a continent (poor Syria 😿)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>life_expectancy_mena <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Northern Africa"</span> <span class="sc">|</span> region <span class="sc">==</span> <span class="st">"Western Asia"</span>)</span>
@@ -702,7 +780,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/life-expectancy-mena-1.png" class="img-fluid" width="960"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/life-expectancy-mena-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We can use the <a href="https://hafen.github.io/geofacet/"><strong>geofacet</strong> package</a> to arrange these facets by geography:</p>
@@ -722,11 +804,16 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/life-expectancy-eu-1.png" class="img-fluid" width="960"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/life-expectancy-eu-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Neat!</p>
 <p>Anybody see any problems here?</p>
+</section>
 </section>
 <section id="the-ecological-fallacy-and-importance-of-showing-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-ecological-fallacy-and-importance-of-showing-the-data">The ecological fallacy and importance of showing the data</h2>
@@ -734,7 +821,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <p>We define a few more regions and compare the averages across regions:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/ecological-fallacy-averages-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/ecological-fallacy-averages-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The relationship between these two variables is almost perfectly linear and the graph shows a dramatic difference. While in the West less than 0.5% of infants die, in Sub-Saharan Africa the rate is higher than 6%!</p>
@@ -752,7 +843,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <p>Jumping to this conclusion based on a plot showing averages is referred to as the <em>ecological fallacy</em>. The almost perfect relationship between survival rates and income is only observed for the averages at the region level. Once we show all the data, we see a somewhat more complicated story:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/ecological-fallacy-all-data-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/ecological-fallacy-all-data-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Specifically, we see that there is a large amount of variability. We see that countries from the same regions can be quite different and that countries with the same income can have different survival rates. For example, while on average Sub-Saharan Africa had the worse health and economic outcomes, there is wide variability within that group. Mauritius and Botswana are doing better than Angola and Sierra Leone, with Mauritius comparable to Western countries.</p>
@@ -761,9 +856,9 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <section id="vaccines" class="level2">
 <h2 class="anchored" data-anchor-id="vaccines">Case study: vaccines and infectious diseases</h2>
 <p>Vaccines have helped save millions of lives. In the 19th century, before herd immunization was achieved through vaccination programs, deaths from infectious diseases, such as smallpox and polio, were common. However, today vaccination programs have become somewhat controversial despite all the scientific evidence for their importance.</p>
-<p>The controversy started with a paper<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> published in 1988 and led by Andrew Wakefield claiming there was a link between the administration of the measles, mumps, and rubella (MMR) vaccine and the appearance of autism and bowel disease. Despite much scientific evidence contradicting this finding, sensationalist media reports and fear-mongering from conspiracy theorists led parts of the public into believing that vaccines were harmful. As a result, many parents ceased to vaccinate their children. This dangerous practice can be potentially disastrous given that the Centers for Disease Control (CDC) estimates that vaccinations will prevent more than 21 million hospitalizations and 732,000 deaths among children born in the last 20 years (see Benefits from Immunization during the Vaccines for Children Program Era — United States, 1994-2013, MMWR<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>). The 1988 paper has since been retracted and Andrew Wakefield was eventually “struck off the UK medical register, with a statement identifying deliberate falsification in the research published in The Lancet, and was thereby barred from practicing medicine in the UK.” (source: Wikipedia<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>). Yet misconceptions persist, in part due to self-proclaimed activists who continue to disseminate misinformation about vaccines.</p>
-<p>Effective communication of data is a strong antidote to misinformation and fear-mongering. Earlier we used an example provided by a Wall Street Journal article<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> showing data related to the impact of vaccines on battling infectious diseases. Here we reconstruct that example.</p>
-<p>The data used for these plots were collected, organized, and distributed by the Tycho Project<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. They include weekly reported counts for seven diseases from 1928 to 2011, from all fifty states. The yearly totals are helpfully included in the <strong>dslabs</strong> package:</p>
+<p>The controversy started with a paper<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> published in 1988 and led by Andrew Wakefield claiming there was a link between the administration of the measles, mumps, and rubella (MMR) vaccine and the appearance of autism and bowel disease. Despite much scientific evidence contradicting this finding, sensationalist media reports and fear-mongering from conspiracy theorists led parts of the public into believing that vaccines were harmful. As a result, many parents ceased to vaccinate their children. This dangerous practice can be potentially disastrous given that the Centers for Disease Control (CDC) estimates that vaccinations will prevent more than 21 million hospitalizations and 732,000 deaths among children born in the last 20 years (see Benefits from Immunization during the Vaccines for Children Program Era — United States, 1994-2013, MMWR<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>). The 1988 paper has since been retracted and Andrew Wakefield was eventually “struck off the UK medical register, with a statement identifying deliberate falsification in the research published in The Lancet, and was thereby barred from practicing medicine in the UK.” (source: Wikipedia<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>). Yet misconceptions persist, in part due to self-proclaimed activists who continue to disseminate misinformation about vaccines.</p>
+<p>Effective communication of data is a strong antidote to misinformation and fear-mongering. Earlier we used an example provided by a Wall Street Journal article<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> showing data related to the impact of vaccines on battling infectious diseases. Here we reconstruct that example.</p>
+<p>The data used for these plots were collected, organized, and distributed by the Tycho Project<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. They include weekly reported counts for seven diseases from 1928 to 2011, from all fifty states. The yearly totals are helpfully included in the <strong>dslabs</strong> package:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(us_contagious_diseases)</span>
@@ -789,7 +884,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Cases per 10,000"</span>)  <span class="sc">+</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">1963</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/california-measles-time-series-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/california-measles-time-series-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We add a vertical line at 1963 since this is when the vaccine was introduced [Control, Centers for Disease; Prevention (2014). CDC health information for international travel 2014 (the yellow book). p.&nbsp;250. ISBN 9780199948505].</p>
@@ -809,7 +908,11 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(the_disease) <span class="sc">+</span></span>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/vaccines-plot-1.png" class="img-fluid" style="width:100.0%"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/vaccines-plot-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This plot makes a very striking argument for the contribution of vaccines. However, one limitation of this plot is that it uses color to represent quantity, which we earlier explained makes it harder to know exactly how high values are going. Position and lengths are better cues. If we are willing to lose state information, we can make a version of the plot that shows the values with position. We can also show the average for the US, which we compute like this:</p>
@@ -819,7 +922,8 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">us_rate =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">sum</span>(population, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now to make the plot we simply use the <code>geom_line</code> geometry: ::: {.cell}</p>
+<p>Now to make the plot we simply use the <code>geom_line</code> geometry:</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(rate)) <span class="sc">%&gt;%</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
@@ -834,9 +938,13 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">1963</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04b_files/figure-html/time-series-vaccines-plot-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="04b_files/figure-html/time-series-vaccines-plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<p>:::</p>
+</div>
+</div>
 <p>In theory, we could use color to represent the categorical value state, but it is hard to pick 50 distinct colors.</p>
 </section>
 <section id="try-it" class="level2">
@@ -859,11 +967,15 @@ gapminder = dslabs::gapminder %&gt;% as_tibble()</code></pre>
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>http://www.thelancet.com/journals/lancet/article/PIIS0140-6736(97)11096-0/abstract<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6316a4.htm<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>https://en.wikipedia.org/wiki/Andrew_Wakefield<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>http://graphics.wsj.com/infectious-diseases-and-vaccines/<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>http://www.tycho.pitt.edu/<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>https://en.wikipedia.org/wiki/Hans_Rosling<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>http://www.gapminder.org/<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>http://www.thelancet.com/journals/lancet/article/PIIS0140-6736(97)11096-0/abstract<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6316a4.htm<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>https://en.wikipedia.org/wiki/Andrew_Wakefield<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>http://graphics.wsj.com/infectious-diseases-and-vaccines/<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>http://www.tycho.pitt.edu/<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -893,12 +1005,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -930,11 +1045,55 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -944,8 +1103,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -957,9 +1125,245 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -997,23 +1401,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

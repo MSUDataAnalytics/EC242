@@ -10,6 +10,7 @@ project:
     - "files/"
     - "content/"
     - "projects/"
+  
 
   preview:
     port: 4321
@@ -23,6 +24,12 @@ execute:
 
 website:
   title: "EC242"
+  announcement: 
+    icon: info-circle
+    dismissable: true
+    content: "**Alert** - this site is still under construction"
+    type: primary
+    position: below-navbar
   search: 
     # show-item-context: tree invalid for some reason?
     location: navbar
@@ -31,30 +38,37 @@ website:
     logo: "/images/Spartan-Helmet_White.png"
     background: "#18453b"
     right:
-      - href: schedule.qmd
-        text: Schedule
       - href: syllabus.qmd
         text: Syllabus
+      - href: schedule.qmd
+        text: Schedule        
+        icon: calendar
       - href: content/index.qmd
         text: "Course Content"
       - href: assignment/index.qmd
-        text: "Lab Assignments"
+        text: "Assignments"
       - href: resource/index.qmd
         text: "Resources"
       - icon: slack
         href: https://ec242.slack.com
   sidebar:
     - id: contents
-      title: "help"
       style: "docked"
       search: true
       contents: content
       
     - id: assignments
-      title: "Lab Assignments"
       style: "docked"
       search: true
-      contents: assignment
+      contents: 
+        - section: "Lab Assignments"
+          contents: assignment
+        - section: "Group Projects"
+          contents: 
+            - groupproject/project1.qmd
+            - groupproject/project2.qmd
+            - groupproject/final-project.qmd
+      
     
     - id: main
       title: "maintitle"

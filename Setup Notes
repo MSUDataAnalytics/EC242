@@ -16,19 +16,28 @@ https://main--earnest-crostata-11dc6a.netlify.app
 
 ## Build
 Builds to _docs
-Have not yet set it to search files. Will need to scan content/Week* folders.
+
 
 
 
 ## Sidebar
 the `content` folder will automatically add files (incl. in subdirectories) to the "contents" sidebar defined in _quarto.yml. It'll follow folders and will name based on folder name (e.g. Week 00 from Week_00). Title on the sidebar comes from title on the .qmd files. For the "content" folder, a index.qmd file there sets the title (and provides main content page content)
 
+I do the same with the 'assignment' folder so it builds a sidebar for lab assignments. Need to add a sidebar for projects there as well still. Will have to do that manually
+
 Show a sidebar (of specific id) on a page by adding `sidebar` in the yml header. It appears just doing this on the index.qmd for that folder cascades down to each of the pages? Lab Assignments has the right one, even though only the assignments/index.qmd has the sidebar in the yml header.
+
+Folders are named without plural s' so that sidebar title can be diff from folder
+I think "projects" or "project" is protected as I get an error when I try to use "project" in contents (to sweep the project folder for sidebar contents)
+Right now, Assignments page has both lab and projects in sidebar (built in _quarto.yml). Lab Assignments are built by scanning/assignment, but Group Projects are entered manually. In the sidebar, Lab Assignments inserts a second-level "assignments" title (based on a capitalized version of the folder name). I can't get ridof it,but theremight be some settings that will. Not worried about it rightnow.
+
+
 
 
 ## Shortcodes
-  favicons shortcodes are enabled (added as extention in terminal) {{< >}}
+  favicons shortcodes are enabled (added as extention in terminal) {{< >}}, as are bootstrap: https://icons.getbootstrap.com
     -->   {{< fa file-arrow-down title=Alt description">}}
+    -->   {{< bi suitcase >}}    
     
   Quarto has built-in _variables.yml shortcode (and meta(data), but that only refers to things recognized in yml header). Set variables in _variables.yml, then refer to them by {{< var variablename.subvariable >}} and they'll render.
   
@@ -51,6 +60,7 @@ An example can be found on the quarto website under "callouts" - to use one of t
     The text in the box
     :::
 
+You can change some things on the callouts: https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/language/_language.yml, but I haven't yet figured out how to make a new one (I'd like a "try it!" callout format). But maybe just change callout-tip? or callout-note?
 
 
 
@@ -71,4 +81,7 @@ The default was yeti. I wanted to change $primary defined in yeti (https://githu
 Yeti theme samplesheet: https://bootswatch.com/yeti/
 Yeti (bootstrap) css: https://github.com/thomaspark/bootswatch/blob/v5/dist/yeti/bootstrap.css
 
-
+[Inline css]{.text-emphasis} or choose from https://bootswatch.com/yeti/
+::: {.text-emphasis}
+asdf
+:::

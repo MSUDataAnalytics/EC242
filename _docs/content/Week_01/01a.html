@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>EC242 - Welcome Back to R</title>
+<title>Welcome Back to R – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -47,7 +47,12 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -56,12 +61,42 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -70,9 +105,9 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     <img src="../../images/Spartan-Helmet_White.png" alt="" class="navbar-logo">
     </a>
@@ -80,165 +115,192 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">EC242</span>
     </a>
   </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../schedule.html">
- <span class="menu-text">Schedule</span></a>
+    <a class="nav-link" href="../../syllabus.html"> 
+<span class="menu-text">Syllabus</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../syllabus.html">
- <span class="menu-text">Syllabus</span></a>
+    <a class="nav-link" href="../../schedule.html"> <i class="bi bi-calendar" role="img">
+</i> 
+<span class="menu-text">Schedule</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../content/index.html" aria-current="page">
- <span class="menu-text">Course Content</span></a>
+    <a class="nav-link active" href="../../content/index.html" aria-current="page"> 
+<span class="menu-text">Course Content</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../assignment/index.html">
- <span class="menu-text">Lab Assignments</span></a>
+    <a class="nav-link" href="../../assignment/index.html"> 
+<span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../resource/index.html">
- <span class="menu-text">Resources</span></a>
+    <a class="nav-link" href="../../resource/index.html"> 
+<span class="menu-text">Resources</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://ec242.slack.com"><i class="bi bi-slack" role="img">
+    <a class="nav-link" href="https://ec242.slack.com"> <i class="bi bi-slack" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Welcome Back to R</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_01/01a.html">Week 01</a></li><li class="breadcrumb-item"><a href="../../content/Week_01/01a.html">Welcome Back to R</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
+  <div id="quarto-announcement" data-announcement-id="af5b26b66d85ed4921241b62b501b43f" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>Alert</strong> - this site is still under construction</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
-      <div class="mt-2 flex-shrink-0 align-items-center">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../content/index.html" class="sidebar-item-text sidebar-link">Course Content</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a href="../../content/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course Content</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Week 01</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Week 01</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_01/01a.html" class="sidebar-item-text sidebar-link active">Welcome Back to R</a>
+  <a href="../../content/Week_01/01a.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Welcome Back to R</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_01/01b.html" class="sidebar-item-text sidebar-link">Working with R and RStudio</a>
+  <a href="../../content/Week_01/01b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with R and RStudio</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">Week 02</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 02</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_02/02a.html" class="sidebar-item-text sidebar-link">Introduction to the tidyverse</a>
+  <a href="../../content/Week_02/02a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the tidyverse</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_02/02b.html" class="sidebar-item-text sidebar-link">Introduction to Visualization</a>
+  <a href="../../content/Week_02/02b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Visualization</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Week 03</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 03</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_03/03a.html" class="sidebar-item-text sidebar-link">Effective Visualizations</a>
+  <a href="../../content/Week_03/03a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Effective Visualizations</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_03/03b.html" class="sidebar-item-text sidebar-link">ggplot2: Everything you ever wanted to know</a>
+  <a href="../../content/Week_03/03b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ggplot2: Everything you ever wanted to know</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Week 04</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 04</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_04/04b.html" class="sidebar-item-text sidebar-link">Visualizations</a>
+  <a href="../../content/Week_04/04a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizations in Practice</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_04/04a.html" class="sidebar-item-text sidebar-link">Visualizations in Practice</a>
+  <a href="../../content/Week_04/04b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizations</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Week 05</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 05</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_05/05a.html" class="sidebar-item-text sidebar-link">Probability and Statistics</a>
+  <a href="../../content/Week_05/05a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability and Statistics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/Week_05/05b.html" class="sidebar-item-text sidebar-link">Visualizing Uncertainty</a>
+  <a href="../../content/Week_05/05b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing Uncertainty</span></a>
   </div>
 </li>
       </ul>
@@ -248,6 +310,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -289,9 +352,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_01/01a.html">Week 01</a></li><li class="breadcrumb-item"><a href="../../content/Week_01/01a.html">Welcome Back to R</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Welcome Back to R</h1>
+<h1 class="title">Welcome Back to R</h1>
 </div>
 
 
@@ -304,7 +367,9 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <!-- Some notes Summer2024: -->
 <!-- had to delete ggflags  -->
@@ -312,7 +377,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="readings">Readings</h2>
 <p>As noted in the syllabus, your readings will be assigned each week in this area. For this initial week, please read the course content. <strong>Read closely</strong> the following:</p>
 <ul>
-<li>The <a href="../../syllabus/">syllabus</a>, <a href="../../content/">content</a>, <a href="../../example/">examples</a>, and <a href="../../lab/">labs</a> pages for this class.</li>
+<li>The <a href="../..\syllabus/">syllabus</a>, <a href="../..\content/">content</a>, <a href="../..\example/">examples</a>, and <a href="../..\lab/">labs</a> pages for this class.</li>
 <li>This page. Yes, the whole thing.</li>
 </ul>
 <section id="guiding-question" class="level3">
@@ -360,9 +425,9 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <section id="course-structure" class="level4">
 <h4 class="anchored" data-anchor-id="course-structure">Course Structure</h4>
-<p>Here’s how each week will work: before class on Tuesday, you’ll read the <a href="../../content/">content</a> for the week. On Tuesday, you’ll come to lecture. Before Thursday, you’ll read the <a href="../../example/">example</a> for the week, and on Thursday you’ll come to lecture ready to participate with a charged laptop. On Saturday night by 11:59pm, you’ll turn in your <a href="../../assignment/#weekly-writings">Weekly Writing assignment</a> responding to the weekly writing prompt <strong>given during class on Tuesday or Thursday</strong>, rendered to PDF by RMarkdown and using the proper template (see <a href="../../assignment">assignments</a>). By Monday at 11:59pm, you’ll turn in your <a href="../../assignment/#labs">Lab assignment</a>, also using the RMarkdown template.</p>
+<p>Here’s how each week will work: before class on Tuesday, you’ll read the <a href="../..\content/">content</a> for the week. On Tuesday, you’ll come to lecture. Before Thursday, you’ll read the <a href="../..\example/">example</a> for the week, and on Thursday you’ll come to lecture ready to participate with a charged laptop. On Saturday night by 11:59pm, you’ll turn in your <a href="../..\assignment/#weekly-writings">Weekly Writing assignment</a> responding to the weekly writing prompt <strong>given during class on Tuesday or Thursday</strong>, rendered to PDF by RMarkdown and using the proper template (see <a href="../..\assignment">assignments</a>). By Monday at 11:59pm, you’ll turn in your <a href="../..\assignment/#labs">Lab assignment</a>, also using the RMarkdown template.</p>
 <p>You’ll repeat this each week until we’re out of labs. If a holiday occurs on a due date, then the assignment or lab is due the next non-holiday day at 11:59pm or as otherwise noted. You’ll also work with your assigned group on the Group Project. We’ll assign groups after the drop deadline has passed.</p>
-<p>Now, let’s look at <a href="../../syllabus/#course-times-and-zoom-links">the Syllabus for important information about office hours</a></p>
+<p>Now, let’s look at <a href="../..\syllabus/#course-times-and-zoom-links">the Syllabus for important information about office hours</a></p>
 </section>
 <section id="grading" class="level4">
 <h4 class="anchored" data-anchor-id="grading">Grading</h4>
@@ -378,7 +443,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="more-about-this-course" class="level3">
 <h3 class="anchored" data-anchor-id="more-about-this-course">More About This Course</h3>
 <p>There are sort of two texts for this course and sort of zero.</p>
-<p>The “main text” is this website. The secondary text is Introduction to Statistical Learning (see <a href="../../syllabus/#course-materials">Syllabus</a>), which is free and available online. The secondary text is substantially more difficult, but also free online. Assigned readings can be found on the course website under “Content”.</p>
+<p>The “main text” is this website. The secondary text is Introduction to Statistical Learning (see <a href="../..\syllabus/#course-materials">Syllabus</a>), which is free and available online. The secondary text is substantially more difficult, but also free online. Assigned readings can be found on the course website under “Content”.</p>
 <p><strong>Please please please please please:</strong> ask questions during class.</p>
 <ul>
 <li><p>Most ideas will be new.</p></li>
@@ -390,7 +455,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="things-to-remember-tldr" class="level3">
 <h3 class="anchored" data-anchor-id="things-to-remember-tldr">Things To Remember (tl;dr)</h3>
 <p>Do your weekly writing due <strong>Saturday</strong>. Begin working on Lab 0 as it is due Monday.</p>
-<p>Keys from the <a href="../../syllabus/">syllabus</a>:</p>
+<p>Keys from the <a href="../..\syllabus/">syllabus</a>:</p>
 <ul>
 <li>E-mail isn’t the ideal solution for technical problems
 <ul>
@@ -445,7 +510,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Fifteen other states increased capacity by less than 4% (from 49,575 to 51,440).</li>
 <li>In “heavy-construction” states the crime rate increased by 167%; in “low-construction” states the crime rate increased by 145%.</li>
 </ul>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th></th>
@@ -557,7 +622,11 @@ ul.task-list li input[type="checkbox"] {
 <p>Imagine you are evaluating countries for a potential investment in renewable energy. Headlines like “Renewable Energy Capacity Growth Worldwide” have piqued your interest. Reports from various sources show diverse graphs and charts and you’re curious about the underlying data. You want to know which countries are leading the way in renewable energy production and which are lagging behind. You want to know which countries are growing their renewable energy production the fastest. In short: you want to know which countries are the best bets for investment. You might see something like the following:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="01a_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" style="width:70.0%"></p>
+<div>
+<figure class="figure">
+<p><img src="01a_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>You might want to look into the underlying data (in this case, fabricated) and think about what to do next. In this sense, you have <em>learned from data</em>.</p>
@@ -567,7 +636,11 @@ ul.task-list li input[type="checkbox"] {
 <p>Imagine you live in Europe (if only!) and are offered a job in a US company with many locations in every state. It is a great job, but headlines such as <strong>US Gun Homicide Rate Higher Than Other Developed Countries</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> have you worried. Fox News runs a scary looking graphic, and charts like the one below only add to you anxiety:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="01a_files/figure-html/murder-rate-example-1-1.png" class="img-fluid" style="width:70.0%"></p>
+<div>
+<figure class="figure">
+<p><img src="01a_files/figure-html/murder-rate-example-1-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 <!--(Source:
@@ -575,20 +648,25 @@ ul.task-list li input[type="checkbox"] {
 <p>Or even worse, this version from <a href="https://everytownresearch.org">everytown.org</a>:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="01a_files/figure-html/murder-rate-example-2-1.png" class="img-fluid" style="width:70.0%"></p>
+<div>
+<figure class="figure">
+<p><img src="01a_files/figure-html/murder-rate-example-2-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 <!--(Source  [everytown.org](https://everytownresearch.org))-->
 <p>But then you remember that (1) this is a hypothetical exercise; (2) you’ll take literally any job at this point; and (3) Geographic diversity matters – the United States is a large and diverse country with 50 very different states (plus the District of Columbia and some lovely territories).<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="01a_files/figure-html/us-murders-by-state-map-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="01a_files/figure-html/us-murders-by-state-map-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>California, for example, has a larger population than Canada, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the murder rates in Lithuania, Ukraine, and Russia are higher than 4 per 100,000. So perhaps the news reports that worried you are too superficial.</p>
-<div class="cell">
-
-</div>
 <p>This is a relatively simple and straightforward problem in social science: you have options of where to live, and want to determine the safety of the various states. Your “research” is clearly policy-relevant: you will eventually have to live somewhere. In this course, we will begin to tackle the problem by examining data related to gun homicides in the US during 2010 using <code>R</code> as a motivating example along the way.</p>
 <p>Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced <code>R</code> skills. Ideally, this is a refresher. However, we are aware that your preparation in previously courses varies greatly from student to student. Moreover, we want you to be aware that the usefulness of some of these early building blocks may not be immediately obvious. Later in the class you will appreciate having these skills. Mastery will be rewarded both in this class and (of course) in life.</p>
 <section id="the-pre-basics" class="level3">
@@ -635,12 +713,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -672,11 +753,55 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -686,8 +811,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -699,9 +833,245 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -739,23 +1109,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

@@ -1,14 +1,14 @@
 ---
-title: "Lab Assignments"
+title: "Assignments"
 sidebar: assignments
 toc: false
-order: 20
 format: 
   html:
     code-fold: false
     code-tools: false
 editor: source
 ---
+
 
 
 This course is the capstone of the Data Analytics Minor in the College of Social Science. Accordingly, you should---fingers crossed---enjoy data analysis. You will get the most of out this class if you:
@@ -20,9 +20,9 @@ Assignments consist of **Weekly Writings** and **Lab Assignments**. Each type of
 
 To get started, download and save the following files (**right-click** to Save Link As...)
 
-- {{< var blurbs.labtemplate >}}
-
 - {{< var blurbs.writingtemplate >}}
+
+- {{< var blurbs.labtemplate >}}
 
 
 ## Weekly Writings 

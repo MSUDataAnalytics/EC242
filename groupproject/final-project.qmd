@@ -1,18 +1,5 @@
 ---
 title: "Final project"
-date: "2024-01-08"
-due_date: "2024-04-25"
-due_time: "11:59 PM"
-output:
-  blogdown::html_page:
-    toc: true
-menu:
-  assignment:
-    parent: Projects
-    weight: 3
-type: docs
-editor_options:
-  chunk_output_type: console
 ---
 
 <!-- Revised assignment 5-5-2022 -->
