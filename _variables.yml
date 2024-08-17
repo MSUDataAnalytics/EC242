@@ -11,29 +11,36 @@ meeting:
   
 names:
   instructor: "Prof. K"
-  TA: "TA Placeholder"
+  instructorfull: "Justin Kirkpatrick"
+  TA: "TA Zach Henley"
 
 officehours: 
   instructor: "Thursdays 2:45 (after class) till 4:00pm"
   instructorzoom: "[zoom](https://msu.zoom.us/j/92054231037?pwd=OiRKvESN4M8ZbvjVbV5J9hLye9AA7G.1)"
   instructoroffice: "Old Botany 105 (off W. Circle Ave)"
-  TA: "TA Office Hours TBA"
-  TAzoom: "[zoomlink](zoomlink)"
+  TA: "Fridays 9:30-11am"
+  TAzoom: "[zoomlink](https://msu.zoom.us/j/94642979973)"
 
 email:
   instructor: "[jkirk@msu.edu](mailto:jkirk@msu.edu)"  
-  TA: "[TBA@msu.edu](mailto: TA@msu.edu)"
+  TA: "[henleyza@msu.edu](mailto: henleyza@msu.edu)"
+  
+url:
+  instructor: "www.justinkirkpatrick.com"
   
 slack:
   link: "[Slack](ec242.slack.com)"
+  linkclean: "ec242.slack.com"
   invite: "[Join EC242 Slack](https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ)"
   # https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ Fall 2024 invite
 
 
 aboutme:
   instructor: "I am an environmental economist working primarily on household energy consumption and quantifying the environmental benefits of renewables and increased energy efficiency. I have taught versions of this course at MSU for around five years, and have worked extensively with R for around 15 years."
-  
 
+contactpolicy:
+  instructor: "For individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
+  
 blurbs:
   homeworkdue: "All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative."
   labtemplate: '[{{< fa file-arrow-down title="Download Assignment Template">}} Lab assignment template](/templates/EC242_Lab_Assignment_Template.Rmd)'
@@ -43,13 +50,22 @@ duedates:
   lab1:  "Monday, September 2nd, 11:59pm"
   lab2:  "Monday, September 9th, 11:59pm"
   lab3:  "Monday, September 16th, 11:59pm"
-  lab4:  "Monday, September 23st, 11:59pm"
+  lab4:  "Monday, September 23rd, 11:59pm"
   lab5:  "Monday, September 30th, 11:59pm"
   lab6:  "Monday, October 7th, 11:59pm"
+  project1: "Saturday October 12th, 11:59pm"
   lab7:  "Monday, October 14th, 11:59pm"
   lab8:  "Monday, October 21st, 11:59pm"
   lab9:  "Monday, October 28th, 11:59pm"
-  lab10: "Monday, November 4th, 11:59pm"
-  lab11: "Monday, November 11th, 11:59pm"
+  lab10: "Monday, November 4th, 11:59pm"   # I usually allow longer for this one - Mon Nov 11
+  lab11: "Monday, November 11th, 11:59pm"  # does not exist - bias vs variance
+  project2: "Saturday November 16, 11:59pm"
   lab12: "Monday, November 18th, 11:59pm"
-  lab13: "Monday, December 9th, 11:59pm"
+  lab13: "Monday, November 25th, 11:59pm"
+  lab14: "Monday, December 2nd, 11:59pm"
+  lab15: "Monday, December 9th, 11:59pm"
+  finalproject: "Thursday December 12th, 11:59pm"
+  
+  
+  
+  

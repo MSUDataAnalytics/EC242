@@ -3,7 +3,6 @@ project:
   render:
     - "*.qmd"
     - "!slides/"
-    - "!projects/"
     - "!templates/"
   output-dir: _docs
   resources:
@@ -20,6 +19,7 @@ execute:
   freeze: auto
   warning: false
   message: false
+  error: false
   
 
 website:
@@ -31,11 +31,12 @@ website:
     type: primary
     position: below-navbar
   search: 
-    # show-item-context: tree invalid for some reason?
+    show-item-context: tree
     location: navbar
     type: textbox
   navbar:
     logo: "/images/Spartan-Helmet_White.png"
+    # logo: "/images/plume.png"
     background: "#18453b"
     right:
       - href: syllabus.qmd
@@ -50,7 +51,7 @@ website:
       - href: resource/index.qmd
         text: "Resources"
       - icon: slack
-        href: https://ec242.slack.com
+        href: "{{< var slack.linkclean >}}"
   sidebar:
     - id: contents
       style: "docked"
@@ -69,13 +70,13 @@ website:
             - groupproject/project2.qmd
             - groupproject/final-project.qmd
       
-    
-    - id: main
-      title: "maintitle"
-      style: "docked"
-      search: false
-      contents:
-        - text: "Welcome"
+    # 
+    # - id: main
+    #   title: "maintitle"
+    #   style: "docked"
+    #   search: false
+    #   contents:
+    #     - text: "Welcome"
   
   page-navigation: false
 

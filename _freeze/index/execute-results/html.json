@@ -1,0 +1,17 @@
+{
+  "hash": "8658e213729025b24ac3da458f5d4505",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"EC242 - Social Science Data Analytics\"\nsubtitle: \"Placeholder for subtitle\"\ndetails: |\n  EC242 • {{< var semester >}}<br>Michigan State University<br>Department of Economics\nsidebar: false\ntoc: false\npage-layout: full\nformat: \n  html:\n    template-partials:\n      - html/home/title-block.html\n    code-fold: false\n    code-tools: false\neditor: source\ncourse-logo: images/plume.png\n---\n\n\n\n\n\n\n\n\n\n\n\n::::: {.home}\n\n:::: {.grid .course-details}\n\n::: {.g-col-12 .g-col-sm-6 .g-col-md-4}\n### Instructor\n\n- [{{< fa user >}}] [{{< var names.instructor >}}]({{< var url.instructor >}})\n- [{{< fa university >}}] {{< var officehours.instructoroffice >}}\n- [{{< fa envelope >}}] {{< var email.instructor >}}\n<!-- # - [{{< iconify ph butterfly-bold size=1.2em title='Bluesky' >}}] [Bluesky]({{< var instructor.bluesky >}}) -->\n<!-- # - [{{< iconify bi mastodon size=1.1em title='Mastodon' >}}] [Mastodon]({{< var instructor.mastodon >}}) -->\n\n:::\n\n::: {.g-col-12 .g-col-sm-6 .g-col-md-4}\n### Course details\n\n- [{{< fa calendar >}}] {{< var meeting.time >}}\n- [{{< fa location-dot >}}] {{< var meeting.location >}}\n:::\n\n::: {.g-col-12 .g-col-md-4 .contact-policy}\n### Contacting me\n\n- [{{< fa brands slack >}}] [Slack]({{< var slack.link >}})\n\n\n\n\n\n\n\n\n{{< var contactpolicy.instructor >}}\n\n\n\n\n\n\n\n\n\n\n\n\n\n:::\n\n::::\n\n\n\n\n\n\n\n\n::: {.cell}\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"hi\"\n```\n\n\n:::\n:::\n\n\n\n\n\n\n\n\n:::::",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

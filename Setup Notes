@@ -85,3 +85,6 @@ Yeti (bootstrap) css: https://github.com/thomaspark/bootswatch/blob/v5/dist/yeti
 ::: {.text-emphasis}
 asdf
 :::
+
+
+Andrew Heiss has a lot of custom scss in his site: https://github.com/andrewheiss/evalsp24.classes.andrewheiss.com/blob/main/html/custom.scss

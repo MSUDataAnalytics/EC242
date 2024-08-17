@@ -11,3 +11,80 @@ $primary:  $MSUgreen !default;
 
 
 
+
+/*-- scss:rules --*/
+
+// This is from Andrew Heiss
+
+// Home page stuff
+.title-block {
+  margin: 1em 0;
+  border-bottom: 3px solid $gray-200;
+  padding-bottom: 1em;
+}
+
+.course-details {
+  margin: 0 0 1em;
+  border-bottom: 3px solid $gray-200;
+  padding-bottom: 1em;
+}
+
+.course-details h3 {
+  margin-top: 0;
+}
+
+.course-title {
+  font-size: 3.5rem;
+  margin-top: 0;
+}
+
+.course-subtitle {
+  font-size: 1.7rem;
+}
+
+.course-meta {
+  font-size: 1.2rem;
+  color: $gray-600;
+}
+
+.course-details ul {
+  list-style-type: none;
+  margin-left: var(--fa-li-margin, 1.5em);  // Was originally 2.5
+  padding-left: 0;
+}
+
+.course-details ul > li {
+  position: relative;
+}
+
+.contact-policy p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.course-details-smaller li {
+  font-size: 1rem;
+}
+
+.course-details-smaller h3 {
+  font-size: 1.4rem;
+}
+
+
+
+
+
+// Make callout text and icon bigger
+.callout.callout-style-default {
+  > div.callout-header,
+  > .callout-body {
+    font-size: 1.1rem;
+  }
+
+  .callout-icon::before {
+    height: 1.2rem;
+    width: 1.2rem;
+    background-size: 1.2rem 1.2rem;
+  }
+}
+

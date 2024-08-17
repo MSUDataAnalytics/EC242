@@ -53,6 +53,7 @@ ul.task-list li input[type="checkbox"] {
     "/",
     "s"
   ],
+  "show-item-context": "tree",
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -72,7 +73,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -114,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Resources</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://ec242.slack.com"> <i class="bi bi-slack" role="img">
+    <a class="nav-link" href="ec242.slack.com"> <i class="bi bi-slack" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -124,171 +125,66 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">EC242 - Social Science Data Analytics</li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
   <div id="quarto-announcement" data-announcement-id="af5b26b66d85ed4921241b62b501b43f" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
 <p><strong>Alert</strong> - this site is still under construction</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
- <span class="menu-text">Welcome</span>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome!</a></li>
-  <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">EC242 - Social Science Data Analytics</h1>
+<div class="grid title-block">
+    <div class="course-details-title-block g-col-12 g-col-sm-8 order-2 order-sm-1 text-center text-sm-start">
+        <h1 class="course-title">
+            EC242 - Social Science Data Analytics
+        </h1>
+        <div class="course-subtitle">
+            <p>Placeholder for subtitle</p>
+        </div>
+        <div class="course-meta">
+            <p></p><p>EC242 • Fall 2024<br>Michigan State University<br>Department of Economics</p><p></p>
+        </div>
+    </div>
+    <div class="g-col-12 g-col-sm-4 order-1 order-sm-2">
+      <div class="grid" style="--bs-columns: 5;">
+        <div class="g-col-1 g-col-sm-0"></div>
+        <div class="g-col-3 g-col-sm-5"><img src="images/plume.png" class="img-fluid"></div>
+        <div class="g-col-1 g-col-sm-0"></div>
+      </div>
+    </div>
 </div>
 
 
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>Date: <strong>Date and time</strong></p>
-<p>Room: <strong>Location</strong></p>
-<p>Instructors: Instructor A, B, C</p>
-<hr>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-This workshop template
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This workshop template contains 4 pages:</p>
+<div class="home">
+<div class="grid course-details">
+<section id="instructor" class="level3 g-col-12 g-col-sm-6 g-col-md-4">
+<h3 class="anchored" data-anchor-id="instructor">Instructor</h3>
 <ul>
-<li><p>Home: <code>index.qmd</code> (this page)</p></li>
-<li><p>About: <code>about.qmd</code></p></li>
-</ul>
-<p>Two content pages</p>
-<ul>
-<li><p>Page without code: <code>part_1_prep.qmd</code></p></li>
-<li><p>Page with R code: <a href="part_2_eda.qmd"><code>part_2_eda.qmd</code></a></p></li>
-<li><p>And another: <a href=".\content/Week 00/00a.qmd"><code>content/Week 00/00a.qmd</code></a></p></li>
-</ul>
-<p>It is straightforward to add more content pages: you need to create a new <code>.qmd</code> file (or copy/paste the existing ones), then link the new page inside <code>_quarto.yml</code>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Homepage of your workshop
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This is the <strong>homepage</strong> <code>index.qmd</code> for your workshop, so ideally it should contain some key information such as <strong>time and place, instructors</strong> and information of the course/workshop.</p>
-<p>It should be easy to navigate.</p>
-</div>
-</div>
-<section id="welcome" class="level1">
-<h1>Welcome!</h1>
-<ul>
-<li>The goal of the workshop is to … (<em>insert your message</em>)</li>
-<li>For example, introduce kep concepts in machine learning, such as regularisation.</li>
-<li>Workshop material can be found in the workshop <a href="https://github.com">github repository</a>.</li>
-</ul>
-<section id="learning-objectives" class="level4">
-<h4 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h4>
-<p>At the end of the tutorial, participants will be able to</p>
-<ul>
-<li>understand key concepts for … (<em>insert your message</em>)</li>
-<li>For example, training machine learning models such as regularisation.</li>
-<li>another objective</li>
+<li><i class="fa-solid fa-user" aria-label="user"></i> <a href="www.justinkirkpatrick.com">Justin Kirkpatrick</a></li>
+<li><i class="fa-solid fa-university" aria-label="university"></i> Old Botany 105 (off W. Circle Ave)</li>
+<li><i class="fa-solid fa-envelope" aria-label="envelope"></i> <a href="mailto:jkirk@msu.edu">jkirk@msu.edu</a></li>
+<li><i class="fa-brands fa-slack" aria-label="slack"></i> <a href="ec242.slack.com">Slack</a></li>
 </ul>
 </section>
-<section id="pre-requisites" class="level4">
-<h4 class="anchored" data-anchor-id="pre-requisites">Pre-requisites</h4>
+<section id="course-details" class="level3 g-col-12 g-col-sm-6 g-col-md-4">
+<h3 class="anchored" data-anchor-id="course-details">Course details</h3>
 <ul>
-<li>Basic familiarity with R</li>
-<li>Some other knowledge</li>
+<li><i class="fa-solid fa-calendar" aria-label="calendar"></i> Tu/Th 1:20 - 2:40pm</li>
+<li><i class="fa-solid fa-location-dot" aria-label="location-dot"></i> NatSci 116</li>
 </ul>
 </section>
+<section id="contacting-me" class="level3 g-col-12 g-col-md-4 contact-policy">
+<h3 class="anchored" data-anchor-id="contacting-me">Contacting me</h3>
+<p>For individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours.</p>
 </section>
-<section id="schedule" class="level1">
-<h1>Schedule</h1>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tabular schedule
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>It can be useful to include a tabular schedule with links.</p>
-</div>
-</div>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: center;">Time</th>
-<th style="text-align: center;">Topic</th>
-<th style="text-align: center;">Presenter</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">9:00 - 10:30</td>
-<td style="text-align: center;"><a href="part_1_prep.qmd">Session 1: Preparation</a></td>
-<td style="text-align: center;">Instructor A</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">10:45 - 12:00</td>
-<td style="text-align: center;"><a href="part_2_eda.qmd">Session 2: Exploratory Analysis</a></td>
-<td style="text-align: center;">Instructor B, C</td>
-</tr>
-</tbody>
-</table>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -157,7 +157,7 @@ assignments <- tribble(
   ~Points,  ~Assignment,
   25      , "Class Participation",
   12 * 8 , "Weekly Writings (14-2 x 8 ea), drop two lowest",
-  12 * 15 , "Labs (13-1 x 15 ea), drop one lowest",
+  13 * 15 , "Labs (14-1 x 15 ea), drop one lowest",
   50      , "Mini project 1",
   50      , "Mini project 2",
   135     , "Final project"
