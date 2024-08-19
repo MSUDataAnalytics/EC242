@@ -39,11 +39,11 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 - How do you index specific elements of a vector? Why might you want to do that?
 
 
-# A Brief Introduction to SSC442
+# A Brief Introduction to EC242
 
 ### About Me
 
-**Me:** My primary area of expertise is economics. In brief, I am a behavioral economist whose research examines how cognitive biases and erroneous social beliefs influence decision-making and our interactions with others. In my research, I utilize a mix of theoretical modeling and experimental studies. These approaches guide the work in the Spartan Psychology and Economics Advanced Research (SPEAR) lab, which I formed in 2023. My teaching emphasizes how psychological factors shape economic choices (EC404; EC895) and the importance of rigorous empirical methods (SSC442). 
+**Me:** My primary area of expertise is economics. In brief, I am a behavioral economist whose research examines how cognitive biases and erroneous social beliefs influence decision-making and our interactions with others. In my research, I utilize a mix of theoretical modeling and experimental studies. These approaches guide the work in the Spartan Psychology and Economics Advanced Research (SPEAR) lab, which I formed in 2023. My teaching emphasizes how psychological factors shape economic choices (EC404; EC895) and the importance of rigorous empirical methods (EC242). 
 
 While my research occasionally touches the topics in the course, it mostly utilizes tools and techniques from this course as tools.
 
@@ -121,7 +121,7 @@ Do your weekly writing due **Saturday**. Begin working on Lab 0 as it is due Mon
 Keys from the [syllabus](/syllabus/):
 
 - E-mail isn't the ideal solution for technical problems
-  - If you do send an email, please start it with `[SSC442]` and the subject.
+  - If you do send an email, please start it with `[EC242]` and the subject.
 - No appointments necessary for regularly scheduled office hours; or by appointment and via Slack
 - TA office hours are great as well. Our TA has experience in this course.
 - Notify me immediately if you need accommodations because of RCPD or religious convictions; If you approach me at the last minute, I may not be able to help.

@@ -42,8 +42,7 @@ website:
       - href: syllabus.qmd
         text: Syllabus
       - href: schedule.qmd
-        text: Schedule        
-        icon: calendar
+        text: Schedule
       - href: content/index.qmd
         text: "Course Content"
       - href: assignment/index.qmd

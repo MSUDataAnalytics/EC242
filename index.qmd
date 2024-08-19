@@ -1,8 +1,8 @@
 ---
-title: "EC242 - Social Science Data Analytics"
-subtitle: "Placeholder for subtitle"
+title: "Social Science Data Analytics"
+subtitle: "EC242 - {{< var semester >}}"
 details: |
-  EC242 • {{< var semester >}}<br>Michigan State University<br>Department of Economics
+   {{< var meeting.time >}}<br>{{< var meeting.location >}}<br>Michigan State University<br>Department of Economics
 sidebar: false
 toc: false
 page-layout: full

@@ -5,6 +5,7 @@ version: 1.0
 
 semester: "Fall 2024"
 
+
 meeting:
   time: "Tu/Th 1:20 - 2:40pm"
   location: "NatSci 116"
@@ -29,8 +30,8 @@ url:
   instructor: "www.justinkirkpatrick.com"
   
 slack:
-  link: "[Slack](ec242.slack.com)"
-  linkclean: "ec242.slack.com"
+  link: "[Slack](https://ec242.slack.com)"
+  linkclean: "https://ec242.slack.com"
   invite: "[Join EC242 Slack](https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ)"
   # https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ Fall 2024 invite
 
