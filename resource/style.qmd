@@ -1,14 +1,6 @@
 ---
 title: R style suggestions 
-menu:
-  resource:
-    parent: Guides
-    weight: 3
-type: docs
-weight: 3
-output:
-  blogdown::html_page:
-      toc: TRUE
+sidebar: resources
 ---
 
 ## R style conventions

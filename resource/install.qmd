@@ -1,14 +1,6 @@
 ---
 title: Installing R, RStudio (Posit), tidyverse, and tinytex
-date: "2023-08-28"
-menu:
-  resource:
-    parent: Guides
-type: docs
-weight: 1
-output:
-  blogdown::html_page:
-      toc: TRUE
+sidebar: resources
 ---
 
 
@@ -40,6 +32,7 @@ include_graphics(here('images','install-r-links.png'), error = FALSE)
   - If you use macOS, scroll down to the first `.pkg` file in the list of files. In this picture, it's `R-4.0.0.pkg`. R is constantly being updated so **choose the most recent one** and download it.
 
 
+
 ```{r, echo=FALSE, out.width="100%"}
 include_graphics(here('images','install-r-mac.png'), error = FALSE)
 ```
@@ -54,6 +47,15 @@ include_graphics(here("images","install-r-windows.png"), error = FALSE)
 3. Double click on the downloaded file (check your `Downloads` folder). Click yes through all the prompts to install like any other program.
 
 4. If you use macOS, [download and install XQuartz](https://www.xquartz.org/). You do not need to do this on Windows.
+
+
+
+::: {.callout-important}
+## Select the most recent release
+The pictures above are probably 2 years old now -- select the most recent versions of R and RStudio/Posit available in regular release. 
+:::
+
+
 
 
 ### Install RStudio/Posit
@@ -74,11 +76,6 @@ include_graphics(here("images","install-r-rstudio2.png"), error = FALSE)
 ```
 
 3. Double click on the downloaded file (again, check your `Downloads` folder). Click yes through all the prompts to install like any other program.
-
-::: {.callout-important}
-## Select the most recent release
-The pictures above are probably 1 year old now -- select the most recent versions of R and RStudio/Posit available in regular release. 
-:::
 
 Double click on RStudio to run it (check your applications folder or start menu).
 

@@ -34,8 +34,7 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 
 - How does this course work?
 - Do you remember anything about `R`?
-- What are the different data types in `R`?
-- How do you index specific elements of a vector? Why might you want to do that?
+- Do you have a working `R` installation on your computer, along with Rstudio and `tinytex`?
 
 
 
@@ -354,4 +353,6 @@ Before we get started with our example, we need to cover logistics as well as so
 
 ### The Pre-Basics
 
-We've now covered a short bit of material. The remainder of this first lecture will be covering setting up `R` and describing some common errors. For this, we'll head over to [resources](/resource/) to install R and RStudio. If you leave class without a working installation of these pieces of software, then you are likely to run into trouble in completing your first assignments.
+We've now covered a short bit of material. The remainder of this first lecture will be covering setting up `R` and describing some common errors. For this, we'll head over to [resources](/resource/) to install R, RStudio, and `tinytex`. 
+
+If you leave class without a working installation of these pieces of software, then you are likely to run into trouble in completing your first assignments.

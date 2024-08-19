@@ -1,13 +1,6 @@
 ---
 title: Visualization
-menu:
-  resource:
-    parent: Guides
-type: docs
-weight: 2
-output:
-  blogdown::html_page:
-      toc: TRUE
+sidebar: resources
 ---
 
 
@@ -22,13 +15,13 @@ First, we load the libraries and data we'll be using. We loaded the Atlanta weat
 ```{r load-libraries, message=FALSE, warning=FALSE, eval = F}
 library(tidyverse)  # For ggplot, dplyr, and friends
 library(patchwork)  # For combining ggplot plots
-weather_atl <- read_csv("data/atl-weather-2019.csv")
+weather_atl <- read_csv("/data/atl-weather-2019.csv")
 ```
 
 ```{r load-data-real, include=FALSE, message=FALSE}
 library(tidyverse)
 library(patchwork)
-weather_atl <- read_csv(here::here("static", "data", "atl-weather-2019.csv"))
+weather_atl <- read_csv(here::here("data", "atl-weather-2019.csv"))
 ```
 ```
 

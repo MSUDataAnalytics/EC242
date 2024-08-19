@@ -1,5 +1,6 @@
 ---
 title: Helpful resources
+sidebar: resources
 ---
 
 In these reference pages, I've included some useful resources to help you in the course.

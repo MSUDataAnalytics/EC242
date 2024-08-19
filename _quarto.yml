@@ -73,9 +73,22 @@ website:
       style: "docked"
       search: true
       contents: 
-        - section: "Installing R"
+        - section: "Getting Started in R"
           contents:
             - resource/install.qmd
+            - resource/RstudioCloud.qmd
+            - resource/style.qmd
+        - section: "Markdown"
+          contents:
+            - resource/markdown.qmd
+            - resource/rmarkdown.qmd
+        - section: "Other Useful Stuff"
+          contents: 
+            - resource/data.qmd
+            - resource/spatial.qmd
+            - resource/unzipping.qmd
+            - resource/visualization.qmd
+            - resource/design.qmd
       
     # 
     # - id: main

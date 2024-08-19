@@ -57,21 +57,6 @@ The mechanics of implementation, whether it be programming languages or learning
 
 Perhaps most importantly, this course is an attempt to push undergraduate education toward the frontiers in social science. Accordingly, please allow some messiness. Some topics may be underdeveloped for a given person’s passions, but given the wide variety of technical skills and overall interests, this is a near certainty. Both the challenge and opportunity of this area comes from the fact that there is no fully developed, wholly unifying framework. Our collective struggle---me from teaching, you from learning---will ultimately bear fruit.
 
-### Success in this Course
-
-I *promise*, you are equipped to succeed in this course. It will provide two challenges: the conceptual challenge of understanding and linking statistical theory to social science problems; and the implementation challenge of learning to program in `R`.
-
-Learning `R` can be difficult at first. Like learning a new language---Spanish, French, or Chinese---it takes dedication and perseverance. Hadley Wickham (the chief data scientist at RStudio and the author of some amazing R packages you'll be using like) **ggplot2**—[made this wise observation](https://r-posts.com/advice-to-young-and-old-programmers-a-conversation-with-hadley-wickham/):
-
-> It's easy when you start out programming to get really frustrated and think, "Oh it's me, I'm really stupid," or, "I'm not made out to program." But, that is absolutely not the case. Everyone gets frustrated. I still get frustrated occasionally when writing R code. It's just a natural part of programming. So, it happens to everyone and gets less and less over time. Don't blame yourself. Just take a break, do something fun, and then come back and try again later.
-
-Even experienced programmers (like me) find themselves bashing their heads against seemingly intractable errors.^[By the end of the course, you will realize that 1) I make many many many errors; 2) that I frequently cannot remember a command or the correct syntax; and 3) that none of this matters too much in the big picture because I know the broad approaches I'm trying to take and I know how to Google stuff. Learn from my idiocy.] If you're finding yourself bashing your head against a wall and not making progress, try the following. First, take a break. Sometimes you just need space to see an error. Next, talk to classmates. Finally, if you genuinely cannot see the solution, e-mail the TA. But, honestly, it's probably just a typo.
-
-```{r echo=FALSE, out.width="60%"}
-# https://twitter.com/allison_horst/status/1213275783675822080
-knitr::include_graphics(here('images','hosrt_error_tweet.png'), error = FALSE)
-```
-
 
 
 
@@ -257,6 +242,10 @@ Grading: **come to class.**
 ...of course, failing to turn in assignments can lead to a grade dramatically **lower** than just a 3.0.
 
 
+### Grading Appeals
+
+All grades are considered final. Any request for a re-grade beyond simple point-tallying mistakes will require that the entire assignment be re-graded. Any points previously awarded may be changed in either direction in the re-grade.
+
 ### Class Participation
 
 <!-- Participation can take many forms in an online synchronous course. Most preferred is active participation during class using the Zoom chat and hand-raising with camera and mic on. However, I know that myriad reasons may preclude you from this participation. The bare minimum can best be described as “showing your presence and having some engagement” – questions typed in chat and questions posed after class count towards participation. To encourage some form of participation, I will often pose questions to the class. I am not above bribery - your response to these extra credit questions will earn extra credit points, up to 5, for participation. Thus, you can easily pad your score by (1) meeting the minimum participation requirements such that I know you are present, and (2) earning extra credit by responding (through chat or mic, with or without video) to in-class extra credit prompts. I will clearly state which questions are extra credit. Wrong answers get the same credit as right answers. We are here to learn. If you knew everything already, you wouldn’t be in the class. -->
@@ -265,6 +254,25 @@ Participation can take many forms. Most preferred is active participation during
 
 We are a sizable class, so participation points will be awarded using EC slips which you will be able to turn into me (with your name on it) at the end of class. That way, I don't slow down the class trying to write down everyone's names.
 
+
+### Success in this Course
+
+I *promise*, you are equipped to succeed in this course. It will provide two challenges: the conceptual challenge of understanding and linking statistical theory to social science problems; and the implementation challenge of learning to program in `R`.
+
+Learning `R` can be difficult at first. Like learning a new language---Spanish, French, or Chinese---it takes dedication and perseverance. Hadley Wickham (the chief data scientist at RStudio and the author of some amazing R packages you'll be using like) **ggplot2**—[made this wise observation](https://r-posts.com/advice-to-young-and-old-programmers-a-conversation-with-hadley-wickham/):
+
+> It's easy when you start out programming to get really frustrated and think, "Oh it's me, I'm really stupid," or, "I'm not made out to program." But, that is absolutely not the case. Everyone gets frustrated. I still get frustrated occasionally when writing R code. It's just a natural part of programming. So, it happens to everyone and gets less and less over time. Don't blame yourself. Just take a break, do something fun, and then come back and try again later.
+
+Even experienced programmers (like me) find themselves bashing their heads against seemingly intractable errors.^[By the end of the course, you will realize that 1) I make many many many errors; 2) that I frequently cannot remember a command or the correct syntax; and 3) that none of this matters too much in the big picture because I know the broad approaches I'm trying to take and I know how to Google stuff. Learn from my idiocy.] If you're finding yourself bashing your head against a wall and not making progress, try the following. First, take a break. Sometimes you just need space to see an error. Next, talk to classmates. Finally, if you genuinely cannot see the solution, e-mail the TA. But, honestly, it's probably just a typo.
+
+```{r echo=FALSE, out.width="60%"}
+knitr::include_graphics(here('images','gator_error.jpg'), error=F)
+```      
+
+```{r echo=FALSE, out.width="60%"}
+# https://twitter.com/allison_horst/status/1213275783675822080
+knitr::include_graphics(here('images','hosrt_error_tweet.png'), error = FALSE)
+```
 
 
 ### Academic honesty
@@ -277,13 +285,6 @@ Generative AI is both a computing resource and potential avenue for cheating in 
 -	For the purposes of learning `R` coding, data cleaning and processing, visualization, and other coding applications of R, you are fully permitted to use ChatGPT or other generative AI models provided you indicate such a use at the top of your problem set, and include a comment `#Used Generative AI` in your code. When “stuck” on coding, I have always encouraged students to use Stack Overflow to find similar problems and then translate the found solutions into the problem at hand. It is one of the most important skills in coding. Generative AI facilitates this process, and thus is a tool. Since `R` itself is a tool to help you learn and apply the material, I view using generative AI for help in specific coding tasks as a suitable use. You must, in all cases, understand what your code is doing, and be able to justify its use. If you cannot tell me, on review, what a line of code is used for, then you have not used generative AI properly.
 
 
-### Grading
-
-All grades are considered final. Any request for a re-grade beyond simple point-tallying mistakes will require that the entire assignment be re-graded. Any points previously awarded may be changed in either direction in the re-grade.
-
-## Resources
-
-Mental health concerns or stressful events may lead to diminished academic performance or reduce a student's ability to participate in daily activities. Services are available to assist you with addressing these and other concerns you may be experiencing. You can learn more about the broad range of confidential mental health services available on campus via the Counseling & Psychiatric Services (CAPS) website at www.caps.msu.edu.
 
 ## Accommodations
 
@@ -292,9 +293,14 @@ If you need a special accommodation for a disability, religious observance, or h
 Michigan State University is committed to providing equal opportunity for participation in all programs, services and activities. Requests for accommodations by persons with disabilities may be made by contacting the Resource Center for Persons with Disabilities at 517-884-RCPD or on the web at rcpd.msu.edu. Once your eligibility for an accommodation has been determined, you will be issued a verified individual services accommodation (“VISA”) form. Please present this form to me at the start of the term and/or two weeks prior to the accommodation date (test, project, etc). Requests received after this date will be honored whenever possible.
 
 
+## Resources
+
+Mental health concerns or stressful events may lead to diminished academic performance or reduce a student's ability to participate in daily activities. Services are available to assist you with addressing these and other concerns you may be experiencing. You can learn more about the broad range of confidential mental health services available on campus via the Counseling & Psychiatric Services (CAPS) website at www.caps.msu.edu.
+
+
 ## Mandated Reporting
 
-Essays, journals, and other materials submitted for this class are generally considered confidential pursuant to the University's student record policies.  However, students should be aware that University employees, including instructors, may not be able to maintain confidentiality when it conflicts with their responsibility to report certain issues to protect the health and safety of MSU community members and others.  As the instructor, I must report the following information to other University offices (including the Department of Police and Public Safety) if you share it with me:
+Writings, labs, and projects, and other materials submitted for this class are generally considered confidential pursuant to the University's student record policies.  However, students should be aware that University employees, including instructors, may not be able to maintain confidentiality when it conflicts with their responsibility to report certain issues to protect the health and safety of MSU community members and others.  As the instructor, I must report the following information to other University offices (including the Department of Police and Public Safety) if you share it with me:
 •	Suspected child abuse/neglect, even if this maltreatment happened when you were a child;
 •	Allegations of sexual assault, relationship violence, stalking, or sexual harassment; and
 •	Credible threats of harm to oneself or to others.
@@ -302,7 +308,7 @@ These reports may trigger contact from a campus official who will want to talk w
 
 ## Acknowledgements
 
-This course structure and content has been improved greatly by Professor Kirkpatrick. All remaining errors are my own.
+This course structure and content has been improved greatly by {{< var names.instructorother >}}. All remaining errors are my own.
 
 ## Miscellanea
 

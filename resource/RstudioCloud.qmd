@@ -1,14 +1,6 @@
 ---
 title: Using Posit (Rstudio) Cloud
-menu:
-  resource:
-    parent: Guides
-    weight: 1
-type: docs
-weight: 1
-output:
-  blogdown::html_page:
-      toc: TRUE
+sidebar: resources
 ---
 
 
@@ -28,11 +20,11 @@ Both Rstudio.cloud and Posit.cloud take you to the same site -- posit.cloud. RSt
 
 1. Start by going to [Posit.cloud](https://posit.cloud) and create a free account.
 2. Click "Your Workspace"
-3. In the top right corner, click on "New Project" and name it something like "SSC442"
+3. In the top right corner, click on "New Project" and name it something like "EC242"
 
 
 ```{r, echo=FALSE, out.width="80%"}
-knitr::include_graphics(here('content','resource','RSC1.png'))
+knitr::include_graphics(here('images','RSC1.png'))
 ```
 
 4. The "Files" tab in the lower-right pane shows your cloud project storage space. Let's add a `templates` folder and store the two course assignment templates there.
@@ -47,7 +39,7 @@ knitr::include_graphics(here('content','resource','RSC1.png'))
 
 
 ```{r, echo=FALSE, out.width="80%"}
-knitr::include_graphics(here('content','resource','RSC3.png'))
+knitr::include_graphics(here('images','RSC3.png'))
 ```
 
 8. After R finishes installing packages (less than a minute), click the "Knit" button on the toolbar.
@@ -55,14 +47,14 @@ knitr::include_graphics(here('content','resource','RSC3.png'))
 
 
 ```{r, echo=FALSE, out.width="80%"}
-knitr::include_graphics(here('content','resource','RSC4.png'))
+knitr::include_graphics(here('images','RSC4.png'))
 ```
 
 10. A pop-up window will open showing you the PDF of the rendered template. Congrats, you are ready to get to work!
 
 
 ```{r, echo=FALSE, out.width="80%"}
-knitr::include_graphics(here('content','resource','RSC5.png'))
+knitr::include_graphics(here('images','RSC5.png'))
 ```
 
 
