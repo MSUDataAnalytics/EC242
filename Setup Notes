@@ -55,12 +55,14 @@ Right now, Assignments page has both lab and projects in sidebar (built in _quar
 ## Callouts and CSS/SCSS
 An example can be found on the quarto website under "callouts" - to use one of the built-in ones, use 
     
-    ::: {.callout-tips/warning/...}
-    # The header title in the callout box taken fromt he first header in the code block
+    ::: {.callout-tips/warning/... title="Can put it here but use double-quotes only"}
+    # Or here - The header title in the callout box taken fromt he first header in the code block
     The text in the box
     :::
 
 You can change some things on the callouts: https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/language/_language.yml, but I haven't yet figured out how to make a new one (I'd like a "try it!" callout format). But maybe just change callout-tip? or callout-note?
+
+Keep callout-warning and callout-important and callout-tip, but change callout-note to "try-it" and callout-caution to "do-it".
 
 
 

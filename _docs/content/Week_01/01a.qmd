@@ -1,6 +1,5 @@
 ---
 title: "Welcome Back to R"
-linktitle: "1: Intro to Data Analytics"
 read_date: "2024-01-09"
 lastmod: "`r Sys.Date()`" 
 menu:
@@ -23,9 +22,9 @@ library(tidyverse)
 
 ## Readings  
 
-As noted in the syllabus, your readings will be assigned each week in this area. For this initial week, please read the course content. **Read closely** the following:
+Your readings will be assigned each week in this area. For this initial week, please read the course content for this week. **Read closely** the following:
 
-- The [syllabus](/syllabus/), [content](/content/), [examples](/example/), and [labs](/lab/) pages for this class.
+- The [syllabus](/syllabus/), [content](/content/), and [lab assignment](/assignment/) pages for this class.
 - This page. Yes, the whole thing.  
 
 
@@ -39,70 +38,11 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 - How do you index specific elements of a vector? Why might you want to do that?
 
 
-# A Brief Introduction to EC242
-
-### About Me
-
-**Me:** My primary area of expertise is economics. In brief, I am a behavioral economist whose research examines how cognitive biases and erroneous social beliefs influence decision-making and our interactions with others. In my research, I utilize a mix of theoretical modeling and experimental studies. These approaches guide the work in the Spartan Psychology and Economics Advanced Research (SPEAR) lab, which I formed in 2023. My teaching emphasizes how psychological factors shape economic choices (EC404; EC895) and the importance of rigorous empirical methods (EC242). 
-
-While my research occasionally touches the topics in the course, it mostly utilizes tools and techniques from this course as tools.
-
-### This Course
-
-The syllabus is posted on the course website. I'll walk through highlights now, but read it later -- it's long.
-
-- But eventually, please read it. It is required.
-
-Syllabus highlights:
-
-This class is totally, unapologetically a work in progress. Material is a mish-mash of stuff from courses offered at Caltech, Stanford, Harvard, and Duke...so, yeah, it will be challenging. Hopefully, you'll find it fun! Because this is an ever-evolving field, there may be more hiccups than you might otherwise expect: 
-
-- Some of the lectures will be too long or too short.
-
-- Some of the lectures won't make sense at first
-
-- Some of the time I'll forget what I intended to say and awkwardly stare at you for a few moments (sorry).
-
-I promise to improve the course with feedback, so if you have comments please speak up. 
-
-- Your grade is composed of weekly writings, labs, and projects (see syllabus page for exact points)
-  - Weekly writings: 19\%
-  - Participation: 4\%
-  - Labs: 32\%
-  - Projects: 45\%
-
-- This structure is designed to give ~55\% "for free". Success on the projects will require real work.
-- Labs consist of a practical implementation of something we've covered in the course (e.g., code your own Recommender System).
 
 
-#### Course Structure
-Here's how each week will work: before class on Tuesday, you'll read the [content](/content/) for the week. On Tuesday, you'll come to lecture. Before Thursday, you'll read the [example](/example/) for the week, and on Thursday you'll come to lecture ready to participate with a charged laptop. On Saturday night by 11:59pm, you'll turn in your [Weekly Writing assignment](/assignment/#weekly-writings) responding to the weekly writing prompt **given during class on Tuesday or Thursday**, rendered to PDF by RMarkdown and using the proper template (see [assignments](/assignment)). By Monday at 11:59pm, you'll turn in your [Lab assignment](/assignment/#labs), also using the RMarkdown template. 
 
-You'll repeat this each week until we're out of labs. If a holiday occurs on a due date, then the assignment or lab is due the next non-holiday day at 11:59pm or as otherwise noted. You'll also work with your assigned group on the Group Project. We'll assign groups after the drop deadline has passed.
 
-Now, let's look at [the Syllabus for important information about office hours](/syllabus/#course-times-and-zoom-links)
-
-#### Grading
-
-Grading: **come to class.**
-
-**If** you complete all assignments and attend all class dates, I suspect you will do very well. Given the way the syllabus is structured, I conjecture that the following is a loose guide to grades:
-
-`4.0` Turned in all assignments with good effort, worked hard on the projects and was proud of final product.
-
-`3.5` Turned in all assignments with good effort, worked a bit on the projects and was indifferent to final product.
-
-`3.0` Turned in all assignments with some effort, worked a bit on the projects and was shy about final product.
-
-`< 3.0` Very little effort, or did not turn in all assignments, worked very little on the projects and was embarassed by final product.
-
-...of course, failing to turn in assignments can lead to a grade dramatically **lower** than just a 3.0.
-
-### More About This Course
-
-There are sort of two texts for this course and sort of zero.
-
-The "main text" is this website. The secondary text is Introduction to Statistical Learning (see [Syllabus](/syllabus/#course-materials)), which is free and available online. The secondary text is substantially more difficult, but also free online. Assigned readings can be found on the course website under "Content".
+### Before we get started....
 
 **Please please please please please:** ask questions during class.
 
@@ -113,6 +53,8 @@ The "main text" is this website. The secondary text is Introduction to Statistic
 - **Note:** If I find that attendance is terrible, I may have to start incorporating attendance into participation.
 
 I encourage measured feedback and thoughtful responses to questions. If I call on you and you don't know immediately, don't freak out. If you don't know, it's totally okay to say you don't know.
+
+
 
 ### Things To Remember (tl;dr)
 
@@ -131,11 +73,9 @@ Despite my hard-assness in these introductory notes: I'm here to help and I am n
 
 # What is "Data Analytics"?
 
-
 > I keep saying that the sexy job in the next 10 years will be statisticians. And I'm not kidding.
 
 #### Hal Varian, Chief Economist, Google
-
 
 How do **you** define "data analytics"?  (Not a rhetorical question!)
 
@@ -314,7 +254,7 @@ dat %>%
         axis.line.x = element_blank(),
         plot.margin = unit(c(1,1,1,1), "cm"))
 ```
-You might want to look into the underlying data (in this case, fabricated) and think about what to do next. In this sense, you have *learned from data*. 
+You might want to look into the underlying data (in this case, fabricated) and think about what to do next. In this sense, you have *learned from data*. The data provides directions for exploration and clues as to potential explanations.
 
 ##  Case study 2: US homicides by firearm
 
@@ -414,4 +354,4 @@ Before we get started with our example, we need to cover logistics as well as so
 
 ### The Pre-Basics
 
-We've now covered a short bit of material. The remainder of this first lecture will be covering setting up `R` and describing some common errors. 
+We've now covered a short bit of material. The remainder of this first lecture will be covering setting up `R` and describing some common errors. For this, we'll head over to [resources](/resource/) to install R and RStudio. If you leave class without a working installation of these pieces of software, then you are likely to run into trouble in completing your first assignments.

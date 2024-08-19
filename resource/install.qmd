@@ -34,21 +34,21 @@ First you need to install `R` itself (the engine).
 2. Click on "Download `R` for `XXX`", where `XXX` is either Mac or Windows:
 
 ```{r, echo=FALSE, out.width="60%"}
-include_graphics("/img/install/install-r-links.png", error = FALSE)
+include_graphics(here('images','install-r-links.png'), error = FALSE)
 ```
 
   - If you use macOS, scroll down to the first `.pkg` file in the list of files. In this picture, it's `R-4.0.0.pkg`. R is constantly being updated so **choose the most recent one** and download it.
 
 
 ```{r, echo=FALSE, out.width="100%"}
-include_graphics("/img/install/install-r-mac.png", error = FALSE)
+include_graphics(here('images','install-r-mac.png'), error = FALSE)
 ```
 
   - If you use Windows, click "base" (or click on the bolded "install R for the first time" link) and download it.
 
 
 ```{r, echo=FALSE, out.width="100%"}
-include_graphics("/img/install/install-r-windows.png", error = FALSE)
+include_graphics(here("images","install-r-windows.png"), error = FALSE)
 ```
 
 3. Double click on the downloaded file (check your `Downloads` folder). Click yes through all the prompts to install like any other program.
@@ -64,16 +64,21 @@ Next, you need to install the most recent version of RStudio, the nicer graphica
 2. The website should automatically detect your operating system (macOS or Windows) and show a big download button for it:
 
 ```{r, echo=FALSE, out.width="50%"}
-include_graphics("/img/install/install-r-rstudio1.png", error = FALSE)
+include_graphics(here("images","install-r-rstudio1.png"), error = FALSE)
 ```
 
 If not, scroll down a little to the large table and choose the newest version of RStudio that matches your operating system (this picture will be out of date quickly; choose the most recent version available)
 
 ```{r, echo=FALSE, out.width="100%"}
-include_graphics("/img/install/install-r-rstudio2.png", error = FALSE)
+include_graphics(here("images","install-r-rstudio2.png"), error = FALSE)
 ```
 
 3. Double click on the downloaded file (again, check your `Downloads` folder). Click yes through all the prompts to install like any other program.
+
+::: {.callout-important}
+## Select the most recent release
+The pictures above are probably 1 year old now -- select the most recent versions of R and RStudio/Posit available in regular release. 
+:::
 
 Double click on RStudio to run it (check your applications folder or start menu).
 
@@ -83,7 +88,7 @@ Double click on RStudio to run it (check your applications folder or start menu)
 `R` packages are easy to install with RStudio. Select the packages panel, click on "Install," type the name of the package you want to install, and press enter.
 
 ```{r, echo=FALSE, out.width="40%"}
-include_graphics("/img/install/install-r-package-panel.png", error = FALSE)
+include_graphics(here("images","install-r-package-panel.png"), error = FALSE)
 ```
 
 This can sometimes be tedious when you're installing lots of packages, though. [The tidyverse](https://www.tidyverse.org/), for instance, consists of dozens of packages (including the ever-present **ggplot2**) that all work together. Rather than install each individually, you can install a single magical package and get them all at the same time.
@@ -91,11 +96,15 @@ This can sometimes be tedious when you're installing lots of packages, though. [
 Go to the packages panel in RStudio, click on "Install," type "tidyverse", and press enter. You'll see a bunch of output in the RStudio console as all the tidyverse packages are installed.
 
 ```{r, echo=FALSE, out.width="60%"}
-include_graphics("/img/install/install-r-tidyverse.png", error = FALSE)
+include_graphics(here("images","install-r-tidyverse.png"), error = FALSE)
 ```
 
 Notice also that RStudio will generate a line of code for you and run it: `install.packages("tidyverse")`. You can also just paste and run this instead of using the packages panel. Hopefully you've experienced installing packages before now; if not, consider this a crash course!
 
+::: {.callout-important}
+## Only install a package once
+You only need to use `install.packages()` *once* on your computer, direclty into the console. To call up an installed package, you'll use `library()` instead. You can end up with some strange errors if you add `install.packages()` to your R code.
+:::
 
 ### Install `tinytex`
 
@@ -113,7 +122,7 @@ Here's how to install **tinytex** so you can knit to pretty PDFs:
 Find the course assignment template (for SSC442, see the [Assignments](/assignment/) page), right-click to download it (don't just click on it - that won't work), open it in Rstudio, and without changing anything, click the "knit" button to test out your install. Your system should open a PDF that looks like something like this:
 
 ```{r,echo = FALSE}
-knitr::include_graphics("/img/install/RenderedPDF.png", error = FALSE)
+knitr::include_graphics(here("images","RenderedPDF.png"), error = FALSE)
 ```
 
 See the Markdown and R Markdown sidebars for instructions on using the template.
@@ -133,7 +142,7 @@ First, make sure you followed the steps above and that no errors happened along 
 While R does not usually give informative errors, one that can be easily diagnosed with the error is one that has the words "unicode error" in it. It will look something like this (note the `! LaTeX Error: Unicode character` part ):
 
 ```{r, echo=F}
-knitr::include_graphics("/img/install/Unicode.png", error = FALSE)
+knitr::include_graphics(here("images","Unicode.png"), error = FALSE)
 ```
 
 This error means you're trying to use a character that LaTeX (the engine that renders your PDF) isn't able to handle. In the above example, the issue is Unicode character `U+03B2`. If you google `Unicode U+03B2` you will learn that it is the greek letter beta. 
@@ -151,7 +160,7 @@ Two possibilities:
 - **An easy fix** for issue #1 is to replace the line in the course assignment template that uses the system date with the date written out. The header pictured below sets up all the information RMarkdown needs to give to LaTeX. The date YAML header here is asking R to run the command `format(...)` and use whatever is returned as the date, and in this case, it's returning characters that LaTeX can't process. To fix, replace everything inside the quotes with the date, written out: "January 1, 2024". Take out the backticks and the letter `r`, but keep the outside double-quotes. You'll have to manually write the date on your assignments like it's 2005. 
   
 ```{r, echo=F}
-knitr::include_graphics("/img/install/UnicodeFix.png", error = FALSE)
+knitr::include_graphics(here("images","UnicodeFix.png"), error = FALSE)
 ```
 
 - **An easy fix** for issue #2 is to take out the offending character. If you want to use greek letters, LaTeX has it's own method for that: `$\beta$` will render to a greek letter beta. Most greek letters can be typeset this way (with the backslash and everything).
@@ -162,7 +171,7 @@ knitr::include_graphics("/img/install/UnicodeFix.png", error = FALSE)
 Looks like this: 
 
 ```{r, echo=F}
-knitr::include_graphics("/img/install/TexCapacityExceeded.png", error = FALSE)
+knitr::include_graphics(here("images","TexCapacityExceeded.png"), error = FALSE)
 ```
 
 **Why did it happen**
@@ -177,7 +186,7 @@ You might have been working with some data (in a `data.frame` called `myDataFram
 
 **How do I fix it?**
 
-Find the line in your code (not in the text, but in the code) and remove it.
+Find the line in your code (not in the text, but in the code) and remove it. 
 
 
 
@@ -188,7 +197,7 @@ Find the line in your code (not in the text, but in the code) and remove it.
 This error looks *something* like this:
 
 ```{r, echo=F}
-knitr::include_graphics("/img/install/MacPermissions.png", error=FALSE)
+knitr::include_graphics(here("images/MacPermissions.png"), error=FALSE)
 ```
 
 
@@ -201,13 +210,13 @@ The key here is that it says something about not having permission to write in `
 The error gives a link that tells you how to do it. It requires using `terminal` on your mac (hit command+space and type "terminal" to open the terminal). Then, follow the instructions at [the given link](https://github.com/rstudio/tinytex/issues/24). I have included screenshots of the information at the link below. Type these two lines in verbatim into the terminal (don't copy-paste):
 
 ```{r, echo=F}
-knitr::include_graphics("/img/install/FixMacPermissions1.png", error=FALSE)
+knitr::include_graphics(here("images","FixMacPermissions1.png"), error=FALSE)
 ```
 
 Also, if the error happened when you were trying to install `tinyTex`, then also do this step afterwards (also from the link):
 
 ```{r, echo=F}
-knitr::include_graphics("/img/install/FixMacPermissions2.png", error=FALSE)
+knitr::include_graphics(here("images","FixMacPermissions2.png"), error=FALSE)
 ```
 
 

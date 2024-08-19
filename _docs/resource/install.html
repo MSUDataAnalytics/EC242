@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-08-28">
+
+<title>Installing R, RStudio (Posit), tidyverse, and tinytex – EC242</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": "tree",
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/Spartan-Helmet_White.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">EC242</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../syllabus.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../schedule.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../content/index.html"> 
+<span class="menu-text">Course Content</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assignment/index.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../resource/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://ec242.slack.com"> <i class="bi bi-slack" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../resource/install.html">Installing R</a></li><li class="breadcrumb-item"><a href="../resource/install.html">Installing R, RStudio (Posit), tidyverse, and tinytex</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+  <div id="quarto-announcement" data-announcement-id="af5b26b66d85ed4921241b62b501b43f" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>Alert</strong> - this site is still under construction</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Installing R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../resource/install.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Installing R, RStudio (Posit), tidyverse, and tinytex</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#install-r" id="toc-install-r" class="nav-link active" data-scroll-target="#install-r">Install <code>R</code></a></li>
+  <li><a href="#install-rstudioposit" id="toc-install-rstudioposit" class="nav-link" data-scroll-target="#install-rstudioposit">Install RStudio/Posit</a></li>
+  <li><a href="#install-tidyverse" id="toc-install-tidyverse" class="nav-link" data-scroll-target="#install-tidyverse">Install <code>tidyverse</code></a></li>
+  <li><a href="#install-tinytex" id="toc-install-tinytex" class="nav-link" data-scroll-target="#install-tinytex">Install <code>tinytex</code></a></li>
+  <li><a href="#uh-oh-trouble-some-common-errors" id="toc-uh-oh-trouble-some-common-errors" class="nav-link" data-scroll-target="#uh-oh-trouble-some-common-errors">Uh-oh Trouble: Some common errors</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../resource/install.html">Installing R</a></li><li class="breadcrumb-item"><a href="../resource/install.html">Installing R, RStudio (Posit), tidyverse, and tinytex</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Installing R, RStudio (Posit), tidyverse, and tinytex</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 28, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>As mentioned in the syllabus, you will do all of your work in this class with the open source programming language <a href="https://cran.r-project.org/"><code>R</code></a>. You will use <a href="https://www.rstudio.com/">RStudio/Posit</a> as the main program to access <code>R</code>. Think of <code>R</code> as an engine and RStudio/Posit as a car dashboard—–<code>R</code> handles all the calculations and the actual statistics, while RStudio provides a nice interface for running <code>R</code> code.</p>
+<p>RStudio is in the process of rebranding as Posit. You’ll see both along the way.</p>
+<p>Hopefully you’re well-versed in dealing with these things, but if you’re lost, here’s how you install the required software for the course.</p>
+<section id="install-r" class="level3">
+<h3 class="anchored" data-anchor-id="install-r">Install <code>R</code></h3>
+<p>I have created a video walkthrough for installing R for another course, but it is useful here. You can <a href="https://mediaspace.msu.edu/media/R+Part+1/1_b8nafkzx">see it here <i class="fas fa-film"></i></a>]</p>
+<p>First you need to install <code>R</code> itself (the engine).</p>
+<ol type="1">
+<li>Go to the CRAN (Collective <code>R</code> Archive Network)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> website: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></li>
+<li>Click on “Download <code>R</code> for <code>XXX</code>”, where <code>XXX</code> is either Mac or Windows:</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/install-r-links.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>If you use macOS, scroll down to the first <code>.pkg</code> file in the list of files. In this picture, it’s <code>R-4.0.0.pkg</code>. R is constantly being updated so <strong>choose the most recent one</strong> and download it.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/install-r-mac.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>If you use Windows, click “base” (or click on the bolded “install R for the first time” link) and download it.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/install-r-windows.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="1">
+<li><p>Double click on the downloaded file (check your <code>Downloads</code> folder). Click yes through all the prompts to install like any other program.</p></li>
+<li><p>If you use macOS, <a href="https://www.xquartz.org/">download and install XQuartz</a>. You do not need to do this on Windows.</p></li>
+</ol>
+</section>
+<section id="install-rstudioposit" class="level3">
+<h3 class="anchored" data-anchor-id="install-rstudioposit">Install RStudio/Posit</h3>
+<p>Next, you need to install the most recent version of RStudio, the nicer graphical user interface (GUI) for <code>R</code> (the dashboard). Once <code>R</code> and RStudio/Posit are both installed, you can ignore <code>R</code> and only use RStudio. RStudio will use <code>R</code> automatically and you won’t ever have to interact with it directly.</p>
+<ol type="1">
+<li>Go to the free download location on RStudio’s website: <a href="https://www.rstudio.com/products/rstudio/download/#download" class="uri">https://www.rstudio.com/products/rstudio/download/#download</a></li>
+<li>The website should automatically detect your operating system (macOS or Windows) and show a big download button for it:</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/install-r-rstudio1.png" class="img-fluid figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If not, scroll down a little to the large table and choose the newest version of RStudio that matches your operating system (this picture will be out of date quickly; choose the most recent version available)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/install-r-rstudio2.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Double click on the downloaded file (again, check your <code>Downloads</code> folder). Click yes through all the prompts to install like any other program.</li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Select the most recent release
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The pictures above are probably 1 year old now – select the most recent versions of R and RStudio/Posit available in regular release.</p>
+</div>
+</div>
+<p>Double click on RStudio to run it (check your applications folder or start menu).</p>
+</section>
+<section id="install-tidyverse" class="level3">
+<h3 class="anchored" data-anchor-id="install-tidyverse">Install <code>tidyverse</code></h3>
+<p><code>R</code> packages are easy to install with RStudio. Select the packages panel, click on “Install,” type the name of the package you want to install, and press enter.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/install-r-package-panel.png" class="img-fluid figure-img" style="width:40.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This can sometimes be tedious when you’re installing lots of packages, though. <a href="https://www.tidyverse.org/">The tidyverse</a>, for instance, consists of dozens of packages (including the ever-present <strong>ggplot2</strong>) that all work together. Rather than install each individually, you can install a single magical package and get them all at the same time.</p>
+<p>Go to the packages panel in RStudio, click on “Install,” type “tidyverse”, and press enter. You’ll see a bunch of output in the RStudio console as all the tidyverse packages are installed.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/install-r-tidyverse.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice also that RStudio will generate a line of code for you and run it: <code>install.packages("tidyverse")</code>. You can also just paste and run this instead of using the packages panel. Hopefully you’ve experienced installing packages before now; if not, consider this a crash course!</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Only install a package once
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You only need to use <code>install.packages()</code> <em>once</em> on your computer, direclty into the console. To call up an installed package, you’ll use <code>library()</code> instead. You can end up with some strange errors if you add <code>install.packages()</code> to your R code.</p>
+</div>
+</div>
+</section>
+<section id="install-tinytex" class="level3">
+<h3 class="anchored" data-anchor-id="install-tinytex">Install <code>tinytex</code></h3>
+<p>When you knit to PDF, <code>R</code> uses a special scientific typesetting program named LaTeX.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>LaTeX is neat and makes pretty documents, but it’s a huge program—<a href="https://tug.org/mactex/mactex-download.html">the macOS version, for instance, is nearly 4 GB</a>. To make life easier, there’s <a href="https://yihui.org/tinytex/">an <code>R</code> package named <strong>tinytex</strong></a> that installs a minimal LaTeX program and that automatically deals with differences between macOS and Windows.</p>
+<p>Here’s how to install <strong>tinytex</strong> so you can knit to pretty PDFs:</p>
+<ol type="1">
+<li>Use the Packages in panel in RStudio to install <strong>tinytex</strong> like you did above with <strong>tidyverse</strong>. Alternatively, run <code>install.packages("tinytex")</code> in the console.</li>
+<li>Run <code>tinytex::install_tinytex()</code> in the console.</li>
+<li>Wait for a bit while <code>R</code> downloads and installs everything you need.</li>
+<li>The end! You should now be able to knit to PDF.</li>
+</ol>
+<p>Find the course assignment template (for SSC442, see the <a href="..\assignment/">Assignments</a> page), right-click to download it (don’t just click on it - that won’t work), open it in Rstudio, and without changing anything, click the “knit” button to test out your install. Your system should open a PDF that looks like something like this:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/RenderedPDF.png" class="img-fluid figure-img" width="962"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>See the Markdown and R Markdown sidebars for instructions on using the template.</p>
+</section>
+<section id="uh-oh-trouble-some-common-errors" class="level3">
+<h3 class="anchored" data-anchor-id="uh-oh-trouble-some-common-errors">Uh-oh Trouble: Some common errors</h3>
+<p>It’s not uncommon to have some issues when you first try to knit, and often they are easy to fix. Frustratingly, R does not give very informative errors, so troubleshooting is a bit of an art.</p>
+<p>First, make sure you followed the steps above and that no errors happened along the way. If your computer tells you that it failed to download something, then that’s the first thing to fix and not something related to R or R Studio. Now, assuming the previous steps all completed…</p>
+<section id="the-unicode-error" class="level4">
+<h4 class="anchored" data-anchor-id="the-unicode-error">The unicode error</h4>
+<p><strong>What is it?</strong></p>
+<p>While R does not usually give informative errors, one that can be easily diagnosed with the error is one that has the words “unicode error” in it. It will look something like this (note the <code>! LaTeX Error: Unicode character</code> part ):</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/Unicode.png" class="img-fluid figure-img" width="1019"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This error means you’re trying to use a character that LaTeX (the engine that renders your PDF) isn’t able to handle. In the above example, the issue is Unicode character <code>U+03B2</code>. If you google <code>Unicode U+03B2</code> you will learn that it is the greek letter beta.</p>
+<p><strong>Why did it happen?</strong></p>
+<p>Two possibilities:</p>
+<ol type="1">
+<li><p>If your computer’s system location is set such that it uses an Asian locale to set the format for your date (which is probably the case if your system date is displayed using non-arabic numerals), then the Unicode error is probably coming from this. You can check this by typing in the R Console <code>format(Sys.time(), '%d %B, %Y')</code>. If it returns non-arabic numerals, this is the issue.</p></li>
+<li><p>You copy-pasted an assignment question and in the text you copied, there was a greek letter or other character that LaTeX can’t handle.</p></li>
+</ol>
+<p><strong>How do I fix it?</strong></p>
+<ul>
+<li><strong>An easy fix</strong> for issue #1 is to replace the line in the course assignment template that uses the system date with the date written out. The header pictured below sets up all the information RMarkdown needs to give to LaTeX. The date YAML header here is asking R to run the command <code>format(...)</code> and use whatever is returned as the date, and in this case, it’s returning characters that LaTeX can’t process. To fix, replace everything inside the quotes with the date, written out: “January 1, 2024”. Take out the backticks and the letter <code>r</code>, but keep the outside double-quotes. You’ll have to manually write the date on your assignments like it’s 2005.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/UnicodeFix.png" class="img-fluid figure-img" width="494"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><strong>An easy fix</strong> for issue #2 is to take out the offending character. If you want to use greek letters, LaTeX has it’s own method for that: <code>$\beta$</code> will render to a greek letter beta. Most greek letters can be typeset this way (with the backslash and everything).</li>
+</ul>
+</section>
+<section id="the-tex-capacity-exceeded-error" class="level4">
+<h4 class="anchored" data-anchor-id="the-tex-capacity-exceeded-error">The Tex Capacity Exceeded error</h4>
+<p>Looks like this:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/TexCapacityExceeded.png" class="img-fluid figure-img" width="762"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Why did it happen</strong></p>
+<p>Somewhere in your code chunk in your .RMD, you have left a line that looks like this:</p>
+<pre><code>myDataFrame</code></pre>
+<p>You might have been working with some data (in a <code>data.frame</code> called <code>myDataFrame</code>) and left it alone on a line. When you put it alone on a line, R tries to print out the whole thing. When it’s a very large data.frame (many columns and many rows), then it spits out too much for LaTeX to handle, and you get this error.</p>
+<p><strong>How do I fix it?</strong></p>
+<p>Find the line in your code (not in the text, but in the code) and remove it.</p>
+</section>
+<section id="mac-permissions" class="level4">
+<h4 class="anchored" data-anchor-id="mac-permissions">Mac permissions</h4>
+<p>This error looks <em>something</em> like this:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/MacPermissions.png" class="img-fluid figure-img" width="336"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Why did it happen?</strong></p>
+<p>The key here is that it says something about not having permission to write in <code>usr/local/bin</code>. This means your mac somehow thinks it can’t write to the hard drive, or at least the folder that contains your R. It usually occurs when you’re trying to update packages, or install <code>tinyTex</code>.</p>
+<p><strong>How do I fix it</strong>?</p>
+<p>The error gives a link that tells you how to do it. It requires using <code>terminal</code> on your mac (hit command+space and type “terminal” to open the terminal). Then, follow the instructions at <a href="https://github.com/rstudio/tinytex/issues/24">the given link</a>. I have included screenshots of the information at the link below. Type these two lines in verbatim into the terminal (don’t copy-paste):</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/FixMacPermissions1.png" class="img-fluid figure-img" width="514"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Also, if the error happened when you were trying to install <code>tinyTex</code>, then also do this step afterwards (also from the link):</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../images/FixMacPermissions2.png" class="img-fluid figure-img" width="513"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="what-about-this-error." class="level4">
+<h4 class="anchored" data-anchor-id="what-about-this-error.">What about this error….?</h4>
+<p>If you are still hitting an error, then head to the course Slack. When you post a question, make sure to</p>
+<ol type="1">
+<li><p>Include a screenshot (use <code>screenshot</code> on mac or <code>snipping tool</code> on Windows). Both of these programs can save the screenshot to the clipboard, which lets you paste <em>directly into Slack</em> so you don’t have to save an image then upload. On mac, command+shift+4 lets you draw a box around the screen to capture and then lets you paste it directly. It’s quite handy!</p></li>
+<li><p>State what you have tried to do to address the issue.</p></li>
+</ol>
+<p>We rarely see problems that cannot be addressed with some proper troubleshooting.</p>
+</section>
+<section id="and-if-it-still-doesnt-work-and-the-lab-is-due-in-one-hour" class="level4">
+<h4 class="anchored" data-anchor-id="and-if-it-still-doesnt-work-and-the-lab-is-due-in-one-hour">And if it still doesn’t work and the lab is due in one hour…?</h4>
+<p>Set up an account on posit.cloud (former Rstudio.cloud). Make a workspace, follow the package / tinyTex installation instructions, upload your template, and work there. You will not run into system issues there, and it is always available and free.</p>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>It’s a goofy name, but CRAN is where most <code>R</code> packages—and R itself—lives.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Pronounced “lay-tek” for those who are correct; or “lah-tex” to those who love goofy nerdy pronunciation. Technically speaking, the x is the “ch” sound in “Bach”, but most people just say it as “k”. While either saying “lay” or “lah” is correct, “layteks” is frowned upon because it clearly shows you’re not cool.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

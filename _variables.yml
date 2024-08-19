@@ -37,8 +37,8 @@ slack:
 
 
 aboutme:
-  instructor: "I am an environmental economist working primarily on household energy consumption and quantifying the environmental benefits of renewables and increased energy efficiency. I have taught versions of this course at MSU for around five years, and have worked extensively with R for around 15 years."
-
+  instructor: "I am an environmental economist working primarily on household energy consumption and quantifying the environmental benefits of renewables and increased energy efficiency. I have taught versions of this course at MSU for around five years, and have worked extensively with R for around 15 years. I received my PhD in environmental economics from Duke in 2019, and did my Undergrad at UC Davis."
+  # instructor: "In brief, I am a behavioral economist whose research examines how cognitive biases and erroneous social beliefs influence decision-making and our interactions with others. In my research, I utilize a mix of theoretical modeling and experimental studies. These approaches guide the work in the Spartan Psychology and Economics Advanced Research (SPEAR) lab, which I formed in 2023. My teaching emphasizes how psychological factors shape economic choices (EC404; EC895) and the importance of rigorous empirical methods (EC242)."
 contactpolicy:
   instructor: "For individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
   

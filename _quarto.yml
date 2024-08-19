@@ -68,6 +68,14 @@ website:
             - groupproject/project1.qmd
             - groupproject/project2.qmd
             - groupproject/final-project.qmd
+            
+    - id: resources
+      style: "docked"
+      search: true
+      contents: 
+        - section: "Installing R"
+          contents:
+            - resource/install.qmd
       
     # 
     # - id: main
