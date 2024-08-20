@@ -93,6 +93,9 @@ Andrew Heiss has a lot of custom scss in his site: https://github.com/andrewheis
 
 
 
+## Links
+To refer to a page that is an index for a folder like content or assignment, use (/assignment/). For schedule or syllabus (or a weekly content) use (/syllabus.html) or (/content/Week_01/01a.html). A section can be added (/content/Week_01/01b.html#factors)
+
 
 #### STILL TO DO
 

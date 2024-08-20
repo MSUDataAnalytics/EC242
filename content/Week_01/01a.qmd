@@ -1,15 +1,7 @@
 ---
-title: "Welcome Back to R"
+title: "Welcome To Data Analytics"
 read_date: "2024-01-09"
 lastmod: "`r Sys.Date()`" 
-menu:
-  content:
-    parent: Course content
-    weight: 1
-type: docs
-output:
-  blogdown::html_page:
-    toc: true
 ---
 
 ```{r, include=F, eval=T}
@@ -72,13 +64,33 @@ Despite my hard-assness in these introductory notes: I'm here to help and I am n
 
 # What is "Data Analytics"?
 
-> I keep saying that the sexy job in the next 10 years will be statisticians. And I'm not kidding.
+> I keep saying that the sexy job in the next 10 years will be statisticians. People think I’m joking, but who would’ve guessed that computer engineers would’ve been the sexy job of the 1990s?
 
-#### Hal Varian, Chief Economist, Google
+...
 
-How do **you** define "data analytics"?  (Not a rhetorical question!)
+> The ability to take data – to be able to understand it, to process it, to extract value from it, to visualize it, to communicate it’s going to be a hugely important skill in the next decades
 
-- This course will avoid this nomenclature. It is confusing and imprecise. But you signed up (suckers) and I owe an explanation of what this course will cover.
+- [Hal Varian, Chief Economist, Google (2009)](https://flowingdata.com/2009/02/25/googles-chief-economist-hal-varian-on-statistics-and-data/)
+
+
+In my opinion, then, Data Analytics is the process of extracting value from data. Statistics provides the framework for making statements in the face of uncertainty. 
+
+Data Analytics, then, involves:
+
+- Insight learned from data
+- Communicated in a useful way
+- With some notion of precision
+
+
+
+### Learning from Data
+
+The following are the basic requirements for statistical learning:
+
+1. A pattern exists.
+2. This pattern is not easily expressed in a closed mathematical form.
+3. You have data.
+
 
 Some "data analytics" topics we will cover:
 
@@ -96,7 +108,6 @@ Better utilizing existing data can improve our predictive power whilst providing
 
 
 ### Non-Social Science Approaches to Statistical Learning
-**A Brief History**
 
 Suppose you are a researcher and you want to teach a computer to recognize images of a tree.
 
@@ -108,8 +119,6 @@ Rules are difficult to form, and simply writing rules misses the key insight: th
 
 
 ### Social Science Approaches to Statistical Learning
-
-**A Brief History**
 
 Suppose you are a researcher and you want to know whether prisons reduce crime.
 
@@ -214,14 +223,6 @@ There is much overlap; however, a few points of distinction:
 
 **Obviously true:** machine learning has the upper hand in marketing.
 
-
-### Learning from Data
-
-The following are the basic requirements for statistical learning:
-
-1. A pattern exists.
-2. This pattern is not easily expressed in a closed mathematical form.
-3. You have data.
 
 
 ## Case study 1: Global Renewable Energy Production
