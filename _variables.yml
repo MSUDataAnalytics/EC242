@@ -57,7 +57,7 @@ duedates:
   lab6:  "Monday, October 7th, 11:59pm"
   project1: "Saturday October 12th, 11:59pm"
   lab7:  "Monday, October 14th, 11:59pm"
-  lab8:  "~~Monday, October 21st~~Wed, Oct 23rd, 11:59pm"
+  lab8:  "~~Monday, October 21st~~ Wed, Oct 23rd, 11:59pm"
   lab9:  "Monday, October 28th, 11:59pm"
   lab10: "Monday, November 4th, 11:59pm"   # I usually allow longer for this one - Mon Nov 11
   lab11: "Monday, November 11th, 11:59pm"  # does not exist - bias vs variance
