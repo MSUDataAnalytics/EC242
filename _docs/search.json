@@ -535,42 +535,6 @@
     ]
   },
   {
-    "objectID": "groupproject/project2.html",
-    "href": "groupproject/project2.html",
-    "title": "Project 2",
-    "section": "",
-    "text": "The United States has resettled many immigrants across the years.\nIn this project, you will use R, ggplot and some form of graphics editor to explore where these folks have come from.",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 2"
-    ]
-  },
-  {
-    "objectID": "groupproject/project2.html#part-1-instructions",
-    "href": "groupproject/project2.html#part-1-instructions",
-    "title": "Project 2",
-    "section": "Part 1: Instructions",
-    "text": "Part 1: Instructions\nHere’s what you need to do:\n\nAccess the Yearbook of Immigration Statistics at the link below:\n Yearbook Link\nChoose some subset of years and a variety of datasets to explore.\nClean and merge the data. You will need to merge some nasty data. You will need to clean it up. You will need to reshape it.\nSummarize the data in a series of clear and simple tables. (These need not be included in your final poster but should inform its design.)\nCreate two appropriate visualizations based on the data.\nRefine and polish the saved image, adding annotations, changing colors, and otherwise enhancing it.\nDesign and create an infographic “poster”. Your poster should look like a polished image that you might see on a newspaper website like the NYT. Your infographic “poster” should include an eye-catching title, your plots, any caption(s) describing the plot, and 2-4 short paragraphs succinctly describing the insights you are sharing about the data. You can (and should consider) integrating other images like national flags or arrows to convey some semantic meaning. You may do the layout of the infographic “poster” in any software you choose - Publisher (do people still use that?), Adobe Illustrator, etc. Again, the idea is to have a polished plot with an interesting insight from the data, a polished layout to make it attractive, and a polished 2-4 paragraphs that sets up the plot and elaborates on your insight.\nUpload the following outputs to D2L:\n\nYour code (.Rmd) that generates the graphic.\nYour final poster, saved as a PDF.\nYour hypotheses as a separate PDF.\n\n\nFor this assignment, we are less concerned with the code and more concerned with the design. Choose good colors based on palettes. Choose good, clean fonts. Use the heck out of theme(). Add informative design elements. Make it look beautiful. Refer to the design resources here.\nPlease seek out help when you need it! You know enough R (and have enough examples of code from class and your readings) to be able to do this. You can do this, and you’ll feel like a budding dataviz witch/wizard when you’re done.",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 2"
-    ]
-  },
-  {
-    "objectID": "groupproject/project2.html#part-2-hypotheses",
-    "href": "groupproject/project2.html#part-2-hypotheses",
-    "title": "Project 2",
-    "section": "Part 2: Hypotheses",
-    "text": "Part 2: Hypotheses\nFor this part of the assignment, you need to provide five hypotheses about the relationship between variables in one of the datasets. Ideally, this should be done on one of the datasets from your Project 1 (as a lead-in to the final project). You can (and should) consider making hypotheses about the dataset that you plan to use for your final project. However, this is not a requirement. All that is required is that you provide five hypotheses about some data. Your write-up should have an enumerated list of questions (e.g., “1. Are there more murders in states that have high unemployment.”) along with a 1-2 sentence statement detailing why this hypothesis is interesting and should be studied. You will receive 2 points for each hypothesis.\n\nEvaluation\nI will evaluate these projects (not the TA). I will only give top marks to those groups showing initiative and cleverness. I will use the following weights for final scores:\nPart 1\n\nTechnical difficulty: Does the final project show mastery of the skills we’ve discussed thus far? (15 points)\nProfessionalism of visuals: Does the visualizations look like something you might see on TV or in the newspaper? (15 points)\nPoster clarity: Does your poster clearly convey some point? (10 points)\n\nPart 2\nEach hypothesis is worth 2 points. (This is intended to be some free points for all; 10 points)",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 2"
-    ]
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "\n            Social Science Data Analytics\n        ",
@@ -593,28 +557,6 @@
     "crumbs": [
       "Other Useful Stuff",
       "Data"
-    ]
-  },
-  {
-    "objectID": "content/index.html",
-    "href": "content/index.html",
-    "title": "Course Content",
-    "section": "",
-    "text": "Each week has two sets of required readings (pages in the sidebar) that you should complete before coming to lecture. Read the first before our first meeting of the week, and read the second before the second meetings. That is, you should complete the first reading, attend Tuesday class, then do the associated exercises contained within the reading, and read the second reading before Thursday. You will be working each week’s lab between Thursday afternoon and Monday at 11:59 PM (when the labs are due). Don’t forget your weekly writing in between, due Saturday at 11:59pm.\nThe course content is structured as follows. For each topic, we begin with a set of questions that might guide your reading and help frame your thoughts. These questions can serve as helpful starting places for your thinking; they are not representative of the totality of the content and are not intended to be limiting. You should not try to respond to all of these (or any of them if you don’t want to)—they’ll just help you know what to look for and think about as you read. The first reading is generally a “principles” reading, discussing the concepts for the week. The second is generally an “applications” reading, meant to give concrete examples and code. This isn’t always the case, but holds in general.",
-    "crumbs": [
-      "Syllabus",
-      "Course Content"
-    ]
-  },
-  {
-    "objectID": "content/index.html#content-navigation",
-    "href": "content/index.html#content-navigation",
-    "title": "Course Content",
-    "section": "Content navigation",
-    "text": "Content navigation\nUse the links on the sidebar to navigate between required reading. Readings are ordered by week, and within each week, by order of the class meetings.",
-    "crumbs": [
-      "Syllabus",
-      "Course Content"
     ]
   },
   {
@@ -684,63 +626,25 @@
     ]
   },
   {
-    "objectID": "groupproject/final-project.html",
-    "href": "groupproject/final-project.html",
-    "title": "Final project",
+    "objectID": "content/index.html",
+    "href": "content/index.html",
+    "title": "Course Content",
     "section": "",
-    "text": "One member of each group should turn in the group’s work on D2L. The turned-in copy should have the group member’s names at the top.\nTurn in your copies by 11:59 on the date listed on the Schedule",
+    "text": "Each week has two sets of required readings (pages in the sidebar) that you should complete before coming to lecture. Read the first before our first meeting of the week, and read the second before the second meetings. That is, you should complete the first reading, attend Tuesday class, then do the associated exercises contained within the reading, and read the second reading before Thursday. You will be working each week’s lab between Thursday afternoon and Monday at 11:59 PM (when the labs are due). Don’t forget your weekly writing in between, due Saturday at 11:59pm.\nThe course content is structured as follows. For each topic, we begin with a set of questions that might guide your reading and help frame your thoughts. These questions can serve as helpful starting places for your thinking; they are not representative of the totality of the content and are not intended to be limiting. You should not try to respond to all of these (or any of them if you don’t want to)—they’ll just help you know what to look for and think about as you read. The first reading is generally a “principles” reading, discussing the concepts for the week. The second is generally an “applications” reading, meant to give concrete examples and code. This isn’t always the case, but holds in general.",
     "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Final project"
+      "Syllabus",
+      "Course Content"
     ]
   },
   {
-    "objectID": "groupproject/final-project.html#requirements",
-    "href": "groupproject/final-project.html#requirements",
-    "title": "Final project",
-    "section": "Requirements",
-    "text": "Requirements\nData analytics is inherently a hands-on endeavor. Accordingly, the final project for this class is hands-on. As per the overview page, the final project has the following elements:\n\nFor your final project in this class, you will analyze existing data in some area of interest to you. You will aggregate (merge) datasets, “find a pattern in the data that cannot be expressed in a closed form”, and communicate your findings in a memo.1\n\n\nYou must visualize (at least) three interesting features of that data. Visualizations should aid the reader in understanding something about the data that might not be readily apparent.2\nYou must come up with some analysis—using tools from the course—which relates your data to either a prediction or a policy conclusion. For example, if you collected data from Major League Baseball games, you could try to “predict” whether a left-hander was pitching based solely on the outcomes of the batsmen. If you assembled data from COVID lockdowns and unemployment, you could test hypotheses about the labor market and its reaction to COVID.\n\nIf you choose a prediction project, you should employ all of the tools we have learned regarding training and testing, and report the relevant measures of fit.\nIf you choose a policy conclusion project, you should explore the relationship you’re studying. If you find that low-income workers were most likely to be laid off during COVID, you should examine if this corresponds to, say, industry of employment (e.g. “service jobs were worst hit, and are most likely the job held by low-income workers”).\n\nYou will submit two things via D2L:\n\n\nA PDF of your report (see the outline below for details of what this needs to contain) rendered from your R Markdown using LaTeX as in our labs. You might want to write the prose-heavy sections in a word processor like Word or Google Docs and copy/paste the text into your R Markdown document, since RStudio doesn’t have a nice spell checker or grammar checker. This should have no visible R code, warnings, or messages in it anywhere. To do this, you must set echo = FALSE in the code chunk options knitr::opts_chunk$set(echo = FALSE, ...) at the beginning of your document template before you knit, and review your text carefully before turning it in.\nThe same PDF as above, but with all the R code in it (set echo = TRUE at the beginning of your document and reknit the file). Please label files in an obvious way. I will usually grade from this document.\n\nThis project is due by 11:59 PM on the date listed on the Schedule.  No late work will be accepted. For real. MSU has grading deadlines and I’ve given you every second that can be spared.\nThere is no final exam. This project is your final exam.\nThe project will not be graded using a check system, and will be graded by me (the main instructor, not a TA). I will evaluate the following four elements of your project:\n\nTechnical skills: Was the project easy? Does it showcase mastery of R for data analysis? (20%)\nVisual design: Was the information smartly conveyed and usable? Was it beautiful? (20%)\nAnalytic design: Was the analysis appropriate? Was it sensible, given the dataset? Did you miss any glaring issues? (20%)\nStory: Did we learn something? Did you explore your findings sufficiently deeply? (20%)\nFollowing instructions: Did you suppress R code as asked? Did you meet approximate word counts and did your project contain all sections? (20%)\n\nIf you’ve engaged with the course content and completed the exercises and mini projects throughout the course, you should be able to ace the final project.",
+    "objectID": "content/index.html#content-navigation",
+    "href": "content/index.html#content-navigation",
+    "title": "Course Content",
+    "section": "Content navigation",
+    "text": "Content navigation\nUse the links on the sidebar to navigate between required reading. Readings are ordered by week, and within each week, by order of the class meetings.",
     "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Final project"
-    ]
-  },
-  {
-    "objectID": "groupproject/final-project.html#teams",
-    "href": "groupproject/final-project.html#teams",
-    "title": "Final project",
-    "section": "Teams",
-    "text": "Teams\n\nMy team sucks; how can I punish them for their lack of effort?\n\nOn this front, we will be more supportive. While you have to put up with your team regardless of their quality, you can indicate that your team members are not carrying their fair share by issuing a strike. This processs works as follows: 1. A team member systematically fails to exert effort on collaborative projects (for example, by not showing up for meetings or not communicating, or by simply leeching off others without contributing.) 2. Your frustration reaches a boiling point. You decide this has to stop. You decide to issue a strike 3. You send an email with the following information: - Subject line: [SSC442] Strike against [Last name of Recipient] - Body: You do not need to provide detailed reasoning. However, you must discuss the actions (plural) you took to remedy the situation before sending the strike email.\nA strike is a serious matter, and will reduce that team member’s grade on joint work by 10%. If any team-member gets strikes from all other members of his or her team, their grade will be reduced by 50%.\nStrikes are anonymous so that you do not need to fear social retaliation. However, they are not anonymous to allow you to issue them without thoughtful consideration. Perhaps the other person has a serious issue that is preventing them from completing work (e.g., a relative passing away). Please be thoughtful in using this remedy and consider it a last resort.\n\nI’m on a smaller-than-normal team. Does this mean that I have to do more work?\n\nYour instructors are able to count and are aware the teams are imbalanced. Evaluations of final projects will take this into account. While your final product should reflect the best ability of your team, we do not anticipate that the uneven teams will lead to substantively different outputs.",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Final project"
-    ]
-  },
-  {
-    "objectID": "groupproject/final-project.html#suggested-outline",
-    "href": "groupproject/final-project.html#suggested-outline",
-    "title": "Final project",
-    "section": "Suggested outline",
-    "text": "Suggested outline\nYou must write and present your analysis as if presenting to a C-suite executive. If you are not familiar with this terminology, the C-suite includes, e.g., the CEO, CFO, and COO of a given company. Generally speaking, such executives are not particularly analytically oriented, and therefore your explanations need to be clear, consise (their time is valuable) and contain actionable (or valuable) information.3 The report should be no more than 3 pages (excluding figures and tables). - Concretely, this requires a written memo, which describes the data, analyses, and results. This must be clear and easy to understand for a non-expert in your field. Figures and tables do not apply to the page limit. You must use headers (# at the beginning of a line for sections, ## for subsections, etc.) for each of these sections. Make sure you inspect your final product before you upload it. - As in Project 1, do not narrarate your process. “We tried using summarize() and then found that…” has no business in a C-suite memo. Nor does “we looked at X then decided that Y was…”. Tell the reader what data you used and what you found, and not about the process.\nBelow is a very loose guide to the sort of content that we expect for the final project.\n\nIntroduction\nDescribe the motivation for this analysis. Briefly describe the dataset(s), and explain why the analysis you’re undertaking matters for society. (Or matters for some decision-making. You should not feel constrained to asking only “big questions.” The best projects will be narrow-scope but well-defined.) (≈300 words)\n\n\nTheory and Background\nProvide in-depth background about your analytics question. Provide some theoretical guidance to the functional relationship you hope to explore. If you’re interested on how, say, height affects scoring in the NBA, write down a proposed function that might map height to scoring. Describe how you might look for this unknown relationship in the data, but do not describe the data yet. (≈300 words)\n\n\nHypotheses\nMake predictions to form the questions that you will study. Declare what you think will happen (the theory section will explain the “why”). You should be able to reject or fail to reject these hypotheses based on your analyses. (≈200 words)\n\n\nData\nGiven your motivations, limits on feasibility, and hypotheses, describe the data you use. (≈150 words)\n\n\nAnalyses\nGenerate the analyses relevant to your hypotheses and interests. Here you must include three figures and must describe what they contain in simple, easy to digest language. Why did you visualize these elements? Your analyses also must include brief discussion. (Main part; as many words as needed)\n\n\nConclusion\nWhat caveats should we consider? Do you believe this is a truly causal relationship? Or, if a predictive project, how well did you do and should we bet money / diagnose / rely on your prediction? Why does any of this matter to the decision-maker? (≈100 words)",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Final project"
-    ]
-  },
-  {
-    "objectID": "groupproject/final-project.html#footnotes",
-    "href": "groupproject/final-project.html#footnotes",
-    "title": "Final project",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nNote that existing is taken to mean that you are not permitted to collect data by interacting with other people. That is not to say that you cannot gather data that previously has not been gathered into a single place—this sort of exercise is necessary. But you cannot stand with a clipboard outside a store and count visitors (for instance). That would require involving the Institutional Review Board (IRB) and nobody wants to do that.↩︎\nNote that “interesting” is a subjective term. If you’re not sure if something is interesting, ask me.↩︎\nThis exercise provides you with an opportunity to identify your marketable skills and to practice them. I encourage those who will be looking for jobs soon to take this exercise seriously.↩︎",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Final project"
+      "Syllabus",
+      "Course Content"
     ]
   },
   {
@@ -904,66 +808,6 @@
       "Syllabus",
       "Markdown",
       "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html",
-    "href": "groupproject/project1.html",
-    "title": "Project 1",
-    "section": "",
-    "text": "All members of the group should turn in the group’s work on D2L. Each turned-in copy should have the entire group’s names at the top.\nTurn in your copies no later than Saturday, February 10th at 11:59 PM.",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html#part-1-rats-rats-rats.",
-    "href": "groupproject/project1.html#part-1-rats-rats-rats.",
-    "title": "Project 1",
-    "section": "Part 1: Rats, rats, rats.",
-    "text": "Part 1: Rats, rats, rats.\nNew York City is full of urban wildlife, and rats are one of the city’s most infamous animal mascots. Rats in NYC are plentiful, but they also deliver food, so they’re useful too.\n{{% youtube \"PeJUqcbool4\" %}}\nNYC keeps incredibly detailed data regarding animal sightings, including rats, and it makes this data publicly available.\nFor this first project, pretend that you are an analyst with the NYC Mayor’s office, and you have been tasked with getting a better understanding of the rat problem. Your job is to use R and ggplot2 to tell an interesting story hidden in the data. You must create a story by looking carefully at the data, finding some insight into where or when rat sightings occur, and describing to the Mayor how this insight may inform a strategy to address the rats. Your assignment will take the form of a professional memo that presents the data and insights along with appropriate visualizations that communicate the story in-line. Your memo should be approximately 2-4 pages (including plots) and, of course, will use Rmarkdown rendered to PDF using LaTeX.\n\nInstructions\nHere’s what you need to do:\n\nDownload New York City’s database of rat sightings since 2010:\n\n Rat_sightings.csv\n\nSummarize the data somehow. The raw data has more than 150,000 rows, which means you’ll need to aggregate the data (filter(), group_by(), and summarize() will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2024. (Of course, I just gave you these ideas, so you’ll need to be a bit more creative than just doing exactly what I just said.)\nExplore the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. When necessary, you may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). Be creative, but do so to further explore and analyze. Drill down on something you see in the data to tell a story. Remember, as analysts, we are looking for “patterns in the data” that are not easily written in closed form.\nCreate appropriate visualizations based on the data you summarized and explored. Pay attention to every detail - color choice, labels, axis text, etc.\nWrite a polished, professional memo presenting your analysis to the Mayor. The memo should tell the story you found in the data. It should not narrarate your discovery process (e.g. it should not say “we tried looking at…and then ran ggplot(…)) but rather should weave your exploration into a narrarative driven by your graphics, with the text filling in the context. We are specifically looking for a discussion of the following:\n\nWhat story are you telling with your graphics?\nHow have you applied reasonable standards in visual storytelling?\nWhat policy implication is there (if any)?\n\nUpload the following outputs to D2L:\n\nA PDF file of your memo with your graphics embedded in it.1 This means you’ll need to do all your coding in an R Markdown file and embed your code in chunks.\nNote that Part 2 of this project should be included in this PDF in it’s own section (see below).\nNothing else. No .Rmd, no code, nothing but your clean, polished memo with Part 1 and Part 2.\n\n\nSome important notes on your assignment\n\nYour assignment should be clean and polished as if you were a city employee and you were turning in a work product. It should should flow nicely and use subsections (using ### at the start of the line) as appropriate.\nDo not “annotate” your thought process (e.g. do not write “we tried X but there were too many NA’s, so we did Y instead”). This should be a polished memo suitable for turning in as a work product.\nYour code should not appear in your output - it should be only your plots and memo writing.\n\nTo turn off code echoing, add echo = FALSE in each of your code chunk options (e.g. {r setup, echo = FALSE}), or set it globally in the first code chunk inside the knitr::opts_chunk$set function.\n\n\n\n\nStarter code\nI’ve provided some starter code below. A couple comments about it:\n\nBy default, read_csv() treats cells that are empty or “NA” as missing values. This rat dataset uses “N/A” to mark missing values, so we need to add that as a possible marker of missingness (hence na = c(\"\", \"NA\", \"N/A\"))\nTo make life easier, I’ve renamed some of the key variables you might work with. You can rename others if you want.\nI’ve also created a few date-related variables (sighting_year, sighting_month, sighting_day, and sighting_weekday). You don’t have to use them, but they’re there if you need them. The functions that create these, like year() and wday() are part of the lubridate library.\nThe date/time variables are formatted like 04/03/2017 12:00:00 AM, which R is not able to automatically parse as a date when reading the CSV file. You can use the mdy_hms() function in the lubridate library to parse dates that are structured as “month-day-year-hour-minute”. There are also a bunch of other iterations of this function, like ymd(), dmy(), etc., for other date formats.\nThere’s one row with an unspecified borough, so I filter that out.\n\n\nlibrary(tidyverse)\nlibrary(lubridate)\nrats_raw &lt;- read_csv(\"data/Rat_Sightings.csv\", na = c(\"\", \"NA\", \"N/A\"))\n# If you get an error that says \"All formats failed to parse. No formats\n# found\", it's because the mdy_hms function couldn't parse the date. The date\n# variable *should* be in this format: \"04/03/2017 12:00:00 AM\", but in some\n# rare instances, it might load without the seconds as \"04/03/2017 12:00 AM\".\n# If there are no seconds, use mdy_hm() instead of mdy_hms().\nrats_clean &lt;- rats_raw %&gt;%\n  rename(created_date = `Created Date`,\n         location_type = `Location Type`,\n         borough = Borough) %&gt;%\n  mutate(created_date = mdy_hms(created_date)) %&gt;%\n  mutate(sighting_year = year(created_date),\n         sighting_month = month(created_date),\n         sighting_day = day(created_date),\n         sighting_weekday = wday(created_date, label = TRUE, abbr = FALSE)) %&gt;%\n  filter(borough != \"Unspecified\")\n\nYou’ll summarize the data with functions from dplyr, including stuff like count(), arrange(), filter(), group_by(), summarize(), and mutate().",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html#part-2-data-hunting",
-    "href": "groupproject/project1.html#part-2-data-hunting",
-    "title": "Project 1",
-    "section": "Part 2: Data Hunting",
-    "text": "Part 2: Data Hunting\nFor the second part of the project, your task is simple. Your group must identify three different data sources2 for potential use in your final project. You are not bound to this decision.\nDo not use Kaggle data. While Kaggle is useful for learning data science, part of this assignment is learning how to find actual data in the wild.\nFor each dataset, you must write a single short paragraph about what about this data interests you. Add this to the memo from Part 1, using ## to make a new header in Rmarkdown for this section.",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html#evaluations",
-    "href": "groupproject/project1.html#evaluations",
-    "title": "Project 1",
-    "section": "Evaluations",
-    "text": "Evaluations\nI will evaluate these projects (not the TA). I will only give top marks to those groups showing initiative and cleverness. I will use the following weights for final scores:\nPart 1\n\nTechnical difficulty: Does the final project show mastery of the skills we’ve discussed thus far? Did the underlying data analysis use and expand on the tools we learned in class? Are axes and legends appropriately labeled and are colorblind-friendly colors used? (12 points)\nAppropriateness of visuals: Do the visualizations communicate the analysis? (10 points)\nStorytelling: Does your memo clearly convey what you’re doing and why? (10 points)\n\nPart 2\nEach piece of data (and description) is worth 6 points. (18 points total)",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html#footnotes",
-    "href": "groupproject/project1.html#footnotes",
-    "title": "Project 1",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nYou can approach this in a couple different ways—you can write the memo and then include the full figure and code at the end, similar to this blog post, or you can write the memo in an incremental way, describing the different steps of creating the figure, ultimately arriving at a clean final figure, like this blog post.↩︎\nThe three different sources need not be different websites or from different organizations. For example, three different tables from the US Census would be sufficient↩︎",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
     ]
   },
   {
