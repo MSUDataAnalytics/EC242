@@ -2,11 +2,13 @@
 title: "1: Programming Basics in R"
 linktitle: "1: Programming Basics in R"
 duedate: "{{< var duedates.lab1 >}}" # change in the main _variables.yml file and it will cascade here and below
+toc: true
+toc-depth: 1
 ---
 
 ::: {.callout-warning}
 ## Due Date
-This assignment is due on **{{< meta duedate >}}**
+This assignment is due on {{< meta duedate >}}.
 :::
 
 {{< var blurbs.homeworkdue >}}
@@ -24,6 +26,9 @@ Download the {{< var blurbs.labtemplate >}}. Please save the template into a lab
 
 If you have not yet done so, you'll need to install both R and RStudio. See the [Installing page of our course resources](/resource/install/) for instructions.
 
+
+## If you totally forgot how to use `R`
+
 I have created a video walkthrough for the basics of using R for another course, but it is useful here. You can [see part A here (labeled "Part 2a") here <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2a/1_kmszjw36)] and [part B here (labeled "Part 2b")  <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2b/1_c0vf0i63). You should already be at this level of familiarity with R, but if you need a review, this is a good place to start.
 
 
@@ -31,6 +36,8 @@ I have created a video walkthrough for the basics of using R for another course,
 # Programming basics
 
 We teach `R` because it greatly facilitates data analysis, the main topic of this book. By coding in R, we can efficiently perform exploratory data analysis, build data analysis pipelines, and prepare data visualization to communicate results. However, `R` is not just a data analysis environment but a programming language. Advanced `R` programmers can develop complex packages and even improve `R` itself, but we do not cover advanced programming in this book. Nonetheless, in this section, we introduce three key programming concepts: conditional expressions, for-loops, and functions. These are not just key building blocks for advanced programming, but are sometimes useful during data analysis. We also note that there are several functions that are widely used to program in `R` but that we will not cover in this book. These include `split`, `cut`, `do.call`, and `Reduce`, as well as the __data.table__ package. These are worth learning if you plan to become an expert `R` programmer.
+
+You will need to have read through the material in Week 1 already, including both the [Principles](/content/Week_01/01a.html) and [Applications](/content/Week_01/01b.html).
 
 ## Conditional expressions {#conditionals}
 
@@ -307,9 +314,9 @@ s_n <- sapply(n, compute_s_n)
 
 Other functionals are `apply`, `lapply`, `tapply`, `mapply`, `vapply`, and `replicate`. We mostly use `sapply`, `apply`, and `replicate` in this book, but we recommend familiarizing yourselves with the others as they can be very useful.
 
-## Exercises
+# Doing your lab....
 
-This is your first weekly lab assignment. Each lab assignment will need to be done in Rmarkdown using [the lab template](https://raw.githubusercontent.com/ajkirkpatrick/FS20/Spring2021/Rmarkdown_templates/SSC442_Lab_Assignment_Template.Rmd), just right-click and Save As...**Start a new folder on your drive for this course, and inside that a new folder for lab assignments, and inside that a new folder for Lab No. 0**. Rmarkdown will place some intermediate files in that folder, so leaving .Rmd files on your desktop will make things messy, fast.
+This is your first weekly lab assignment. Each lab assignment will need to be done in Rmarkdown using {{< var blurbs.labtemplate >}}, just right-click and Save As...**Start a new folder on your drive for this course, and inside that a new folder for lab assignments, and inside that a new folder for Lab No. 0**. Rmarkdown will place some intermediate files in that folder, so leaving .Rmd files on your desktop will make things messy, fast.
 
 Once you've saved the file, open it up in Rstudio.
 
@@ -317,11 +324,11 @@ Once you've saved the file, open it up in Rstudio.
 
 - Put your name on it
 
-- Leave the date alone. That little `` `r knitr::inline_expr("Sys.time(...)")` `` will ask R to return the date (with M-D-Y formatting), which Rmarkdown will put in as if you had typed in the actual date. **Note - if your system time is rendered in unicode characters (which may be the case in some languages), you will get an error**. If this happens, you'll have to manually change the date in the header along with your name.
+- Leave the date alone. That little ``"`r format(Sys.time(), '%d %B, %Y')`"`` will ask R to return the date (with M-D-Y formatting), which Rmarkdown will put in as if you had typed in the actual date. **Note - if your system time is rendered in unicode characters (which may be the case in some languages), you will get an error**. If this happens, you'll have to manually change the date in the header along with your name.
 
-- When you type `## 1. Text of...`, Markdown will recognize "1. Text of" as a header and will *automatically* make it big.
+- When you type `## 1. Text of...`, Markdown will recognize "1. Text of" as a header and will *automatically* make it big, but only if you (i) start at the beginning of a line, and (ii) put a space after the last `#`. Check your work to make sure your headings are rendered right.
 
-  - So please copy the number and text of the question you are answering here.
+  - Please copy the number and text of the question you are answering here.
   
 - Next will be the `` ```{r q1} `` text that will be in gray. **R will recognize this as code and will treat it as such**. Anything run in that block will have an output. 
 
@@ -331,20 +338,22 @@ Once you've saved the file, open it up in Rstudio.
   
 - With each completed question, click the "Knit" button up above the script window. Rmarkdown will create a .pdf for you of your work (as long as it doesn't hit any R errors). Knit often to make sure you haven't hit an error!
 
-- The ``\newpage`` line is a Latex command (the program that makes the typesetting look nice). It will start a new pdf page. 
+  - When you "knit", R will start a whole brand new instance of R with a fresh, empty memory (packages you installed will still be loadable, but no objects in memory will exist). So your code has to run sequentially -- if you do something to a data.frame, make sure it's in your code!
 
-- On the next page, copy question #2 to a new header using `##`.
+
+- Next, copy question #2 to a new header using `##`.
 
 - Keep going until done. Render one last .pdf, proofread it, and turn it in on D2L!
 
-For more on using R Markdown, see the [R Markdown page of our course resources](/resource/rmarkdown/). You can also learn about the general Markdown language [on our Markdown page of our course resources](/resource/markdown/)
+For more on using R Markdown, see the [R Markdown page of our course resources](/resource/rmarkdown.html). You can also learn about the general Markdown language [on our Markdown page of our course resources](/resource/markdown/)
 
-:::fyi
-**EXERCISES**
 
-0. In your first code chunk, load the package library `tidyverse`, which you will need for Question 8. Always load all your package libraries at the top, in the first code chunk! 
+# EXERCISES 
 
-1. What will this conditional expression return and why?
+
+1. In your first code chunk, load the package library `tidyverse`, which you will need for Question 8. Always load all your package libraries at the top, in the first code chunk! 
+
+2. What will this conditional expression return and why?
 
 ```{r, eval=FALSE}
 x <- c(1,2,-3,4)
@@ -357,20 +366,20 @@ if(all(x>0)){
 ```
 
 
-2. Which of the following expressions is always `FALSE` when at least one entry of a logical vector `x` is TRUE?
+3. Which of the following expressions is always `FALSE` when at least one entry of a logical vector `x` is TRUE?
 
 a. `all(x)`
 b. `any(x)`
 c. `any(!x)`
 d. `all(!x)`
 
-3. The function `nchar` tells you how many characters long a character vector is. Write a line of code that assigns a new column in `murders` called `new_names` that is equal to the `state` column. Then, replace `new_names` with the corresponding state abbreviation when the state name is longer than 8 characters. 
+4. The function `nchar` tells you how many characters long a character vector is. Write a line of code that assigns a new column in `murders` called `new_names` that is equal to the `state` column. Then, replace `new_names` with the corresponding state abbreviation when the state name is longer than 8 characters. 
 
-4. Create a function `sum_n` that for any given value, say $n$, computes the sum of the integers from 1 to n (inclusive). Use the function to determine the sum of integers from 1 to 5,000.
+5. Create a function `sum_n` that for any given value, say $n$, computes the sum of the integers from 1 to n (inclusive). Use the function to determine the sum of integers from 1 to 5,000.
 
-5. Create a function `altman_plot` that takes two arguments, `x` and `y`, and plots the difference against the sum. That is, the *difference* should be on the y-axis and the and the sum should be on the x-axis. Use it to make an altman plot of `x <- c(5,7,9)` and `y <- c(10,11,12)`. When your function creates the plot, it will output automatically in your Rmarkdown knitted .pdf.
+6. Create a function `altman_plot` that takes two arguments, `x` and `y`, and plots the difference between `x` and `y` against the sum of `x` and `y`. That is, the *difference* should be on the y-axis and the and the sum should be on the x-axis. Use it to make an altman plot of `x <- c(5,7,9)` and `y <- c(10,11,12)`. In your function, use `plot(x = ...., y = ....)`, which is the base plot function. When your function creates the plot, it will output automatically in your Rmarkdown knitted .pdf.
 
-6. After running the code below, what is the value of `x` and why?
+7. After running the code below, what is the value of `x` and why?
 
 ```{r, eval=FALSE}
 x <- 3
@@ -380,15 +389,15 @@ my_func <- function(y){
 }
 ```
 
-7. Write a function `compute_s_n` that for any given $n$ computes the sum $S_n = 1^2 + 2^2 + 3^2 + \dots n^2$. Report the value of the sum when $n=10$.
+8. Write a function `compute_s_n` that for any given $n$ computes the sum $S_n = 1^2 + 2^2 + 3^2 + \dots n^2$. Report the value of the sum when $n=10$.
 
-8. Define an empty numerical vector `s_n` of size 25 using `s_n <- vector("numeric", 25)` and store in the results of $S_1, S_2, \dots S_{25}$ using a for-loop.
+9. Define an empty numerical vector `s_n` of size 25 using `s_n <- vector("numeric", 25)` and store in it the results of $S_1, S_2, \dots S_{25}$ using a for-loop.
 
-9. Repeat exercise 8, but this time use `sapply`.
+<!-- 10. Repeat exercise 8, but this time use `sapply`. -->
 
-10. Repeat exercise 8, but this time use `map_dbl`.
+<!-- 11. Repeat exercise 8, but this time use `map_dbl`. -->
 
-11. Plot $S_n$ versus $n$. Use points defined by $n=1,\dots,25$.
+10. Create a data.frame holding $n$ and $S_n$. Plot $S_n$ versus $n$. Use points defined by $n=1,\dots,25$.
 
-12. Confirm that the equivalent formula for this sum is $S_n= n(n+1)(2n+1)/6$. To do so, compare whether `compute_s_n` gives the same result for the vector `s_n` as the equivalent formula for the sum. 
-:::
+11. Confirm that the equivalent formula for this sum is $S_n= n(n+1)(2n+1)/6$. To do so, compare whether `compute_s_n` gives the same result for the vector `s_n` as the equivalent formula for the sum. 
+

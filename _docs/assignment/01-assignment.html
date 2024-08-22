@@ -136,7 +136,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-sidebar docked nav-fixed fullcontent">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -239,36 +239,6 @@ window.Quarto = {
  <span class="menu-text">1: Programming Basics in R</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../assignment/02-assignment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2: More Programming in R</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../assignment/03-assignment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">3: Applying ggplot2 to Real Data</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../assignment/04-assignment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4: Visualizing Large(ish) Data</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../assignment/05-assignment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5: Statistical Models and Uncertainty</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../assignment/06-assignment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">6: Correlations and Simple Models</span></a>
-  </div>
-</li>
       </ul>
   </li>
       </ul>
@@ -307,7 +277,17 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#programming-basics" id="toc-programming-basics" class="nav-link active" data-scroll-target="#programming-basics">Programming basics</a></li>
+  <li><a href="#doing-your-lab." id="toc-doing-your-lab." class="nav-link" data-scroll-target="#doing-your-lab.">Doing your lab….</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">EXERCISES</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -340,7 +320,7 @@ Due Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This assignment is due on <strong>Monday, September 2nd, 11:59pm</strong></p>
+<p>This assignment is due on <del>Monday, September 2nd</del>Tuesday, September 3rd, 11:59pm.</p>
 </div>
 </div>
 <p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.</p>
@@ -359,10 +339,14 @@ Note:
 </div>
 </div>
 <p>If you have not yet done so, you’ll need to install both R and RStudio. See the <a href="..\resource/install/">Installing page of our course resources</a> for instructions.</p>
+<section id="if-you-totally-forgot-how-to-use-r" class="level2">
+<h2 class="anchored" data-anchor-id="if-you-totally-forgot-how-to-use-r">If you totally forgot how to use <code>R</code></h2>
 <p>I have created a video walkthrough for the basics of using R for another course, but it is useful here. You can <a href="https://mediaspace.msu.edu/media/R+Part+2a/1_kmszjw36">see part A here (labeled “Part 2a”) here <i class="fas fa-film"></i></a>] and <a href="https://mediaspace.msu.edu/media/R+Part+2b/1_c0vf0i63">part B here (labeled “Part 2b”) <i class="fas fa-film"></i></a>. You should already be at this level of familiarity with R, but if you need a review, this is a good place to start.</p>
+</section>
 <section id="programming-basics" class="level1">
 <h1>Programming basics</h1>
 <p>We teach <code>R</code> because it greatly facilitates data analysis, the main topic of this book. By coding in R, we can efficiently perform exploratory data analysis, build data analysis pipelines, and prepare data visualization to communicate results. However, <code>R</code> is not just a data analysis environment but a programming language. Advanced <code>R</code> programmers can develop complex packages and even improve <code>R</code> itself, but we do not cover advanced programming in this book. Nonetheless, in this section, we introduce three key programming concepts: conditional expressions, for-loops, and functions. These are not just key building blocks for advanced programming, but are sometimes useful during data analysis. We also note that there are several functions that are widely used to program in <code>R</code> but that we will not cover in this book. These include <code>split</code>, <code>cut</code>, <code>do.call</code>, and <code>Reduce</code>, as well as the <strong>data.table</strong> package. These are worth learning if you plan to become an expert <code>R</code> programmer.</p>
+<p>You will need to have read through the material in Week 1 already, including both the <a href="..\content/Week_01/01a.html">Principles</a> and <a href="..\content/Week_01/01b.html">Applications</a>.</p>
 <section id="conditionals" class="level2">
 <h2 class="anchored" data-anchor-id="conditionals">Conditional expressions</h2>
 <p>Conditional expressions are one of the basic features of programming. They are used for what is called <em>flow control</em>. The most common conditional expression is the if-else statement. In R, we can actually perform quite a bit of data analysis without conditionals. However, they do come up occasionally, and you will need them once you start writing your own functions and packages.</p>
@@ -711,32 +695,36 @@ lines(n, n*(n+1)/2)
 </div>
 <p>Other functionals are <code>apply</code>, <code>lapply</code>, <code>tapply</code>, <code>mapply</code>, <code>vapply</code>, and <code>replicate</code>. We mostly use <code>sapply</code>, <code>apply</code>, and <code>replicate</code> in this book, but we recommend familiarizing yourselves with the others as they can be very useful.</p>
 </section>
-<section id="exercises" class="level2">
-<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
-<p>This is your first weekly lab assignment. Each lab assignment will need to be done in Rmarkdown using <a href="https://raw.githubusercontent.com/ajkirkpatrick/FS20/Spring2021/Rmarkdown_templates/SSC442_Lab_Assignment_Template.Rmd">the lab template</a>, just right-click and Save As…<strong>Start a new folder on your drive for this course, and inside that a new folder for lab assignments, and inside that a new folder for Lab No.&nbsp;0</strong>. Rmarkdown will place some intermediate files in that folder, so leaving .Rmd files on your desktop will make things messy, fast.</p>
+</section>
+<section id="doing-your-lab." class="level1">
+<h1>Doing your lab….</h1>
+<p>This is your first weekly lab assignment. Each lab assignment will need to be done in Rmarkdown using <a href="..\templates/EC242_Lab_Assignment_Template.Rmd"><i class="fa-solid fa-file-arrow-down" title="Download Assignment Template" aria-label="file-arrow-down"></i> Lab assignment template</a>, just right-click and Save As…<strong>Start a new folder on your drive for this course, and inside that a new folder for lab assignments, and inside that a new folder for Lab No.&nbsp;0</strong>. Rmarkdown will place some intermediate files in that folder, so leaving .Rmd files on your desktop will make things messy, fast.</p>
 <p>Once you’ve saved the file, open it up in Rstudio.</p>
 <ul>
 <li><p>Change the title to “Lab 0”</p></li>
 <li><p>Put your name on it</p></li>
-<li><p>Leave the date alone. That little <code>`r Sys.time(...)`</code> will ask R to return the date (with M-D-Y formatting), which Rmarkdown will put in as if you had typed in the actual date. <strong>Note - if your system time is rendered in unicode characters (which may be the case in some languages), you will get an error</strong>. If this happens, you’ll have to manually change the date in the header along with your name.</p></li>
-<li><p>When you type <code>## 1. Text of...</code>, Markdown will recognize “1. Text of” as a header and will <em>automatically</em> make it big.</p>
+<li><p>Leave the date alone. That little <code>"22 August, 2024"</code> will ask R to return the date (with M-D-Y formatting), which Rmarkdown will put in as if you had typed in the actual date. <strong>Note - if your system time is rendered in unicode characters (which may be the case in some languages), you will get an error</strong>. If this happens, you’ll have to manually change the date in the header along with your name.</p></li>
+<li><p>When you type <code>## 1. Text of...</code>, Markdown will recognize “1. Text of” as a header and will <em>automatically</em> make it big, but only if you (i) start at the beginning of a line, and (ii) put a space after the last <code>#</code>. Check your work to make sure your headings are rendered right.</p>
 <ul>
-<li>So please copy the number and text of the question you are answering here.</li>
+<li>Please copy the number and text of the question you are answering here.</li>
 </ul></li>
 <li><p>Next will be the <code>```{r q1}</code> text that will be in gray. <strong>R will recognize this as code and will treat it as such</strong>. Anything run in that block will have an output.</p>
 <ul>
 <li><p>If you want to see what the code will do, copy the code and paste it into the gray area. Then, click the green right arrow in the top-right corner <em>of the gray code chunk</em>. It should show you the results.</p></li>
 <li><p>Use the results (plus your understanding of the code) to answer the questions below.</p></li>
 </ul></li>
-<li><p>With each completed question, click the “Knit” button up above the script window. Rmarkdown will create a .pdf for you of your work (as long as it doesn’t hit any R errors). Knit often to make sure you haven’t hit an error!</p></li>
-<li><p>The <code>\newpage</code> line is a Latex command (the program that makes the typesetting look nice). It will start a new pdf page.</p></li>
-<li><p>On the next page, copy question #2 to a new header using <code>##</code>.</p></li>
+<li><p>With each completed question, click the “Knit” button up above the script window. Rmarkdown will create a .pdf for you of your work (as long as it doesn’t hit any R errors). Knit often to make sure you haven’t hit an error!</p>
+<ul>
+<li>When you “knit”, R will start a whole brand new instance of R with a fresh, empty memory (packages you installed will still be loadable, but no objects in memory will exist). So your code has to run sequentially – if you do something to a data.frame, make sure it’s in your code!</li>
+</ul></li>
+<li><p>Next, copy question #2 to a new header using <code>##</code>.</p></li>
 <li><p>Keep going until done. Render one last .pdf, proofread it, and turn it in on D2L!</p></li>
 </ul>
-<p>For more on using R Markdown, see the <a href="..\resource/rmarkdown/">R Markdown page of our course resources</a>. You can also learn about the general Markdown language <a href="..\resource/markdown/">on our Markdown page of our course resources</a></p>
-<div class="fyi">
-<p><strong>EXERCISES</strong></p>
-<ol start="0" type="1">
+<p>For more on using R Markdown, see the <a href="..\resource/rmarkdown.html">R Markdown page of our course resources</a>. You can also learn about the general Markdown language <a href="..\resource/markdown/">on our Markdown page of our course resources</a></p>
+</section>
+<section id="exercises" class="level1">
+<h1>EXERCISES</h1>
+<ol type="1">
 <li><p>In your first code chunk, load the package library <code>tidyverse</code>, which you will need for Question 8. Always load all your package libraries at the top, in the first code chunk!</p></li>
 <li><p>What will this conditional expression return and why?</p></li>
 </ol>
@@ -749,7 +737,7 @@ lines(n, n*(n+1)/2)
 <span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"Not all positives"</span>)</span>
 <span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol start="2" type="1">
+<ol start="3" type="1">
 <li>Which of the following expressions is always <code>FALSE</code> when at least one entry of a logical vector <code>x</code> is TRUE?</li>
 </ol>
 <ol type="a">
@@ -758,10 +746,10 @@ lines(n, n*(n+1)/2)
 <li><code>any(!x)</code></li>
 <li><code>all(!x)</code></li>
 </ol>
-<ol start="3" type="1">
+<ol start="4" type="1">
 <li><p>The function <code>nchar</code> tells you how many characters long a character vector is. Write a line of code that assigns a new column in <code>murders</code> called <code>new_names</code> that is equal to the <code>state</code> column. Then, replace <code>new_names</code> with the corresponding state abbreviation when the state name is longer than 8 characters.</p></li>
 <li><p>Create a function <code>sum_n</code> that for any given value, say <span class="math inline">\(n\)</span>, computes the sum of the integers from 1 to n (inclusive). Use the function to determine the sum of integers from 1 to 5,000.</p></li>
-<li><p>Create a function <code>altman_plot</code> that takes two arguments, <code>x</code> and <code>y</code>, and plots the difference against the sum. That is, the <em>difference</em> should be on the y-axis and the and the sum should be on the x-axis. Use it to make an altman plot of <code>x &lt;- c(5,7,9)</code> and <code>y &lt;- c(10,11,12)</code>. When your function creates the plot, it will output automatically in your Rmarkdown knitted .pdf.</p></li>
+<li><p>Create a function <code>altman_plot</code> that takes two arguments, <code>x</code> and <code>y</code>, and plots the difference between <code>x</code> and <code>y</code> against the sum of <code>x</code> and <code>y</code>. That is, the <em>difference</em> should be on the y-axis and the and the sum should be on the x-axis. Use it to make an altman plot of <code>x &lt;- c(5,7,9)</code> and <code>y &lt;- c(10,11,12)</code>. In your function, use <code>plot(x = ...., y = ....)</code>, which is the base plot function. When your function creates the plot, it will output automatically in your Rmarkdown knitted .pdf.</p></li>
 <li><p>After running the code below, what is the value of <code>x</code> and why?</p></li>
 </ol>
 <div class="cell">
@@ -771,18 +759,18 @@ lines(n, n*(n+1)/2)
 <span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  y<span class="sc">+</span><span class="dv">5</span></span>
 <span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol start="7" type="1">
+<ol start="8" type="1">
 <li><p>Write a function <code>compute_s_n</code> that for any given <span class="math inline">\(n\)</span> computes the sum <span class="math inline">\(S_n = 1^2 + 2^2 + 3^2 + \dots n^2\)</span>. Report the value of the sum when <span class="math inline">\(n=10\)</span>.</p></li>
-<li><p>Define an empty numerical vector <code>s_n</code> of size 25 using <code>s_n &lt;- vector("numeric", 25)</code> and store in the results of <span class="math inline">\(S_1, S_2, \dots S_{25}\)</span> using a for-loop.</p></li>
-<li><p>Repeat exercise 8, but this time use <code>sapply</code>.</p></li>
-<li><p>Repeat exercise 8, but this time use <code>map_dbl</code>.</p></li>
-<li><p>Plot <span class="math inline">\(S_n\)</span> versus <span class="math inline">\(n\)</span>. Use points defined by <span class="math inline">\(n=1,\dots,25\)</span>.</p></li>
+<li><p>Define an empty numerical vector <code>s_n</code> of size 25 using <code>s_n &lt;- vector("numeric", 25)</code> and store in it the results of <span class="math inline">\(S_1, S_2, \dots S_{25}\)</span> using a for-loop.</p></li>
+</ol>
+<!-- 10. Repeat exercise 8, but this time use `sapply`. -->
+<!-- 11. Repeat exercise 8, but this time use `map_dbl`. -->
+<ol start="10" type="1">
+<li><p>Create a data.frame holding <span class="math inline">\(n\)</span> and <span class="math inline">\(S_n\)</span>. Plot <span class="math inline">\(S_n\)</span> versus <span class="math inline">\(n\)</span>. Use points defined by <span class="math inline">\(n=1,\dots,25\)</span>.</p></li>
 <li><p>Confirm that the equivalent formula for this sum is <span class="math inline">\(S_n= n(n+1)(2n+1)/6\)</span>. To do so, compare whether <code>compute_s_n</code> gives the same result for the vector <code>s_n</code> as the equivalent formula for the sum.</p></li>
 </ol>
-</div>
 
 
-</section>
 </section>
 
 
