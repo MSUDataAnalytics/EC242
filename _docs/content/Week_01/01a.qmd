@@ -12,7 +12,7 @@ library(tidyverse)
 <!-- Some notes Summer2024: -->
 <!-- had to delete ggflags  -->
 
-## Readings  
+# Readings  
 
 Your readings will be assigned each week in this area. For this initial week, please read the course content for this week. **Read closely** the following:
 
@@ -49,7 +49,7 @@ I encourage measured feedback and thoughtful responses to questions. If I call o
 
 ### Things To Remember (tl;dr)
 
-Do your weekly writing due **Saturday**. Begin working on Lab 0 as it is due Monday.
+Do your weekly writing due **Saturday**. Begin working on Lab 1 as it is due ~~Monday~~ Tuesday (as the syllabus states, if Monday is a holiday, it is due the next non-holiday date: Tuesday September 3rd. The regular date will always be Monday).
 
 Keys from the [syllabus](/syllabus/):
 
@@ -60,6 +60,14 @@ Keys from the [syllabus](/syllabus/):
 - Notify me immediately if you need accommodations because of RCPD or religious convictions; If you approach me at the last minute, I may not be able to help.
 
 Despite my hard-assness in these introductory notes: I'm here to help and I am not in the business of giving bad grades for no reason.
+
+### One quick plug:
+
+For econ majors or people interested in quantitative social sciences in general (which is this whole class):
+
+```{r, echo=F}
+knitr::include_graphics(here('images','Econ-social-event-flyer-2024.png'), error=F)
+```
 
 
 # What is "Data Analytics"?
