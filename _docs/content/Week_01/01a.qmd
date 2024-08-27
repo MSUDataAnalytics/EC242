@@ -1,6 +1,5 @@
 ---
 title: "Welcome To Data Analytics"
-read_date: "2024-01-09"
 lastmod: "`r Sys.Date()`" 
 ---
 
@@ -11,6 +10,8 @@ library(tidyverse)
 
 <!-- Some notes Summer2024: -->
 <!-- had to delete ggflags  -->
+
+
 
 # Readings  
 
@@ -33,9 +34,31 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 
 
 
-### Before we get started....
+# Before we get started....
 
-**Please please please please please:** ask questions during class.
+
+::: {.callout-note}
+## New phone who dis?
+
+For one participation point, please email me [jkirk@msu.edu](mailto:jkirk@msu.edu) with the subject *[EC242] Who Dis*. In the message, tell me:
+
+- Name (with pronunciation guide)
+
+- Major
+
+- Desired graduation year and semester
+
+- Interest in this course on a 10-point scale (1: not at all interested; 10: helllllll yeah)
+
+- Biggest social question (e.g. "What drives food deserts?")
+
+:::
+
+This will count for one of your participation points.
+
+
+
+### Please please please please please ask questions during class.
 
 - Most ideas will be new.
 
@@ -60,6 +83,7 @@ Keys from the [syllabus](/syllabus/):
 - Notify me immediately if you need accommodations because of RCPD or religious convictions; If you approach me at the last minute, I may not be able to help.
 
 Despite my hard-assness in these introductory notes: I'm here to help and I am not in the business of giving bad grades for no reason.
+
 
 ### One quick plug:
 
