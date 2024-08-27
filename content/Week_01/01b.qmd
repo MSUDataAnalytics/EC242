@@ -25,15 +25,17 @@ Do some stuff in R
 
 I'll ask you to give it a go. Then, after a few minutes, I'll ask if anyone wants to share their answer. You get one point of participation extra credit. Five points is worth 1% of a grade boost, so these aren't negligible points. Max boost over the semester is 5%.
 
+### `install.packages()`
+You should never, ever have `install.packages()` in your recorded code (in your "code" pane, or in your .Rmd). If it's in your .Rmd file, when you "knit", it'll try to install the packages and will get very confused. I saw a lot of `install.packages()` in code, so make sure to take them out.
+
+To use a package, you include (in your .Rmd) `library(packageName)`. That goes in your code, usually first thing.
 
 
 ### Assignment / Exercises
 The Assignments page has all of our weekly lab assignments (including Week 1, due on Monday at 11:59pm). The assignments often have a preamble and some code that has to be used to set you up for the questions. **The questions to be completed and turned in are under "Exercises" at the very end**.
 
-### Don't Slide into My DMs
-I don't like to use the DM feature of Slack. Not because I don't like getting DMs, but because the point of Slack is so we can all learn together. If you have a question, even if you're worried it's a silly question, then *others* will, I promise, have the same question. Asking in the public channel will answer everyone's question at once. Related to this: you should check the Slack to see if your question has already been asked.
 
-Another reason is that the TA will often be faster at responding than I will be, depending on day of week and time of day (I start my day before some of you even go to bed). If you DM me, the TA can't see it and can't reply.
+
 
 
 # Introduction to Applications
@@ -66,6 +68,11 @@ Before we get started with the motivating dataset, we need to cover the very bas
 Your Rstudio has two main areas in which code is written. The *console* appears at the bottom of your screen. You can interact directly with R through the console. Your *script editor* is at the top of your screen. This is where code that you want to save is written, usually in an order such that an entire set of commands can be written top-to-bottom and will run with the desired result. In the *script editor*, you can highlight lines of code and use command+enter (mac) or ctrl+enter (windows) to run just the bit of code.
 
 In class, you'll likely want to copy bits of code into a blank document and, at the end, save the document as notes, just for your reference. Remember, if you put something directly into the console, you won't have a record of it. Putting it into a script will keep a version of it.
+
+### Rmarkdown
+Rmarkdown lets us combine the processing and output from R code with text and headers written in plain english, which lets us *do something* in code and then *show it and discuss it* in one place.
+
+An .Rmd (Rmarkdown document) like your [lab and weekly writing templates](/assignment/) has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, "code chunks" that are processed by R. And third, markdown text that is processed as normal text (via markdown langugage). You do work in code chunks, the output is included in the document, and you discuss the results in-line. Make sure you read [using Rmarkdown](/resource/rmarkdown.html) and [using markdown](/resource/markdown.html) before you do your first weekly reading.
 
 Now, on to the use of `R`
 

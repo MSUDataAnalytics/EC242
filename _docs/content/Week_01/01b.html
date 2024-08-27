@@ -368,14 +368,14 @@ Try it
 </div>
 <p>I’ll ask you to give it a go. Then, after a few minutes, I’ll ask if anyone wants to share their answer. You get one point of participation extra credit. Five points is worth 1% of a grade boost, so these aren’t negligible points. Max boost over the semester is 5%.</p>
 </section>
+<section id="install.packages" class="level3">
+<h3 class="anchored" data-anchor-id="install.packages"><code>install.packages()</code></h3>
+<p>You should never, ever have <code>install.packages()</code> in your recorded code (in your “code” pane, or in your .Rmd). If it’s in your .Rmd file, when you “knit”, it’ll try to install the packages and will get very confused. I saw a lot of <code>install.packages()</code> in code, so make sure to take them out.</p>
+<p>To use a package, you include (in your .Rmd) <code>library(packageName)</code>. That goes in your code, usually first thing.</p>
+</section>
 <section id="assignment-exercises" class="level3">
 <h3 class="anchored" data-anchor-id="assignment-exercises">Assignment / Exercises</h3>
 <p>The Assignments page has all of our weekly lab assignments (including Week 1, due on Monday at 11:59pm). The assignments often have a preamble and some code that has to be used to set you up for the questions. <strong>The questions to be completed and turned in are under “Exercises” at the very end</strong>.</p>
-</section>
-<section id="dont-slide-into-my-dms" class="level3">
-<h3 class="anchored" data-anchor-id="dont-slide-into-my-dms">Don’t Slide into My DMs</h3>
-<p>I don’t like to use the DM feature of Slack. Not because I don’t like getting DMs, but because the point of Slack is so we can all learn together. If you have a question, even if you’re worried it’s a silly question, then <em>others</em> will, I promise, have the same question. Asking in the public channel will answer everyone’s question at once. Related to this: you should check the Slack to see if your question has already been asked.</p>
-<p>Another reason is that the TA will often be faster at responding than I will be, depending on day of week and time of day (I start my day before some of you even go to bed). If you DM me, the TA can’t see it and can’t reply.</p>
 </section>
 </section>
 <section id="introduction-to-applications" class="level1">
@@ -410,6 +410,11 @@ Keys to success
 <h3 class="anchored" data-anchor-id="console-and-script">Console and Script</h3>
 <p>Your Rstudio has two main areas in which code is written. The <em>console</em> appears at the bottom of your screen. You can interact directly with R through the console. Your <em>script editor</em> is at the top of your screen. This is where code that you want to save is written, usually in an order such that an entire set of commands can be written top-to-bottom and will run with the desired result. In the <em>script editor</em>, you can highlight lines of code and use command+enter (mac) or ctrl+enter (windows) to run just the bit of code.</p>
 <p>In class, you’ll likely want to copy bits of code into a blank document and, at the end, save the document as notes, just for your reference. Remember, if you put something directly into the console, you won’t have a record of it. Putting it into a script will keep a version of it.</p>
+</section>
+<section id="rmarkdown" class="level3">
+<h3 class="anchored" data-anchor-id="rmarkdown">Rmarkdown</h3>
+<p>Rmarkdown lets us combine the processing and output from R code with text and headers written in plain english, which lets us <em>do something</em> in code and then <em>show it and discuss it</em> in one place.</p>
+<p>An .Rmd (Rmarkdown document) like your <a href="../..\assignment/">lab and weekly writing templates</a> has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, “code chunks” that are processed by R. And third, markdown text that is processed as normal text (via markdown langugage). You do work in code chunks, the output is included in the document, and you discuss the results in-line. Make sure you read <a href="../..\resource/rmarkdown.html">using Rmarkdown</a> and <a href="../..\resource/markdown.html">using markdown</a> before you do your first weekly reading.</p>
 <p>Now, on to the use of <code>R</code></p>
 </section>
 <section id="objects" class="level3">
