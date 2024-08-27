@@ -107,6 +107,7 @@ Some "data analytics" topics we will cover:
 - Models of classification or discrete choice.
 - Analysis of ``wide'' data.
 - Decision trees and other non-linear models.
+- Visualization (both analytics and communication)
 
 ## Starting point for this course
 
@@ -117,13 +118,17 @@ Better utilizing existing data can improve our predictive power whilst providing
 
 ### Non-Social Science Approaches to Statistical Learning
 
-Suppose you are a researcher and you want to teach a computer to recognize images of a tree.
+Suppose you want to find out how long it takes things to fall from a fixed height (and you don't know the laws of physics). You might look for things falling and time them. Or you might climb to the top of a tower and drop a few things and time each of them. You might start to see a pattern in the data, and you might be able to fit a line or a curve to that data.
+
+That's learning. And since you might have measurement error, or you might not be keeping track of things like air resistance, you might have some deviations from that line or curve. That's statistical learning.
+
+Now, suppose you are a researcher and you want to teach a computer to recognize images of a tree.
 
 Note: this is an ``easy" problem. If you show pictures to a 3-year-old, that child will probably be able to tell you if there is a tree in the picture.
 
 Computer scientists spent about 20 years on this problem because they thought about the problem like nerds and tried to write down a series of rules.
 
-Rules are difficult to form, and simply writing rules misses the key insight: the data can tell you something.
+Often, rules are difficult to form, and simply writing rules misses the key insight: the data can tell you something.
 
 
 ### Social Science Approaches to Statistical Learning
@@ -142,9 +147,20 @@ from "A Call for a Moratorium on Prison Building" (1976)
 High construction | $\uparrow$~56\% | $\uparrow$~167\%
 Low construction | $\uparrow$~4\% | $\uparrow$~145\%
 
+**So what does the "Social Science" in "Social Science Data Analytics" do?**
+- People do not obey the laws of physics
+- People's preferences and feelings do not obey a strict logic
+  - You may prefer a burger for dinner today, but you might want spaghetti tomorrow
+- People interact with people to form outcomes we care about
+  - Demand, supply, and price
+  - Thus **EC**242
+  - But also, forming institutions (PoliSci), social movements and norms (sociology), spatial patterns (hello, Geo folks), interactions with natural resources (coupled human-natural systems), etc.
+  
+In a way, Social Science Data Analytics is a lot messier, complicated, and rewarding relative to just "data analytics".
 
 
 ### The Pros and Cons of Correlation
+The product of analysis often takes the form of a documented correlation. Our prison example showed us a *correlation*. This has some pros and cons.
 
 Pros:
 
@@ -188,7 +204,7 @@ We will also borrow a few other ideas from CS:
 - An eye towards practical implementability over "cleanliness"
 
 
-### A Case Study in Prediction
+### A Paradigm to Motivate Prediction
 
 **Example:** a firm wishes to predict user behavior based on previous purchases or interactions.
 

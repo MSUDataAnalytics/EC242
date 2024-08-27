@@ -394,6 +394,7 @@ window.Quarto = {
 <li>Models of classification or discrete choice.</li>
 <li>Analysis of ``wide’’ data.</li>
 <li>Decision trees and other non-linear models.</li>
+<li>Visualization (both analytics and communication)</li>
 </ul>
 </section>
 <section id="starting-point-for-this-course" class="level2">
@@ -402,10 +403,12 @@ window.Quarto = {
 <p><strong>WARNING:</strong> Causation is tough and we will spend the entire course warning you to avoid making causal claims!</p>
 <section id="non-social-science-approaches-to-statistical-learning" class="level3">
 <h3 class="anchored" data-anchor-id="non-social-science-approaches-to-statistical-learning">Non-Social Science Approaches to Statistical Learning</h3>
-<p>Suppose you are a researcher and you want to teach a computer to recognize images of a tree.</p>
+<p>Suppose you want to find out how long it takes things to fall from a fixed height (and you don’t know the laws of physics). You might look for things falling and time them. Or you might climb to the top of a tower and drop a few things and time each of them. You might start to see a pattern in the data, and you might be able to fit a line or a curve to that data.</p>
+<p>That’s learning. And since you might have measurement error, or you might not be keeping track of things like air resistance, you might have some deviations from that line or curve. That’s statistical learning.</p>
+<p>Now, suppose you are a researcher and you want to teach a computer to recognize images of a tree.</p>
 <p>Note: this is an ``easy” problem. If you show pictures to a 3-year-old, that child will probably be able to tell you if there is a tree in the picture.</p>
 <p>Computer scientists spent about 20 years on this problem because they thought about the problem like nerds and tried to write down a series of rules.</p>
-<p>Rules are difficult to form, and simply writing rules misses the key insight: the data can tell you something.</p>
+<p>Often, rules are difficult to form, and simply writing rules misses the key insight: the data can tell you something.</p>
 </section>
 <section id="social-science-approaches-to-statistical-learning" class="level3">
 <h3 class="anchored" data-anchor-id="social-science-approaches-to-statistical-learning">Social Science Approaches to Statistical Learning</h3>
@@ -437,9 +440,12 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+<p><strong>So what does the “Social Science” in “Social Science Data Analytics” do?</strong> - People do not obey the laws of physics - People’s preferences and feelings do not obey a strict logic - You may prefer a burger for dinner today, but you might want spaghetti tomorrow - People interact with people to form outcomes we care about - Demand, supply, and price - Thus <strong>EC</strong>242 - But also, forming institutions (PoliSci), social movements and norms (sociology), spatial patterns (hello, Geo folks), interactions with natural resources (coupled human-natural systems), etc.</p>
+<p>In a way, Social Science Data Analytics is a lot messier, complicated, and rewarding relative to just “data analytics”.</p>
 </section>
 <section id="the-pros-and-cons-of-correlation" class="level3">
 <h3 class="anchored" data-anchor-id="the-pros-and-cons-of-correlation">The Pros and Cons of Correlation</h3>
+<p>The product of analysis often takes the form of a documented correlation. Our prison example showed us a <em>correlation</em>. This has some pros and cons.</p>
 <p>Pros:</p>
 <ul>
 <li>Nature gives you correlations for free.</li>
@@ -477,8 +483,8 @@ window.Quarto = {
 </ul>
 </section>
 </section>
-<section id="a-case-study-in-prediction" class="level3">
-<h3 class="anchored" data-anchor-id="a-case-study-in-prediction">A Case Study in Prediction</h3>
+<section id="a-paradigm-to-motivate-prediction" class="level3">
+<h3 class="anchored" data-anchor-id="a-paradigm-to-motivate-prediction">A Paradigm to Motivate Prediction</h3>
 <p><strong>Example:</strong> a firm wishes to predict user behavior based on previous purchases or interactions.</p>
 <p>Small margins <span class="math inline">\(\rightarrow\)</span> huge payoffs when <em>scaled up</em>.</p>
 <p><span class="math inline">\(.01\% \rightarrow\)</span> $10 million.</p>
