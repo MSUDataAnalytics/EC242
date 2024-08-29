@@ -368,11 +368,6 @@ Try it
 </div>
 <p>I’ll ask you to give it a go. Then, after a few minutes, I’ll ask if anyone wants to share their answer. You get one point of participation extra credit. Five points is worth 1% of a grade boost, so these aren’t negligible points. Max boost over the semester is 5%.</p>
 </section>
-<section id="install.packages" class="level3">
-<h3 class="anchored" data-anchor-id="install.packages"><code>install.packages()</code></h3>
-<p>You should never, ever have <code>install.packages()</code> in your recorded code (in your “code” pane, or in your .Rmd). If it’s in your .Rmd file, when you “knit”, it’ll try to install the packages and will get very confused. I saw a lot of <code>install.packages()</code> in code, so make sure to take them out.</p>
-<p>To use a package, you include (in your .Rmd) <code>library(packageName)</code>. That goes in your code, usually first thing.</p>
-</section>
 <section id="assignment-exercises" class="level3">
 <h3 class="anchored" data-anchor-id="assignment-exercises">Assignment / Exercises</h3>
 <p>The Assignments page has all of our weekly lab assignments (including Week 1, due on Monday at 11:59pm). The assignments often have a preamble and some code that has to be used to set you up for the questions. <strong>The questions to be completed and turned in are under “Exercises” at the very end</strong>.</p>
@@ -410,11 +405,31 @@ Keys to success
 <h3 class="anchored" data-anchor-id="console-and-script">Console and Script</h3>
 <p>Your Rstudio has two main areas in which code is written. The <em>console</em> appears at the bottom of your screen. You can interact directly with R through the console. Your <em>script editor</em> is at the top of your screen. This is where code that you want to save is written, usually in an order such that an entire set of commands can be written top-to-bottom and will run with the desired result. In the <em>script editor</em>, you can highlight lines of code and use command+enter (mac) or ctrl+enter (windows) to run just the bit of code.</p>
 <p>In class, you’ll likely want to copy bits of code into a blank document and, at the end, save the document as notes, just for your reference. Remember, if you put something directly into the console, you won’t have a record of it. Putting it into a script will keep a version of it.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="01b_insertimage_1.png" class="img-fluid figure-img"></p>
+<figcaption>Screenshot of RStudio</figcaption>
+</figure>
+</div>
 </section>
 <section id="rmarkdown" class="level3">
 <h3 class="anchored" data-anchor-id="rmarkdown">Rmarkdown</h3>
 <p>Rmarkdown lets us combine the processing and output from R code with text and headers written in plain english, which lets us <em>do something</em> in code and then <em>show it and discuss it</em> in one place.</p>
 <p>An .Rmd (Rmarkdown document) like your <a href="../..\assignment/">lab and weekly writing templates</a> has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, “code chunks” that are processed by R. And third, markdown text that is processed as normal text (via markdown langugage). You do work in code chunks, the output is included in the document, and you discuss the results in-line. Make sure you read <a href="../..\resource/rmarkdown.html">using Rmarkdown</a> and <a href="../..\resource/markdown.html">using markdown</a> before you do your first weekly reading.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="01b_insertimage_2.png" class="img-fluid figure-img"></p>
+<figcaption>A code chunk in a .Rmd</figcaption>
+</figure>
+</div>
+<p>Your R code goes here in these “chunks”. In the upper right, you’ll see a green down-pointing triangle and a green right-pointing triangle. The first one (down-pointing) runs <em>all of the previous code chunks up to this one</em> while the second (right-pointing) runs <em>this</em> code chunk.</p>
+<p>This is very useful when you are iterating through steps to develop your code. Running a code chunk will show you the output from that code chunk, which is what will drop into your .Rmd file when you knit it. Note that you can also highlight code and use CTRL+ENTER (or CMD+ENTER for macs) to run code.</p>
+<p>The header on the code chunk tells Rstudio what language to use to run the chunk (<code>r</code>), and can take some settings for displaying output. The one you want to know now is <code>echo=T</code>. When this is <code>TRUE</code> (the document’s default), then knitting will include a copy of your code along with the output. Don’t change this to <code>FALSE</code> or I can’t see your work when grading.</p>
+</section>
+<section id="install.packages" class="level3">
+<h3 class="anchored" data-anchor-id="install.packages"><code>install.packages()</code></h3>
+<p>You should never, ever have <code>install.packages()</code> in your recorded code (in your “code” file if using an R script, or in your code chunks in a .Rmd). If it’s in your .Rmd file, when you “knit”, it’ll try to install the packages and will get very confused. I saw a lot of <code>install.packages()</code> in code, so make sure to take them out.</p>
+<p>To use a package, you include (in your .Rmd) <code>library(packageName)</code>. That goes in your code, usually first thing.</p>
 <p>Now, on to the use of <code>R</code></p>
 </section>
 <section id="objects" class="level3">

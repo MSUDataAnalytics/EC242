@@ -9,9 +9,6 @@ Heiss site + associated github:
 https://evalsp24.classes.andrewheiss.com
 https://github.com/andrewheiss/evalsp24.classes.andrewheiss.com/blob/main/_quarto.yml
 
-Our site:
-https://main--earnest-crostata-11dc6a.netlify.app
-
 
 
 ## Build
@@ -68,7 +65,9 @@ Keep callout-warning and callout-important and callout-tip, but change callout-n
 
 
 ## Images inserted
-Right now, using here() to top of directory, then pointing to here('/images/...') or data for images. Copying to website seems to work fine.
+Right now, using here() to top of directory, then pointing to here('/images/...') or data for images. INternal copying to website folder seems to work fine, alleviating the biggest problem with the old site.
+
+
 
 
 ## Data and Static Files
@@ -97,10 +96,17 @@ Andrew Heiss has a lot of custom scss in his site: https://github.com/andrewheis
 To refer to a page that is an index for a folder like content or assignment, use (/assignment/). For schedule or syllabus (or a weekly content) use (/syllabus.html) or (/content/Week_01/01a.html). A section can be added (/content/Week_01/01b.html#factors)
 
 
+## Screenshots-to-page
+https://github.com/Toniiiio/imageclipr
+I use this (an "add in" to Rstudio) that copies the clipboard (screenshot) to a new file in the current location, then inserts a reference to it. It would be nice if it went to the Image folder and refered to it there, but this makes it feasible to incorporate screenshots quickly.
 
 
 ## Rendering during semester
 Use the _quarto render section to set what to render (and what not to render). Use this to update as things are ready.
+
+
+
+
 
 
 #### STILL TO DO

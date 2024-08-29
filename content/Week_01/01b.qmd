@@ -25,10 +25,6 @@ Do some stuff in R
 
 I'll ask you to give it a go. Then, after a few minutes, I'll ask if anyone wants to share their answer. You get one point of participation extra credit. Five points is worth 1% of a grade boost, so these aren't negligible points. Max boost over the semester is 5%.
 
-### `install.packages()`
-You should never, ever have `install.packages()` in your recorded code (in your "code" pane, or in your .Rmd). If it's in your .Rmd file, when you "knit", it'll try to install the packages and will get very confused. I saw a lot of `install.packages()` in code, so make sure to take them out.
-
-To use a package, you include (in your .Rmd) `library(packageName)`. That goes in your code, usually first thing.
 
 
 ### Assignment / Exercises
@@ -69,10 +65,26 @@ Your Rstudio has two main areas in which code is written. The *console* appears 
 
 In class, you'll likely want to copy bits of code into a blank document and, at the end, save the document as notes, just for your reference. Remember, if you put something directly into the console, you won't have a record of it. Putting it into a script will keep a version of it.
 
+![Screenshot of RStudio](01b_insertimage_1.png)
+
 ### Rmarkdown
 Rmarkdown lets us combine the processing and output from R code with text and headers written in plain english, which lets us *do something* in code and then *show it and discuss it* in one place.
 
 An .Rmd (Rmarkdown document) like your [lab and weekly writing templates](/assignment/) has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, "code chunks" that are processed by R. And third, markdown text that is processed as normal text (via markdown langugage). You do work in code chunks, the output is included in the document, and you discuss the results in-line. Make sure you read [using Rmarkdown](/resource/rmarkdown.html) and [using markdown](/resource/markdown.html) before you do your first weekly reading.
+
+![A code chunk in a .Rmd](01b_insertimage_2.png)
+
+Your R code goes here in these "chunks". In the upper right, you'll see a green down-pointing triangle and a green right-pointing triangle. The first one (down-pointing) runs *all of the previous code chunks up to this one* while the second (right-pointing) runs *this* code chunk.
+
+This is very useful when you are iterating through steps to develop your code. Running a code chunk will show you the output from that code chunk, which is what will drop into your .Rmd file when you knit it. Note that you can also highlight code and use CTRL+ENTER (or CMD+ENTER for macs) to run code. 
+
+The header on the code chunk tells Rstudio what language to use to run the chunk (`r`), and can take some settings for displaying output. The one you want to know now is `echo=T`. When this is `TRUE` (the document's default), then knitting will include a copy of your code along with the output. Don't change this to `FALSE` or I can't see your work when grading.
+
+### `install.packages()`
+You should never, ever have `install.packages()` in your recorded code (in your "code" file if using an R script, or in your code chunks in a .Rmd). If it's in your .Rmd file, when you "knit", it'll try to install the packages and will get very confused. I saw a lot of `install.packages()` in code, so make sure to take them out.
+
+To use a package, you include (in your .Rmd) `library(packageName)`. That goes in your code, usually first thing.
+
 
 Now, on to the use of `R`
 
