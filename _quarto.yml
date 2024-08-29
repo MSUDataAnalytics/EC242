@@ -61,7 +61,7 @@ website:
   announcement: 
     icon: info-circle
     dismissable: true
-    content: "**Alert** - this site is still under construction"
+    content: "Weekly Writing 1 assignment is now open on D2L"
     type: primary
     position: below-navbar
   search: 

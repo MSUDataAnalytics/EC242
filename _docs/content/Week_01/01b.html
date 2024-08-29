@@ -204,8 +204,8 @@ window.Quarto = {
       </button>
     </div>
   </nav>
-  <div id="quarto-announcement" data-announcement-id="af5b26b66d85ed4921241b62b501b43f" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>Alert</strong> - this site is still under construction</p>
+  <div id="quarto-announcement" data-announcement-id="7da7a599a3ac389d28a369f612c41f70" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p>Weekly Writing 1 assignment is now open on D2L</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -315,7 +315,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#the-very-basics-of-r" id="toc-the-very-basics-of-r" class="nav-link" data-scroll-target="#the-very-basics-of-r">The (very) basics of <code>R</code></a></li>
   <li><a href="#data-types" id="toc-data-types" class="nav-link" data-scroll-target="#data-types">Data types</a></li>
-  <li><a href="#vectors" id="toc-vectors" class="nav-link" data-scroll-target="#vectors">Vectors</a></li>
+  <li><a href="#creating-vectors" id="toc-creating-vectors" class="nav-link" data-scroll-target="#creating-vectors">Creating Vectors</a></li>
   <li><a href="#coercion" id="toc-coercion" class="nav-link" data-scroll-target="#coercion">Coercion</a></li>
   <li><a href="#sorting" id="toc-sorting" class="nav-link" data-scroll-target="#sorting">Sorting</a></li>
   <li><a href="#vector-arithmetics" id="toc-vector-arithmetics" class="nav-link" data-scroll-target="#vector-arithmetics">Vector arithmetics</a></li>
@@ -755,6 +755,12 @@ Try it!
 </div>
 </div>
 </section>
+<section id="installing-packages" class="level3">
+<h3 class="anchored" data-anchor-id="installing-packages">Installing Packages</h3>
+<p>Woah, there – <code>data("murder")</code> gave me an error! Well, the data, like many functions, are part of a package. Here, it’s the <code>dslabs</code> package. We need to <em>install</em> the package before we can use it’s functions or data.</p>
+<p>To install a new package, we use <code>install.packages('packageName')</code> (where hopefully-obviously “packageName” is the name of the package you want to install). We type this <strong>once directly into the console</strong>, which will add the package to our computer permanently (unless you delete it). Then, to use it thereafter, we use only <code>library(dslabs)</code>.</p>
+<p>Note that there are quotes when using <code>install.packages</code> but no quotes when using <code>library</code>.</p>
+</section>
 <section id="examining-an-object" class="level3">
 <h3 class="anchored" data-anchor-id="examining-an-object">Examining an object</h3>
 <p>The function <code>str</code> is useful for finding out more about the structure of an object:</p>
@@ -849,9 +855,21 @@ $ total : num 135 19 232 93 1257 ...</code></pre>
 </div>
 </div>
 <p>Here the <code>==</code> is a relational operator asking if 3 is equal to 2. In <code>R</code>, if you just use one <code>=</code>, you actually assign a variable, but if you use two <code>==</code> you test for equality. Yet another reason to avoid assigning via <code>=</code>… it can get confusing and typos can really mess things up.</p>
+<p>You can ask if multiple things in a vector are equal to one specific thing:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>total <span class="sc">==</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[25] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+[37] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[49] FALSE FALSE  TRUE</code></pre>
+</div>
+</div>
+<p>That gives you 51 answers to the question “is this value of <code>murders$total</code> equal to 5? The answer is a vector of logicals.</p>
 <p>You can see the other <em>relational operators</em> by typing:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>?Comparison</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>?Comparison</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In future sections, you will see how useful relational operators can be.</p>
 <p>We discuss more important features of vectors after the next set of exercises.</p>
@@ -861,14 +879,14 @@ $ total : num 135 19 232 93 1257 ...</code></pre>
 <h3 class="anchored" data-anchor-id="factors">Factors</h3>
 <p>In the <code>murders</code> dataset, we might expect the region to also be a character vector. However, it is not:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(murders<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(murders<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "factor"</code></pre>
 </div>
 </div>
 <p>It is a <em>factor</em>. Factors are useful for storing categorical data. We can see that there are only 4 regions by using the <code>levels</code> function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(murders<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(murders<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Northeast"     "South"         "North Central" "West"         </code></pre>
 </div>
@@ -877,10 +895,10 @@ $ total : num 135 19 232 93 1257 ...</code></pre>
 <p>Note that the levels have an order that is different from the order of appearance in the factor object. The default in <code>R</code> is for the levels to follow alphabetical order. However, often we want the levels to follow a different order. You can specify an order through the <code>levels</code> argument when creating the factor with the <code>factor</code> function. For example, in the murders dataset regions are ordered from east to west. The function <code>reorder</code> lets us change the order of the levels of a factor variable based on a summary computed on a numeric vector. We will demonstrate this with a simple example, and will see more advanced ones in the Data Visualization part of the book.</p>
 <p>Suppose we want the levels of the region by the total number of murders rather than alphabetical order. If there are values associated with each level, we can use the <code>reorder</code> and specify a data summary to determine the order. The following code takes the sum of the total murders in each region, and reorders the factor following these sums.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> murders<span class="sc">$</span>region</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>value <span class="ot">&lt;-</span> murders<span class="sc">$</span>total</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> <span class="fu">reorder</span>(region, value, <span class="at">FUN =</span> sum)</span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> murders<span class="sc">$</span>region</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>value <span class="ot">&lt;-</span> murders<span class="sc">$</span>total</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> <span class="fu">reorder</span>(region, value, <span class="at">FUN =</span> sum)</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Northeast"     "North Central" "West"          "South"        </code></pre>
 </div>
@@ -892,7 +910,7 @@ $ total : num 135 19 232 93 1257 ...</code></pre>
 <h3 class="anchored" data-anchor-id="lists">Lists</h3>
 <p>Data frames are a special case of <em>lists</em>. We will cover lists in more detail later, but know that they are useful because you can store any combination of different types. In a data.frame, all columns have to be vectors of the same length (equal to the number of rows in the data.frame). In a list, each item can be of any length and of any type. Below is an example of a list we created for you:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>record</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>record</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$name
 [1] "John Doe"
@@ -906,21 +924,21 @@ $grades
 $final_grade
 [1] "A"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(record)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(record)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "list"</code></pre>
 </div>
 </div>
 <p>As with data frames, you can extract the components of a list with the accessor <code>$</code>. In fact, data frames are a type of list.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>record<span class="sc">$</span>student_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>record<span class="sc">$</span>student_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1234</code></pre>
 </div>
 </div>
 <p>We can also use double square brackets (<code>[[</code>) like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>record[[<span class="st">"student_id"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>record[[<span class="st">"student_id"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1234</code></pre>
 </div>
@@ -928,7 +946,7 @@ $final_grade
 <p>You should get used to the fact that in <code>R</code> there are often several ways to do the same thing. such as accessing entries.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 <p>You might also encounter lists without variable names.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>record2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>record2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 [1] "John Doe"
@@ -939,7 +957,7 @@ $final_grade
 </div>
 <p>If a list does not have names, you cannot extract the elements with <code>$</code>, but you can still use the brackets method and instead of providing the variable name, you provide the list index, like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>record2[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>record2[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "John Doe"</code></pre>
 </div>
@@ -952,8 +970,8 @@ $final_grade
 <p>Yet matrices have a major advantage over data frames: we can perform matrix algebra operations, a powerful type of mathematical technique. We do not describe these operations in this class, but much of what happens in the background when you perform a data analysis involves matrices. We describe them briefly here since some of the functions we will learn return matrices.</p>
 <p>We can define a matrix using the <code>matrix</code> function. We need to specify the number of rows and columns.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="dv">4</span>, <span class="dv">3</span>)</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="dv">4</span>, <span class="dv">3</span>)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
 [1,]    1    5    9
@@ -964,14 +982,14 @@ $final_grade
 </div>
 <p>You can access specific entries in a matrix using square brackets (<code>[</code>). If you want the second row, third column, you use:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">2</span>, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">2</span>, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10</code></pre>
 </div>
 </div>
 <p>If you want the entire second row, you leave the column spot empty:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">2</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">2</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  2  6 10</code></pre>
 </div>
@@ -979,7 +997,7 @@ $final_grade
 <p>Notice that this returns a vector, not a matrix.</p>
 <p>Similarly, if you want the entire third column, you leave the row spot empty:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>mat[, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>mat[, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  9 10 11 12</code></pre>
 </div>
@@ -987,7 +1005,7 @@ $final_grade
 <p>This is also a vector, not a matrix.</p>
 <p>You can access more than one column or more than one row if you like. This will give you a new matrix.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>mat[, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>mat[, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    5    9
@@ -998,7 +1016,7 @@ $final_grade
 </div>
 <p>You can subset both rows and columns:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    5    9
@@ -1007,7 +1025,7 @@ $final_grade
 </div>
 <p>We can convert matrices into data frames using the function <code>as.data.frame</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(mat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(mat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  V1 V2 V3
 1  1  5  9
@@ -1018,24 +1036,18 @@ $final_grade
 </div>
 <p>You can also use single square brackets (<code>[</code>) to access rows and columns of a data frame:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"murders"</span>)</span>
-<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">25</span>, <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"murders"</span>)</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">25</span>, <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Mississippi"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    state abb region population total
 2  Alaska  AK   West     710231    19
 3 Arizona  AZ   West    6392017   232</code></pre>
 </div>
 </div>
-</section>
-<section id="installing-packages" class="level3">
-<h3 class="anchored" data-anchor-id="installing-packages">Installing Packages</h3>
-<p>Woah, there – <code>data("murder")</code> gave me an error! Well, the data, like many functions, are part of a package. Here, it’s the <code>dslabs</code> package. We need to <em>install</em> the package before we can use it’s functions or data.</p>
-<p>To install a new package, we use <code>install.packages('packageName')</code> (where hopefully-obviously “packageName” is the name of the package you want to install). We type this <strong>once directly into the console</strong>, which will add the package to our computer permanently (unless you delete it). Then, to use it thereafter, we use only <code>library(dslabs)</code>.</p>
-<p>Note that there are quotes when using <code>install.packages</code> but no quotes when using <code>library</code>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1050,8 +1062,8 @@ Try it!
 <li>Install the <code>dslabs</code> package, load the package, and load the US murders dataset.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Use the function <code>str</code> to examine the structure of the <code>murders</code> object. Which of the following best describes the variables represented in this data frame?</p>
 <ul>
@@ -1075,7 +1087,7 @@ Try it!
 <li><p>We saw that the <code>region</code> column stores a factor. You can corroborate this by typing:</p></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(murders<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(murders<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With one line of code, use the function <code>levels</code> and <code>length</code> to determine the number of regions defined by this dataset.</p>
 <ol start="6" type="1">
@@ -1084,41 +1096,76 @@ Try it!
 </div>
 </div>
 </section>
+<section id="sequences" class="level3">
+<h3 class="anchored" data-anchor-id="sequences">Sequences</h3>
+<p>Another useful function for creating vectors generates sequences:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+</div>
+<p>The first argument defines the start, and the second defines the end which is included. The default is to go up in increments of 1, but a third argument lets us tell it how much to jump by:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 3 5 7 9</code></pre>
+</div>
+</div>
+<p>If we want consecutive integers, we can use the following shorthand:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+</div>
+<p>When we use these functions, <code>R</code> produces integers, not numerics, because they are typically used to index something:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+</div>
+<p>However, if we create a sequence including non-integers, the class changes:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+</div>
 </section>
-<section id="vectors" class="level2">
-<h2 class="anchored" data-anchor-id="vectors">Vectors</h2>
+</section>
+<section id="creating-vectors" class="level2">
+<h2 class="anchored" data-anchor-id="creating-vectors">Creating Vectors</h2>
 <p>In R, the most basic objects available to store data are <em>vectors</em>. As we have seen, complex datasets can usually be broken down into components that are vectors. For example, in a data frame, each column is a vector. Here we learn more about this important class.</p>
-<section id="creating-vectors" class="level3">
-<h3 class="anchored" data-anchor-id="creating-vectors">Creating vectors</h3>
 <p>We can create vectors using the function <code>c</code>, which stands for <em>concatenate</em>. We use <code>c</code> to concatenate entries in the following way:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">380</span>, <span class="dv">124</span>, <span class="dv">818</span>)</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>codes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">380</span>, <span class="dv">124</span>, <span class="dv">818</span>)</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>codes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 380 124 818</code></pre>
 </div>
 </div>
 <p>We can also create character vectors. We use the quotes to denote that the entries are characters rather than variable names.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>country <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"italy"</span>, <span class="st">"canada"</span>, <span class="st">"egypt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>country <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"italy"</span>, <span class="st">"canada"</span>, <span class="st">"egypt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In <code>R</code> you can also use single quotes:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>country <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'italy'</span>, <span class="st">'canada'</span>, <span class="st">'egypt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>country <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'italy'</span>, <span class="st">'canada'</span>, <span class="st">'egypt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>But be careful not to confuse the single quote ’ with the <em>back quote</em>, which shares a keyboard key with <kbd>~</kbd>.</p>
 <p>By now you should know that if you type:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>country <span class="ot">&lt;-</span> <span class="fu">c</span>(italy, canada, egypt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>country <span class="ot">&lt;-</span> <span class="fu">c</span>(italy, canada, egypt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>you receive an error because the variables <code>italy</code>, <code>canada</code>, and <code>egypt</code> are not defined. If we do not use the quotes, <code>R</code> looks for variables with those names and returns an error.</p>
-</section>
 <section id="names" class="level3">
 <h3 class="anchored" data-anchor-id="names">Names</h3>
 <p>Sometimes it is useful to name the entries of a vector. For example, when defining a vector of country codes, we can use the names to connect the two:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">italy =</span> <span class="dv">380</span>, <span class="at">canada =</span> <span class="dv">124</span>, <span class="at">egypt =</span> <span class="dv">818</span>)</span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>codes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">italy =</span> <span class="dv">380</span>, <span class="at">canada =</span> <span class="dv">124</span>, <span class="at">egypt =</span> <span class="dv">818</span>)</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>codes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> italy canada  egypt 
    380    124    818 </code></pre>
@@ -1126,22 +1173,22 @@ Try it!
 </div>
 <p>The object <code>codes</code> continues to be a numeric vector:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(codes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(codes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "numeric"</code></pre>
 </div>
 </div>
 <p>but with names:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(codes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(codes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "italy"  "canada" "egypt" </code></pre>
 </div>
 </div>
 <p>If the use of strings without quotes looks confusing, know that you can use the quotes as well:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"italy"</span> <span class="ot">=</span> <span class="dv">380</span>, <span class="st">"canada"</span> <span class="ot">=</span> <span class="dv">124</span>, <span class="st">"egypt"</span> <span class="ot">=</span> <span class="dv">818</span>)</span>
-<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>codes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"italy"</span> <span class="ot">=</span> <span class="dv">380</span>, <span class="st">"canada"</span> <span class="ot">=</span> <span class="dv">124</span>, <span class="st">"egypt"</span> <span class="ot">=</span> <span class="dv">818</span>)</span>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a>codes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> italy canada  egypt 
    380    124    818 </code></pre>
@@ -1149,49 +1196,11 @@ Try it!
 </div>
 <p>There is no difference between this function call and the previous one. This is one of the many ways in which <code>R</code> is quirky compared to other languages.</p>
 </section>
-<section id="sequences" class="level3">
-<h3 class="anchored" data-anchor-id="sequences">Sequences</h3>
-<p>Another useful function for creating vectors generates sequences:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-</div>
-</div>
-<p>The first argument defines the start, and the second defines the end which is included. The default is to go up in increments of 1, but a third argument lets us tell it how much to jump by:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1 3 5 7 9</code></pre>
-</div>
-</div>
-<p>If we want consecutive integers, we can use the following shorthand:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-</div>
-</div>
-<p>When we use these functions, <code>R</code> produces integers, not numerics, because they are typically used to index something:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "integer"</code></pre>
-</div>
-</div>
-<p>However, if we create a sequence including non-integers, the class changes:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "numeric"</code></pre>
-</div>
-</div>
-</section>
 <section id="subsetting" class="level3">
 <h3 class="anchored" data-anchor-id="subsetting">Subsetting</h3>
 <p>We use square brackets to access specific elements of a vector. For the vector <code>codes</code> we defined above, we can access the second element using:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>canada 
    124 </code></pre>
@@ -1199,7 +1208,7 @@ Try it!
 </div>
 <p>You can get more than one entry by using a multi-entry vector as an index:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>italy egypt 
   380   818 </code></pre>
@@ -1207,7 +1216,7 @@ Try it!
 </div>
 <p>The sequences defined above are particularly useful if we want to access, say, the first two elements:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> italy canada 
    380    124 </code></pre>
@@ -1215,12 +1224,12 @@ Try it!
 </div>
 <p>If the elements have names, we can also access the entries using these names. Below are two examples.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="st">"canada"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="st">"canada"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>canada 
    124 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="fu">c</span>(<span class="st">"egypt"</span>,<span class="st">"italy"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>codes[<span class="fu">c</span>(<span class="st">"egypt"</span>,<span class="st">"italy"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>egypt italy 
   818   380 </code></pre>
@@ -1231,7 +1240,7 @@ Try it!
 <p>When we have 2 dimensions (rows and columns in a data.frame or matrix) we can subset on either or both. Since we have two dimensions, we have to have room for two subsets in the square brackets. So, we use a <code>,</code> and subset by <strong>[row,col]</strong>:</p>
 <p>For the first five rows and the first two columns of <code>murders</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       state abb
 1    Alabama  AL
@@ -1243,21 +1252,21 @@ Try it!
 </div>
 <p>For the 3rd row, 4th column:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">3</span>,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">3</span>,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6392017</code></pre>
 </div>
 </div>
 <p>And, we can refer to columns by the column names (if we’re working with a data.frame):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="st">'population'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="st">'population'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4779736  710231 6392017</code></pre>
 </div>
 </div>
 <p>We aren’t limited to a sequence like <code>1:3</code> either. We can <code>c()</code> multiple rows or columns. Here, I do both:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">51</span>), <span class="fu">c</span>(<span class="st">'state'</span>,<span class="st">'abb'</span>,<span class="st">'population'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">51</span>), <span class="fu">c</span>(<span class="st">'state'</span>,<span class="st">'abb'</span>,<span class="st">'population'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     state abb population
 1  Alabama  AL    4779736
@@ -1267,7 +1276,7 @@ Try it!
 </div>
 <p>And if we want <em>all</em> the rows or <em>all</em> the columns, we leave the row or column index blank:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">10</span><span class="sc">:</span><span class="dv">13</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">10</span><span class="sc">:</span><span class="dv">13</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     state abb region population total
 10 Florida  FL  South   19687653   669
@@ -1284,15 +1293,15 @@ Try it!
 <p>In general, <em>coercion</em> is an attempt by <code>R</code> to be flexible with data types. When an entry does not match the expected, some of the prebuilt <code>R</code> functions try to guess what was meant before throwing an error. This can also lead to confusion. Failing to understand <em>coercion</em> can drive programmers crazy when attempting to code in <code>R</code> since it behaves quite differently from most other languages in this regard. Let’s learn about it with some examples.</p>
 <p>We said that vectors must be all of the same type. So if we try to combine, say, numbers and characters, you might expect an error:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="st">"canada"</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="st">"canada"</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>But we don’t get one, not even a warning! What happened? Look at <code>x</code> and its class:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "1"      "canada" "3"     </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "character"</code></pre>
 </div>
@@ -1300,16 +1309,16 @@ Try it!
 <p>R <em>coerced</em> the data into characters. It guessed that because you put a character string in the vector, you meant the 1 and 3 to actually be character strings <code>"1"</code> and “<code>3</code>”. The fact that not even a warning is issued is an example of how coercion can cause many unnoticed errors in <code>R</code>.</p>
 <p>R also offers functions to change from one type to another. For example, you can turn numbers into characters with:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
-<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">as.character</span>(x)</span>
-<span id="cb154-3"><a href="#cb154-3" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb156-2"><a href="#cb156-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">as.character</span>(x)</span>
+<span id="cb156-3"><a href="#cb156-3" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "1" "2" "3" "4" "5"</code></pre>
 </div>
 </div>
 <p>You can turn it back with <code>as.numeric</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1 2 3 4 5</code></pre>
 </div>
@@ -1319,8 +1328,8 @@ Try it!
 <h3 class="anchored" data-anchor-id="not-availables-na">Not availables (NA)</h3>
 <p>This “topic” seems to be wholly unappreciated and it has been our experience that students often panic when encountering an <code>NA</code>. This often happens when a function tries to coerce one type to another and encounters an impossible case. In such circumstances, <code>R</code> usually gives us a warning and turns the entry into a special value called an <code>NA</code> (for “not available”). For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"b"</span>, <span class="st">"3"</span>)</span>
-<span id="cb158-2"><a href="#cb158-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"b"</span>, <span class="st">"3"</span>)</span>
+<span id="cb160-2"><a href="#cb160-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  1 NA  3</code></pre>
 </div>
@@ -1336,9 +1345,9 @@ Try it!
 <h3 class="anchored" data-anchor-id="sort"><code>sort</code></h3>
 <p>Say we want to rank the states from least to most gun murders. The function <code>sort</code> sorts a vector in increasing order. We can therefore see the largest number of gun murders by typing:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb160-2"><a href="#cb160-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span>
-<span id="cb160-3"><a href="#cb160-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(murders<span class="sc">$</span>total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb162"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb162-2"><a href="#cb162-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span>
+<span id="cb162-3"><a href="#cb162-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(murders<span class="sc">$</span>total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1]    2    4    5    5    7    8   11   12   12   16   19   21   22   27   32
 [16]   36   38   53   63   65   67   84   93   93   97   97   99  111  116  118
@@ -1352,27 +1361,27 @@ Try it!
 <h3 class="anchored" data-anchor-id="order"><code>order</code></h3>
 <p>The function <code>order</code> is closer to what we want. It takes a vector as input and returns the vector of indexes that sorts the input vector. This may sound confusing so let’s look at a simple example. We can create a vector and sort it:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb162"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">31</span>, <span class="dv">4</span>, <span class="dv">15</span>, <span class="dv">92</span>, <span class="dv">65</span>)</span>
-<span id="cb162-2"><a href="#cb162-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">31</span>, <span class="dv">4</span>, <span class="dv">15</span>, <span class="dv">92</span>, <span class="dv">65</span>)</span>
+<span id="cb164-2"><a href="#cb164-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  4 15 31 65 92</code></pre>
 </div>
 </div>
 <p>Rather than sort the input vector, the function <code>order</code> returns the index that sorts input vector:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">order</span>(x)</span>
-<span id="cb164-2"><a href="#cb164-2" aria-hidden="true" tabindex="-1"></a>x[index]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">order</span>(x)</span>
+<span id="cb166-2"><a href="#cb166-2" aria-hidden="true" tabindex="-1"></a>x[index]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  4 15 31 65 92</code></pre>
 </div>
 </div>
 <p>This is the same output as that returned by <code>sort(x)</code>. If we look at this index, we see why it works:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 31  4 15 92 65</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2 3 1 5 4</code></pre>
 </div>
@@ -1380,20 +1389,20 @@ Try it!
 <p>The second entry of <code>x</code> is the smallest, so <code>order(x)</code> starts with <code>2</code>. The next smallest is the third entry, so the second entry is <code>3</code> and so on.</p>
 <p>How does this help us order the states by murders? First, remember that the entries of vectors you access with <code>$</code> follow the same order as the rows in the table. For example, these two vectors containing state names and abbreviations, respectively, are matched by their order:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Alabama"    "Alaska"     "Arizona"    "Arkansas"   "California"
 [6] "Colorado"  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb174"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "AL" "AK" "AZ" "AR" "CA" "CO"</code></pre>
 </div>
 </div>
 <p>This means we can order the state names by their total murders. We first obtain the index that orders the vectors according to murder totals and then index the state names vector:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb174"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">order</span>(murders<span class="sc">$</span>total)</span>
-<span id="cb174-2"><a href="#cb174-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[ind]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb176"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb176-1"><a href="#cb176-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">order</span>(murders<span class="sc">$</span>total)</span>
+<span id="cb176-2"><a href="#cb176-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[ind]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "VT" "ND" "NH" "WY" "HI" "SD" "ME" "ID" "MT" "RI" "AK" "IA" "UT" "WV" "NE"
 [16] "OR" "DE" "MN" "KS" "CO" "NM" "NV" "AR" "WA" "CT" "WI" "DC" "OK" "KY" "MA"
@@ -1404,7 +1413,7 @@ Try it!
 <p>According to the above, California had the most murders.</p>
 <p>If we wanted to re-order the whole data.frame based on the <code>murders$total</code> index, and <strong>overwrite with the new order</strong>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb176"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb176-1"><a href="#cb176-1" aria-hidden="true" tabindex="-1"></a>murders_ordered <span class="ot">=</span> murders[ind,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb178"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb178-1"><a href="#cb178-1" aria-hidden="true" tabindex="-1"></a>murders_ordered <span class="ot">=</span> murders[ind,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This saves <code>murders</code> in a new data.frame called <code>murders_ordered</code> that is in the order defined by <code>ind</code>.</p>
 </section>
@@ -1412,15 +1421,15 @@ Try it!
 <h3 class="anchored" data-anchor-id="max-and-which.max"><code>max</code> and <code>which.max</code></h3>
 <p>If we are only interested in the entry with the largest value, we can use <code>max</code> for the value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(murders<span class="sc">$</span>total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(murders<span class="sc">$</span>total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1257</code></pre>
 </div>
 </div>
 <p>and <code>which.max</code> for the index of the largest value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a>i_max <span class="ot">&lt;-</span> <span class="fu">which.max</span>(murders<span class="sc">$</span>total)</span>
-<span id="cb179-2"><a href="#cb179-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[i_max]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a>i_max <span class="ot">&lt;-</span> <span class="fu">which.max</span>(murders<span class="sc">$</span>total)</span>
+<span id="cb181-2"><a href="#cb181-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[i_max]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "California"</code></pre>
 </div>
@@ -1432,8 +1441,8 @@ Try it!
 <h3 class="anchored" data-anchor-id="rank"><code>rank</code></h3>
 <p>Although not as frequently used as <code>order</code> and <code>sort</code>, the function <code>rank</code> is also related to order and can be useful. For any given vector it returns a vector with the rank of the first entry, second entry, etc., of the input vector. Here is a simple example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">31</span>, <span class="dv">4</span>, <span class="dv">15</span>, <span class="dv">92</span>, <span class="dv">65</span>)</span>
-<span id="cb181-2"><a href="#cb181-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rank</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb183"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb183-1"><a href="#cb183-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">31</span>, <span class="dv">4</span>, <span class="dv">15</span>, <span class="dv">92</span>, <span class="dv">65</span>)</span>
+<span id="cb183-2"><a href="#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rank</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3 1 2 5 4</code></pre>
 </div>
@@ -1492,9 +1501,9 @@ Try it!
 <h3 class="anchored" data-anchor-id="beware-of-recycling">Beware of recycling</h3>
 <p>Another common source of unnoticed errors in <code>R</code> is the use of <em>recycling</em>. We saw that vectors are added elementwise. So if the vectors don’t match in length, it is natural to assume that we should get an error. But we don’t. Notice what happens:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb183"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb183-1"><a href="#cb183-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
-<span id="cb183-2"><a href="#cb183-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">70</span>)</span>
-<span id="cb183-3"><a href="#cb183-3" aria-hidden="true" tabindex="-1"></a>x<span class="sc">+</span>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb185"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb185-1"><a href="#cb185-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
+<span id="cb185-2"><a href="#cb185-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">70</span>)</span>
+<span id="cb185-3"><a href="#cb185-3" aria-hidden="true" tabindex="-1"></a>x<span class="sc">+</span>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in x + y: longer object length is not a multiple of shorter object
 length</code></pre>
@@ -1517,8 +1526,8 @@ Note
 <p><strong>TRY IT</strong></p>
 <p>For these exercises we will use the US murders dataset. Make sure you load it prior to starting.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb186"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb186-2"><a href="#cb186-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"murders"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb188"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb188-1"><a href="#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb188-2"><a href="#cb188-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"murders"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol type="1">
 <li><p>Use the <code>$</code> operator to access the population size data and store it as the object <code>pop</code>. Then use the <code>sort</code> function to redefine <code>pop</code> so that it is sorted. Finally, use the <code>[</code> operator to report the smallest population size.</p></li>
@@ -1528,10 +1537,10 @@ Note
 <li><p>You can create a data frame using the <code>data.frame</code> function. Here is a quick example:</p></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb187"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb187-1"><a href="#cb187-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">88</span>, <span class="dv">42</span>, <span class="dv">84</span>, <span class="dv">81</span>, <span class="dv">30</span>)</span>
-<span id="cb187-2"><a href="#cb187-2" aria-hidden="true" tabindex="-1"></a>city <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Beijing"</span>, <span class="st">"Lagos"</span>, <span class="st">"Paris"</span>, <span class="st">"Rio de Janeiro"</span>,</span>
-<span id="cb187-3"><a href="#cb187-3" aria-hidden="true" tabindex="-1"></a>          <span class="st">"San Juan"</span>, <span class="st">"Toronto"</span>)</span>
-<span id="cb187-4"><a href="#cb187-4" aria-hidden="true" tabindex="-1"></a>city_temps <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> city, <span class="at">temperature =</span> temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb189"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb189-1"><a href="#cb189-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">88</span>, <span class="dv">42</span>, <span class="dv">84</span>, <span class="dv">81</span>, <span class="dv">30</span>)</span>
+<span id="cb189-2"><a href="#cb189-2" aria-hidden="true" tabindex="-1"></a>city <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Beijing"</span>, <span class="st">"Lagos"</span>, <span class="st">"Paris"</span>, <span class="st">"Rio de Janeiro"</span>,</span>
+<span id="cb189-3"><a href="#cb189-3" aria-hidden="true" tabindex="-1"></a>          <span class="st">"San Juan"</span>, <span class="st">"Toronto"</span>)</span>
+<span id="cb189-4"><a href="#cb189-4" aria-hidden="true" tabindex="-1"></a>city_temps <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> city, <span class="at">temperature =</span> temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Use the <code>rank</code> function to determine the population rank of each state from smallest population size to biggest. Save these ranks in an object called <code>ranks</code>, then create a data frame with the state name and its rank. Call the data frame <code>my_df</code>.</p>
 <ol start="6" type="1">
@@ -1539,15 +1548,15 @@ Note
 <li><p>The <code>na_example</code> vector represents a series of counts. You can quickly examine the object using:</p></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb188"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb188-1"><a href="#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"na_example"</span>)</span>
-<span id="cb188-2"><a href="#cb188-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(na_example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb190"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb190-1"><a href="#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"na_example"</span>)</span>
+<span id="cb190-2"><a href="#cb190-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(na_example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> int [1:1000] 2 1 3 2 1 3 1 4 3 2 ...</code></pre>
 </div>
 </div>
 <p>However, when we compute the average with the function <code>mean</code>, we obtain an <code>NA</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb190"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb190-1"><a href="#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(na_example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb192"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb192-1"><a href="#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(na_example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] NA</code></pre>
 </div>
@@ -1561,9 +1570,9 @@ Note
 <h2 class="anchored" data-anchor-id="vector-arithmetics">Vector arithmetics</h2>
 <p>California had the most murders, but does this mean it is the most dangerous state? What if it just has many more people than any other state? We can quickly confirm that California indeed has the largest population:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb192"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb192-1"><a href="#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb192-2"><a href="#cb192-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"murders"</span>)</span>
-<span id="cb192-3"><a href="#cb192-3" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[<span class="fu">which.max</span>(murders<span class="sc">$</span>population)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb194"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb194-1"><a href="#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb194-2"><a href="#cb194-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"murders"</span>)</span>
+<span id="cb194-3"><a href="#cb194-3" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[<span class="fu">which.max</span>(murders<span class="sc">$</span>population)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "California"</code></pre>
 </div>
@@ -1573,18 +1582,18 @@ Note
 <h3 class="anchored" data-anchor-id="rescaling-a-vector">Rescaling a vector</h3>
 <p>In R, arithmetic operations on vectors occur <em>element-wise</em>. For a quick example, suppose we have height in inches:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb194"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb194-1"><a href="#cb194-1" aria-hidden="true" tabindex="-1"></a>inches <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">69</span>, <span class="dv">62</span>, <span class="dv">66</span>, <span class="dv">70</span>, <span class="dv">70</span>, <span class="dv">73</span>, <span class="dv">67</span>, <span class="dv">73</span>, <span class="dv">67</span>, <span class="dv">70</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb196"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb196-1"><a href="#cb196-1" aria-hidden="true" tabindex="-1"></a>inches <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">69</span>, <span class="dv">62</span>, <span class="dv">66</span>, <span class="dv">70</span>, <span class="dv">70</span>, <span class="dv">73</span>, <span class="dv">67</span>, <span class="dv">73</span>, <span class="dv">67</span>, <span class="dv">70</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and want to convert to centimeters. Notice what happens when we multiply <code>inches</code> by 2.54:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb195"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb195-1"><a href="#cb195-1" aria-hidden="true" tabindex="-1"></a>inches <span class="sc">*</span> <span class="fl">2.54</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb197"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb197-1"><a href="#cb197-1" aria-hidden="true" tabindex="-1"></a>inches <span class="sc">*</span> <span class="fl">2.54</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 175.26 157.48 167.64 177.80 177.80 185.42 170.18 185.42 170.18 177.80</code></pre>
 </div>
 </div>
 <p>In the line above, we multiplied each element by 2.54. Similarly, if for each entry we want to compute how many inches taller or shorter than 69 inches, the average height for males, we can subtract it from every entry like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb197"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb197-1"><a href="#cb197-1" aria-hidden="true" tabindex="-1"></a>inches <span class="sc">-</span> <span class="dv">69</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb199"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb199-1"><a href="#cb199-1" aria-hidden="true" tabindex="-1"></a>inches <span class="sc">-</span> <span class="dv">69</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1]  0 -7 -3  1  1  4 -2  4 -2  1</code></pre>
 </div>
@@ -1618,11 +1627,11 @@ d + h
 <p>The same holds for other mathematical operations, such as <code>-</code>, <code>*</code> and <code>/</code>.</p>
 <p>This implies that to compute the murder rates we can simply type:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb199"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb199-1"><a href="#cb199-1" aria-hidden="true" tabindex="-1"></a>murder_rate <span class="ot">&lt;-</span> murders<span class="sc">$</span>total <span class="sc">/</span> murders<span class="sc">$</span>population <span class="sc">*</span> <span class="dv">100000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb201"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a>murder_rate <span class="ot">&lt;-</span> murders<span class="sc">$</span>total <span class="sc">/</span> murders<span class="sc">$</span>population <span class="sc">*</span> <span class="dv">100000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Once we do this, we notice that California is no longer near the top of the list. In fact, we can use what we have learned to order the states by murder rate:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb200"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[<span class="fu">order</span>(murder_rate)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb202"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb202-1"><a href="#cb202-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[<span class="fu">order</span>(murder_rate)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "VT" "NH" "HI" "ND" "IA" "ID" "UT" "ME" "WY" "OR" "SD" "MN" "MT" "CO" "WA"
 [16] "WV" "RI" "WI" "NE" "MA" "IN" "KS" "NY" "KY" "AK" "OH" "CT" "NJ" "AL" "IL"
@@ -1632,7 +1641,7 @@ d + h
 </div>
 <p>Right now, the <code>murder_rate</code> object isn’t in the <code>murders</code> data.frame, but we know it’s the right length (why?). So we can add it:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb202"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb202-1"><a href="#cb202-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>rate <span class="ot">=</span> murder_rate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb204"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb204-1"><a href="#cb204-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>rate <span class="ot">=</span> murder_rate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that now, we have two copies of the same vector of numbers – one called <code>murder_rate</code> floatin’ around in our environment, and another in our <code>murders</code> data.frame with the column name <code>rate</code>. If we re-order <code>murder_rate</code>, it won’t affect anything in <code>murders$rate</code> and vice versa.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1649,10 +1658,10 @@ Try it!
 <li>Previously we created this data frame:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb203"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">88</span>, <span class="dv">42</span>, <span class="dv">84</span>, <span class="dv">81</span>, <span class="dv">30</span>)</span>
-<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>city <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Beijing"</span>, <span class="st">"Lagos"</span>, <span class="st">"Paris"</span>, <span class="st">"Rio de Janeiro"</span>,</span>
-<span id="cb203-3"><a href="#cb203-3" aria-hidden="true" tabindex="-1"></a>          <span class="st">"San Juan"</span>, <span class="st">"Toronto"</span>)</span>
-<span id="cb203-4"><a href="#cb203-4" aria-hidden="true" tabindex="-1"></a>city_temps <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> city, <span class="at">temperature =</span> temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb205"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">88</span>, <span class="dv">42</span>, <span class="dv">84</span>, <span class="dv">81</span>, <span class="dv">30</span>)</span>
+<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a>city <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Beijing"</span>, <span class="st">"Lagos"</span>, <span class="st">"Paris"</span>, <span class="st">"Rio de Janeiro"</span>,</span>
+<span id="cb205-3"><a href="#cb205-3" aria-hidden="true" tabindex="-1"></a>          <span class="st">"San Juan"</span>, <span class="st">"Toronto"</span>)</span>
+<span id="cb205-4"><a href="#cb205-4" aria-hidden="true" tabindex="-1"></a>city_temps <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> city, <span class="at">temperature =</span> temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Remake the data frame using the code above, but add a line that converts the temperature from Fahrenheit to Celsius. The conversion is <span class="math inline">\(C = \frac{5}{9} \times (F - 32)\)</span>.</p>
 <ol start="2" type="1">
@@ -1670,15 +1679,15 @@ Try it!
 <h3 class="anchored" data-anchor-id="subsetting-with-logicals">Subsetting with logicals</h3>
 <p>Imagine you are moving from Italy where, according to an ABC news report, the murder rate is only 0.71 per 100,000. You would prefer to move to a state with a similar murder rate. Another powerful feature of <code>R</code> is that we can use logicals to index vectors. If we compare a vector to a single number, it actually performs the test for each entry. The following is an example related to the question above:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb204"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb204-1"><a href="#cb204-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;</span> <span class="fl">0.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb206"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb206-1"><a href="#cb206-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;</span> <span class="fl">0.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we instead want to know if a value is less or equal, we can use:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb205"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;=</span> <span class="fl">0.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb207"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb207-1"><a href="#cb207-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;=</span> <span class="fl">0.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that we get back a logical vector with <code>TRUE</code> for each entry smaller than or equal to 0.71. To see which states these are, we can leverage the fact that vectors can be indexed with logicals.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb206"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb206-1"><a href="#cb206-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[ind]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb208"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb208-1"><a href="#cb208-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[ind]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Hawaii"        "Iowa"          "New Hampshire" "North Dakota" 
 [5] "Vermont"      </code></pre>
@@ -1686,14 +1695,14 @@ Try it!
 </div>
 <p>In order to count how many are TRUE, the function <code>sum</code> returns the sum of the entries of a vector and logical vectors get <em>coerced</em> to numeric with <code>TRUE</code> coded as 1 and <code>FALSE</code> as 0. Thus we can count the states using:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb208"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb208-1"><a href="#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb210"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb210-1"><a href="#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
 </div>
 <p>Since <code>ind</code> has the same length as all of the columns in <code>murders</code>, it can be used as a row index. When used as a row index, it will return all the rows <em>for which the condition was true</em>. If we use this, leaving the column index blank (for all columns):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb210"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb210-1"><a href="#cb210-1" aria-hidden="true" tabindex="-1"></a>murders[ind,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb212"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb212-1"><a href="#cb212-1" aria-hidden="true" tabindex="-1"></a>murders[ind,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           state abb        region population total      rate
 12        Hawaii  HI          West    1360301     7 0.5145920
@@ -1708,28 +1717,28 @@ Try it!
 <h3 class="anchored" data-anchor-id="logical-operators">Logical operators</h3>
 <p>Suppose we like the mountains and we want to move to a safe state in the western region of the country. We want the murder rate to be at most 1. In this case, we want two different things to be true. Here we can use the logical operator <em>and</em>, which in <code>R</code> is represented with <code>&amp;</code>. This operation results in <code>TRUE</code> only when both logicals are <code>TRUE</code>. To see this, consider this example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb212"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb212-1"><a href="#cb212-1" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">&amp;</span> <span class="cn">TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb214"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb214-1"><a href="#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">&amp;</span> <span class="cn">TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb214"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb214-1"><a href="#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">&amp;</span> <span class="cn">FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb216"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb216-1"><a href="#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">&amp;</span> <span class="cn">FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb216"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb216-1"><a href="#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span> <span class="sc">&amp;</span> <span class="cn">FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span> <span class="sc">&amp;</span> <span class="cn">FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE</code></pre>
 </div>
 </div>
 <p>For our example, we can form two logicals:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a>west <span class="ot">&lt;-</span> murders<span class="sc">$</span>region <span class="sc">==</span> <span class="st">"West"</span></span>
-<span id="cb218-2"><a href="#cb218-2" aria-hidden="true" tabindex="-1"></a>safe <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;=</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb220"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb220-1"><a href="#cb220-1" aria-hidden="true" tabindex="-1"></a>west <span class="ot">&lt;-</span> murders<span class="sc">$</span>region <span class="sc">==</span> <span class="st">"West"</span></span>
+<span id="cb220-2"><a href="#cb220-2" aria-hidden="true" tabindex="-1"></a>safe <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;=</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and we can use the <code>&amp;</code> to get a vector of logicals that tells us which states satisfy both conditions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb219"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb219-1"><a href="#cb219-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> safe <span class="sc">&amp;</span> west</span>
-<span id="cb219-2"><a href="#cb219-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[ind]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb221"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb221-1"><a href="#cb221-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> safe <span class="sc">&amp;</span> west</span>
+<span id="cb221-2"><a href="#cb221-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[ind]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Hawaii"  "Idaho"   "Oregon"  "Utah"    "Wyoming"</code></pre>
 </div>
@@ -1739,8 +1748,8 @@ Try it!
 <h3 class="anchored" data-anchor-id="which"><code>which</code></h3>
 <p>Suppose we want to look up California’s murder rate. For this type of operation, it is convenient to convert vectors of logicals into indexes instead of keeping long vectors of logicals. The function <code>which</code> tells us which entries of a logical vector are TRUE. So we can type:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb221"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb221-1"><a href="#cb221-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>(murders<span class="sc">$</span>state <span class="sc">==</span> <span class="st">"California"</span>)</span>
-<span id="cb221-2"><a href="#cb221-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>rate[ind]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb223"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>(murders<span class="sc">$</span>state <span class="sc">==</span> <span class="st">"California"</span>)</span>
+<span id="cb223-2"><a href="#cb223-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>rate[ind]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.374138</code></pre>
 </div>
@@ -1750,7 +1759,7 @@ Try it!
 <h3 class="anchored" data-anchor-id="in"><code>%in%</code></h3>
 <p>If rather than an index we want a logical that tells us whether or not each element of a first vector is in a second, we can use the function <code>%in%</code>. Let’s imagine you are not sure if Boston, Dakota, and Washington are states. You can find out like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb223"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"Boston"</span>, <span class="st">"Dakota"</span>, <span class="st">"Washington"</span>) <span class="sc">%in%</span> murders<span class="sc">$</span>state</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb225"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"Boston"</span>, <span class="st">"Dakota"</span>, <span class="st">"Washington"</span>) <span class="sc">%in%</span> murders<span class="sc">$</span>state</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE FALSE  TRUE</code></pre>
 </div>
@@ -1768,8 +1777,8 @@ Try it!
 <div class="callout-body-container callout-body">
 <p>Start by loading the library and data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb225"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb225-2"><a href="#cb225-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb227"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb227-1"><a href="#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb227-2"><a href="#cb227-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that every time you run this, you replace <code>murder</code> in your environment. So if you had created the <code>murders$rate</code> column, it’s gone. But if you created the free-floating object <code>murder_rate</code>, that still exists (but can be overwritten).</p>
 <ol type="1">

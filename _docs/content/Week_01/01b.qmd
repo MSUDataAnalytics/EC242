@@ -410,6 +410,16 @@ To see that this is in fact a data frame, we type:
 class(murders)
 ```
 
+
+### Installing Packages
+Woah, there -- `data("murder")` gave me an error! Well, the data, like many functions, are part of a package. Here, it's the `dslabs` package. We need to *install* the package before we can use it's functions or data.
+
+To install a new package, we use `install.packages('packageName')` (where hopefully-obviously "packageName" is the name of the package you want to install). We type this **once directly into the console**, which will add the package to our computer permanently (unless you delete it). Then, to use it thereafter, we use only `library(dslabs)`. 
+
+Note that there are quotes when using `install.packages` but no quotes when using `library`.
+
+
+
 ### Examining an object
 
 The function `str` is useful for finding out more about the structure of an object:
@@ -489,6 +499,14 @@ class(z)
 ```
 
 Here the `==` is a relational operator asking if 3 is equal to 2. In `R`, if you just use one `=`, you actually assign a variable, but if you use two `==` you test for equality. Yet another reason to avoid assigning via `=`... it can get confusing and typos can really mess things up.
+
+You can ask if multiple things in a vector are equal to one specific thing:
+
+```{r}
+murders$total == 5
+```
+
+That gives you 51 answers to the question "is this value of `murders$total` equal to 5? The answer is a vector of logicals.
 
 You can see the other _relational operators_ by typing:
 
@@ -653,13 +671,6 @@ murders[2:3, ]
 ```
 
 
-### Installing Packages
-Woah, there -- `data("murder")` gave me an error! Well, the data, like many functions, are part of a package. Here, it's the `dslabs` package. We need to *install* the package before we can use it's functions or data.
-
-To install a new package, we use `install.packages('packageName')` (where hopefully-obviously "packageName" is the name of the package you want to install). We type this **once directly into the console**, which will add the package to our computer permanently (unless you delete it). Then, to use it thereafter, we use only `library(dslabs)`. 
-
-Note that there are quotes when using `install.packages` but no quotes when using `library`.
-
 
 
 
@@ -698,13 +709,44 @@ With one line of code, use the function `levels` and `length` to determine the n
 
 6. The function `table` takes a vector and returns the frequency of each element. You can quickly see how many states are in each region by applying this function. Use this function in one line of code to create a table of states per region.
 :::
+
+
+### Sequences
+
+Another useful function for creating vectors generates sequences:
+
+```{r}
+seq(1, 10)
+```
+
+The first argument defines the start, and the second defines the end which is included. The default is to go up in increments of 1, but a third argument lets us tell it how much to jump by:
+
+```{r}
+seq(1, 10, 2)
+```
+
+If we want consecutive integers, we can use the following shorthand:
+
+```{r}
+1:10
+```
+
+When we use these functions, `R` produces integers, not numerics, because they are typically used to index something:
+
+```{r}
+class(1:10)
+```
+
+However, if we create a sequence including non-integers, the class changes:
+
+```{r}
+class(seq(1, 10, 0.5))
+```
+
   
-  
-##  Vectors
+##  Creating Vectors
   
 In R, the most basic objects available to store data are _vectors_. As we have seen, complex datasets can usually be broken down into components that are vectors. For example, in a data frame, each column is a vector. Here we learn more about this important class.
-
-### Creating vectors
 
 We can create vectors using the function `c`, which stands for _concatenate_. We use `c` to concatenate entries in the following way:
   
@@ -761,38 +803,6 @@ codes
 
 There is no difference between this function call and the previous one. This is one of the many ways in which `R` is quirky compared to other languages.
 
-
-### Sequences
-
-Another useful function for creating vectors generates sequences:
-
-```{r}
-seq(1, 10)
-```
-
-The first argument defines the start, and the second defines the end which is included. The default is to go up in increments of 1, but a third argument lets us tell it how much to jump by:
-
-```{r}
-seq(1, 10, 2)
-```
-
-If we want consecutive integers, we can use the following shorthand:
-
-```{r}
-1:10
-```
-
-When we use these functions, `R` produces integers, not numerics, because they are typically used to index something:
-
-```{r}
-class(1:10)
-```
-
-However, if we create a sequence including non-integers, the class changes:
-
-```{r}
-class(seq(1, 10, 0.5))
-```
 
 ### Subsetting
 
