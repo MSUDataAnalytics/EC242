@@ -291,7 +291,7 @@ Exercise 1 of 3
 <p>Do this stuff</p>
 </div>
 </div>
-<p>So find those in the assignment below…</p>
+<p>So find those in the assignment below. There are a lot of questions clearly labeled “OPTIONAL” as well – it helps to at least take a look at them, but only those questions in the labeled boxes are required for this lab assignment.</p>
 </section>
 <section id="data-viz" class="level2">
 <h2 class="anchored" data-anchor-id="data-viz">Data Viz</h2>
@@ -333,22 +333,17 @@ library(tidyverse)</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>gapminder<span class="sc">::</span>gapminder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">::</span>gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1,704 × 6
-   country     continent  year lifeExp      pop gdpPercap
-   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
- 1 Afghanistan Asia       1952    28.8  8425333      779.
- 2 Afghanistan Asia       1957    30.3  9240934      821.
- 3 Afghanistan Asia       1962    32.0 10267083      853.
- 4 Afghanistan Asia       1967    34.0 11537966      836.
- 5 Afghanistan Asia       1972    36.1 13079460      740.
- 6 Afghanistan Asia       1977    38.4 14880372      786.
- 7 Afghanistan Asia       1982    39.9 12881816      978.
- 8 Afghanistan Asia       1987    40.8 13867957      852.
- 9 Afghanistan Asia       1992    41.7 16317921      649.
-10 Afghanistan Asia       1997    41.8 22227415      635.
-# ℹ 1,694 more rows</code></pre>
+<pre><code># A tibble: 6 × 6
+  country     continent  year lifeExp      pop gdpPercap
+  &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1 Afghanistan Asia       1952    28.8  8425333      779.
+2 Afghanistan Asia       1957    30.3  9240934      821.
+3 Afghanistan Asia       1962    32.0 10267083      853.
+4 Afghanistan Asia       1967    34.0 11537966      836.
+5 Afghanistan Asia       1972    36.1 13079460      740.
+6 Afghanistan Asia       1977    38.4 14880372      786.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> gapminder,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdpPercap, <span class="at">y =</span> lifeExp))</span>
@@ -361,8 +356,8 @@ library(tidyverse)</code></pre>
 </div>
 </div>
 </div>
-<p>Above we’ve loaded a different dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what <em>might</em> be going on.</p>
-<p>Any ideas?</p>
+<p><span class="text-red">Note that this gapminder dataset is from the gapminder package is not the same as the dslabs gapminder</span>. If you’re in doubt, use <code>gapminder = gapminder::gapminder</code> to set the gapminder package’s gapminder datset as your gapminder object (whew!). Compare <code>head(dslabs::gapminder)</code> and <code>head(gapminder::gapminder)</code> to see the difference. The <code>dslabs::...</code> says to find the thing in the <code>dslabs</code> package called “gapminder”.</p>
+<p>Above we’ve loaded a different dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what <em>might</em> be going on in this ggplot code. Any ideas?</p>
 <p>Here’s a breakdown of everything that happens after the <code>p&lt;- ggplot()</code> call:</p>
 <ul>
 <li><code>data = gapminder</code> tells ggplot to use gapminder dataset, so if variable names are mentioned, they should be looked up in gapminder</li>
@@ -382,9 +377,10 @@ Exercise 1 of 3
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let’s return to the <code>mpg</code> data. Among the variables in <code>mpg</code> are:</p>
+<p>Let’s use some new data. Assuming you have <code>ggplot2</code> loaded using <code>library(ggplot2)</code>, you can load up a dataset called <code>mpg</code> using <code>data(mpg)</code>.</p>
+<p>Among the variables in <code>mpg</code> are:</p>
 <ul>
-<li><p><code>displ</code>, a car’s engine size, in litres.</p></li>
+<li><p><code>displ</code>, a car’s engine size, in litres. Bigger means more powerful.</p></li>
 <li><p><code>hwy</code>, a car’s fuel efficiency on the highway, in miles per gallon (mpg). A car with a low fuel efficiency consumes more fuel than a car with a high fuel efficiency when they travel the same distance.</p></li>
 </ul>
 <p>Generate a scatterplot between these two variables. Does it capture the intuitive relationship you expected? What happens if you make a scatterplot of <code>class</code> vs <code>drv</code>? Why is the plot not useful?</p>

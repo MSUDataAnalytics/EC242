@@ -23,7 +23,7 @@ Instead of putting all of your exercises at the end in 1 section, each of the 3 
 Do this stuff
 :::
 
-So find those in the assignment below...
+So find those in the assignment below. There are a lot of questions clearly labeled "OPTIONAL" as well -- it helps to at least take a look at them, but only those questions in the labeled boxes are required for this lab assignment.
 
 ## Data Viz
 
@@ -74,15 +74,15 @@ You link these steps by *literally* adding them together with `+` as we'll see.
 ```{r}
 library(gapminder)
 library(ggplot2)
-gapminder::gapminder
+head(gapminder::gapminder)
 p <- ggplot(data = gapminder,
             mapping = aes(x = gdpPercap, y = lifeExp))
 p + geom_point()
 ```
 
-Above we've loaded a different dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what *might* be going on.
+[Note that this gapminder dataset is from the gapminder package is not the same as the dslabs gapminder]{.text-red}. If you're in doubt, use `gapminder = gapminder::gapminder` to set the gapminder package's gapminder datset as your gapminder object (whew!). Compare `head(dslabs::gapminder)` and `head(gapminder::gapminder)` to see the difference. The `dslabs::...` says to find the thing in the `dslabs` package called "gapminder".
 
-Any ideas?
+Above we've loaded a different dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what *might* be going on in this ggplot code. Any ideas?
 
 Here's a breakdown of everything that happens after the `p<- ggplot()` call:
 
@@ -95,9 +95,11 @@ Here's a breakdown of everything that happens after the `p<- ggplot()` call:
 ::: {.callout-note}
 ## Exercise 1 of 3
 
-Let's return to the `mpg` data. Among the variables in `mpg` are:
+Let's use some new data. Assuming you have `ggplot2` loaded using `library(ggplot2)`, you can load up a dataset called `mpg` using `data(mpg)`.
 
-- `displ`, a car’s engine size, in litres.
+Among the variables in `mpg` are:
+
+- `displ`, a car’s engine size, in litres. Bigger means more powerful.
 
 - `hwy`, a car’s fuel efficiency on the highway, in miles per gallon (mpg). A car with a low fuel efficiency consumes more fuel than a car with a high fuel efficiency when they travel the same distance.
 
