@@ -320,7 +320,7 @@ This is your first weekly lab assignment. Each lab assignment will need to be do
 
 Once you've saved the file, open it up in Rstudio.
 
-- Change the title to "Lab 0"
+- Change the title to "Lab 1"
 
 - Put your name on it
 
