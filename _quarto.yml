@@ -19,7 +19,7 @@ project:
     - "!Week_14/"
     - "!Week_15/"
     - "01-assignment.qmd"
-    - "!*/02-assignment.qmd"
+    #- "!*/02-assignment.qmd"
     - "!*/03-assignment.qmd"
     - "!*/04-assignment.qmd"
     - "!*/05-assignment.qmd"
@@ -61,7 +61,7 @@ website:
   announcement: 
     icon: info-circle
     dismissable: true
-    content: "Weekly Writing 1 assignment is now open on D2L"
+    content: "Lab Assignment 1 is due Tuesday 9/3 at 11:59pm on D2L"
     type: primary
     position: below-navbar
   search: 

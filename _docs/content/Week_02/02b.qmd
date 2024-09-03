@@ -37,7 +37,7 @@ head(murders)
 
 What do you learn from staring at this table? Even though it is a relatively straightforward table, we can't **learn** anything. For starters, it is grossly abbreviated, though you could scroll through. In doing so, how quickly might you be able to determine which states have the largest populations? Which states have the smallest? How populous is a typical state? Is there a relationship between population size and total murders? How do murder rates vary across regions of the country?  For most folks, it is quite difficult to extract this information just by looking at the numbers. In contrast, the answer to the questions above are readily available from examining this plot:
 
-```{r ggplot-example-plot-0, echo=TRUE, message=FALSE, warning=FALSE}
+```{r ggplot-example-plot-0, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(ggthemes)
 library(ggrepel)
@@ -523,9 +523,9 @@ p + geom_point(size = 3) +
 
 Clearly, the second call to `geom_text` does not use `x = population` and `y = total`.
 
+::: {.callout-note}
 ## Try it!
 
-::: fyi
 Let's break in to smaller groups and try playing with some of the aesthetics and aesthetic mappings. If we're in person (woohoo!), we'll form the same number of groups in class.
 
 In each group, one person should be the main coder - someone who has the packages like `dslabs` installed and has successfully run the plots above. Each set of tasks ask you to learn about an aesthetic and put it into action with the `murder` data. We'll leave about 5 minutes to do the task, then have you come back and share your results with the class.

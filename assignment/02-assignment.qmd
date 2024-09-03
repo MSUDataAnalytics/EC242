@@ -1,6 +1,6 @@
 ---
-title: "Basics of ggplot"
-linktitle: "2: Visualization I"
+title: "2: Visualization with ggplot"
+
 duedate: "{{< var duedates.lab2 >}}" # change in the main _variables.yml file and it will cascade here and below
 toc: true
 toc-depth: 1
@@ -14,6 +14,18 @@ This assignment is due on {{< meta duedate >}}.
 {{< var blurbs.homeworkdue >}}
 
  
+## A note on exercises
+Instead of putting all of your exercises at the end in 1 section, each of the 3 exercises are contained in a callout box like this:
+
+::: {.callout-note}
+## Exercise 1 of 3
+
+Do this stuff
+:::
+
+So find those in the assignment below...
+
+## Data Viz
 
 Our primary tool for data visualization in the course will be ``ggplot``. Technically, we're using ``ggplot2``; the o.g. version lacked some of the modern features of its big brother. ``ggplot2`` implements the grammar of graphics, a coherent and relatively straightforward system for describing and building graphs. With ``ggplot2``, you can do more faster by learning one system and applying it in many places. Other languages provide more specific tools, but require you to learn a different tool for each application. In this class, we'll dig into a single package for our visuals.
 
@@ -80,9 +92,8 @@ Here's a breakdown of everything that happens after the `p<- ggplot()` call:
   - `x` and `y` are  predefined names that are used by `ggplot` and friends
 
 
-:::fyi
-
-**Exercise 1 of 3**
+::: {.callout-note}
+## Exercise 1 of 3
 
 Let's return to the `mpg` data. Among the variables in `mpg` are:
 
@@ -92,6 +103,9 @@ Let's return to the `mpg` data. Among the variables in `mpg` are:
 
 Generate a scatterplot between these two variables. Does it capture the intuitive relationship you expected? What happens if you make a scatterplot of `class` vs `drv`? Why is the plot not useful?
 :::
+
+
+
 
 It turns out there's a reason for doing all of this:
 
@@ -105,9 +119,8 @@ You can add a third variable, like `class`, to a two dimensional scatterplot by 
 
 You can convey information about your data by mapping the aesthetics in your plot to the variables in your dataset. For example, you can map the colors of your points to the class variable to reveal the class of each car. To map an aesthetic to a variable, associate the name of the aesthetic to the name of the variable inside `aes()`. `ggplot2` will automatically assign a unique level of the aesthetic (here a unique color) to each unique value of the variable, a process known as scaling. `ggplot2` will also add a legend that explains which levels correspond to which values.
 
-:::fyi
-
-**Exercise 2 of 3**
+::: {.callout-note}
+## Exercise 2 of 3
 
 Using your previous scatterplot of `displ` and `hwy`, map the colors of your points to the class variable to reveal the class of each car. What conclusions can we make?
 
@@ -250,9 +263,9 @@ p + geom_point(mapping = aes(color = continent)) +
   geom_smooth(mapping = aes(color = continent), method = "gam")
 ```
 
-:::fyi
+::: {.callout-note}
 
-**Exercise 3 of 3**
+## Exercise 3 of 3
 
 Generate two new plots with `data = gapminder` (note: you'll need to install the package by the same name if you have not already). Label the axes and the header with clear, easy to understand language. In a few sentences, describe what you've visualized and why.
 

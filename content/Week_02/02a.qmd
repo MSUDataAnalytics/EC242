@@ -20,8 +20,18 @@ output:
 - Chapter 1 of Introduction to Statistical Learning, available [here.](https://www.statlearning.com/)
 - Optional: The "Tidy Your Data" tutorial on [Rstudio Cloud Primers](https://rstudio.cloud/learn/primers)
 
+
 ## Some Reminders:
 
+### Econ Club
+For econ majors or people interested in quantitative social sciences in general (which is this whole class):
+
+```{r, echo=F}
+knitr::include_graphics(here('images','Econ-social-event-flyer-2024.png'), error=F)
+```
+
+
+### Your labs
 - Start labs early!
   - They are not trivial.
   - They are not short.
@@ -34,36 +44,35 @@ output:
   - When RMarkdown knits, it starts a whole new, empty session that has no knowledge of what you typed into the console
 - Slack
   - Use it.
-  - I would very much prefer posting in the class-visible channels. Others can learn from your issues.
+  - Always post in the class-visible channels. Others can learn from your issues.
     - We have a channel just for labs and R. Please use that one.
+    
+
+### Group project
+If you read ahead, you'd have seen a bit about our group project. I'd like to wait until after the add/drop deadline to do this as people come and go, ruining my group assignments. Know that we will have groups of 3, and you will be given the opportunity to form your own groups with default groups for those who do not form one. All groups must be exactly 3 people.
 
 
-### Group Projects
-Your final is a group project. You will also have two "mini" projects. They comprise a large part of your grade. As mentioned last week, this mean that you need to start planning soon.
+### Share your screen
+We will often do some shared coding results -- you'll be asked to execute some code, and we'll use Zoom to share screen so the class can see volunteer's results. I'll ask you a few easy questions about your code, and you'll get participation points (or EC). 
 
-To aid in your planning, here are the required elements of your final project.
+I have set up a Zoom room with a short link: [bit.ly/EC242](bit.ly/EC242). It shouldn't require a password, but if it does, it's GOGREEN
 
-1. You must find existing data to analyze. Aggregating and merging data from multiple sources is encouraged.
+We'll use that link/zoom room all semester to share screen (since this room doesn't have a screen sharing protocol).
 
-2. You must visualize 3 interesting features of that data.
+For instance, last week we ran into the following try-it:
 
-3. You must come up with some analysis---using tools from this course---which relates your data to either a prediction or a policy conclusion.
+::: {.callout-note}
+### TRY IT
 
-4. You must think critically about your analysis and be able to identify potential issues.
+1. What is the sum of the first 100 positive integers? The formula for the sum of integers $1$ through $n$ is $n(n+1)/2$. Define $n=100$ and then use `R` to compute the sum of $1$ through $100$ using the formula. What is the sum?
+  
+:::
 
-5. You must present your analysis as if presenting to a C-suite executive.
-
-Your mini-projects along the way will be more structured, but will serve to guide you towards the final project.
-
-### Teams
-Please form teams of 3 people. Once all agree to be on a team, have ONE PERSON email our TA Allen scovelpa\@msu.edu **and cc all of the members of the team** so that nobody is surprised to be included on a team. Title the email *[SSC442] - Group Formation*. Tell us your team name (be creative), and list in the email the names of all of the team members and their email address (in addition to cc-ing those team members on the email).
-
-If you opt to not form a team, you will be automatically added to the "willing to be randomly assigned" pool and will be paired with two others from the "willing to be randomly assigned" pool.
-
-Send this email by **January 20th** and we will assign un-teamed folks at the beginning of the following week. Project 1 is due in no time. See [schedule](/schedule/) for all the important project dates.
+I didn't read my own notes closesly and thought we needed `seq(...)` or the shortcut `1:100` to do this, but we actually don't because we are given the equation $n(n+1)/2$. So, let's try out our first **TRY-IT** and ask everyone to calculate the sum of the numbers 1 to 100 ($n=100$) using both the formula above, and the `seq(...)` function to sum up the numbers 1 to 100.
 
 
-### Guiding Question
+
+## Guiding Question
 
 For future lectures, the guiding questions will be more pointed and at a higher level to help steer your thinking. Here, we want to ensure you remember some basics and accordingly the questions are straightforward.
 
@@ -77,12 +86,15 @@ In last week's content and lab, we demonstrated how to manipulate vectors by reo
 
 We can load all the tidyverse packages at once by installing and loading the __tidyverse__ package:^[If you have not installed this package already, you must use `install.packages("tidyverse")` prior to the `library()` call you see below.]
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, echo=T}
 library(tidyverse)
-filter <- dplyr::filter
 ```
 
 We will learn how to implement the tidyverse approach throughout the book, but before delving into the details, in this chapter we introduce some of the most widely used tidyverse functionality, starting with the __dplyr__ package for manipulating data frames and the __purrr__ package for working with functions. Note that the tidyverse also includes a graphing package, __ggplot2__,  the __readr__ package, and many others. In this lesson, we first introduce the concept of _tidy data_ and then demonstrate how we use the tidyverse to work with data frames in this format.
+
+```{r, include=F, eval = T, echo=F}
+filter <- dplyr::filter
+```
 
 ## Tidy data {#tidy-data}
 
@@ -99,8 +111,7 @@ Each row represent a state with each of the five columns providing a different v
 
 To see how the same information can be provided in different formats, consider the following example:
 
-```{r, echo=TRUE, warning=F, message = F}
-library(dslabs)
+```{r, echo=FALSE, warning=F, message = F}
 data("gapminder") # gapminder will now be a data.frame in your "environment" (memory)
 tidy_data <- gapminder %>%
   filter(country %in% c("South Korea", "Germany") & !is.na(fertility)) %>%
@@ -122,9 +133,8 @@ The same information is provided, but there are two important differences in the
 
 Although not immediately obvious, as you go through the book you will start to appreciate the advantages of working in a framework in which functions use tidy formats for both inputs and outputs. You will see how this permits the data analyst to focus on more important aspects of the analysis rather than the format of the data.
 
-:::fyi
-
-**TRY IT**
+::: {.callout-note}
+## TRY IT 
 
 1. Examine the built-in dataset `co2`. Which of the following is true:
 
@@ -204,9 +214,9 @@ filter(new_table, rate <= 0.71)
 
 In the call to `select`, the first argument `murders` is an object, but `state`, `region`, and `rate` are variable names.
 
-:::fyi
+::: {.callout-note}
 
-**TRY IT**
+## TRY IT
 
 1. Load the __dplyr__ package and the murders dataset.
 
@@ -323,9 +333,8 @@ murders %>% select(state, region, rate) %>% filter(rate <= 0.71)
 
 Note that the pipe works well with functions where the first argument is the input data. Functions in __tidyverse__ packages like __dplyr__ have this format and can be used easily with the pipe. It's worth noting that as of R 4.1, there is a base-R version of the pipe `|>`, though this has its disadvantages. We'll stick with `%>%` for now.
 
-:::fyi
-
-**TRY IT**
+::: {.callout-note}
+## TRY IT
 
 1. The pipe `%>%` can be used to perform operations sequentially without having to define intermediate objects. Start by redefining murder to include rate and rank.
 
@@ -552,9 +561,9 @@ Note that rows are not sorted by `rate`, only filtered. If we want to sort, we n
 Note that if the third argument is left blank, `top_n` filters by the last column.
 
 
-:::fyi
+::: {.callout-note}
 
-**TRY IT**
+## TRY IT
 
 For these exercises, we will be using the data from the survey collected by the United States National Center for Health Statistics (NCHS). This center has conducted a series of health and nutrition surveys since the 1960’s. Starting in 1999, about 5,000 individuals of all ages have been interviewed every year and they complete the health examination component of the survey. Part of the data is made available via the __NHANES__ package. Once you install the __NHANES__ package, you can load the data like this:
 
@@ -659,13 +668,13 @@ as_tibble(murders)$Population
 ```
 
 
-### Tibbles can have complex entries
+<!-- ### Tibbles can have complex entries -->
 
-While data frame columns need to be vectors of numbers, strings, or logical values, tibbles can have more complex objects, such as lists or functions. Also, we can create tibbles with functions:
+<!-- While data frame columns need to be vectors of numbers, strings, or logical values, tibbles can have more complex objects, such as lists or functions. Also, we can create tibbles with functions: -->
 
-```{r}
-tibble(id = c(1, 2, 3), func = c(mean, median, sd))
-```
+<!-- ```{r} -->
+<!-- tibble(id = c(1, 2, 3), func = c(mean, median, sd)) -->
+<!-- ``` -->
 
 
 ### Tibbles can be grouped
@@ -909,9 +918,8 @@ However, this can become cumbersome, especially within the tidyverse approach. T
 between(x, a, b)
 ```
 
-:::fyi
-
-**TRY IT**
+::: {.callout-note}
+## TRY IT
 
 1. Load the `murders` dataset. Which of the following is true?
 
