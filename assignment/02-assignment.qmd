@@ -130,7 +130,9 @@ Using your previous scatterplot of `displ` and `hwy`, map the colors of your poi
 :::
 
 
-Let's explore our previously saved `p` in greater detail. As with Exercise 1, we'll add a *layer*. This says how some data gets turned into concrete visual aspects.
+### Back to gapminder::gapminder
+
+Let's explore our previously saved `p` (using `gapminder::gapminder`) in greater detail. As with Exercise 1, we'll add a *layer*. This says how some data gets turned into concrete visual aspects.
 
 ```
 p + geom_point()

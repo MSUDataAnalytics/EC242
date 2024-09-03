@@ -407,7 +407,10 @@ Exercise 2 of 3
 <p>Using your previous scatterplot of <code>displ</code> and <code>hwy</code>, map the colors of your points to the class variable to reveal the class of each car. What conclusions can we make?</p>
 </div>
 </div>
-<p>Let’s explore our previously saved <code>p</code> in greater detail. As with Exercise 1, we’ll add a <em>layer</em>. This says how some data gets turned into concrete visual aspects.</p>
+</section>
+<section id="back-to-gapmindergapminder" class="level3">
+<h3 class="anchored" data-anchor-id="back-to-gapmindergapminder">Back to gapminder::gapminder</h3>
+<p>Let’s explore our previously saved <code>p</code> (using <code>gapminder::gapminder</code>) in greater detail. As with Exercise 1, we’ll add a <em>layer</em>. This says how some data gets turned into concrete visual aspects.</p>
 <pre><code>p + geom_point()
 p + geom_smooth()</code></pre>
 <p><strong>Note:</strong> Both of the above geom’s use the same mapping, where the x-axis represents <code>gdpPercap</code> and the y-axis represents <code>lifeExp</code>. You can find this yourself with some ease. But the first one maps the data to individual points, the other one maps it to a smooth line with error ranges.</p>
