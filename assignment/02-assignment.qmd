@@ -71,7 +71,7 @@ You link these steps by *literally* adding them together with `+` as we'll see.
 
 ## Mappings Link Data to Things You See
 
-```{r}
+```{r, collapse = T}
 library(gapminder)
 library(ggplot2)
 head(gapminder::gapminder)
@@ -108,6 +108,7 @@ Generate a scatterplot between these two variables. Does it capture the intuitiv
 
 
 
+### What do you see?
 
 It turns out there's a reason for doing all of this:
 
