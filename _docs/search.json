@@ -220,7 +220,7 @@
     "href": "content/Week_02/02b.html",
     "title": "Introduction to Visualization",
     "section": "",
-    "text": "TRY IT\n\n\n\n\nThe mpg dataset is contained in ggplot2 (part of tidyverse which we installed earlier), so mpg = ggplot2::mpg will create the mpg dataset. Do this first.\nUsing conditionals we learned on Tuesday (case_when or maybe between or any other way you choose) and using the %&gt;% pipe, do the following:\n\n\nKeep only the year 2008\nCreate a column called engine and set it equal to “small” if it has fewer than 8 cylinders (cyl) and “large” if it’s 8 or more\nSummarize the data so that it reports the average highway fuel economy (hwy) and the average city fuel economy (cty) for each engine group",
+    "text": "TRY IT\n\n\n\n\nThe mpg dataset is contained in ggplot2 (part of tidyverse which we installed earlier), so mpg = ggplot2::mpg will create the mpg dataset. Do this first.\nUsing conditionals we learned on Tuesday (case_when or maybe between or any other way you choose) and using the %&gt;% pipe, do the following:\n\n\nKeep only the year 2008\nCreate a column called engine and set it equal to “small” if it has fewer than 8 cylinders (cyl) and “large” if it’s 8 or more\nSummarize the data so that it reports the average highway fuel economy (hwy) and the average city fuel economy (cty) for each engine group\n\nUse the zoom screenshare when you’re done: bit.ly/EC242",
     "crumbs": [
       "Course Content",
       "Week 02",
