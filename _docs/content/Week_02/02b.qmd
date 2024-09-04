@@ -16,9 +16,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Introduction to data visualization
-
-Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at the US murders data table:
 ```{r, echo=F, include=F, eval=T, purl = F}
 # detach("package:dplyr")
 library(dplyr)
@@ -28,8 +25,27 @@ filter <- dplyr::filter
 
 ```
 
-```{r, message=FALSE, warning=FALSE}
 
+# A short implementation exercise from Tuesday
+
+::: {.callout-note}
+## TRY IT
+1. The `mpg` dataset is contained in `ggplot2` (part of `tidyverse` which we installed earlier), so `mpg = ggplot2::mpg` will create the `mpg` dataset. Do this first.
+
+2. Using conditionals we learned on Tuesday (`case_when` or maybe `between` or any other way you choose) and using the `%>%` pipe, do the following:
+
+  a. Keep only the year 2008
+  b. Create a column called `engine` and set it equal to "small" if it has fewer than 8 cylinders (`cyl`) and "large" if it's 8 or more
+  c. Summarize the data so that it reports the average highway fuel economy (`hwy`) and the average city fuel economy (`cty`) **for each engine group** 
+
+:::
+
+
+# Introduction to data visualization
+
+Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at the US murders data table:
+
+```{r, message=FALSE, warning=FALSE}
 library(dslabs)
 data(murders)
 head(murders)
@@ -199,11 +215,10 @@ We also do not cover interactive graphics, a topic that is both too advanced for
 Exploratory data visualization is perhaps the greatest strength of `R`. One can quickly go from idea to data to plot with a unique balance of flexibility and ease. For example, Excel may be easier than `R` for some plots, but it is nowhere near as flexible. `D3.js` may be more flexible and powerful than `R`, but it takes much longer to generate a plot. One of the reasons we use `R` is its incredible flexibility **and** ease.
 
 
-Throughout this course, we will be creating plots using the __ggplot2__^[https://ggplot2.tidyverse.org/] package.
+Throughout this course, we will be creating plots using the __ggplot2__^[https://ggplot2.tidyverse.org/] package. Since this is part of the `tidyverse` package, we'll just load that:
 
 ```{r, message=FALSE, warning=FALSE, echo=TRUE}
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 ```
 
 Many other approaches are available for creating plots in `R`. In fact, the plotting capabilities that come with a basic installation of `R` are already quite powerful. There are also other packages for creating graphics such as __grid__ and __lattice__. We chose to use __ggplot2__ in this course because it breaks plots into components in a way that permits beginners to create relatively complex and aesthetically pleasing plots using syntax that is intuitive and comparatively easy to remember.
@@ -316,7 +331,7 @@ In `ggplot2` we create graphs by adding geometry _layers_. Layers can define geo
 
 > `DATA %>% ggplot() + LAYER 1 + LAYER 2 + ... + LAYER N`
 
-Usually, the first __added__ layer after `ggplot() +` defines the geometry. After that, we may add additional geometries, we may rescale an axis, we may add annotations and labels, or we may change the style. For now, we want to make a scatterplot like the one you all created in Lab 0. What geometry do we use?
+Usually, the first __added__ layer after `ggplot() +` defines the geometry. After that, we may add additional geometries, we may rescale an axis, we may add annotations and labels, or we may change the style. For now, we want to make a scatterplot like the one you all created in your first lab. What geometry do we use?
 
 ```{r ex-scatter, echo = F}
 x = c(5,7,9)
