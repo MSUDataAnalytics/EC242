@@ -38,6 +38,7 @@ filter <- dplyr::filter
   b. Create a column called `engine` and set it equal to "small" if it has fewer than 8 cylinders (`cyl`) and "large" if it's 8 or more
   c. Summarize the data so that it reports the average highway fuel economy (`hwy`) and the average city fuel economy (`cty`) **for each engine group** 
 
+Use the zoom screenshare when you're done: {{< var url.bitly >}}
 :::
 
 
