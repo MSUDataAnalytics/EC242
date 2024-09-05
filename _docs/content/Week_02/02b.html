@@ -171,9 +171,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </button>
     </div>
   </nav>
-  <div id="quarto-announcement" data-announcement-id="4ac65dab15705295edababeb79f8a0c1" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p>Lab Assignment 1 is due Tuesday 9/3 at 11:59pm on D2L</p>
-</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
@@ -284,6 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#ggplot-objects" id="toc-ggplot-objects" class="nav-link" data-scroll-target="#ggplot-objects"><code>ggplot</code> objects</a></li>
   <li><a href="#geometries-briefly" id="toc-geometries-briefly" class="nav-link" data-scroll-target="#geometries-briefly">Geometries (briefly)</a></li>
   <li><a href="#aesthetic-mappings" id="toc-aesthetic-mappings" class="nav-link" data-scroll-target="#aesthetic-mappings">Aesthetic mappings</a></li>
+  <li><a href="#aesthetics-vs.-aesthetic-mappings" id="toc-aesthetics-vs.-aesthetic-mappings" class="nav-link" data-scroll-target="#aesthetics-vs.-aesthetic-mappings">Aesthetics vs.&nbsp;Aesthetic mappings</a></li>
   <li><a href="#annotation-layers" id="toc-annotation-layers" class="nav-link" data-scroll-target="#annotation-layers">Annotation Layers</a></li>
   </ul></li>
   </ul>
@@ -436,7 +434,7 @@ TRY IT
 <p>One reason <strong>ggplot2</strong> is generally more intuitive for beginners is that it uses a so-called “grammar of graphics”<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>, the letters <em>gg</em> in <strong>ggplot2</strong>. This is analogous to the way learning grammar can help a beginner construct hundreds of different sentences by learning just a handful of verbs, nouns and adjectives without having to memorize each specific sentence. Similarly, by learning a handful of <strong>ggplot2</strong> building blocks and its grammar, you will be able to create hundreds of different plots.</p>
 <p>Another reason <strong>ggplot2</strong> is easy for beginners is that its default behavior is carefully chosen to satisfy the great majority of cases and is visually pleasing. As a result, it is possible to create informative and elegant graphs with relatively simple and readable code.</p>
 <p>One limitation is that <strong>ggplot2</strong> is designed to work exclusively with data tables in tidy format (where rows are observations and columns are variables). However, a substantial percentage of datasets that beginners work with are in, or can be converted into, this format. An advantage of this approach is that, assuming that our data is tidy, <strong>ggplot2</strong> simplifies plotting code and the learning of grammar for a variety of plots. You should review the previous content about tidy data if you are feeling lost.</p>
-<p>To use <strong>ggplot2</strong> you will have to learn several functions and arguments. These are hard to memorize, so we highly recommend you have the ggplot2 cheat sheet handy. Just search for “ggplot2 cheat sheet”.</p>
+<p>To use <strong>ggplot2</strong> you will have to learn several functions and arguments. These are hard to memorize, so we highly recommend you have the ggplot2 cheat sheet handy. Just search for “ggplot2 cheat sheet”. I like the site and PDF found <a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html">here</a>.</p>
 <section id="the-components-of-a-graph" class="level2">
 <h2 class="anchored" data-anchor-id="the-components-of-a-graph">The components of a graph</h2>
 <p>We will eventually construct a graph that summarizes the US murders dataset that looks like this:</p>
@@ -523,8 +521,6 @@ TRY IT
 </div>
 <p>Taking a quick look at the cheat sheet, we see that the <code>ggplot2</code> function used to create plots with this geometry is <code>geom_point</code>.</p>
 <p><a href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf">See Here</a></p>
-<p>(Image courtesy of RStudio<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. CC-BY-4.0 license<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>.)</p>
-<!--(Source: [RStudio](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf))-->
 <p>Geometry function names follow the pattern: <code>geom_X</code> where X is the name of some specific geometry. Some examples include <code>geom_point</code>, <code>geom_bar</code>, and <code>geom_histogram</code>. You’ve already seen a few of these. We will start with a scatterplot created using <code>geom_point()</code> for now, then circle back to more geometries after we cover aesthetic mappings, layers, and annotations.</p>
 <p>For <code>geom_point</code> to run properly we need to provide data and an <strong>aesthetic mapping</strong>. The simplest mapping for a scatter plot is to say we want one variable on the X-axis, and a different one on the Y-axis, so each point is an {X,Y} pair. That is an <strong>aesthetic mapping</strong> because X and Y are <strong>aesthetics</strong> in a <code>geom_point</code> scatterplot.</p>
 <p>We have already connected the object <code>p</code> with the <code>murders</code> data table, and if we add the layer <code>geom_point</code> it defaults to using this data. To find out what mappings are expected, we read the <strong>Aesthetics</strong> section of the help file <code>?geom_point</code> help file:</p>
@@ -586,8 +582,8 @@ TRY IT
 </div>
 </div>
 </div>
-<p><code>size</code> is <strong>not</strong> a mapping so it is <strong>not</strong> in the <code>aes()</code> part: whereas mappings use data from specific observations and need to be inside <code>aes()</code>, operations we want to affect all the points the same way do not need to be included inside <code>aes</code>. We’ll see what happens if <code>size</code> is inside <code>aes(size = xxx)</code> in a second.</p>
-<p>We can change the <code>shape</code> to one of the many different base-R options found <a href="http://www.sthda.com/english/wiki/r-plot-pch-symbols-the-different-point-shapes-available-in-r">here</a>:</p>
+<p><code>size</code> is an aesthetic, but here it is <strong>not</strong> a mapping so it is <strong>not</strong> in the <code>aes()</code> part: whereas mappings use data from specific observations and need to be inside <code>aes()</code>, operations we want to affect all the points the same way do not need to be included inside <code>aes</code>. We’ll see what happens if <code>size</code> is inside <code>aes(size = xxx)</code> in a second.</p>
+<p>We can change the <code>shape</code> aesthetic to one of the many different base-R options found <a href="http://www.sthda.com/english/wiki/r-plot-pch-symbols-the-different-point-shapes-available-in-r">here</a>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> population<span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">6</span>, <span class="at">y =</span> total), <span class="at">size =</span> <span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">17</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -637,6 +633,12 @@ TRY IT
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="aesthetics-vs.-aesthetic-mappings" class="level2 callout-info">
+<h2 class="anchored" data-anchor-id="aesthetics-vs.-aesthetic-mappings">Aesthetics vs.&nbsp;Aesthetic mappings</h2>
+<p>Lots of features are aesthetics (color, size, etc.) but if we want to have them change according to the data, we have to use an aesthetic mapping.</p>
+</section>
 <p>We include <code>color=region</code> <strong>inside</strong> the <code>aes</code> call, which tells R to find a variable called <code>region</code> and change color based on that. R will choose a somewhat ghastly color palatte, and <strong>every</strong> unique value in the data for <code>region</code> will get a different color if the variable is discrete. If the variable is a continuous value, then <code>ggplot</code> will automatically make a color ramp. Thus, <strong>discrete</strong> and <strong>continuous</strong> values for aesthetic mappings work differently.</p>
 <p>Let’s see a useful example of a continuous aesthetic mapping to <code>color</code>. In our data, we are making a scatterplot of population and total murders, which really just shows that states with higher populations have higher murders. What we really want is murders per capita (I think COVID taught us a lot about rates vs.&nbsp;levels like “cases” and “cases per 100,000 people”). We can create a variable of “murders per capita” on the fly. Since “murders per capita” is a very small number and hard to read, we’ll multiply by 100 so that we get “percent of population murdered per year”:</p>
 <div class="cell">
@@ -661,7 +663,6 @@ TRY IT
 </div>
 </div>
 </div>
-</section>
 <section id="legends-for-aesthetics" class="level3">
 <h3 class="anchored" data-anchor-id="legends-for-aesthetics">Legends for aesthetics</h3>
 <p>Here we see yet another useful default behavior: <strong>ggplot2</strong> automatically adds a legend that maps color to region, and size to population (which we scaled by 1,000,000). To avoid adding this legend we set the <code>geom_point</code> argument <code>show.legend = FALSE</code>. This removes both the <code>size</code> and the <code>color</code> legend.</p>
@@ -675,8 +676,6 @@ TRY IT
 </div>
 </div>
 </div>
-<p>Later on, when we get to <strong>annotation layers</strong>, we’ll talk about controlling the legend text and layout. For now, we just need to know how to turn them off.</p>
-</section>
 </section>
 <section id="annotation-layers" class="level2">
 <h2 class="anchored" data-anchor-id="annotation-layers">Annotation Layers</h2>
@@ -759,9 +758,9 @@ Try it!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let’s break in to smaller groups and try playing with some of the aesthetics and aesthetic mappings. If we’re in person (woohoo!), we’ll form the same number of groups in class.</p>
-<p>In each group, one person should be the main coder - someone who has the packages like <code>dslabs</code> installed and has successfully run the plots above. Each set of tasks ask you to learn about an aesthetic and put it into action with the <code>murder</code> data. We’ll leave about 5 minutes to do the task, then have you come back and share your results with the class.</p>
-<p>For each group, we’ll start with the following code:</p>
+<p>Select one of the following five sets of tasks. If your ID number ends in 1-5, choose the corresponding task. If your ID ends in 6-9, then do 6–&gt;1, 7–&gt;2, …, 9–&gt;4, and 0–&gt;5.</p>
+<p>Each set of tasks ask you to learn about an aesthetic and put it into action with the <code>murder</code> data. We’ll leave about 5 minutes to do the task, then have you come back and share your results with the class.</p>
+<p>For each task, we’ll start with the following code:</p>
 <pre><code>p + geom_point(aes(x = population/10^6, y = total)) +
   geom_text(aes(x = population/10^6, y = total, label = abb))</code></pre>
 <ol type="1">
@@ -837,8 +836,6 @@ Try it!
 <li id="fn6"><p>https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>https://ggplot2.tidyverse.org/<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>http://www.springer.com/us/book/9780387245447<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>https://github.com/rstudio/cheatsheets<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p>https://github.com/rstudio/cheatsheets/blob/master/LICENSE<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

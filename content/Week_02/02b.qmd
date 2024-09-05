@@ -230,7 +230,7 @@ Another reason __ggplot2__ is easy for beginners is that its default behavior is
 
 One limitation is that __ggplot2__ is designed to work exclusively with data tables in tidy format (where rows are observations and columns are variables). However, a substantial percentage of datasets that beginners work with are in, or can be converted into, this format. An advantage of this approach is that, assuming that our data is tidy, __ggplot2__ simplifies plotting code and the learning of grammar for a variety of plots. You should review the previous content about tidy data if you are feeling lost.
 
-To use __ggplot2__  you will have to learn several functions and arguments. These are hard to memorize, so we highly recommend you have the ggplot2 cheat sheet handy. Just search for "ggplot2 cheat sheet".
+To use __ggplot2__  you will have to learn several functions and arguments. These are hard to memorize, so we highly recommend you have the ggplot2 cheat sheet handy. Just search for "ggplot2 cheat sheet". I like the site and PDF found [here](https://rstudio.github.io/cheatsheets/html/data-visualization.html).
 
 ## The components of a graph
 We will eventually construct a graph that summarizes the US murders dataset that looks like this:
@@ -344,10 +344,6 @@ Taking a quick look at the cheat sheet, we see that the `ggplot2` function used 
 
 [See Here](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
 
-(Image courtesy of RStudio^[https://github.com/rstudio/cheatsheets].  CC-BY-4.0 license^[https://github.com/rstudio/cheatsheets/blob/master/LICENSE].)
-
-<!--(Source: [RStudio](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf))-->
-
 
 Geometry function names follow the pattern: `geom_X` where X is the name of some specific geometry. Some examples include `geom_point`, `geom_bar`, and `geom_histogram`. You've already seen a few of these. We will start with a scatterplot created using `geom_point()` for now, then circle back to more geometries after we cover aesthetic mappings, layers, and annotations.
 
@@ -412,9 +408,10 @@ Let's say we want larger points in our scatterplot. The `size` aesthetic can be 
 p + geom_point(aes(x = population/10^6, y = total), size = 3)
 ```
 
-`size` is __not__ a mapping so it is __not__ in the `aes()` part: whereas mappings use data from specific observations and need to be inside `aes()`, operations we want to affect all the points the same way do not need to be included inside `aes`. We'll see what happens if `size` is inside `aes(size = xxx)` in a second.
+`size` is an aesthetic, but here it is __not__ a mapping so it is __not__ in the `aes()` part: whereas mappings use data from specific observations and need to be inside `aes()`, operations we want to affect all the points the same way do not need to be included inside `aes`. We'll see what happens if `size` is inside `aes(size = xxx)` in a second.
 
-We can change the `shape` to one of the many different base-R options found [here](http://www.sthda.com/english/wiki/r-plot-pch-symbols-the-different-point-shapes-available-in-r):
+
+We can change the `shape` aesthetic to one of the many different base-R options found [here](http://www.sthda.com/english/wiki/r-plot-pch-symbols-the-different-point-shapes-available-in-r):
 
 ```{r ggplot-example-5shape}
 p + geom_point(aes(x = population/10^6, y = total), size = 3, shape = 17)
@@ -446,6 +443,12 @@ An __aesthetic mapping__ means we can vary an aesthetic (like fill or shape or s
 p + geom_point(aes(x = population/10^6, y = total, color = region), size = 3)
 ```
 
+
+::: {.callout-info}
+## Aesthetics vs. Aesthetic mappings
+Lots of features are aesthetics (color, size, etc.) but if we want to have them change according to the data, we have to use an aesthetic mapping. 
+:::
+
 We include `color=region` **inside** the `aes` call, which tells R to find a variable called `region` and change color based on that. R will choose a somewhat ghastly color palatte, and **every** unique value in the data for `region` will get a different color if the variable is discrete. If the variable is a continuous value, then `ggplot` will automatically make a color ramp. Thus, __discrete__ and __continuous__ values for aesthetic mappings work differently.
 
 Let's see a useful example of a continuous aesthetic mapping to `color`. In our data, we are making a scatterplot of population and total murders, which really just shows that states with higher populations have higher murders. What we really want is murders per capita (I think COVID taught us a lot about rates vs. levels like "cases" and "cases per 100,000 people"). We can create a variable of "murders per capita" on the fly. Since "murders per capita" is a very small number and hard to read, we'll multiply by 100 so that we get "percent of population murdered per year":
@@ -468,8 +471,6 @@ Here we see yet another useful default behavior: __ggplot2__ automatically adds 
 ```{r ggplot-example-color3}
 p + geom_point(aes(x = population/10^6, y = total, color = region, size = population/10^6), show.legend = FALSE)
 ```
-
-Later on, when we get to __annotation layers__, we'll talk about controlling the legend text and layout. For now, we just need to know how to turn them off.
 
 
 ## Annotation Layers
@@ -542,11 +543,11 @@ Clearly, the second call to `geom_text` does not use `x = population` and `y = t
 ::: {.callout-note}
 ## Try it!
 
-Let's break in to smaller groups and try playing with some of the aesthetics and aesthetic mappings. If we're in person (woohoo!), we'll form the same number of groups in class.
+Select one of the following five sets of tasks. If your ID number ends in 1-5, choose the corresponding task. If your ID ends in 6-9, then do 6-->1, 7-->2, ..., 9-->4, and 0-->5. 
 
-In each group, one person should be the main coder - someone who has the packages like `dslabs` installed and has successfully run the plots above. Each set of tasks ask you to learn about an aesthetic and put it into action with the `murder` data. We'll leave about 5 minutes to do the task, then have you come back and share your results with the class.
+Each set of tasks ask you to learn about an aesthetic and put it into action with the `murder` data. We'll leave about 5 minutes to do the task, then have you come back and share your results with the class.
 
-For each group, we'll start with the following code:
+For each task, we'll start with the following code:
 
 ```
 p + geom_point(aes(x = population/10^6, y = total)) +
@@ -575,8 +576,6 @@ p + geom_point(aes(x = population/10^6, y = total)) +
     c. Now, try using the `angle` aesthetic mapping by using the `total` field as both the `y` value **and** the `angle` value in the `geom_text` layer. 
     d. Does using `angle` as an aesthetic help? What about as an aesthetic mapping?
   
-  
-  
 4. The `color` aesthetic mapping
     a. Set the `color` aesthetic mapping in `geom_text` to `total/population`.
         - Use the `nudge_x = 1.5` aesthetic in `geom_text` still
@@ -591,5 +590,6 @@ p + geom_point(aes(x = population/10^6, y = total)) +
     d. Be able to explain the plots.
     - Does the `fill` aesthetic mapping help present the data here?
     - What color did you choose for the non-mapped fill aesthetic?
+    
 
 :::
