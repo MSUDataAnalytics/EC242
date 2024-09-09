@@ -11,7 +11,11 @@ This assignment is due on **{{< meta duedate >}}**
 
 {{< var blurbs.homeworkdue >}}
 
- 
+```{r, eval=T, echo=F, include=F}
+library(tidyverse)
+library(here)
+library(knitr)
+```
 
 ## Preliminaries
 As always, we will first have to load ``ggplot2``. To do this, we will load the tidyverse by running this code:
@@ -30,7 +34,7 @@ As you hopefully figured out by now, you'll be doing all your `R` work in `R Mar
 
 You'll need to download one CSV file and put it somewhere on your computer (or upload it to RStudio.cloud if you've gone that direction)---preferably in a folder named `data` in your project folder. You can download the data from [the DOB's map](https://www1.nyc.gov/assets/buildings/html/essential-active-construction.html), or use this link to get it directly:
 
-- [<i class="fas fa-file-csv"></i> `EssentialConstruction.csv`](../data/EssentialConstruction.csv)
+- [<i class="fas fa-file-csv"></i> `EssentialConstruction.csv`](data/EssentialConstruction.csv)
 
 
 ### R Markdown
@@ -40,7 +44,7 @@ Writing regular text with `R Markdown` follows the rules of Markdown. You can ma
 You'll also need to insert your own code chunks where needed. Rather than typing them by hand (that's tedious and you might miscount the number of backticks!), use the "Insert" button at the top of the editing window, or type <kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>i</kbd> on Windows, or <kbd>⌘</kbd> + <kbd>⌥</kbd> + <kbd>i</kbd> on macOS.
 
 ```{r insert-chunk-button, echo=FALSE, out.width="19%"}
-knitr::include_graphics("/img/assignments/insert-chunk-button.png", error = FALSE)
+knitr::include_graphics(here('images','insert-chunk-button.png'), error = FALSE)
 ```
 
 ### Data Prep
@@ -54,8 +58,8 @@ essential = read_csv('https://EC242.netlify.app/data/EssentialConstruction.csv')
 
 
 
-:::fyi
-__Exercise 1: Essential pandemic construction__
+::: {.callout-note}
+## Exercise 1 of 1: Essential pandemic construction
 
 A. Show the count or proportion of approved projects by borough using a bar chart. Make sure all the elements of your plot (axes, legend, etc.) are labeled.
 
@@ -71,7 +75,7 @@ Overlay the data from Part 1 above onto a map of NYC. Make sure all the elements
 
 ## Getting help
 
-Use the SSC442 Slack if you get stuck (click the Slack logo at the top right of this website header).
+Use the EC242 Slack if you get stuck (click the Slack logo at the top right of this website header).
 
 ## Turning everything in
 

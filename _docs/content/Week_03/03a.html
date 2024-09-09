@@ -283,6 +283,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#show-the-data" id="toc-show-the-data" class="nav-link" data-scroll-target="#show-the-data">Show the data</a></li>
   <li><a href="#faceting" id="toc-faceting" class="nav-link" data-scroll-target="#faceting">Faceting</a></li>
   <li><a href="#think-of-the-color-blind" id="toc-think-of-the-color-blind" class="nav-link" data-scroll-target="#think-of-the-color-blind">Think of the color blind</a></li>
+  <li><a href="#use-colorblind-friendly-colors-in-your-projects" id="toc-use-colorblind-friendly-colors-in-your-projects" class="nav-link" data-scroll-target="#use-colorblind-friendly-colors-in-your-projects">Use colorblind friendly colors in your projects</a></li>
   <li><a href="#gridextra-and-grid.arrange" id="toc-gridextra-and-grid.arrange" class="nav-link" data-scroll-target="#gridextra-and-grid.arrange">gridExtra and <code>grid.arrange</code></a></li>
   </ul></li>
   </ul>
@@ -354,7 +355,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="encoding-data-using-visual-cues" class="level3">
 <h3 class="anchored" data-anchor-id="encoding-data-using-visual-cues">Encoding data using visual cues</h3>
 <p><strong>Visual cues</strong> are any element of design that gives the viewer clues as to how to use the object. For instance, we can look at door handles like these</p>
-<p><img src="../..\img/pushpull.jpg" class="img-fluid"></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/pushpull.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="512"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>and know exactly what to do with them. We don’t even need the “PUSH” and “PULL” – approaching just the pull handle in the wild gives sufficient visual cues that you know the door is a “pull” door. Encountering a metal plate with no handle is going to imply “push”. If the door on the right were a “push” door, you’d be momentarily confused! It’s poor design. Your plots should use visual cues to help readers understand how to use them with no confusion.</p>
 <p>We start by describing some principles for encoding data. There are several approaches at our disposal including position, aligned lengths, angles, area, brightness, and color hue.</p>
 <p>To illustrate how some of these strategies compare, let’s suppose we want to report the results from two hypothetical polls regarding browser preference taken in 2000 and then 2015. For each year, we are simply comparing five quantities – the five percentages. A widely used graphical representation of percentages, popularized by Microsoft Excel, is the pie chart:</p>
@@ -450,7 +459,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="avoid-pseudo-three-dimensional-plots" class="level3">
 <h3 class="anchored" data-anchor-id="avoid-pseudo-three-dimensional-plots">Avoid pseudo-three-dimensional plots</h3>
 <p>The figure below, taken from the scientific literature<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, shows three variables: dose, drug type and survival. Although your screen/book page is flat and two-dimensional, the plot tries to imitate three dimensions and assigned a dimension to each variable.</p>
-<p><img src="../..\img/fig8b.png" class="img-fluid"> (Image courtesy of Karl Broman)</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/fig8b.png" class="img-fluid figure-img" width="335"></p>
+<figcaption>Image courtesy of Karl Broman</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>Humans are not good at seeing in three dimensions (which explains why it is hard to parallel park) and our limitation is even worse with regard to pseudo-three-dimensions. To see this, try to determine the values of the survival variable in the plot above. Can you tell when the purple ribbon intersects the red one? This is an example in which we can easily use color to represent the categorical variable instead of using a pseudo-3D:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">##First read data</span></span>
@@ -472,7 +490,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Notice how much easier it is to determine the survival values.</p>
 <p>Pseudo-3D is sometimes used completely gratuitously: plots are made to look 3D even when the 3rd dimension does not represent a quantity. This only adds confusion and makes it harder to relay your message. Here are two examples:</p>
-<p><img src="../..\img/fig1e.png" class="img-fluid"> <img src="../..\img/fig2d.png" class="img-fluid"> (Images courtesy of Karl Broman)</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/fig1e.png" class="img-fluid figure-img" width="334"></p>
+<figcaption>Images courtesy of Karl Broman</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/fig2d.png" class="img-fluid figure-img" width="704"></p>
+<figcaption>Images courtesy of Karl Broman</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="avoid-too-many-significant-digits" class="level3">
 <h3 class="anchored" data-anchor-id="avoid-too-many-significant-digits">Avoid too many significant digits</h3>
@@ -645,7 +680,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="know-when-to-include-0" class="level3">
 <h3 class="anchored" data-anchor-id="know-when-to-include-0">Know when to include 0</h3>
 <p>When using barplots, it is misinformative not to start the bars at 0. This is because, by using a barplot, we are implying the length is proportional to the quantities being displayed. By avoiding 0, relatively small differences can be made to look much bigger than they actually are. This approach is often used by politicians or media organizations trying to exaggerate a difference. Below is an illustrative example used by Peter Aldhous in this lecture: <a href="http://paldhous.github.io/ucb/2016/dataviz/week2.html">http://paldhous.github.io/ucb/2016/dataviz/week2.html</a>.</p>
-<p><img src="../..\img/class2_8.jpg" class="img-fluid"> (Source: Fox News, via Media Matters<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.)</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/class2_8.jpg" class="img-fluid figure-img" width="282"></p>
+<figcaption>(Source: Fox News, via Media Matters<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>From the plot above, it appears that apprehensions have almost tripled when, in fact, they have only increased by about 16%. Starting the graph at 0 illustrates this clearly:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -656,8 +700,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Here is another example, described in detail in a Flowing Data blog post: <img src="../..\img/Bush-cuts.png" class="img-fluid"></p>
-<p>(Source: Fox News, via Flowing Data<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.)</p>
+<p>Here is another example, described in detail in a Flowing Data blog post:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/Bush-cuts.png" class="img-fluid figure-img" width="322"></p>
+<figcaption>(Source: Fox News, via Flowing Data<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.)</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>This plot makes a 13% increase look like a five fold change. Here is the appropriate plot:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -668,8 +721,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Finally, here is an extreme example that makes a very small difference of under 2% look like a 10-100 fold change: <img src="../..\img/venezuela-election.png" class="img-fluid"></p>
-<p>(Source: Venezolana de Televisión via Pakistan Today<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> and Diego Mariano.)</p>
+<p>Finally, here is an extreme example that makes a very small difference of under 2% look like a 10-100 fold change:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/venezuela-election.png" class="img-fluid figure-img" width="320"></p>
+<figcaption>(Source: Venezolana de Televisión via Pakistan Today<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> and Diego Mariano.)</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>Here is the appropriate plot:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -694,8 +756,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="do-not-distort-quantities" class="level3">
 <h3 class="anchored" data-anchor-id="do-not-distort-quantities">Do not distort quantities</h3>
-<p>During President Barack Obama’s 2011 State of the Union Address, the following chart was used to compare the US GDP to the GDP of four competing nations: <img src="../..\img/state-of-the-union.png" class="img-fluid"></p>
-<p>(Source: The 2011 State of the Union Address<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>)</p>
+<p>During President Barack Obama’s 2011 State of the Union Address, the following chart was used to compare the US GDP to the GDP of four competing nations:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/state-of-the-union.png" class="img-fluid figure-img" width="1434"></p>
+<figcaption>(Source: The 2011 State of the Union Address<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>Judging by the area of the circles, the US appears to have an economy over five times larger than China’s and over 30 times larger than France’s. However, if we look at the actual numbers, we see that this is not the case. The actual ratios are 2.6 and 5.8 times bigger than China and France, respectively. The reason for this distortion is that the radius, rather than the area, was made to be proportional to the quantity, which implies that the proportion between the areas is squared: 2.6 turns into 6.5 and 5.8 turns into 34.1. Here is a comparison of the circles we get if we make the value proportional to the radius and to the area:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gdp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">14.6</span>, <span class="fl">5.7</span>, <span class="fl">5.3</span>, <span class="fl">3.3</span>, <span class="fl">2.5</span>)</span>
@@ -828,7 +899,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -844,7 +915,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -888,7 +959,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -904,7 +975,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -952,7 +1023,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1058,8 +1129,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>From <a href="http://www.pnas.org/content/pnas/early/2017/01/24/1617948114.full.pdf">Seafood Prices Reveal Impacts of a Major Ecological Disturbance</a>: <img src="../..\img/Colorblind_example.png" class="img-fluid"></p>
+<p>From <a href="http://www.pnas.org/content/pnas/early/2017/01/24/1617948114.full.pdf">Seafood Prices Reveal Impacts of a Major Ecological Disturbance</a>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/Colorblind_example.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>There are several resources that can help you select colors, for example this one: <a href="http://bconnelly.net/2013/10/creating-colorblind-friendly-figures/">http://bconnelly.net/2013/10/creating-colorblind-friendly-figures/</a>.</p>
+</section>
+<section id="use-colorblind-friendly-colors-in-your-projects" class="level2 callout-info">
+<h2 class="anchored" data-anchor-id="use-colorblind-friendly-colors-in-your-projects">Use colorblind friendly colors in your projects</h2>
+<p>You should get in the habit of using colorblind-friendly colors. It will be required on your group projects. Mastering the palette is a helpful skill.</p>
+</section>
 <section id="using-a-discrete-color-palette" class="level3">
 <h3 class="anchored" data-anchor-id="using-a-discrete-color-palette">Using a discrete color palette</h3>
 <p>If you’re simply trying to differentiate between groups by using color, there are many ways of changing your color palette in <code>ggplot</code>. Most use <code>scale_fill_discrete</code> or <code>scale_color_discrete</code> (depending on the aesthetic for which you’re setting the color).</p>
@@ -1074,7 +1159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1095,7 +1180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1114,7 +1199,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1134,7 +1219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1151,7 +1236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1168,12 +1253,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03a_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="03a_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="gridextra-and-grid.arrange" class="level2">
 <h2 class="anchored" data-anchor-id="gridextra-and-grid.arrange">gridExtra and <code>grid.arrange</code></h2>

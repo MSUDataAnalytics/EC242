@@ -1,7 +1,5 @@
 ---
 title: "Effective Visualizations"
-linktitle: "3: Visualization"
-read_date: "2024-01-23"
 menu:
   content:
     parent: Course content
@@ -80,8 +78,10 @@ library(gridExtra)
  
 **Visual cues** are any element of design that gives the viewer clues as to how to use the object. For instance, we can look at door handles like these
 
-![](/img/pushpull.jpg)
- 
+```{r}
+knitr::include_graphics(here('images','pushpull.jpg'))
+```
+
 and know exactly what to do with them. We don't even need the "PUSH" and "PULL" -- approaching just the pull handle in the wild gives sufficient visual cues that you know the door is a "pull" door. Encountering a metal plate with no handle is going to imply "push". If the door on the right were a "push" door, you'd be momentarily confused! It's poor design. Your plots should use visual cues to help readers understand how to use them with no confusion.
 
 We start by describing some principles for encoding data. There are several approaches at our disposal including position, aligned lengths, angles, area, brightness, and color hue.
@@ -184,9 +184,9 @@ In general, when displaying quantities, position and length are preferred over a
 The figure below, taken from the scientific literature^[https://projecteuclid.org/download/pdf_1/euclid.ss/1177010488],
 shows three variables: dose, drug type and survival. Although your screen/book page is flat and two-dimensional, the plot tries to imitate three dimensions and assigned a dimension to each variable.
 
-![](/img/fig8b.png)
-(Image courtesy of Karl Broman)
-
+```{r, fig.cap = 'Image courtesy of Karl Broman'}
+knitr::include_graphics(here('images','fig8b.png'))
+```
 Humans are not good at seeing in three dimensions (which explains why it is hard to parallel park) and our limitation is even worse with regard to pseudo-three-dimensions. To see this, try to determine the values of the survival variable in the plot above. Can you tell when the purple ribbon intersects the red one? This is an example in which we can easily use color to represent the categorical variable instead of using a pseudo-3D:
 
 ```{r colors-for-different-lines,  echo=TRUE}
@@ -205,9 +205,11 @@ Notice how much easier it is to determine the survival values.
 
 Pseudo-3D is sometimes used completely gratuitously: plots are made to look 3D even when the 3rd dimension does not represent a quantity. This only adds confusion and makes it harder to relay your message.  Here are two examples:
 
-![](/img/fig1e.png)
-![](/img/fig2d.png)
-(Images courtesy of Karl Broman)
+```{r, fig.cap = 'Images courtesy of Karl Broman'}
+knitr::include_graphics(here('images','fig1e.png'))
+knitr::include_graphics(here('images','fig2d.png'))
+```
+
 
 
 ### Avoid too many significant digits
@@ -284,8 +286,10 @@ As a simple example, consider that for your own exploration it may be more usefu
 
 When using barplots, it is misinformative not to start the bars at 0. This is because, by using a barplot, we are implying the length is proportional to the quantities being displayed. By avoiding 0, relatively small differences can be made to look much bigger than they actually are. This approach is often used by politicians or media organizations trying to exaggerate a difference. Below is an illustrative example used by Peter Aldhous in this lecture: [http://paldhous.github.io/ucb/2016/dataviz/week2.html](http://paldhous.github.io/ucb/2016/dataviz/week2.html). 
 
-![](/img/class2_8.jpg)
-(Source: Fox News, via Media Matters^[http://mediamatters.org/blog/2013/04/05/fox-news-newest-dishonest-chart-immigration-enf/193507].)
+```{r, fig.cap ='(Source: Fox News, via Media Matters^[http://mediamatters.org/blog/2013/04/05/fox-news-newest-dishonest-chart-immigration-enf/193507]'}
+knitr::include_graphics(here('images','class2_8.jpg'))
+```
+
 
 From the plot above, it appears that apprehensions have almost tripled when, in fact, they have only increased by about 16%. Starting the graph at 0 illustrates this clearly:
 
@@ -296,9 +300,10 @@ data.frame(Year = as.character(c(2011, 2012, 2013)),Southwest_Border_Apprehensio
 ```
 
 Here is another example, described in detail in a Flowing Data blog post:
-![](/img/Bush-cuts.png)
+```{r, fig.cap = '(Source: Fox News, via Flowing Data^[http://flowingdata.com/2012/08/06/fox-news-continues-charting-excellence/].)'}
+knitr::include_graphics(here('images','Bush-cuts.png'))
+```
 
-(Source: Fox News, via Flowing Data^[http://flowingdata.com/2012/08/06/fox-news-continues-charting-excellence/].)
 
 This plot makes a 13% increase look like a five fold change. Here is the appropriate plot:
 
@@ -311,10 +316,12 @@ data.frame(date = c("Now", "Jan 1, 2013"), tax_rate = c(35, 39.6)) %>%
 ```
 
 Finally, here is an extreme example that makes a very small difference of under 2% look like a 10-100 fold change:
-![](/img/venezuela-election.png)
 
-(Source:
-Venezolana de Televisión via Pakistan Today^[https://www.pakistantoday.com.pk/2018/05/18/whats-at-stake-in-venezuelan-presidential-vote] and Diego Mariano.)
+```{r, fig.cap='(Source: Venezolana de Televisión via Pakistan Today^[https://www.pakistantoday.com.pk/2018/05/18/whats-at-stake-in-venezuelan-presidential-vote] and Diego Mariano.)'}
+knitr::include_graphics(here('images','venezuela-election.png'))
+```
+
+
 
 Here is the appropriate plot:
 
@@ -342,9 +349,10 @@ Note that in the plot on the left, which includes 0, the space between 0 and 43 
 ### Do not distort quantities
 
 During President Barack Obama’s 2011 State of the Union Address, the following chart was used to compare the US GDP to the GDP of four competing nations:
-![](/img/state-of-the-union.png)
+```{r, fig.cap = '(Source: The 2011 State of the Union Address^[https://www.youtube.com/watch?v=kl2g40GoRxg])'}
+knitr::include_graphics(here('images','state-of-the-union.png'))
+```
 
-(Source: The 2011 State of the Union Address^[https://www.youtube.com/watch?v=kl2g40GoRxg])
 
 Judging by the area of the circles, the US appears to have an economy over five times larger than China's and over 30 times larger than France's. However, if we look at the actual numbers, we see that this is not the case. The actual ratios are 2.6 and 5.8 times bigger than China and France, respectively. The reason for this distortion is that the radius, rather than the area, was made to be proportional to the quantity, which implies that the proportion between the areas is squared: 2.6 turns into 6.5 and 5.8 turns into 34.1. Here is a comparison of the circles we get if we make the value proportional to the radius and to the area:
 
@@ -700,15 +708,19 @@ p1 + scale_color_manual(values=color_blind_friendly_cols)
 ```
 
 From [Seafood Prices Reveal Impacts of a Major Ecological Disturbance](http://www.pnas.org/content/pnas/early/2017/01/24/1617948114.full.pdf):
-![](/img/Colorblind_example.png)
-
-
-
+```{r}
+knitr::include_graphics(here('images','Colorblind_example.png'))
+```
 
 
 There are several resources that can help you select colors, for example this one:  [http://bconnelly.net/2013/10/creating-colorblind-friendly-figures/](http://bconnelly.net/2013/10/creating-colorblind-friendly-figures/).
 
 
+::: {.callout-info}
+## Use colorblind friendly colors in your projects
+
+You should get in the habit of using colorblind-friendly colors. It will be required on your group projects. Mastering the palette is a helpful skill.
+:::
 
 ### Using a discrete color palette
 If you're simply trying to differentiate between groups by using color, there are many ways of changing your color palette in `ggplot`. Most use `scale_fill_discrete` or `scale_color_discrete` (depending on the aesthetic for which you're setting the color).

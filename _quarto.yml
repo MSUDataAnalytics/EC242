@@ -18,9 +18,9 @@ project:
     - "!Week_13/"
     - "!Week_14/"
     - "!Week_15/"
-    - "01-assignment.qmd"
+    #- "!*/01-assignment.qmd"
     #- "!*/02-assignment.qmd"
-    - "!*/03-assignment.qmd"
+    #- "!*/03-assignment.qmd"
     - "!*/04-assignment.qmd"
     - "!*/05-assignment.qmd"
     - "!*/06-assignment.qmd"
@@ -43,6 +43,7 @@ project:
     - "files/"
     - "content/"
     - "projects/"
+    - "data/"
   
 
   preview:
