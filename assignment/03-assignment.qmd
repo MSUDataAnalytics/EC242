@@ -34,7 +34,7 @@ As you hopefully figured out by now, you'll be doing all your `R` work in `R Mar
 
 You'll need to download one CSV file and put it somewhere on your computer (or upload it to RStudio.cloud if you've gone that direction)---preferably in a folder named `data` in your project folder. You can download the data from [the DOB's map](https://www1.nyc.gov/assets/buildings/html/essential-active-construction.html), or use this link to get it directly:
 
-- [<i class="fas fa-file-csv"></i> `EssentialConstruction.csv`](data/EssentialConstruction.csv)
+- [<i class="fas fa-file-csv"></i> `EssentialConstruction.csv`](../data/EssentialConstruction.csv)
 
 
 ### R Markdown
