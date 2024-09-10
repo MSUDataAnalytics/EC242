@@ -16,6 +16,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Front matter: Finishing color palettes
+On Tuesday, I let us go early as I thought a part of our material was missing. It was not. Let's jump to the end of Tuesday and talk about setting color palettes briefly.
+
+
 # Visualizing data distributions {#distributions} 
 
 Throughout your education, you may have noticed that numerical data is often summarized with the _average_ value. For example, the quality of a high school is sometimes summarized with one number: the average score on a standardized test. Occasionally, a second number is reported: the _standard deviation_. For example, you might read a report stating that scores were 680 plus or minus 50 (the standard deviation). The report has summarized an entire vector of scores with just two numbers. Is this appropriate? Is there any important piece of information that we are missing by only looking at this summary rather than the entire list?
@@ -32,6 +36,8 @@ We will be working with two types of variables: categorical and numeric. Each ca
 When each entry in a vector comes from one of a small number of groups, we refer to the data as _categorical data_. Two simple examples are sex (male or female) and regions (Northeast, South, North Central, West). Some categorical data can be ordered even if they are not numbers per se, such as spiciness (mild, medium, hot). In statistics textbooks, ordered categorical data are referred to as _ordinal_ data. In psychology, a number of different terms are used for this same idea.
 
 Examples of numerical data are population sizes, murder rates, and heights. Some numerical data can be treated as ordered categorical. We can further divide numerical data into continuous and discrete. Continuous variables are those that can take any value, such as heights, if measured with enough precision. For example, a pair of twins may be 68.12 and 68.11 inches, respectively. Counts, such as population sizes, are discrete because they have to be integers---that's how we count.^[Keep in mind that discrete numeric data can be considered ordinal. Although this is technically true, we usually reserve the term ordinal data for variables belonging to a small number of different groups, with each group having many members. In contrast, when we have many groups with few cases in each group, we typically refer to them as discrete numerical variables. So, for example, the number of packs of cigarettes a person smokes a day, rounded to the closest pack, would be considered ordinal, while the actual number of cigarettes would be considered a numerical variable. But, indeed, there are examples that can be considered both numerical and ordinal when it comes to visualizing data.]
+
+
 
 ## Case study: describing student heights
 
@@ -117,6 +123,7 @@ If we send this **histogram** plot to some uninformed reader, she will immediate
 What information do we lose?  Note that all values in each interval are treated the same when computing bin heights. So, for example, the histogram does not distinguish between 64, 64.1, and 64.2 inches. Given that these differences are almost unnoticeable to the eye, the practical implications are negligible and we were able to summarize the data to just 23 numbers.
 
 The `geom_histogram` layer only requires one aesthetic mapping - the x-axis. This is because the y-axis is computed from counts of the x-axis. Giving an aesthetic mapping to an additional variable for y will result in an error. Using an aesthetic mapping like `fill` will work - it'll give you two histograms on top of each other. Try it! Try setting the `alpha` aesthetic to .5 (not an aesthetic mapping) so you can see both layers when they overlap. 
+
 
 ### Smoothed density
 Smooth density plots are aesthetically more appealing than histograms. `geom_density` is the geometry that gives a smoothed density. Here is what a smooth density plot looks like for our heights data:
@@ -412,7 +419,7 @@ Another special case that receives a name are the _quartiles_, which are obtaine
 
 ## ggplot2 geometries {#other-geometries}
 
-Alhough we haven't gone into detain about the __ggplot2__ package for data visualization, we now will briefly discuss some of the geometries involved in the plots above. We will discuss __ggplot2__ in (excruciating) detail later this week. For now, we will briefly demonstrate how to generate plots related to distributions.
+We now will briefly discuss some of the geometries involved in the plots above. We will discuss __ggplot2__ in (excruciating) detail into next week. For now, we will briefly demonstrate how to generate plots related to distributions.
 
 ### Barplots
 To generate a barplot we can use the `geom_bar` geometry. The default is to count the number of each category and draw a bar. Here is the plot for the regions of the US.
@@ -558,14 +565,9 @@ We will explore more with boxplots and colors in our next lecture.
 <!-- The video from this lecture will be [available here around 3-6 days after class <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/SSC442+-+Example+02+-+Jan+27th/1_m4no05nj?st=675) -->
 
 
+::: {.callout-note}
 ## Try it!
 
-:::fyi
-
-__Try it!__
-
-
-__TRY IT__
 
 Start by loading the __dplyr__ and __ggplot2__ library as well as the `murders` and `heights` data.
 

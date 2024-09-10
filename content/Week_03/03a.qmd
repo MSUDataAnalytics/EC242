@@ -67,15 +67,13 @@ library(gridExtra)
 
 3. Clear, detailed and thorough labeling should be used to defeat graphical distortion and ambiguity. Write out explanations of the data on the graph itself.  Label important events in the data.
 
-4. In time-series displays of money, deflated and standardized units of monetary measurement are nearly always better than nominal units.
+4. Viewers eyes will follow a predictable path. Visual cues serve to light up that path. 
 
-5. Viewers eyes will follow a predictable path. Visual cues serve to light up that path. 
+5. The representation of numbers, as physically measured on the surface of the graph itself, should be directly proportional to the numerical quantities represented. 
 
-6. The representation of numbers, as physically measured on the surface of the graph itself, should be directly proportional to the numerical quantities represented. 
+6. Empty space is informative. Do not fill every inch, but let the absence of information guide the viewer.
 
-7. Empty space is informative. Do not fill every inch, but let the absence of information guide the viewer.
-
-8. When possible (and in a visually suitable way), show the data.
+7. When possible (and in a visually suitable way), show the data.
 
 
 ### Encoding data using visual cues
