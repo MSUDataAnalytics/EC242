@@ -48,30 +48,34 @@ We have already provided some rules to follow as we created plots for our exampl
 
 The principles are mostly based on research related to how humans detect patterns and make visual comparisons. The preferred approaches are those that best fit the way our brains process visual information. When deciding on a visualization approach, it is also important to keep our goal in mind. We may be comparing a viewable number of quantities, describing distributions for categories or numeric values, comparing the data from two groups, or describing the relationship between two variables. As a final note, we want to emphasize that for a data scientist it is important to adapt and optimize graphs to the audience. For example, an exploratory plot made for ourselves will be different than a chart intended to communicate a finding to a general audience.
 
-## A Starting List (from Tufte)
-
-1. The representation of numbers, as physically measured on the surface of the graph itself, should be directly proportional to the numerical quantities represented. 
-
-2. Clear, detailed and thorough labeling should be used to defeat graphical distortion and ambiguity. Write out explanations of the data on the graph itself.  Label important events in the data.
-
-3. Show data variation, not design variation.
-
-4. In time-series displays of money, deflated and standardized units of monetary measurement are nearly always better than nominal units.
-
-5. The number of information carrying (variable) dimensions depicted should not exceed the number of dimensions in the data. Graphics must not quote data out of context.
-
-### Examples (Dos and Don'ts)
-
-As with the discussion above, we will be using these libraries---note the addition of __gridExtra__:
+### Load some packages
+We will be using these libraries---note the addition of __gridExtra__. I trust you to notice and install new packages from here on out:
 
 
 ```{r, echo = TRUE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(dslabs)
 library(gridExtra)
-
-
 ```
+
+
+## A Starting List (from Tufte)
+
+1. Show data variation, not design variation.
+
+2. The number of information carrying (variable) dimensions depicted should not exceed the number of dimensions in the data. Graphics must not quote data out of context.
+
+3. Clear, detailed and thorough labeling should be used to defeat graphical distortion and ambiguity. Write out explanations of the data on the graph itself.  Label important events in the data.
+
+4. In time-series displays of money, deflated and standardized units of monetary measurement are nearly always better than nominal units.
+
+5. Viewers eyes will follow a predictable path. Visual cues serve to light up that path. 
+
+6. The representation of numbers, as physically measured on the surface of the graph itself, should be directly proportional to the numerical quantities represented. 
+
+7. Empty space is informative. Do not fill every inch, but let the absence of information guide the viewer.
+
+8. When possible (and in a visually suitable way), show the data.
 
 
 ### Encoding data using visual cues
@@ -82,7 +86,7 @@ library(gridExtra)
 knitr::include_graphics(here('images','pushpull.jpg'))
 ```
 
-and know exactly what to do with them. We don't even need the "PUSH" and "PULL" -- approaching just the pull handle in the wild gives sufficient visual cues that you know the door is a "pull" door. Encountering a metal plate with no handle is going to imply "push". If the door on the right were a "push" door, you'd be momentarily confused! It's poor design. Your plots should use visual cues to help readers understand how to use them with no confusion.
+and know exactly what to do with them. We don't even need the "PUSH" and "PULL" -- approaching just the pull handle in the wild gives sufficient visual cues that you know the door is a "pull" door. Encountering a metal plate with no handle is going to imply "push". If the door on the right were a "push" door, you'd be momentarily confused! It would be poor design. Your plots should use visual cues to help readers understand how to use them with no confusion.
 
 We start by describing some principles for encoding data. There are several approaches at our disposal including position, aligned lengths, angles, area, brightness, and color hue.
 
@@ -110,8 +114,9 @@ p1 <- browsers %>% ggplot(aes(x = "", y = Percentage, fill = Browser)) +
 p1
 ```
 
+Looking at the above graph(s), **what are the visual cues here**?
 
-Here we are representing quantities with both areas and angles, since both the angle and area of each pie slice are proportional to the quantity the slice represents. This turns out to be a sub-optimal choice since, as demonstrated by perception studies, humans are not good at precisely quantifying angles and are even worse when area is the only available visual cue. The donut chart is an example of a plot that uses only area:
+Here we are representing quantities with both areas and angles, since both the angle and area of each pie slice are proportional to the quantity the slice represents. This turns out to be a sub-optimal choice since, as demonstrated by perception studies, humans are not good at precisely quantifying angles and are even worse when area is the only available visual cue. This plot fails to be a useful visual cue. The donut chart is an example of a plot that uses only area:
 
 ```{r donutchart, echo=FALSE}
 browsers %>% ggplot(aes(x = 2, y = Percentage, fill = Browser)) +
@@ -129,7 +134,6 @@ To see how hard it is to quantify angles and area, note that the rankings and al
 
 > Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.
 
-
 In this case, simply showing the numbers is not only clearer, but would also save on printing costs if printing a paper copy:
 
 ```{r, echo=FALSE}
@@ -143,7 +147,7 @@ if(knitr::is_html_output()){
 }
 ```
 
-The preferred way to plot these quantities is to use length and position as visual cues, since humans are much better at judging linear measures. The barplot uses this approach by using bars of length proportional to the quantities of interest. By adding horizontal lines at strategically chosen values, in this case at every multiple of 10, we ease the visual burden of quantifying through the position of the top of the bars. Compare and contrast the information we can extract from the two figures.
+The preferred way to plot these quantities is to use length and position as **visual cues**, since humans are much better at judging linear measures. The barplot uses this approach by using bars of length proportional to the quantities of interest. By adding horizontal lines at strategically chosen values, in this case at every multiple of 10, we ease the visual burden of quantifying through the position of the top of the bars. Compare and contrast the information we can extract from the two figures.
 
 ```{r two-barplots, echo=FALSE, out.width="100%", fig.width = 6, fig.height = 5}
 p2 <-browsers %>%
@@ -175,7 +179,7 @@ annotate(geom = "text",
               label = label, size=4)
 ```
 
-In general, when displaying quantities, position and length are preferred over angles and/or area. Brightness and color are even harder to quantify than angles. But, as we will see later, they are sometimes useful when more than two dimensions must be displayed at once.
+In general, when displaying quantities, position and length are preferred over angles and/or area as position and length provide better visual cues. Brightness and color are even harder to quantify than angles. But, as we will see later, they are sometimes useful when more than two dimensions must be displayed at once.
 
 
 
@@ -209,6 +213,8 @@ Pseudo-3D is sometimes used completely gratuitously: plots are made to look 3D e
 knitr::include_graphics(here('images','fig1e.png'))
 knitr::include_graphics(here('images','fig2d.png'))
 ```
+
+**Question**: Which of the Tufte design principles above are violated by these plots?
 
 
 
@@ -284,7 +290,7 @@ As a simple example, consider that for your own exploration it may be more usefu
 
 ### Know when to include 0
 
-When using barplots, it is misinformative not to start the bars at 0. This is because, by using a barplot, we are implying the length is proportional to the quantities being displayed. By avoiding 0, relatively small differences can be made to look much bigger than they actually are. This approach is often used by politicians or media organizations trying to exaggerate a difference. Below is an illustrative example used by Peter Aldhous in this lecture: [http://paldhous.github.io/ucb/2016/dataviz/week2.html](http://paldhous.github.io/ucb/2016/dataviz/week2.html). 
+When using barplots, it is misinformative not to start the bars at 0. This is because, by using a barplot, we are implying the length is proportional to the quantities being displayed -- a natural **visual cue**. By avoiding 0, relatively small differences can be made to look much bigger than they actually are. This approach is often used by politicians or media organizations trying to exaggerate a difference. Below is an illustrative example used by Peter Aldhous in this lecture: [http://paldhous.github.io/ucb/2016/dataviz/week2.html](http://paldhous.github.io/ucb/2016/dataviz/week2.html). 
 
 ```{r, fig.cap ='(Source: Fox News, via Media Matters^[http://mediamatters.org/blog/2013/04/05/fox-news-newest-dishonest-chart-immigration-enf/193507]'}
 knitr::include_graphics(here('images','class2_8.jpg'))
@@ -321,7 +327,7 @@ Finally, here is an extreme example that makes a very small difference of under 
 knitr::include_graphics(here('images','venezuela-election.png'))
 ```
 
-
+(note: this is a years-old graphic, yet timely yet again)
 
 Here is the appropriate plot:
 
@@ -386,7 +392,8 @@ gdp_data %>%
 When one of the axes is used to show categories, as is done in barplots, the default __ggplot2__ behavior is to order the categories alphabetically when they are defined by character strings. If they are defined by factors, they are ordered by the factor levels. We rarely want to use alphabetical order. Instead, we should order by a meaningful quantity. In all the cases above, the barplots were ordered by the values being displayed. The exception was the graph showing barplots comparing browsers. In this case, we kept the order the same across the barplots to ease the comparison. Specifically, instead of ordering the browsers separately in the two years, we ordered both years by the average value of 2000 and 2015.
 
 
-We previously learned how to use the `reorder` function, which helps us achieve this goal.
+We can use the `reorder` function, which helps us achieve this goal. This will let us re-order the levels of a factor variable. It is **different** from using `order()` or `arrange()` because it only changes the order in which a factor variable is recorded. That is, it doesn't change the order of the data, it changes the order of the factor *levels*, and those factor levels are used by `ggplot` to determine the plotting position.
+
 To appreciate how the right order can help convey a message, suppose we want to create a plot to compare the murder rate across states. We are particularly interested in the most dangerous and safest states. Note the difference when we order alphabetically (the default) versus when we order by the actual rate:
 
 ```{r do-not-order-alphabetically, fig.height = 5, echo=TRUE}
@@ -450,8 +457,9 @@ grid.arrange(p1, p2, nrow=1)
 
 The first orders the regions alphabetically, while the second orders them by the group's median.
 
-## Show the data
 
+
+## Show the data
 We have focused on displaying single quantities across categories. We now shift our attention to displaying data, with a focus on comparing groups.
 
 To motivate our first principle, "show the data", we go back to our artificial example of describing heights to a person who is unaware of some basic facts about the population of interest (and is otherwise unsophisticated). This time let's assume that this person is interested in the difference in heights between males and females. A commonly seen plot used for comparisons between groups, popularized by software such as Microsoft Excel, is the dynamite plot, which shows the average and standard errors.^[If you're unfamiliar, standard errors are defined later in the course---do not confuse them with the standard deviation of the data.] The plot looks like this:
@@ -532,7 +540,7 @@ heights %>%
 
 ### Align plots vertically to see horizontal changes and horizontally to see vertical changes
 
-In these histograms, the visual cue related to decreases or increases in height are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:
+In these histograms, the **visual cue** related to decreases or increases in height are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:
 
 ```{r common-axes-histograms-right-2, echo = TRUE}
 heights %>%
@@ -659,7 +667,7 @@ dslabs::gapminder %>%
 
 ### Use color
 
-The comparison becomes even easier to make if we use color to denote the two things we want to compare. Now we do not have to make the labels column and can just use `continent` on the x-axis:
+The comparison becomes even easier to make if we use color to denote the two things we want to compare. This is an "information carrying dimension" and implemented with an aesthetic mapping. Now we do not have to make the labels column and can just use `continent` on the x-axis:
 
 
 ```{r boxplot-adjacent-comps-with-color, echo=FALSE}
@@ -769,8 +777,13 @@ custom_b = gp + geom_boxplot()  + labs(title = 'Custom palette 1-3') + scale_fil
 grid.arrange(custom_a, custom_b)
 ```
 
+::: {.callout-warning}
+## Bad R behavior
+
+
 In the lower plot, we only give it a length-3 vector of colors, and it needs 5, so it returns to default. Unfortunately, it doesn't warn you as to this behavior. Bad R!
 
+:::
 
 
 ### Using a continuous color palette
