@@ -173,7 +173,7 @@ There are two ways of inserting an image: in markdown text, or in a code chunk. 
 
 ````{markdown}
 ```{r, fig.width = '75%', fig.align='center', echo = TRUE}
-download.file("https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg", destfile = 'temporary.jpg')
+download.file("https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg", destfile = 'temporary.jpg', mode='wb')
 knitr::include_graphics(path = 'temporary.jpg')
 ```
 ```` 

@@ -1,0 +1,24 @@
+---
+title: "Weekly Writing - Week X"
+author: "Your Name Here"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+ pdf_document:
+     pandoc_args: ["--extract-media", "."]
+---
+
+## 1. Text of the prompt or title of your writing topic goes here(replace this with the prompt)
+
+Write your answer here, replacing this text. Use markdown language for formatting (**bold** and *italics*) (or [see here for more](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#styling-text)). 
+
+If you'd like to add a header, make sure you do so on a new line and use 2-4 #'s followed by a space.
+
+
+```{r, out.width='75%',fig.align='center'}
+# download.file("https://givingto.msu.edu/CDN/crowdpower/img/uploads/1510842370398-B43E9C7F-155D-AA53-076307989E3BAAF3.jpg", destfile='temporary5.jpg', mode='wb')
+# download.file("https:/ssc442kirkpatrick.netlify.app/content/01-content_files/Thibodaux2.jpg", destfile='temporary.jpg', mode='wb')
+
+download.file("https://msu.edu/-/media/assets/msu/images/audience-student/students-sis-home.jpg", destfile='temporary.jpg', mode='wb')
+# download.file("https://miro.medium.com/v2/resize:fit:2000/1*0CjeuX4hjXMdcjtvjf60cQ.png", destfile='temporary.png', mode='wb')
+knitr::include_graphics(path='temporary.jpg')
+```

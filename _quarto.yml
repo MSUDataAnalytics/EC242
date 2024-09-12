@@ -59,12 +59,12 @@ execute:
 
 website:
   title: "EC242"
-  # announcement: 
-  #   icon: info-circle
-  #   dismissable: true
-  #   content: "Lab Assignment 1 is due Tuesday 9/3 at 11:59pm on D2L"
-  #   type: primary
-  #   position: below-navbar
+  announcement:
+    icon: info-circle
+    dismissable: true
+    content: "A small (but necessary) update to the [embedding image resource](/resource/rmarkdown#images-inserted-in-code-chunks)"
+    type: primary
+    position: below-navbar
   search: 
     show-item-context: tree
     location: navbar
