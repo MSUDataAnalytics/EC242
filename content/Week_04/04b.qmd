@@ -271,7 +271,6 @@ Themes affect some of the plot elements that we haven't gotten much into (like l
 
 ```{r bump-plot-fancierest, echo = TRUE, fig.width=7, fig.height=4.2}
 bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
-                                panel.background  = element_rect(fill='red'),
                    plot.title = element_text(face = "bold"),
                    axis.text.x = element_text(angle = 45, hjust = 1),
                    panel.grid.major.y = element_blank(), # turn off all of the Y grid
