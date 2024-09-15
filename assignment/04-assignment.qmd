@@ -15,26 +15,28 @@ This assignment is due on **{{< meta duedate >}}**
 
 For this exercise you'll use state-level unemployment data from 2006 to 2016 that comes from the US Bureau of Labor Statistics (if you're curious, [we describe how we built this dataset down below](#postscript-how-we-got-this-unemployment-data)).
 
-- [<i class="fas fa-file-csv"></i> `unemployment.csv`](/projects/03-lab/data/unemployment.csv)
+- [<i class="fas fa-file-csv"></i> `unemployment.csv`](/data/unemployment.csv)
 
 In the end, to help you master file organization, we suggest that the structure of your project directory should look something like this:
 
 ```text
 your-project-name\
-  03-lab.Rmd
+  04-lab.Rmd
   data\
     unemployment.csv
 ```
 
 
-[The example for this week](/example/03-example/) will be ***incredibly*** helpful for this exercise. Reference it.
+[The applications for this week](/content/Week_04/04b.html) will be ***incredibly*** helpful for this exercise. Reference it.
 
-**For this week, you need to start making your plots look nice. For full credit, you will have to label axes, label the plot, and experiment with themes. Experiment with adding a `labs()` layer or changing colors.** Make sure all plots are legible and neat. If you're super brave, try modifying a theme and its elements. Default plots will not receive full credit.
+**For this week, you need to start making your plots look nice. For full credit, you will have to label axes, label the plot, and experiment with themes. Experiment with adding a `labs()` layer or changing colors. Use colorblind-friendly colors.** Make sure all plots are legible and neat. If you're super brave, try modifying a theme and its elements. Default plots will not receive full credit.
 
 
-:::fyi
+::: {.callout-note}
 
-__EXERCISE 1__
+## EXERCISES
+
+### Exercise 1 of 2
 
 Use data from the US Bureau of Labor Statistics (BLS) to show the trends in employment rate for all 50 states plus DC between 2006 and 2016. Your first instinct might be to put all 50 lines on one graph. Even if using an aesthetic mapping for color, this will be a mess. Let's give each state its own plot -- use `facet_grid` or `facet_wrap` to do this. What stories does this plot tell? Which states struggled to recover from the 2008–09 recession?
 
@@ -51,7 +53,7 @@ Some hints/tips:
 - This plot might be big, so make sure you adjust `fig.width` and `fig.height` in the chunk options so that it's visible when you knit it - try different values and knit to see how they look. If you're unfamiliar with chunk options, [see the Using R Markdown resources](https://ssc442kirkpatrick.netlify.app/resource/rmarkdown/#chunk-options-1). 
 
 
-__EXERCISE 2__
+### Exercise 2 of 2
 
 Use data from the BLS to create a slopegraph that compares the unemployment rate in January 2006 with the unemployment rate in January 2009, either for all 50 states at once (good luck with that!) or for a specific region or division. Make sure the plot doesn't look too busy or crowded in the end.
 
@@ -65,20 +67,18 @@ Some hints/tips:
 
 - To make ggplot draw lines between the 2006 and 2009 categories, you need to include `group = state` in the aesthetics.
 
-:::
 
-## Bonus Exercise
+
+### Bonus Exercise
 
 __This is entirely optional but might be fun.__ Then again, it might not be fun. I don't know.
 
-For extra fun times, if you feel like it, create a bump chart showing something from the unemployment data (perhaps the top 10 states or bottom 10 states in unemployment?) Adapt the code in the [example for today's session](/example/03-example/).
+For extra fun times, if you feel like it, create a bump chart showing something from the unemployment data (perhaps the top 10 states or bottom 10 states in unemployment?) Adapt the code in the [applications for this week's sessions](/content/Week_04/04a.html).
 
 If you do this, plotting 51 lines is going to be a huge mess. But filtering the data is also a bad idea, because states could drop in and out of the top/bottom 10 over time, and we don't want to get rid of them. Instead, you can zoom in on a specific range of data in your plot with `coord_cartesian(ylim = c(1, 10))`, for instance.
 
+:::
 
-## Turning everything in
-
-When you're all done, click on the "Knit" button at the top of the editing window and create a PDF. Upload the PDF file to D2L.
 
 
 ## Postscript: how we got this unemployment data

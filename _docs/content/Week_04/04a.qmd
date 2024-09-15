@@ -25,81 +25,8 @@ output:
 - Why are we covering the material this way? (Good question. There's an answer!)
 
 
-#### In-Class Activity: Comparing 2008 Electoral Votes and Polling Data. 
 
-In this activity, we will use `R` to visualize and compare the actual electoral votes from the 2008 presidential election with the polling data prior to the election. Specifically, we will explore how accurately the polls predicted the election results. Yes, I know this is an older election... that's kind of the point. This isn't a politics class. 
-
-**Setup:**
-
-You'll need to download two CSV files and put them somewhere on your computer (or upload it to RStudio.cloud if you've gone that direction)---preferably in a folder named `data` in your project folder. You can download the data from the link below:
-
-- [<i class="fas fa-file-csv"></i> `pres08.csv`](/data/pres08.csv)
-- [<i class="fas fa-file-csv"></i> `polls08.csv`](/data/polls08.csv)
-
-**Steps Prior to Analysis:** 
-
-1. Load the Data
-
-```{r, echo=TRUE, message=FALSE, eval=FALSE}
-# Load the necessary libraries
-library(tidyverse)
-electoral_votes <- read.csv("path_to/pres08.csv")
-polling_data <- read.csv("path_to/polls08.csv")
-```
-
-Note that you'll have to replace `path_to` with the actual path to the files on your computer.
-
-2. Data Preparation
-
-We need to aggregate the polling data to get an average poll result for each state. We will then merge this with the electoral votes data.
-
-```{r, echo=TRUE, message=FALSE, eval=FALSE}
-# Aggregating polling data
-avg_polls <- polling_data %>%
-  group_by(state) %>%
-  summarise(Obama_avg = mean(Obama), McCain_avg = mean(McCain))
-
-# Merging with electoral votes data
-combined_data <- merge(electoral_votes, avg_polls, by = "state")
-```
-
-3. Complete Your Analysis 
-
-You are tasked with three things:
-
-A: Explore the discrepancies between polls and actual results.
-
-B: Visualize the relationship between the actual results and the poll results. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*?
-
-You might find this pseudo-code helpful: 
-
-```{r, eval=FALSE}
-# Define the regions
-regions <- tibble(
-  region = c('Northeast', 'Midwest', 'South', 'West'),
-  states = list(
-    c('CT', 'ME', 'MA', 'NH', 'RI', 'VT', 'NJ', 'NY', 'PA'),
-    c('IL', 'IN', 'MI', 'OH', 'WI', 'IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD'),
-    c('DE', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'DC', 'WV', 'AL', 'KY', 'MS', 'TN', 'AR', 'LA', 'OK', 'TX'),
-    c('AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY', 'AK', 'CA', 'HI', 'OR', 'WA')
-  )
-)
-
-# Unnest the states to create a mapping dataframe
-state_region_mapping <- regions %>%
-  unnest(states) %>%
-  rename(state = states)
-
-# Assuming 'polling_data' is your original dataframe
-polling_data_with_regions <- left_join(polling_data, state_region_mapping, by = "state")
-```
-
-C: Write up your conclusions. 
-
-Happy visualizing!
-
-
-### Regularly Scheduled Content
+### Prep
 Load up our `murders` data
 
 ```{r, warning = FALSE, error = FALSE, message = FALSE}
@@ -233,7 +160,7 @@ So we can now define where axis tick lines should lie and how they should be lab
 ## Additional geometries
 Let's say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) becuase we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).
 
-This brings us to our first additional geometry beyond `geom_point` (OK, we used `geom_text`, but that's more of an annotation). `geom_vline` lets us add a single vertical line (without aesthetic mappings). If we look at `?geom_vline` we see that it requires ones aesthetic:`xintercept`. It also takes aesthetics like color and size, and introduces the `linetype` aesthetic:
+`geom_vline` lets us add a single vertical line (without aesthetic mappings). If we look at `?geom_vline` we see that it requires ones aesthetic:`xintercept`. It also takes aesthetics like color and size, and introduces the `linetype` aesthetic:
 
 ```{r, echo=TRUE}
 p + geom_point(aes(color = region), size = 3) +
@@ -324,154 +251,262 @@ ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
 
 Now, we don't lose a lot of space to a legend, and we haven't had to use color to separate the stock symbols.
 
+#### Summarizing data and including in ggplot
+Often, we'll want to have lines or highlights in places that are derived from the data. In the above example from `murders`, we added a line at an arbitrary x-value (population) of 1,000,000.
 
-### Multiple geometries
-Since this section is about adding geometries, we *can* combine points and lines. Since lines connect points, it will look like a giant connect-the-dots. 
+Let's say we want to show the average state population for each region. We'll need to use two different data objects, one for the original, one for the summary. Create the summary first:
 
 ```{r, echo=T}
-library(ggrepel)
-ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
-  geom_line() +
-  geom_point() + 
-  geom_label_repel(data = AAPLNFLX %>% group_by(symbol) %>% slice(100),
-             aes(label = symbol)) + 
-  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
+murders.summary = murders %>%
+  group_by(region) %>%
+  dplyr::summarize(meanpop = mean(population),
+                   meantot = mean(total),
+                   meanrate = 100000*sum(total)/sum(population))
+
+print(murders.summary)
 ```
 
+The, use both `murders` and `murders.summary` in the plot:
 
+```{r, echo=T}
+p + geom_point(aes(color = region), size = 3) +
+  geom_text(nudge_x = .05) +
+  geom_vline(data = murders.summary, 
+             aes(xintercept = meanpop, color=region), size = 2, linetype = 1, alpha=.5) +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(x = 'Population', y = 'Total murders', color = 'US Region')
+```
 
-## Try it!
+Note that we get the same color mapping -- this isn't necessarily automatic. Rather, it's because the order in which R encounters each region is *the exact same order* in both `murders` and `murders.summary`. If it weren't, we'd have to set the factor levels using `factor` and overwriting our old `region` column:
 
-:::fyi
+```{r, echo=T}
+murders.summary = murders %>%
+  group_by(region) %>%
+  dplyr::summarize(meanpop = mean(population),
+                   meantot = mean(total),
+                   meanrate = 100000*sum(total)/sum(population)) %>%
+  dplyr::mutate(region = factor(region, levels = levels(murders$region)))
 
-__TRY IT__
+print(murders.summary)
+```
 
-Start by loading the __dplyr__ and __ggplot2__ library as well as the `murders` and `heights` data.
+Perhaps we would like to summarize the regional average Population and Murders by adding representative points. Since we're adding new data, we have to remove the `label=abb` part of the `aes` that inherits to each geom, which we do with `label=NULL` in the new point geometry:
 
 ```{r}
-library(dplyr)
-library(ggplot2)
-library(dslabs)
-data(heights)
-data(murders)
+p + geom_point(aes(color = region), size = 3) +
+  geom_text(nudge_x = .05) +
+  geom_point(data = murders.summary, aes(x = meanpop, y = meantot, color = region, label = NULL), size =12, shape=13) +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(x = 'Population', y = 'Total murders', color = 'US Region')
+
+```
+<!-- ### Multiple geometries -->
+<!-- Since this section is about adding geometries, we *can* combine points and lines. Since lines connect points, it will look like a giant connect-the-dots.  -->
+
+<!-- ```{r, echo=T} -->
+<!-- library(ggrepel) -->
+<!-- ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) + -->
+<!--   geom_line() + -->
+<!--   geom_point() +  -->
+<!--   geom_label_repel(data = AAPLNFLX %>% group_by(symbol) %>% slice(100), -->
+<!--              aes(label = symbol)) +  -->
+<!--   labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price') -->
+<!-- ``` -->
+
+
+::: {.callout-note}
+## Try it!
+
+
+#### In-Class Activity: Comparing 2008 Electoral Votes and Polling Data. 
+
+In this activity, we will use `R` to visualize and compare the actual electoral votes from the 2008 presidential election with the polling data prior to the election. Specifically, we will explore how accurately the polls predicted the election results. Yes, I know this is an older election... that's kind of the point. This isn't a politics class. 
+
+**Setup:**
+
+You'll need to download two CSV files and put them somewhere on your computer (or upload it to RStudio.cloud if you've gone that direction)---preferably in a folder named `data` in your project folder. You can download the data from the link below:
+
+- [<i class="fas fa-file-csv"></i> `pres08.csv`](/data/pres08.csv)
+- [<i class="fas fa-file-csv"></i> `polls08.csv`](/data/polls08.csv)
+
+**Steps Prior to Analysis:** 
+
+1. Load the Data
+
+```{r, echo=TRUE, message=FALSE, eval=FALSE}
+# Load the necessary libraries
+library(tidyverse)
+electoral_votes <- read.csv("path_to/pres08.csv")
+polling_data <- read.csv("path_to/polls08.csv") %>%
+  dplyr::mutate(middate = as.Date(middate)) # we'll tackle dates later
 ```
 
-1. With __ggplot2__ plots can be saved as objects. For example we can associate a dataset with a plot object like this
+Note that you'll have to replace `path_to` with the actual path to the files on your computer.
 
-```{r, eval = FALSE}
-p <- ggplot(data = murders)
+2. Data Preparation
+
+We need to aggregate the polling data to get an average poll result for each state. We will then merge this with the electoral votes data.
+
+```{r, echo=TRUE, message=FALSE, eval=FALSE}
+# Aggregating polling data
+avg_polls <- polling_data %>%
+  group_by(state) %>%
+  summarise(Obama_avg = mean(Obama), McCain_avg = mean(McCain))
+
+# Merging with electoral votes data
+combined_data <- merge(electoral_votes, avg_polls, by = "state")
 ```
 
-Because `data` is the first argument we don't need to spell it out
+3. Complete Your Analysis 
 
-```{r, eval = FALSE}
-p <- ggplot(murders)
-```
+You are tasked with two things:
 
-and we can also use the pipe:
+A: Explore and visualize the discrepancies between polls and actual results using `combined_data`
 
-```{r, eval = FALSE}
-p <- murders %>% ggplot()
-```
+B: Visualize the relationship between the actual results and the poll results *over time* for the following state: `c('MI','WI','IA','FL','NC','GA')`. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*?
 
-What is class of the object `p`?
-
-
-2. Remember that to print an object you can use the command `print` or simply type the object.
-Print the object `p` defined in exercise one and describe what you see.
-
-a. Nothing happens.
-b. A blank slate plot.
-c. A scatterplot.
-d. A histogram.
-
-
-3. Using the pipe `%>%`, create an object `p` but this time associated with the `heights` dataset instead of the `murders` dataset.
-
-
-4. What is the class of the object `p` you have just created?
-
-
-5. Now we are going to add a layer and the corresponding aesthetic mappings. For the murders data we plotted total murders versus population sizes. Explore the `murders` data frame to remind yourself what are the names for these two variables and select the correct answer. __Hint__: Look at `?murders`.
-
-a. `state` and `abb`.
-b. `total_murders` and `population_size`.
-c. `total` and `population`.
-d. `murders` and `size`.
-
-6. To create the scatterplot we add a layer with `geom_point`. The aesthetic mappings require us to define the x-axis and y-axis variables, respectively. So the code looks like this:
+You might find these code bits to be useful (hint: use them with `case_when`):
 
 ```{r, eval=FALSE}
-murders %>% ggplot(aes(x = , y = )) +
-  geom_point()
+# Define the regions
+Northeast = c('CT', 'ME', 'MA', 'NH', 'RI', 'VT', 'NJ', 'NY', 'PA')
+Midwest =  c('IL', 'IN', 'MI', 'OH', 'WI', 'IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD')
+South = c('DE', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'DC', 'WV', 'AL', 'KY', 'MS', 'TN', 'AR', 'LA', 'OK', 'TX')
+West = c('AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY', 'AK', 'CA', 'HI', 'OR', 'WA')
 ```
 
-except we have to define the two variables `x` and `y`. Fill this out with the correct variable names.
+**Make sure you label your axes, legends, and other elements correctly.** You may work in groups of up to three.
+
+Use [https://bit.ly/EC242](https://bit.ly/EC242) to share. Happy visualizing!
+
+<!-- Start by loading the __dplyr__ and __ggplot2__ library as well as the `murders` and `heights` data. -->
+
+<!-- ```{r} -->
+<!-- library(dplyr) -->
+<!-- library(ggplot2) -->
+<!-- library(dslabs) -->
+<!-- data(heights) -->
+<!-- data(murders) -->
+<!-- ``` -->
+
+<!-- 1. With __ggplot2__ plots can be saved as objects. For example we can associate a dataset with a plot object like this -->
+
+<!-- ```{r, eval = FALSE} -->
+<!-- p <- ggplot(data = murders) -->
+<!-- ``` -->
+
+<!-- Because `data` is the first argument we don't need to spell it out -->
+
+<!-- ```{r, eval = FALSE} -->
+<!-- p <- ggplot(murders) -->
+<!-- ``` -->
+
+<!-- and we can also use the pipe: -->
+
+<!-- ```{r, eval = FALSE} -->
+<!-- p <- murders %>% ggplot() -->
+<!-- ``` -->
+
+<!-- What is class of the object `p`? -->
 
 
-7. Note that if we don't use argument names, we can obtain the same plot by making sure we enter the variable names in the right order like this:
+<!-- 2. Remember that to print an object you can use the command `print` or simply type the object. -->
+<!-- Print the object `p` defined in exercise one and describe what you see. -->
 
-```{r, eval=FALSE}
-murders %>% ggplot(aes(population, total)) +
-  geom_point()
-```
-
-Remake the plot but now with total in the x-axis and population in the y-axis.
-
-
-8. If instead of points we want to add text, we can use the `geom_text()` or `geom_label()` geometries. The following code
-
-```{r, eval=FALSE}
-murders %>% ggplot(aes(population, total)) + geom_label()
-```
-
-will give us the error message: `Error: geom_label requires the following missing aesthetics: label`
-
-Why is this?
-
-a. We need to map a character to each point through the label argument in aes.
-b. We need to let `geom_label` know what character to use in the plot.
-c. The `geom_label` geometry does not require  x-axis and y-axis values.
-d. `geom_label` is not a ggplot2 command.
+<!-- a. Nothing happens. -->
+<!-- b. A blank slate plot. -->
+<!-- c. A scatterplot. -->
+<!-- d. A histogram. -->
 
 
-9. Rewrite the code above to use abbreviation as the label through `aes`
+<!-- 3. Using the pipe `%>%`, create an object `p` but this time associated with the `heights` dataset instead of the `murders` dataset. -->
 
 
-10. Change the color of the labels to blue. How will we do this?
-
-a. Adding a column called `blue` to `murders`.
-b. Because each label needs a different color we map the colors through `aes`.
-c. Use the `color` argument in `ggplot`.
-d. Because we want all colors to be blue, we do not need to map colors, just use the color argument in `geom_label`.
+<!-- 4. What is the class of the object `p` you have just created? -->
 
 
-11. Rewrite the code above to make the labels blue.
+<!-- 5. Now we are going to add a layer and the corresponding aesthetic mappings. For the murders data we plotted total murders versus population sizes. Explore the `murders` data frame to remind yourself what are the names for these two variables and select the correct answer. __Hint__: Look at `?murders`. -->
+
+<!-- a. `state` and `abb`. -->
+<!-- b. `total_murders` and `population_size`. -->
+<!-- c. `total` and `population`. -->
+<!-- d. `murders` and `size`. -->
+
+<!-- 6. To create the scatterplot we add a layer with `geom_point`. The aesthetic mappings require us to define the x-axis and y-axis variables, respectively. So the code looks like this: -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- murders %>% ggplot(aes(x = , y = )) + -->
+<!--   geom_point() -->
+<!-- ``` -->
+
+<!-- except we have to define the two variables `x` and `y`. Fill this out with the correct variable names. -->
 
 
-12. Now suppose we want to use color to represent the different regions. In this case which of the following is most appropriate:
+<!-- 7. Note that if we don't use argument names, we can obtain the same plot by making sure we enter the variable names in the right order like this: -->
 
-a. Adding a column called `color` to `murders` with the color we want to use.
-b. Because each label needs a different color we map the colors through the color argument of `aes` .
-c. Use the `color` argument in `ggplot`.
-d. Because we want all colors to be blue, we do not need to map colors, just use the color argument in `geom_label`.
+<!-- ```{r, eval=FALSE} -->
+<!-- murders %>% ggplot(aes(population, total)) + -->
+<!--   geom_point() -->
+<!-- ``` -->
+
+<!-- Remake the plot but now with total in the x-axis and population in the y-axis. -->
 
 
-13. Rewrite the code above to make the labels' color be determined by the state's region.
+<!-- 8. If instead of points we want to add text, we can use the `geom_text()` or `geom_label()` geometries. The following code -->
 
-14. Now we are going to change the x-axis to a log scale to account for the fact the distribution of population is skewed. Let's start by defining an object `p` holding the plot we have made up to now
+<!-- ```{r, eval=FALSE} -->
+<!-- murders %>% ggplot(aes(population, total)) + geom_label() -->
+<!-- ``` -->
 
-```{r, eval=FALSE}
-p <- murders %>%
-  ggplot(aes(population, total, label = abb, color = region)) +
-  geom_label()
-```
+<!-- will give us the error message: `Error: geom_label requires the following missing aesthetics: label` -->
 
-To change the y-axis to a log scale we learned about the `scale_x_log10()` function. Add this layer to the object `p` to change the scale and render the plot.
+<!-- Why is this? -->
 
-15. Repeat the previous exercise but now change both axes to be in the log scale.
+<!-- a. We need to map a character to each point through the label argument in aes. -->
+<!-- b. We need to let `geom_label` know what character to use in the plot. -->
+<!-- c. The `geom_label` geometry does not require  x-axis and y-axis values. -->
+<!-- d. `geom_label` is not a ggplot2 command. -->
 
-16. Now edit the code above to add the title "Gun murder data" to the plot. Hint: use the `labs` function or the `ggtitle` function.
+
+<!-- 9. Rewrite the code above to use abbreviation as the label through `aes` -->
+
+
+<!-- 10. Change the color of the labels to blue. How will we do this? -->
+
+<!-- a. Adding a column called `blue` to `murders`. -->
+<!-- b. Because each label needs a different color we map the colors through `aes`. -->
+<!-- c. Use the `color` argument in `ggplot`. -->
+<!-- d. Because we want all colors to be blue, we do not need to map colors, just use the color argument in `geom_label`. -->
+
+
+<!-- 11. Rewrite the code above to make the labels blue. -->
+
+
+<!-- 12. Now suppose we want to use color to represent the different regions. In this case which of the following is most appropriate: -->
+
+<!-- a. Adding a column called `color` to `murders` with the color we want to use. -->
+<!-- b. Because each label needs a different color we map the colors through the color argument of `aes` . -->
+<!-- c. Use the `color` argument in `ggplot`. -->
+<!-- d. Because we want all colors to be blue, we do not need to map colors, just use the color argument in `geom_label`. -->
+
+
+<!-- 13. Rewrite the code above to make the labels' color be determined by the state's region. -->
+
+<!-- 14. Now we are going to change the x-axis to a log scale to account for the fact the distribution of population is skewed. Let's start by defining an object `p` holding the plot we have made up to now -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- p <- murders %>% -->
+<!--   ggplot(aes(population, total, label = abb, color = region)) + -->
+<!--   geom_label() -->
+<!-- ``` -->
+
+<!-- To change the y-axis to a log scale we learned about the `scale_x_log10()` function. Add this layer to the object `p` to change the scale and render the plot. -->
+
+<!-- 15. Repeat the previous exercise but now change both axes to be in the log scale. -->
+
+<!-- 16. Now edit the code above to add the title "Gun murder data" to the plot. Hint: use the `labs` function or the `ggtitle` function. -->
 :::
 
 
