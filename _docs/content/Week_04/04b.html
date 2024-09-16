@@ -668,6 +668,7 @@ window.Quarto = {
 </div>
 </div>
 <p>We can also set the <code>strip.background</code> for the “strip” rectangles that label our <code>facet_wrap</code> and <code>facet_grid</code>sections,and <code>plot.background</code> for the area behind the plot panel.</p>
+<p>In the above example, we also set the <code>element_text</code> function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment so that they center over the line. <code>element_text</code> is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the <code>scales::label_comma</code> <a href="../..\content/Week_04/04a.html/#labelerFunctions">from earlier this wee</a>. We can avoid scrunching our labels by using <code>element_text</code> to set a new angle (45 or 90).</p>
 </section>
 <section id="small-multiples" class="level3">
 <h3 class="anchored" data-anchor-id="small-multiples">Small multiples</h3>
@@ -705,7 +706,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We can do a whole part of a continent (poor Syria 😿)</p>
+<p>We can do a whole part of a continent (poor Syria 😢)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>life_expectancy_mena <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Northern Africa"</span> <span class="sc">|</span> region <span class="sc">==</span> <span class="st">"Western Asia"</span>)</span>

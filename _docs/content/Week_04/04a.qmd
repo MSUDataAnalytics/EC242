@@ -156,6 +156,65 @@ p + geom_point(aes(color = region), size = 3) +
 
 So we can now define where axis tick lines should lie and how they should be labeled.
 
+### Flexible axis tick labels
+Anyone else annoyed by the scientific `1e+06`-style x-axis labels? If you're not familiar, `1e+06` means `1 * 10^6` or `1,000,000`. Of course, we could manually make the labels (and the breaks) like we did above, but that might be tedious, and what if we have different ranges of data? We'd end up forcing tick marks in areas that are far out of the support of the data (off the plot).
+
+We can also use a `labeler` function. The most common ones are in the `scales` package, so you'll want to install that and load it up using `library(scales)`. Each labeler is a function that takes as it's first argument a vector of numbers (or some expected format, like dates) and returns a formatted character vector of labels.
+
+So the following will happen:
+
+- `scales::comma_format`
+```{r}
+numbers.vector = c(20000, 50000, 100000, 500000, 1000000) # 20k to 1M
+
+scales::label_comma(numbers.vector, big.mark = ',', decimal.mark = '.')
+
+```
+
+Wha? That looks like the output...is a function?
+
+**Yes. Yes it is.** The function returns....a function. And that function takes the number and returns the labels:
+
+```{r}
+
+scalefun = scales::label_comma(big.mark = ',', decimal.mark = '.')
+
+scalefun(numbers.vector)
+
+```
+
+Now we have the appropriate format! Here are some others:
+
+```{r}
+scalefun.percent = scales::label_percent(accuracy = .001, scale=100)
+
+scalefun.percent(murders$total[1:5]/murders$population[1:5])
+
+scalefun.dollar = scales::label_dollar(accuracy = 1, scale=1)
+
+scalefun.dollar(numbers.vector)
+
+```
+
+Note that we could set the `accuracy` and `scale` arguments in `scales::label_percent` and `scales::label_dollar`. The `accuracy` argument determines rounding. We don't need cents when we have dollar values up to 1M, but we do need fractions of a percent when we use the murder rate (not multipled by 100,000).
+
+#### Using labeler functions {#labelerFunctions}
+The above was just an illustration of how the labelers work. To use it in practice, we need only give the function name to ggplot:
+
+```{r, echo=TRUE}
+p + geom_point(aes(color = region), size = 3) +
+  geom_text(nudge_x = .05) +
+  scale_x_log10(labels= scales::label_comma()) +
+  scale_y_log10(breaks = c(0,50, 100, 721, 1000,1500), 
+                     labels = scales::label_comma(accuracy=.01),
+                     minor_breaks = NULL) +
+  labs(x = 'Population', y = 'Total murders', color = 'US Region')
+```
+
+We don't need the decimals on the y-axis labels, it's just there for illustration.
+
+### Rotating axis labels
+
 
 ## Additional geometries
 Let's say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) becuase we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).

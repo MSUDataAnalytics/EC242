@@ -295,6 +295,10 @@ bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
 
 We can also set the `strip.background` for the "strip" rectangles that label our `facet_wrap` and `facet_grid`sections,and `plot.background` for the area behind the plot panel.
 
+In the above example, we also set the `element_text` function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment so that they center over the line. `element_text` is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the `scales::label_comma` [from earlier this wee](/content/Week_04/04a.html/#labelerFunctions). We can avoid scrunching our labels by using `element_text` to set a new angle (45 or 90).
+
+
+
 
 ### Small multiples
 
