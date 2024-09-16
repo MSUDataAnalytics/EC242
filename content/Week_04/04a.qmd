@@ -213,7 +213,6 @@ p + geom_point(aes(color = region), size = 3) +
 
 We don't need the decimals on the y-axis labels, it's just there for illustration.
 
-### Rotating axis labels
 
 
 ## Additional geometries
