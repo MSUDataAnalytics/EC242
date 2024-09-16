@@ -1,0 +1,21 @@
+---
+title: "Course Content"
+sidebar: contents
+toc: false
+order: 10
+format: 
+  html:
+    code-fold: false
+    code-tools: false
+editor: source
+---
+
+
+Each week has two sets of required readings (pages in the sidebar) that you should complete ***before*** coming to lecture. Read the first before our first meeting of the week, and read the second before the second meetings. That is, you should complete the first reading, attend Tuesday class, then do the associated exercises contained within the reading, and read the second reading before Thursday. You will be working each week's lab between Thursday afternoon and Monday at 11:59 PM (when the labs are due). Don't forget your weekly writing in between, due Saturday at 11:59pm.
+
+The course content is structured as follows. For each topic, we begin with a set of questions that might guide your reading and help frame your thoughts. These questions can serve as helpful starting places for your thinking; they are not representative of the totality of the content and are not intended to be limiting. You should not try to respond to all of these (or any of them if you don't want to)—they'll just help you know what to look for and think about as you read. The first reading is generally a "principles" reading, discussing the concepts for the week. The second is generally an "applications" reading, meant to give concrete examples and code. This isn't always the case, but holds in general.
+
+<!-- All lecture videos are posted to [our SSC442 channel on Mediaspace <i class="fas fa-film"></i>](https://mediaspace.msu.edu/channel/SSC442+-+Spring+20221+-+KIRKPATRICK/199607633/subscribe). -->
+
+## Content navigation
+Use the links on the sidebar to navigate between required reading. Readings are ordered by week, and within each week, by order of the class meetings.
