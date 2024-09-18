@@ -29,7 +29,7 @@ your-project-name\
 
 [The applications for this week](/content/Week_04/04b.html) will be ***incredibly*** helpful for this exercise. Reference it.
 
-**For this week, you need to start making your plots look nice. For full credit, you will have to label axes, label the plot, and experiment with themes. Experiment with adding a `labs()` layer or changing colors. Use colorblind-friendly colors.** Make sure all plots are legible and neat. If you're super brave, try modifying a theme and its elements. Default plots will not receive full credit.
+**For this week, you need to start making your plots look nice. For full credit, you will have to label axes, label the plot, and experiment with themes. Use a `labs()` layer and colorblind-friendly colors.** Make sure all plots are legible and neat. If you're super brave, try modifying a theme and its elements. Default plots will not receive full credit.
 
 
 ::: {.callout-note}
@@ -48,9 +48,9 @@ Some hints/tips:
 
 - Plot the `date` column along the x-axis, *not* the `year` column. If you plot by year, you'll get weird looking lines (try it for fun?), since these observations are monthly. If you really want to plot by year only, you'll need to create a different data frame where you group by year and state and calculate the average unemployment rate for each year/state combination (i.e. `group_by(year, state) %>% summarize(avg_unemployment = mean(unemployment))`)
 
-- Try mapping other aesthetics onto the graph too. You'll notice there are columns for region and division—play with those as colors, for instance.
+- Try mapping other aesthetics onto the graph too. You'll notice there are columns for region and division — play with those as colors, for instance.
 
-- This plot might be big, so make sure you adjust `fig.width` and `fig.height` in the chunk options so that it's visible when you knit it - try different values and knit to see how they look. If you're unfamiliar with chunk options, [see the Using R Markdown resources](https://ssc442kirkpatrick.netlify.app/resource/rmarkdown/#chunk-options-1). 
+- This plot might be big, so make sure you adjust `fig.width` and `fig.height` in the chunk options so that it's visible when you knit it - try different values and knit to see how they look. If you're unfamiliar with chunk options, [see the Using R Markdown resources](/resource/rmarkdown#chunk-options). 
 
 
 ### Exercise 2 of 2
@@ -61,9 +61,9 @@ What story does this plot tell? Which states in the US (or in the specific regio
 
 Some hints/tips:
 
-- You should use `filter()` to only select rows where the year is 2006 or 2009 (i.e. `filter(year %in% c(2006, 2009)`) and to select rows where the month is January (`filter(month == 1)` or `filter(month_name == "January")`)
+- You should use `filter()` to only select rows where the year is 2006 or 2009 and to select rows where the month is January (`filter(month == 1)` or `filter(month_name == "January")`)
 
-- In order for the year to be plotted as separate categories on the x-axis, it needs to be a factor, so use `mutate(year = factor(year))` to convert it.
+- In order for the year to be plotted as separate categories on the x-axis, it needs to be a factor, so use `mutate(year = factor(year))` to convert it, or set it as a factor "on the fly" in your `ggplot` call.
 
 - To make ggplot draw lines between the 2006 and 2009 categories, you need to include `group = state` in the aesthetics.
 

@@ -171,9 +171,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </button>
     </div>
   </nav>
-  <div id="quarto-announcement" data-announcement-id="02af9581005ad5f155d3c4579d35e017" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p>A small (but necessary) update to the <a href="..\resource/rmarkdown#images-inserted-in-code-chunks">embedding image resource</a></p>
-</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
@@ -318,8 +315,13 @@ Due Date
 <p>Once you download the <code>EssentialConstruction.csv</code> file and save it in your project folder, you can open it and start cleaning. Loading in the basic data is straightforward:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>essential <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">'https://EC242.netlify.app/data/EssentialConstruction.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>essential <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">'pathTo/EssentialConstruction.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Where the “pathTo” part is the path to your local folder. If you saved the data in the same folder as your template, then you can just use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>essential <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">'EssentialConstruction.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once loaded, note that each row is an approved project (the JOB NUMBERS are approved projects, so each row is one approved project).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -330,11 +332,13 @@ Exercise 1 of 1: Essential pandemic construction
 </div>
 </div>
 <div class="callout-body-container callout-body">
+<p>Uh-oh! One of our columns has different capitalization. Use <code>case_when</code> (or any other method) to make sure you have consistent character strings for each borough.</p>
+<p>Then, assume that each row (observation) is an approved construction project.</p>
 <p>A. Show the count or proportion of approved projects by borough using a bar chart. Make sure all the elements of your plot (axes, legend, etc.) are labeled.</p>
 <p>B. Show the count or proportion of approved projects by <em>category</em> using a lollipop chart. Not sure of what a lollipop chart is? Google <code>R ggplot lollipop</code>. A huge portion of knowing how to code is knowing how to google, find examples, and figure out where to put your variables from your data! Make sure all the elements of your plot (axes, legend, etc.) are labeled.</p>
 <p>You don’t need to make these super fancy, but if you’re feeling brave, experiment with adding a <code>labs()</code> layer or changing fill colors with <code>scale_fill_manual()</code> or with palettes.</p>
 <p><strong>Bonus</strong></p>
-<p>Overlay the data from Part 1 above onto a map of NYC. Make sure all the elements of your plot (axes, legend, etc.) are labeled.</p>
+<p>Overlay the data from Part 1 above onto a map of NYC. Make sure all the elements of your plot (axes, legend, etc.) are labeled. This is hard!</p>
 </div>
 </div>
 </section>

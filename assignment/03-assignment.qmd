@@ -2,7 +2,9 @@
 title: "3: Applying ggplot2 to Real Data"
 linktitle: "3: Applying ggplot2 to Real Data"
 duedate: "{{< var duedates.lab3 >}}"
+lastrevised: "09-16-2024"
 ---
+
 
 ::: {.callout-warning}
 ## Due Date
@@ -52,14 +54,29 @@ Once you download the `EssentialConstruction.csv` file and save it in your proje
 
 ```{r eval=F, include=T, message=FALSE, echo=T}
 library(tidyverse)
+essential = read_csv('pathTo/EssentialConstruction.csv')
+```
+
+Where the "pathTo" part is the path to your local folder. If you saved the data in the same folder as your template, then you can just use:
+```{r, eval=F, include=T}
+essential = read_csv('EssentialConstruction.csv')
+```
+
+```{r eval=F, include=F, message=FALSE, echo=T}
+library(tidyverse)
 essential = read_csv('https://EC242.netlify.app/data/EssentialConstruction.csv')
 ```
 
+Once loaded, note that each row is an approved project (the JOB NUMBERS are approved projects, so each row is one approved project).
 
 
 
 ::: {.callout-note}
 ## Exercise 1 of 1: Essential pandemic construction
+Uh-oh! One of our columns has different capitalization. Use `case_when` (or any other method) to make sure you have consistent character strings for each borough.
+
+Then, assume that each row (observation) is an approved construction project.
+
 
 A. Show the count or proportion of approved projects by borough using a bar chart. Make sure all the elements of your plot (axes, legend, etc.) are labeled.
 
@@ -69,7 +86,7 @@ You don't need to make these super fancy, but if you're feeling brave, experimen
 
 __Bonus__
 
-Overlay the data from Part 1 above onto a map of NYC. Make sure all the elements of your plot (axes, legend, etc.) are labeled.
+Overlay the data from Part 1 above onto a map of NYC. Make sure all the elements of your plot (axes, legend, etc.) are labeled. This is hard!
 
 :::
 

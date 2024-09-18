@@ -204,9 +204,6 @@ window.Quarto = {
       </button>
     </div>
   </nav>
-  <div id="quarto-announcement" data-announcement-id="02af9581005ad5f155d3c4579d35e017" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p>A small (but necessary) update to the <a href="../..\resource/rmarkdown#images-inserted-in-code-chunks">embedding image resource</a></p>
-</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
@@ -332,7 +329,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#gapminder" id="toc-gapminder" class="nav-link active" data-scroll-target="#gapminder">Data visualization in practice</a>
+  <li><a href="#group-projects" id="toc-group-projects" class="nav-link active" data-scroll-target="#group-projects">Group Projects</a></li>
+  <li><a href="#gapminder" id="toc-gapminder" class="nav-link" data-scroll-target="#gapminder">Data visualization in practice</a>
   <ul class="collapse">
   <li><a href="#case-study-new-insights-on-poverty" id="toc-case-study-new-insights-on-poverty" class="nav-link" data-scroll-target="#case-study-new-insights-on-poverty">Case study: new insights on poverty</a></li>
   <li><a href="#the-ecological-fallacy-and-importance-of-showing-the-data" id="toc-the-ecological-fallacy-and-importance-of-showing-the-data" class="nav-link" data-scroll-target="#the-ecological-fallacy-and-importance-of-showing-the-data">The ecological fallacy and importance of showing the data</a></li>
@@ -363,6 +361,18 @@ window.Quarto = {
 </header>
 
 
+<section id="group-projects" class="level1">
+<h1>Group Projects</h1>
+<p>This class has three group projects - Project 1, Project 2, and the Final Project - that comprise a significant portion of your grade.</p>
+<p>This week, we will form groups for these projects. You will work with the same group for each of the projects. The details will be posted soon, but the general idea is that you are given some data and asked to use your visualization and analytical skills to illustrate important patterns in the data. The final project will be on a topic of your group’s choice, while the first two will use data given as part of the assignment.</p>
+<p>Groups may be 2 or 3 people, no more and no less. You are free to form your own group and anyone who does not form one will be assigned to one. With that in mind, <strong>let’s form our groups</strong>.</p>
+<p>If you have a group of 2-3 individuals willing to work together for these three projects, do the following <strong>before this coming Sunday night at 11:59 pm</strong>:</p>
+<ol type="1">
+<li>Think of a group name</li>
+<li>Have <em>one</em> person in the group email our TA, Zach, at <a href="mailto:%20henleyza@msu.edu">henleyza@msu.edu</a> with the following: - The subject should be [EC242 Group Formation] - The email should CC <em>all</em> of the group members (so you know when you’ve been added to a group) - The email should list the names (as they appear in D2L) of each of the group members - The email should include the group name</li>
+</ol>
+<p>If you would prefer to be assigned to a group, you don’t have to do anything. Once our TA has the voluntary groups set, they will assign groups to the rest of the class and email each group with instructions.</p>
+</section>
 <section id="gapminder" class="level1">
 <h1>Data visualization in practice</h1>
 <p>In this lecture, we will demonstrate how relatively simple <strong>ggplot2</strong> code can create insightful and aesthetically pleasing plots. As motivation we will create plots that help us better understand trends in world health and economics. We will implement what we learned in previous sections of the class and learn how to augment the code to perfect the plots. As we go through our case study, we will describe relevant general data visualization principles.</p>
@@ -706,7 +716,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We can do a whole part of a continent (poor Syria 😢)</p>
+<p>We can do a whole part of a continent (poor Syria 🙍)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>life_expectancy_mena <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Northern Africa"</span> <span class="sc">|</span> region <span class="sc">==</span> <span class="st">"Western Asia"</span>)</span>
