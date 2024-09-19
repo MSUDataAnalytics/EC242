@@ -36,10 +36,14 @@ If you have a group of 2-3 individuals willing to work together for these three 
 
   1. Think of a group name
   2. Have *one* person in the group email our TA, Zach, at {{< var email.TA >}} with the following:
-    - The subject should be [EC242 Group Formation]
-    - The email should CC *all* of the group members (so you know when you've been added to a group)
-    - The email should list the names (as they appear in D2L) of each of the group members
-    - The email should include the group name
+  
+  - The subject should be [EC242 Group Formation]
+
+  - The email should CC *all* of the group members (so you know when you've been added to a group)
+
+  - The email should list the names (as they appear in D2L) of each of the group members
+
+  - The email should include the group name
 
 If you would prefer to be assigned to a group, you don't have to do anything. Once our TA has the voluntary groups set, they will assign groups to the rest of the class and email each group with instructions.
 
@@ -90,7 +94,7 @@ Taking an exercise from the _New Insights on Poverty_ video, we start by testing
 
 When answering these questions without data, the non-European countries are typically picked as having higher child mortality rates: Sri Lanka over Turkey, South Korea over Poland, and Malaysia over Russia. It is also common to assume that countries considered to be part of the developing world: Pakistan, Vietnam, Thailand, and South Africa, have similarly high mortality rates.
 
-To answer these questions __with data__, we can use __dplyr__. For example, for the first comparison we see that:
+To answer these questions __with data__, we can use __tidyverse__ functions. For example, for the first comparison we see that:
 
 ```{r, message=FALSE}
 dslabs::gapminder %>%
@@ -123,7 +127,7 @@ if(knitr::is_html_output()){
 }
 ```
 
-We see that the European countries on this list have higher child mortality rates: Poland has a higher rate than South Korea, and Russia has a higher rate than Malaysia. We also see that Pakistan has a much higher rate than Vietnam, and South Africa has a much higher rate than Thailand. It turns out that when Hans Rosling gave this quiz to educated groups of people, the average score was less than 2.5 out of 5, worse than what they would have obtained had they guessed randomly. This implies that more than ignorant, we are misinformed. In this chapter we see how data visualization helps inform us.
+We see that the European countries on this list have higher child mortality rates: Poland has a higher rate than South Korea, and Russia has a higher rate than Malaysia. We also see that Pakistan has a much higher rate than Vietnam, and South Africa has a much higher rate than Thailand. It turns out that when Hans Rosling gave this quiz to educated groups of people, the average score was less than 2.5 out of 5, worse than what they would have obtained had they guessed randomly. This implies that more than ignorant, we are misinformed. In this chapter we see how data visualization helps inform us by presenting *patterns in the data* that might not be obvious on first glance.
 
 
 
@@ -228,14 +232,15 @@ We then plot this with points and lines, reversing the y-axis so 1 is at the top
 ggplot(sa_fe, aes(x = year, y = rank, color = country)) +
   geom_line() +
   geom_point() +
-  scale_y_reverse(breaks = 1:8)
+  scale_y_reverse(breaks = 1:8) +
+  labs(x = "Year", y = "Rank", color = "Country")
 ```
 
 Iran holds the number 1 spot, while Sri Lanka dropped from 2 to 6, and Bangladesh increased from 4 to 2.
 
 As with the slopegraph, there are 8 different colors in the legend and it's hard to line them all up with the different lines, so we can plot the text directly instead. We'll use `geom_text()` again. We don't need to repel anything, since the text should fit in each row just fine. We need to change the `data` argument in `geom_text()` though and filter the data to only include one year, otherwise we'll get labels on every point, which is excessive. We can also adjust the theme and colors to make it cleaner.
 
-```{r bump-plot-fancier, echo = TRUE, fig.width=7, fig.height=4.2}
+```{r bump-plot-fancier, echo = TRUE, fig.width=7, fig.height=4.2, warnings = F}
 bumpplot <- ggplot(sa_fe, aes(x = year, y = rank, color = country)) +
   geom_line(size = 2) +
   geom_point(size = 4) +
@@ -243,11 +248,12 @@ bumpplot <- ggplot(sa_fe, aes(x = year, y = rank, color = country)) +
             aes(label = country, x = 2003), fontface = "bold", angle = 45) +
  geom_text(data = sa_fe %>% dplyr::filter(year==2014) %>% arrange(rank),
             aes(label = country, x = 2015), fontface = "bold", angle = 45) + 
-  guides(color = FALSE) +
+  guides(color = 'none') + # another way of turning off legend
   scale_y_reverse(breaks = 1:8) +
   scale_x_continuous(breaks = 2004:2014) +
   scale_color_viridis_d(option = "C", begin = 0.2, end = 0.9) +
-  labs(x = NULL, y = "Rank")
+  labs(x = NULL, y = "Rank") +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5),  "inches")) 
 
 bumpplot
 ```
@@ -262,7 +268,7 @@ A pre-constructed set of instructions for making a visual theme can be had by us
 
 `theme_bw()` uses the black-and-white theme, which is helpful in making a nice, clean plot:
 
-```{r, echo = T,  fig.width=7, fig.height=4.2}
+```{r, echo = T,  fig.width=7, fig.height=5.2}
 bumpplot + theme_bw()
 ```
 
@@ -270,13 +276,13 @@ The background shading is gone, which gives the plot a nice, crisp feel. It adds
 
 Here's `theme_minimal()`
 
-```{r, echo = T,  fig.width=7, fig.height=4.2}
+```{r, echo = T,  fig.width=7, fig.height=5.2}
 bumpplot + theme_minimal()
 ```
 
 Themes can alter things in the plot as well. If we really want to strip it down and remove the Y-axis (which is rarely a good idea, but in a bump chart, it makes sense):
 
-```{r, echo = T,  fig.width=7, fig.height=4.2}
+```{r, echo = T,  fig.width=7, fig.height=5.2}
 bumpplot + theme_void()
 ```
 
@@ -284,13 +290,13 @@ Now **that's** clean!
 
 In our opening unit, we had a plot that was styled after the plots in the magazine, *The Economist*. That's a theme (in the `ggthemes` package that we loaded at the top)!
 
-```{r, echo = T,  fig.width=7, fig.height=4.2}
+```{r, echo = T,  fig.width=7, fig.height=5.2}
 bumpplot + theme_economist()
 ```
 
 Themes affect some of the plot elements that we haven't gotten much into (like length of axis ticks and the color of the panel grid behind the plot). We can use a theme, then make further changes to the theme. We won't go into a lot of detail, but here's an example. Use the `?theme` to learn more about what you can change. Half the challenge is finding the right term for the thing you want to tweak! Theme changes occur in code order, so you can update a pre-set theme with your own details:
 
-```{r bump-plot-fancierest, echo = TRUE, fig.width=7, fig.height=4.2}
+```{r bump-plot-fancierest, echo = TRUE, fig.width=7, fig.height=5.2}
 bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
                    plot.title = element_text(face = "bold"),
                    axis.text.x = element_text(angle = 45, hjust = 1),
@@ -304,7 +310,7 @@ The above code looks a little odd in that asking it to leave out the minor and m
 
 Relatedly, if we wanted to change the background color of some panel (the plotted area), then `element_rect()` would be used because the panel is a rectangle. The theme argument would be `panel.background =element_rect(fill="red")` if we wanted to make it red (and hideous)
 
-```{r bump-plot-fancierestest, echo = TRUE, fig.width=7, fig.height=4.2}
+```{r bump-plot-fancierestest, echo = TRUE, fig.width=7, fig.height=5.2}
 bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
                                 panel.background  = element_rect(fill='red'),
                    plot.title = element_text(face = "bold"),
@@ -316,7 +322,7 @@ bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
 
 We can also set the `strip.background` for the "strip" rectangles that label our `facet_wrap` and `facet_grid`sections,and `plot.background` for the area behind the plot panel.
 
-In the above example, we also set the `element_text` function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment so that they center over the line. `element_text` is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the `scales::label_comma` [from earlier this wee](/content/Week_04/04a.html/#labelerFunctions). We can avoid scrunching our labels by using `element_text` to set a new angle (45 or 90).
+In the above example, we also set the `element_text` function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment so that they center over the line. `element_text` is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the `scales::label_comma` [from earlier this week](/content/Week_04/04a.html/#labelerFunctions). We can avoid scrunching our labels by using `element_text` to set a new angle (45 or 90).
 
 
 
@@ -513,7 +519,9 @@ In our example, we want to use a sequential palette since there is no meaningful
 We use the geometry `geom_tile` to tile the region with colors representing disease rates. We use a square root transformation to avoid having the really high counts dominate the plot. Notice that missing values are shown in grey. Note that once a disease was pretty much eradicated, some states stopped reporting cases all together. This is why we see so much grey after 1980.
 
 ```{r vaccines-plot, out.width="100%", fig.height=5}
-dat %>% ggplot(aes(year, state, fill = rate)) +
+dat %>% 
+  mutate(state = factor(state, levels = rev(levels(state)[order(levels(state))]))) %>%
+  ggplot(aes(year, state, fill = rate)) +
   geom_tile(color = "grey50") +
   scale_x_continuous(expand=c(0,0)) +
   scale_fill_gradientn(colors = brewer.pal(9, "Reds"), trans = "sqrt") +
@@ -553,6 +561,17 @@ dat %>%
 ```
 
 In theory, we could use color to represent the categorical value state, but it is hard to pick 50 distinct colors.
+
+
+### Saving your plot
+In RMarkdown, we display the plot as part of the chunk output. For your group project (or for future use) you'll likely need to save your plot as well. The function `ggsave` is a good way of outputting your plot. 
+
+```
+ggsave(myPlot, file = 'myPlot.png', width = 7, height = 5, dpi=300)
+```
+File type will be discerned from the suffix on the file, and the height and width are in inches. The `dpi` argument sets the pixes-per-inch. Generally, screens display at around 150 (though this is rapidly increasing, it used to be 72 dpi), and print is usually 300 or better. A width of 5 inches at 300 dpi will render an image 1,500 pixels across.
+
+
 
 
 ::: {.callout-note}

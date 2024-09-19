@@ -369,8 +369,14 @@ window.Quarto = {
 <p>If you have a group of 2-3 individuals willing to work together for these three projects, do the following <strong>before this coming Sunday night at 11:59 pm</strong>:</p>
 <ol type="1">
 <li>Think of a group name</li>
-<li>Have <em>one</em> person in the group email our TA, Zach, at <a href="mailto:%20henleyza@msu.edu">henleyza@msu.edu</a> with the following: - The subject should be [EC242 Group Formation] - The email should CC <em>all</em> of the group members (so you know when you’ve been added to a group) - The email should list the names (as they appear in D2L) of each of the group members - The email should include the group name</li>
+<li>Have <em>one</em> person in the group email our TA, Zach, at <a href="mailto:%20henleyza@msu.edu">henleyza@msu.edu</a> with the following:</li>
 </ol>
+<ul>
+<li><p>The subject should be [EC242 Group Formation]</p></li>
+<li><p>The email should CC <em>all</em> of the group members (so you know when you’ve been added to a group)</p></li>
+<li><p>The email should list the names (as they appear in D2L) of each of the group members</p></li>
+<li><p>The email should include the group name</p></li>
+</ul>
 <p>If you would prefer to be assigned to a group, you don’t have to do anything. Once our TA has the voluntary groups set, they will assign groups to the rest of the class and email each group with instructions.</p>
 </section>
 <section id="gapminder" class="level1">
@@ -406,7 +412,7 @@ window.Quarto = {
 <li>Thailand or South Africa</li>
 </ol>
 <p>When answering these questions without data, the non-European countries are typically picked as having higher child mortality rates: Sri Lanka over Turkey, South Korea over Poland, and Malaysia over Russia. It is also common to assume that countries considered to be part of the developing world: Pakistan, Vietnam, Thailand, and South Africa, have similarly high mortality rates.</p>
-<p>To answer these questions <strong>with data</strong>, we can use <strong>dplyr</strong>. For example, for the first comparison we see that:</p>
+<p>To answer these questions <strong>with data</strong>, we can use <strong>tidyverse</strong> functions. For example, for the first comparison we see that:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dslabs<span class="sc">::</span>gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2015</span> <span class="sc">&amp;</span> country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Sri Lanka"</span>,<span class="st">"Turkey"</span>)) <span class="sc">%&gt;%</span></span>
@@ -467,7 +473,7 @@ window.Quarto = {
 
 </div>
 </div>
-<p>We see that the European countries on this list have higher child mortality rates: Poland has a higher rate than South Korea, and Russia has a higher rate than Malaysia. We also see that Pakistan has a much higher rate than Vietnam, and South Africa has a much higher rate than Thailand. It turns out that when Hans Rosling gave this quiz to educated groups of people, the average score was less than 2.5 out of 5, worse than what they would have obtained had they guessed randomly. This implies that more than ignorant, we are misinformed. In this chapter we see how data visualization helps inform us.</p>
+<p>We see that the European countries on this list have higher child mortality rates: Poland has a higher rate than South Korea, and Russia has a higher rate than Malaysia. We also see that Pakistan has a much higher rate than Vietnam, and South Africa has a much higher rate than Thailand. It turns out that when Hans Rosling gave this quiz to educated groups of people, the average score was less than 2.5 out of 5, worse than what they would have obtained had they guessed randomly. This implies that more than ignorant, we are misinformed. In this chapter we see how data visualization helps inform us by presenting <em>patterns in the data</em> that might not be obvious on first glance.</p>
 </section>
 <section id="slope-charts" class="level3">
 <h3 class="anchored" data-anchor-id="slope-charts">Slope charts</h3>
@@ -555,7 +561,8 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sa_fe, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">color =</span> country)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Rank"</span>, <span class="at">color =</span> <span class="st">"Country"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -566,7 +573,7 @@ window.Quarto = {
 </div>
 <p>Iran holds the number 1 spot, while Sri Lanka dropped from 2 to 6, and Bangladesh increased from 4 to 2.</p>
 <p>As with the slopegraph, there are 8 different colors in the legend and it’s hard to line them all up with the different lines, so we can plot the text directly instead. We’ll use <code>geom_text()</code> again. We don’t need to repel anything, since the text should fit in each row just fine. We need to change the <code>data</code> argument in <code>geom_text()</code> though and filter the data to only include one year, otherwise we’ll get labels on every point, which is excessive. We can also adjust the theme and colors to make it cleaner.</p>
-<div class="cell">
+<div class="cell" data-warnings="false">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>bumpplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sa_fe, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">color =</span> country)) <span class="sc">+</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
@@ -574,13 +581,14 @@ window.Quarto = {
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> country, <span class="at">x =</span> <span class="dv">2003</span>), <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">angle =</span> <span class="dv">45</span>) <span class="sc">+</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_text</span>(<span class="at">data =</span> sa_fe <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(year<span class="sc">==</span><span class="dv">2014</span>) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(rank),</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> country, <span class="at">x =</span> <span class="dv">2015</span>), <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">angle =</span> <span class="dv">45</span>) <span class="sc">+</span> </span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">'none'</span>) <span class="sc">+</span> <span class="co"># another way of turning off legend</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>) <span class="sc">+</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">2004</span><span class="sc">:</span><span class="dv">2014</span>) <span class="sc">+</span></span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">option =</span> <span class="st">"C"</span>, <span class="at">begin =</span> <span class="fl">0.2</span>, <span class="at">end =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Rank"</span>)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>bumpplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Rank"</span>) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.margin =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>),  <span class="st">"inches"</span>)) </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>bumpplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -678,7 +686,7 @@ window.Quarto = {
 </div>
 </div>
 <p>We can also set the <code>strip.background</code> for the “strip” rectangles that label our <code>facet_wrap</code> and <code>facet_grid</code>sections,and <code>plot.background</code> for the area behind the plot panel.</p>
-<p>In the above example, we also set the <code>element_text</code> function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment so that they center over the line. <code>element_text</code> is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the <code>scales::label_comma</code> <a href="../..\content/Week_04/04a.html/#labelerFunctions">from earlier this wee</a>. We can avoid scrunching our labels by using <code>element_text</code> to set a new angle (45 or 90).</p>
+<p>In the above example, we also set the <code>element_text</code> function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment so that they center over the line. <code>element_text</code> is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the <code>scales::label_comma</code> <a href="../..\content/Week_04/04a.html/#labelerFunctions">from earlier this week</a>. We can avoid scrunching our labels by using <code>element_text</code> to set a new angle (45 or 90).</p>
 </section>
 <section id="small-multiples" class="level3">
 <h3 class="anchored" data-anchor-id="small-multiples">Small multiples</h3>
@@ -716,7 +724,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We can do a whole part of a continent (poor Syria 🙍)</p>
+<p>We can do a whole part of a continent (poor Syria 😿)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>life_expectancy_mena <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Northern Africa"</span> <span class="sc">|</span> region <span class="sc">==</span> <span class="st">"Western Asia"</span>)</span>
@@ -844,17 +852,19 @@ window.Quarto = {
 <p>In our example, we want to use a sequential palette since there is no meaningful center, just low and high rates.</p>
 <p>We use the geometry <code>geom_tile</code> to tile the region with colors representing disease rates. We use a square root transformation to avoid having the really high counts dominate the plot. Notice that missing values are shown in grey. Note that once a disease was pretty much eradicated, some states stopped reporting cases all together. This is why we see so much grey after 1980.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, state, <span class="at">fill =</span> rate)) <span class="sc">+</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colors =</span> <span class="fu">brewer.pal</span>(<span class="dv">9</span>, <span class="st">"Reds"</span>), <span class="at">trans =</span> <span class="st">"sqrt"</span>) <span class="sc">+</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">1963</span>, <span class="at">col =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"bottom"</span>,</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)) <span class="sc">+</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(the_disease) <span class="sc">+</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">state =</span> <span class="fu">factor</span>(state, <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(state)[<span class="fu">order</span>(<span class="fu">levels</span>(state))]))) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, state, <span class="at">fill =</span> rate)) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colors =</span> <span class="fu">brewer.pal</span>(<span class="dv">9</span>, <span class="st">"Reds"</span>), <span class="at">trans =</span> <span class="st">"sqrt"</span>) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">1963</span>, <span class="at">col =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"bottom"</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(the_disease) <span class="sc">+</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -894,6 +904,11 @@ window.Quarto = {
 </div>
 </div>
 <p>In theory, we could use color to represent the categorical value state, but it is hard to pick 50 distinct colors.</p>
+<section id="saving-your-plot" class="level3">
+<h3 class="anchored" data-anchor-id="saving-your-plot">Saving your plot</h3>
+<p>In RMarkdown, we display the plot as part of the chunk output. For your group project (or for future use) you’ll likely need to save your plot as well. The function <code>ggsave</code> is a good way of outputting your plot.</p>
+<pre><code>ggsave(myPlot, file = 'myPlot.png', width = 7, height = 5, dpi=300)</code></pre>
+<p>File type will be discerned from the suffix on the file, and the height and width are in inches. The <code>dpi</code> argument sets the pixes-per-inch. Generally, screens display at around 150 (though this is rapidly increasing, it used to be 72 dpi), and print is usually 300 or better. A width of 5 inches at 300 dpi will render an image 1,500 pixels across.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -914,6 +929,7 @@ TRY IT
 </div>
 
 
+</section>
 </section>
 </section>
 
