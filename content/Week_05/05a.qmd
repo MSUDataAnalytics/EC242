@@ -17,6 +17,7 @@ output:
 library(data.table)
 library(tidyverse)
 library(here)
+filter = dplyr::filter
 ```
 ## Required Reading 
 
@@ -36,8 +37,7 @@ library(here)
 - What is the right way to visualize election uncertainty?
 
 
-# Groups
-Everyone should long since be assigned to a group. If you did not get a group assignment let me know **right now**.
+
 
 # Yesterday's Lab
 
@@ -668,10 +668,9 @@ qplot(log10(B), prob, geom = "line")
 In this plot, we can see that the values start to stabilize (that is, they vary less than .01) around 1000. Note that the exact probability, which we know in this case, is `r eprob[25]`.
 
 
+::: {.callout-note}
 
-:::fyi
-
-__TRY IT__
+## TRY IT
 
 1. One ball will be drawn at random from a box containing: 3 cyan balls, 5 magenta balls, and 7 yellow balls. What is the probability that the ball will be cyan?
 
@@ -834,6 +833,8 @@ pnorm(70.9, m, s) - pnorm(70.1, m, s)
 
 In general, we call this situation _discretization_. Although the true height distribution is continuous, the reported heights tend to be more common at discrete values, in this case, due to rounding. As long as we are aware of how to deal with this reality, the normal approximation can still be a very useful tool.
 
+
+
 ### The probability density
 
 For categorical distributions, we can define the probability of a category. For example, a roll of a die, let's call it $X$, can be 1,2,3,4,5 or 6. The probability of 4 is defined as:
@@ -936,9 +937,9 @@ qnorm(.975, mean = 0, sd = 1)
 ```
 
 
-:::fyi
+:::{.callout-note}
 
-__TRY IT__
+## TRY IT
 
 1. Assume the distribution of female heights is approximated by a normal distribution with a mean of 64 inches and a standard deviation of 3 inches. If we pick a female at random, what is the probability that she is 5 feet or shorter?
 
@@ -1104,7 +1105,7 @@ This average and this standard deviation have special names. They are referred t
 
 ## Distributions versus probability distributions
 
-Before we continue, let's make an important distinction and connection between the distribution of a list of numbers and a probability distribution. In the visualization lectures, we described how any list of numbers $x_1,\dots,x_n$ has a distribution. The definition is quite straightforward. We define $F(a)$ as the function that tells us what proportion of the list is less than or equal to $a$. Because they are useful summaries when the distribution is approximately normal, we define the average and standard deviation. These are defined with a straightforward operation of the vector containing the list of numbers `x`:
+Before we continue, let's make an important distinction and connection between the distribution of a list of numbers and a probability distribution. In the visualization lectures, we described how any list of numbers $x_1,\dots,x_n$ has a distribution. The definition is quite straightforward. We define $F(a)$ as the function that tells us what proportion of the **list** is less than or equal to $a$. Because they are useful summaries when the distribution is approximately normal, we define the average and standard deviation. These are defined with a straightforward operation of the vector containing the list of numbers `x`:
 
 ```{r, eval=FALSE}
 m <- sum(x)/length(x)

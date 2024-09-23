@@ -1,8 +1,5 @@
 ---
 title: "Visualizing Uncertainty"
-linktitle: "5: Uncertainty"
-read_date: "2024-02-08"
-draft: false
 lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
@@ -16,6 +13,15 @@ weight: 1
 editor_options:
   chunk_output_type: console
 ---
+
+```{r}
+
+filter = dplyr::filter
+```
+
+# Groups
+Everyone shouldbe assigned to a group by now. If you did not get a group assignment let me know **right now**.
+
 
 ### In-Class Exercise
 
@@ -53,9 +59,6 @@ A deep, basic fact about humans is that we struggle to understand probabilities.
 
 In this Example we will describe, in some detail, how poll aggregators such as FiveThirtyEight use data to predict election outcomes. To understand how they do this, we first need to learn the basics of _Statistical Inference_, the part of statistics that helps distinguish patterns arising from signal from those arising from chance. Statistical inference is a broad topic and here we go over the very basics using polls as a motivating example. To describe the concepts, we complement the mathematical formulas with Monte Carlo simulations and `R` code.
 
-```{r, echo=FALSE}
-img_path <- "inference/img/"
-```
 
 ## Polls
 
@@ -206,8 +209,10 @@ sqrt(p*(1-p))/sqrt(1000)
 
 or 1.5 percentage points. So even with large polls, for close elections, $\bar{X}$ can lead us astray if we don't realize it is a random variable. Nonetheless, we can actually say more about how close we get the $p$.
 
-
+:::{.callout-info}
 ## Central Limit Theorem {#clt}
+
+If we didn't cover this earlier this week, let's talk about it here:
 
 The Central Limit Theorem (CLT) tells us that the distribution function for a sum of draws is approximately normal. You also may recall that dividing a normally distributed random variable by a constant is also a normally distributed variable. This implies that the distribution of $\bar{X}$ is approximately normal.
 
@@ -253,6 +258,9 @@ pnorm(0.01/se) - pnorm(-0.01/se)
 ```
 
 Therefore, there is a small chance that we will be close. A poll of only $N=25$ people is not really very useful, at least not for a close election.
+
+:::
+
 
 ### Margin of Error
 
@@ -455,38 +463,7 @@ ggplot(weather_atl, aes(x = windSpeed, fill = Month)) +
 
 Neat! January, March, and April appear to have the most variation in windy days, with a few wind-less days and a few very-windy days, while August was very wind-less.
 
-### Density plots
-
-The code to create a density plot is nearly identical to what we used for the histogram—the only thing we change is the `geom` layer:
-
-```{r basic-density}
-ggplot(weather_atl, aes(x = windSpeed)) +
-  geom_density(color = "grey20", fill = "grey50")
-```
-
-If we want, we can mess with some of the calculus options like the kernel and bandwidth:
-
-```{r density-kernel-bw}
-ggplot(weather_atl, aes(x = windSpeed)) +
-  geom_density(color = "grey20", fill = "grey50",
-               bw = 0.1, kernel = "epanechnikov")
-```
-
-We can also fill by month. We'll make the different layers 50% transparent so we can kind of see through the whole stack:
-
-```{r density-fill-by-month}
-ggplot(weather_atl, aes(x = windSpeed, fill = Month)) +
-  geom_density(alpha = 0.5)
-```
-
-Even with the transparency, this is really hard to interpret. We can fix this by faceting, like we did with the histograms:
-
-```{r density-facet-by-month, fig.width=8, fig.height=4.8}
-ggplot(weather_atl, aes(x = windSpeed, fill = Month)) +
-  geom_density(alpha = 0.5) +
-  guides(fill = FALSE) +
-  facet_wrap(vars(Month))
-```
+### Density plots beyond `geom_density`
 
 Or we can stack the density plots behind each other with [**ggridges**](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html). For that to work, we also need to map `Month` to the y-axis. We can reverse the y-axis so that January is at the top if we use the `fct_rev()` function:
 

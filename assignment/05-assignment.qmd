@@ -340,9 +340,9 @@ round(results * 100, 1)
 Our confidence interval is wider now since it incorporates the pollster variability. It does include the election night result of 2.1%. Also, note that it was small enough not to include 0, which means we were confident Clinton would win the popular vote.
 
 
-:::fyi
+::: {.callout-note}
 
-__EXERCISES__
+## EXERCISES
 
 
 Note that using dollar signs `$ $` to enclose some text is how you make the fancy math you see below. If you installed `tinytex` or some other Latex distribution in order to render your PDFs, you should be equipped to insert mathematics directly into your .Rmd file. It only works in the text -- inside the code chunks, the dollar sign is still the accessor.
