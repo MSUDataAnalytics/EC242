@@ -108,6 +108,9 @@ unemployment %>%
 ```
 
 
+# Groups
+
+Our TA has emailed everyone their group assignemnts. Thus, everyone should be assigned to a group by now. If you did not get a group assignment let me know **right now**. The TA's email asked you to make contact / meet with your group by Sunday. Please make sure you do so. As TA Zach mentioned, if you do not hear from a group member by Sunday, let me know.
 
 # Discrete probability
 
@@ -620,7 +623,9 @@ We can now make a plot of the estimated probabilities of two people having the s
 ```{r birthday-problem-mc-probabilities, warning=FALSE, message=FALSE}
 library(tidyverse)
 prob <- sapply(n, compute_prob)
-qplot(n, prob)
+dat = data.frame(n = n, prob = prob)
+ggplot(dat, aes(x = n, y=prob)) + 
+  geom_point()
 ```
 
 Now let's compute the exact probabilities rather than use Monte Carlo approximations. Not only do we get the exact answer using math, but the computations are much faster since we don't have to generate experiments.
@@ -642,7 +647,11 @@ exact_prob <- function(n){
   1 - prod( prob_unique)
 }
 eprob <- sapply(n, exact_prob)
-qplot(n, prob) + geom_line(aes(n, eprob), col = "red")
+dat$eprob = eprob
+ggplot(dat, aes(x = n, y = prob)) +
+  geom_point() +
+  geom_line(aes(y = eprob), col='red')
+
 ```
 
 This plot shows that the Monte Carlo simulation provided a very good estimate of the exact probability. Had it not been possible to compute the exact probabilities, we would have still been able to accurately estimate the probabilities.
@@ -662,7 +671,11 @@ compute_prob <- function(B, n=25){
   mean(same_day)
 }
 prob <- sapply(B, compute_prob)
-qplot(log10(B), prob, geom = "line")
+dat = data.frame(logB = log10(B),
+                 prob = prob)
+ggplot(dat, aes(x = logB, y = prob)) +
+  geom_line()
+
 ```
 
 In this plot, we can see that the values start to stabilize (that is, they vary less than .01) around 1000. Note that the exact probability, which we know in this case, is `r eprob[25]`.

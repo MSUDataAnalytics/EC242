@@ -19,8 +19,6 @@ editor_options:
 filter = dplyr::filter
 ```
 
-# Groups
-Everyone shouldbe assigned to a group by now. If you did not get a group assignment let me know **right now**.
 
 
 ### In-Class Exercise

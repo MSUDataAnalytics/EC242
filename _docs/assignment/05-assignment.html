@@ -570,7 +570,8 @@ Note:
 </div>
 <p>Here is a histogram of the data for these 15 pollsters:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(spread, <span class="at">data =</span> one_poll_per_pollster, <span class="at">binwidth =</span> <span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(one_poll_per_pollster, <span class="fu">aes</span>(<span class="at">x =</span> spread)) <span class="sc">+</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span>.<span class="dv">01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -618,9 +619,7 @@ EXERCISES
 </div>
 <div class="callout-body-container callout-body">
 <p>Note that using dollar signs <code>$ $</code> to enclose some text is how you make the fancy math you see below. If you installed <code>tinytex</code> or some other Latex distribution in order to render your PDFs, you should be equipped to insert mathematics directly into your .Rmd file. It only works in the text – inside the code chunks, the dollar sign is still the accessor.</p>
-<ol type="1">
-<li>In this section, we talked about pollster bias. We used visualization to motivate the presence of such bias. Here we will give it a more rigorous treatment. We will consider two pollsters that conducted daily polls. We will look at national polls for the month before the election.</li>
-</ol>
+<p>In this section, we talked about pollster bias. We used visualization to motivate the presence of such bias. Here we will give it a more rigorous treatment. We will consider two pollsters that conducted daily polls. We will look at national polls for the month before the election.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(polls_us_election_2016)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>polls <span class="ot">&lt;-</span> polls_us_election_2016 <span class="sc">%&gt;%</span></span>
@@ -630,9 +629,10 @@ EXERCISES
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>           state <span class="sc">==</span> <span class="st">"U.S."</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spread =</span> rawpoll_clinton<span class="sc">/</span><span class="dv">100</span> <span class="sc">-</span> rawpoll_trump<span class="sc">/</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We want to answer the question: <strong>is there a poll bias?</strong> First, make a plot showing the spreads for each poll.</p>
-<ol start="2" type="1">
-<li>The data does seem to suggest there is a difference. However, these data are subject to variability. Perhaps the differences we observe are due to chance.</li>
+<p>We want to answer the question: <strong>is there a poll bias?</strong>. That is, does one of these pollsters have a “thumb on the scale” (or methodology that makes them consistently different) relative to the other.</p>
+<ol type="1">
+<li><p>First, make a plot showing the spreads for each poll. Visualizing our data first helps guide us!</p></li>
+<li><p>The data does seem to suggest there is a difference. However, these data are subject to variability. Perhaps the differences we observe are due to chance.</p></li>
 </ol>
 <p>The urn model theory says nothing about pollster effect. Under the urn model, both pollsters have the same expected value: the election day difference, that we call <span class="math inline">\(d\)</span>.</p>
 <p>We will model the observed data <span class="math inline">\(Y_{i,j}\)</span> in the following way:</p>
@@ -640,7 +640,7 @@ EXERCISES
 Y_{i,j} = d + b_i + \varepsilon_{i,j}
 \]</span></p>
 <p>with <span class="math inline">\(i=1,2\)</span> indexing the two pollsters, <span class="math inline">\(b_i\)</span> the bias for pollster <span class="math inline">\(i\)</span> and <span class="math inline">\(\varepsilon_ij\)</span> poll to poll chance variability. We assume the <span class="math inline">\(\varepsilon\)</span> are independent from each other, have expected value <span class="math inline">\(0\)</span> and standard deviation <span class="math inline">\(\sigma_i\)</span> regardless of <span class="math inline">\(j\)</span>.</p>
-<p>Which of the following best represents our question?</p>
+<p>Which of the following best represents our question about (relative) poll bias?</p>
 <ol type="a">
 <li>Is <span class="math inline">\(\varepsilon_{i,j}\)</span> = 0?</li>
 <li>How close are the <span class="math inline">\(Y_{i,j}\)</span> to <span class="math inline">\(d\)</span>?</li>
@@ -662,9 +662,9 @@ Y_{i,j} = d + b_i + \varepsilon_{i,j}
 <li><p>What does the CLT tell us about the distribution of a new random variable that is defined as <span class="math inline">\(\bar{Y}_2 - \bar{Y}_1\)</span>?</p></li>
 </ol>
 <ol type="a">
-<li>Nothing because this is not the average of a sample.</li>
+<li>Nothing, because this is not the average of a sample.</li>
 <li>Because the <span class="math inline">\(Y_{ij}\)</span> are approximately normal, so are the averages.</li>
-<li>Note that <span class="math inline">\(\bar{Y}_2\)</span> and <span class="math inline">\(\bar{Y}_1\)</span> are sample averages, so if we assume <span class="math inline">\(N_2\)</span> and <span class="math inline">\(N_1\)</span> are large enough, each is approximately normal. The difference of normals is also normal.</li>
+<li>Noting that <span class="math inline">\(\bar{Y}_2\)</span> and <span class="math inline">\(\bar{Y}_1\)</span> are sample averages, if we assume <span class="math inline">\(N_2\)</span> and <span class="math inline">\(N_1\)</span> are large enough, each is approximately normal. The difference of normals is also normal.</li>
 <li>The data are not 0 or 1, so CLT does not apply.</li>
 </ol>
 <ol start="7" type="1">

@@ -350,6 +350,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#required-reading" id="toc-required-reading" class="nav-link active" data-scroll-target="#required-reading">Required Reading</a></li>
   <li><a href="#yesterdays-lab" id="toc-yesterdays-lab" class="nav-link" data-scroll-target="#yesterdays-lab">Yesterday’s Lab</a></li>
+  <li><a href="#groups" id="toc-groups" class="nav-link" data-scroll-target="#groups">Groups</a></li>
   <li><a href="#discrete-probability" id="toc-discrete-probability" class="nav-link" data-scroll-target="#discrete-probability">Discrete probability</a>
   <ul class="collapse">
   <li><a href="#monte-carlo-simulations-for-categorical-data" id="toc-monte-carlo-simulations-for-categorical-data" class="nav-link" data-scroll-target="#monte-carlo-simulations-for-categorical-data">Monte Carlo simulations for categorical data</a></li>
@@ -524,6 +525,10 @@ window.Quarto = {
 </div>
 </div>
 </section>
+<section id="groups" class="level1">
+<h1>Groups</h1>
+<p>Our TA has emailed everyone their group assignemnts. Thus, everyone should be assigned to a group by now. If you did not get a group assignment let me know <strong>right now</strong>. The TA’s email asked you to make contact / meet with your group by Sunday. Please make sure you do so. As TA Zach mentioned, if you do not hear from a group member by Sunday, let me know.</p>
+</section>
 <section id="discrete-probability" class="level1">
 <h1>Discrete probability</h1>
 <p>We’ll start today’s topic by covering some basic principles related to categorical data. The subset of probability is referred to as <em>discrete probability</em>. It will help us understand the probability theory we will later introduce for numeric and continuous data, which is much more common in data science applications. Discrete probability is more useful in card games and therefore we use these as examples.</p>
@@ -599,7 +604,7 @@ window.Quarto = {
 <div class="cell-output cell-output-stdout">
 <pre><code>events
 blue  red 
-5985 4015 </code></pre>
+6074 3926 </code></pre>
 </div>
 </div>
 <p>and <code>prop.table</code> gives us the proportions:</p>
@@ -608,7 +613,7 @@ blue  red
 <div class="cell-output cell-output-stdout">
 <pre><code>events
   blue    red 
-0.5985 0.4015 </code></pre>
+0.6074 0.3926 </code></pre>
 </div>
 </div>
 <p>The numbers above are the estimated probabilities provided by this Monte Carlo simulation. Statistical theory, not covered here, tells us that as <span class="math inline">\(B\)</span> gets larger, the estimates get closer to 3/5=.6 and 2/5=.4.</p>
@@ -1034,7 +1039,9 @@ blue  red
 <div class="cell">
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">sapply</span>(n, compute_prob)</span>
-<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(n, prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">n =</span> n, <span class="at">prob =</span> prob)</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y=</span>prob)) <span class="sc">+</span> </span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1056,7 +1063,10 @@ blue  red
 <span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> <span class="fu">prod</span>( prob_unique)</span>
 <span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>eprob <span class="ot">&lt;-</span> <span class="fu">sapply</span>(n, exact_prob)</span>
-<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(n, prob) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(n, eprob), <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eprob <span class="ot">=</span> eprob</span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> eprob), <span class="at">col=</span><span class="st">'red'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1079,7 +1089,10 @@ blue  red
 <span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(same_day)</span>
 <span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">sapply</span>(B, compute_prob)</span>
-<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="fu">log10</span>(B), prob, <span class="at">geom =</span> <span class="st">"line"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">logB =</span> <span class="fu">log10</span>(B),</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">prob =</span> prob)</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(<span class="at">x =</span> logB, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

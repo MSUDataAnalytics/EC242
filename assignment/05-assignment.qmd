@@ -302,7 +302,8 @@ one_poll_per_pollster <- polls %>% group_by(pollster) %>%
 Here is a histogram of the data for these `r nrow(one_poll_per_pollster)` pollsters:
 
 ```{r pollster-bias-histogram}
-qplot(spread, data = one_poll_per_pollster, binwidth = 0.01)
+ggplot(one_poll_per_pollster, aes(x = spread)) + 
+  geom_histogram(binwidth=.01)
 ```
 
 In the previous section, we saw that using the urn model theory to combine these results might not be appropriate due to the pollster effect. Instead, we will model this spread data directly.
@@ -347,7 +348,8 @@ Our confidence interval is wider now since it incorporates the pollster variabil
 
 Note that using dollar signs `$ $` to enclose some text is how you make the fancy math you see below. If you installed `tinytex` or some other Latex distribution in order to render your PDFs, you should be equipped to insert mathematics directly into your .Rmd file. It only works in the text -- inside the code chunks, the dollar sign is still the accessor.
 
-1. In this section, we talked about pollster bias. We used visualization to motivate the presence of such bias. Here we will give it a more rigorous treatment. We will consider two pollsters that conducted daily polls. We will look at national polls for the month before the election.
+
+In this section, we talked about pollster bias. We used visualization to motivate the presence of such bias. Here we will give it a more rigorous treatment. We will consider two pollsters that conducted daily polls. We will look at national polls for the month before the election.
 
 ```{r, eval=FALSE}
 data(polls_us_election_2016)
@@ -359,8 +361,9 @@ polls <- polls_us_election_2016 %>%
   mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100)
 ```
 
-We want to answer the question: **is there a poll bias?** First, make a plot showing the spreads for each poll.
+We want to answer the question: **is there a poll bias?**. That is, does one of these pollsters have a "thumb on the scale" (or methodology that makes them consistently different) relative to the other.
 
+1. First, make a plot showing the spreads for each poll. Visualizing our data first helps guide us!
 
 2. The data does seem to suggest there is a difference. However, these data are subject to variability. Perhaps the differences we observe are due to chance.
 
@@ -374,7 +377,7 @@ $$
 
 with $i=1,2$ indexing the two pollsters, $b_i$ the bias for pollster $i$ and $\varepsilon_ij$ poll to poll chance variability. We assume the $\varepsilon$ are independent from each other, have expected value $0$ and standard deviation $\sigma_i$ regardless of $j$.
 
-Which of the following best represents our question?
+Which of the following best represents our question about (relative) poll bias?
 
 a. Is $\varepsilon_{i,j}$ = 0?
 b. How close are the $Y_{i,j}$ to $d$?
@@ -398,9 +401,9 @@ What is the expected value of $\bar{Y}_1$?
 
 6. What does the CLT tell us about the distribution of a new random variable that is defined as $\bar{Y}_2 - \bar{Y}_1$?
 
-a. Nothing because this is not the average of a sample.
+a. Nothing, because this is not the average of a sample.
 b. Because the $Y_{ij}$ are approximately normal, so are the averages.
-c. Note that $\bar{Y}_2$ and $\bar{Y}_1$ are sample averages, so if we assume $N_2$ and $N_1$ are large enough, each is approximately normal. The difference of normals is also normal.
+c. Noting that $\bar{Y}_2$ and $\bar{Y}_1$ are sample averages, if we assume $N_2$ and $N_1$ are large enough, each is approximately normal. The difference of normals is also normal.
 d. The data are not 0 or 1, so CLT does not apply.
 
 7. The new random variable defined as $\bar{Y}_2 - \bar{Y}_1$ has an expected value of $b_2 - b_1$. To see this, take the equation from problem 2 defined for each pollster, write out the difference, and take expectations. $b_2 = b_1$ is the pollster bias difference we want to learn about statistically. If our model holds, then this random variable has an approximately normal distribution and we know its standard error -- by the rules of random variable variance, the standard error is the square root of the variance of the new random variable, and the variance of the new variable is the *sum of the variances minus twice the covariance (which is zero by our assumptions)*. The standard error of our new random variable depends on the standard errors of the $Y$ above, which we already estimated in 3-5.
