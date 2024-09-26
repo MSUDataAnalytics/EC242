@@ -204,7 +204,7 @@ mean(x)
 
 In general, if the urn has two possible outcomes, say $a$ and $b$, with proportions $p$ and $1-p$ respectively, the average is:
 
-$$\mbox{E}[X] = ap + b(1-p)$$
+$$\mbox{E}[X] = pa + (1-p)b$$
 
 To see this, notice that if there are $n$ beads in the urn, then we have $np$ $a$s and $n(1-p)$ $b$s and because the average is the sum, $n\times a \times p + n\times b \times (1-p)$, divided by the total $n$, we get that the average is $ap + b(1-p)$.
 
@@ -605,7 +605,7 @@ sqrt(p*(1-p))/sqrt(1000)
 
 or 1.5 percentage points. So even with large polls, for close elections, $\bar{X}$ can lead us astray if we don't realize it is a random variable. Nonetheless, we can actually say more about how close we get the $p$.
 
-:::{.callout-info}
+::: {.callout-info}
 ## Central Limit Theorem {#clt}
 
 If we didn't cover this earlier this week, let's talk about it here:
