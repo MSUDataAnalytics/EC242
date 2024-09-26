@@ -1,13 +1,18 @@
 ---
 title: "Project 1"
+duedate: "{{< var duedates.project1 >}}"
+format:
+  html:
+    toc: true
 ---
 
 
-:::fyi
+::: {.callout-info}
+### Turning This In
 
-All members of the group should turn in the group's work on D2L. Each turned-in copy should have the entire group's names at the top.
+**Only one member of your group should turn in your project on D2L**. The copy turned in must have each member's name at the top.
 
-Turn in your copies no later than **Saturday, February 10th at 11:59 PM.** 
+One group member should turn in your project on D2L under "Project 1" no later than **{{< meta duedate >}}** 
 
 :::
 
@@ -16,7 +21,7 @@ Turn in your copies no later than **Saturday, February 10th at 11:59 PM.**
 
 New York City is full of urban wildlife, and rats are one of the city's most infamous animal mascots. Rats in NYC are plentiful, but they also deliver food, so they're useful too.
 
-{{< yt PeJUqcbool4 >}}
+{{< video https://www.youtube.com/embed/PeJUqcbool4 >}}
 
 NYC keeps incredibly detailed data regarding animal sightings, including rats, and [it makes this data publicly available](https://www.kaggle.com/new-york-city/nyc-rat-sightings/data).
 
@@ -30,32 +35,33 @@ Here's what you need to do:
 
     - [<i class="fas fa-file-csv"></i> `Rat_sightings.csv`](/data/Rat_sightings.csv)
 
-2. **Summarize** the data somehow. The raw data has more than 150,000 rows, which means you'll need to aggregate the data (`filter()`, `group_by()`, and `summarize()` will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2024. (Of course, I just gave you these ideas, so you'll need to be a bit more creative than just doing exactly what I just said.)
+2. **Summarize** the data somehow. The raw data has more than 150,000 rows, which means you'll need to aggregate the data (`filter()`, `group_by()`, and `summarize()` will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2024. Consider the meaning of variables you create -- remember how the total numbers of murders in a state was mostly just a function of size, but that murder *rate* was a more useful variable. (Of course, I just gave you these ideas, so you'll need to be a bit more creative than just doing exactly what I just said.)
 
-3. **Explore** the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. When necessary, you may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). Be creative, but do so to further explore and analyze. Drill down on something you see in the data to *tell a story*. Remember, as analysts, we are looking for "patterns in the data" that are not easily written in closed form.
+3. **Explore** the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use `case_when()` to add data that's at a coarse level (year, borough, etc.), or `merge()` if you're comfortable with it. [Be create]{.font-orange}, but do so to further explore and analyze. Drill down on something you see in the data to *tell a story*. Remember, as analysts, we are looking for "patterns in the data" that are not easily written in closed form.
 
-4. **Create** appropriate visualizations based on the data you summarized and explored. Pay attention to every detail - color choice, labels, axis text, etc.
+4. **Create** appropriate visualizations based on the data you summarized and explored. Pay attention to every detail - color choice, labels, axis text, etc. Use proper capitalization. Make sure everything lays out in your final product. This is not trivial - it will take you some time to get everything just right.
 
-5. **Write** a polished, professional memo presenting your analysis to the Mayor. The memo should tell the story you found in the data. It should not narrarate your discovery process (e.g. it should **not** say "we tried looking at...and then ran ggplot(...)) but rather should weave your exploration into a narrarative driven by your graphics, with the text filling in the context. We are specifically looking for a discussion of the following:
+5. **Write** a polished, professional memo presenting your analysis to the Mayor. The memo should tell the story you found in the data. It should not narrarate your discovery process (e.g. it should **not** say "we tried looking at...and then ran ggplot(...))" but rather should weave your exploration into a narrarative driven by your graphics, with the text filling in the context. We are specifically looking for a discussion of the following:
 
     - What story are you telling with your graphics?
+    - What new insight have you found?
     - How have you applied reasonable standards in visual storytelling?
     - What policy implication is there (if any)?
     
   
 6. **Upload** the following outputs to D2L:
 
-    - A PDF file of your memo with your graphics embedded in it.^[You can approach this in a couple different ways—you can write the memo and then include the full figure and code at the end, [similar to this blog post](https://rud.is/b/2017/09/18/mapping-fall-foliage-with-sf/), or you can write the memo in an incremental way, describing the different steps of creating the figure, ultimately arriving at a clean final figure, [like this blog post](https://rudeboybert.github.io/fivethirtyeight/articles/bechdel.html).] This means you'll need to do all your coding in an `R` Markdown file and embed your code in chunks. 
+    - A PDF file of your memo with your graphics embedded in it.^[You can approach this in a couple different ways—you can write the memo and then include the full figure and code at the end, [similar to this blog post](https://rud.is/b/2017/09/18/mapping-fall-foliage-with-sf/), or you can write the memo in an incremental way, describing the analytical steps that each figure illuminates, ultimately arriving at a final figure, [like this blog post](https://rudeboybert.github.io/fivethirtyeight/articles/bechdel.html).] This means you'll need to do all your coding in an `R` Markdown file and embed your code in chunks. 
     - Note that Part 2 of this project should be included in this PDF in it's own section (see below).
-    - Nothing else. **No .Rmd, no code**, nothing but your clean, polished memo with Part 1 and Part 2.
+    - Nothing else. **No .Rmd, no code**, nothing but your clean, polished memo with Part 1 and Part 2. 
     
 Some important notes on your assignment
 
 - Your assignment should be clean and polished as if you were a city employee and you were turning in a work product. It should should flow nicely and use subsections (using ```###``` at the start of the line) as appropriate.
-- Do **not** "annotate" your thought process (e.g. do not write "we tried X but there were too many NA's, so we did Y instead"). This should be a polished memo suitable for turning in as a work product.
+- Again, do **not** "annotate" your thought process (e.g. do not write "we tried X but there were too many NA's, so we did Y instead"). This should be a polished memo suitable for turning in as a work product. Each graphic should guide the analysis towards the next.
 - Your code should **not** appear in your output - it should be only your plots and memo writing. 
   - To turn off code echoing, add `echo = FALSE` in each of your code chunk options (e.g. `{r setup, echo = FALSE}`), or set it globally in the first code chunk inside the `knitr::opts_chunk$set` function.
-    
+- Make sure you take a look at the **Evaluation** critera, below.
     
 ### Starter code
 
@@ -88,7 +94,7 @@ rats_clean <- rats_raw %>%
   filter(borough != "Unspecified")
 ```
 
-You'll summarize the data with functions from **dplyr**, including stuff like `count()`, `arrange()`, `filter()`, `group_by()`, `summarize()`, and `mutate()`.
+You'll summarize the data with functions from **dplyr** in the **tidyverse**, including stuff like `count()`, `arrange()`, `filter()`, `group_by()`, `summarize()`, and `mutate()`. As mentioned before, if you're bringing in outside data (e.g. population of a borough), you can use `case_when()` to add it, or try using `merge()` and seek help at office hours if it's not clear to you.
 
 
 
@@ -100,25 +106,27 @@ You'll summarize the data with functions from **dplyr**, including stuff like `c
 
 For the second part of the project, your task is simple. Your group must identify three different data sources^[The three different sources need not be different websites or from different organizations. For example, three different tables from the US Census would be sufficient] for potential use in your final project. You are not bound to this decision.
 
-Do **not** use Kaggle data. While Kaggle is useful for learning data science, part of this assignment is learning how to find actual data in the wild. 
+Do **not** use Kaggle data. While Kaggle is useful for learning data science, part of this assignment is learning how to find actual data in the wild. I give zero credit for data links to Kaggle data. You must find your data from the source.
 
-For each dataset, you must write a single short paragraph about what about this data interests you. Add this to the memo from Part 1, using `##` to make a new header in Rmarkdown for this section. 
+For each dataset, you must write a single short *paragraph* about what about this data interests the group and what general questions one could answer with it. Add this to the memo from Part 1, using `##` to make a new header in Rmarkdown for this section. 
 
 
 ## Evaluations
 
-I will evaluate these projects (not the TA). I will only give top marks to those groups showing initiative and cleverness. I will use the following weights for final scores:
+I will only give top marks to those groups showing initiative and cleverness. I will use the following weights for final scores:
 
 __Part 1__
 
-1. Technical difficulty: Does the final project show mastery of the skills we've discussed thus far? Did the underlying data analysis use and expand on the tools we learned in class? Are axes and legends appropriately labeled and are colorblind-friendly colors used? (12 points)
+1. Technical difficulty: Does the final project show mastery of the R and ggplot skills we've discussed thus far? Did the underlying data analysis use and expand on the tools we learned in class? Full credit requires going beyond the basic **tidyverse** filtering / grouping / summarizing. (10 points)
 
-2. Appropriateness of visuals: Do the visualizations communicate the analysis? (10 points)
+2. Clarity / use of ggplot: Are all of the design elements property executed in the plots and memo. Are axes and legends appropriately labeled and are colorblind-friendly colors used? Does the plot display properly in the memo without any cut-off axes? Is everything properly spelled? (5 points)
 
-3. Storytelling: Does your memo clearly convey what you're doing and why? (10 points)
+3. Appropriateness of visuals: Do the visualizations communicate the analysis? Does it use visual cues to show the analysis? (10 points)
+
+4. Storytelling: Does your memo clearly convey the analysis? Does it flow appropriately with the visuals? Does it include a policy recommendation? (10 points)
 
 __Part 2__
 
-Each piece of data (and description) is worth 6 points. (18 points total)
+Each piece of data and description is worth 5 points. (15 points total)
 
 

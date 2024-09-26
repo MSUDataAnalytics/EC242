@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Project 1 – EC242</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": "tree",
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/Spartan-Helmet_White.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">EC242</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../syllabus.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../schedule.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../content/index.html"> 
+<span class="menu-text">Course Content</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../assignment/index.html" aria-current="page"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../resource/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://ec242.slack.com"> <i class="bi bi-slack" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../groupproject/project1.html">Group Projects</a></li><li class="breadcrumb-item"><a href="../groupproject/project1.html">Project 1</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../assignment/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../assignment/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignments</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../assignment/01-assignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1: Programming Basics in R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../assignment/02-assignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2: Visualization with ggplot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../assignment/03-assignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3: Applying ggplot2 to Real Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../assignment/04-assignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4: Visualizing Large(ish) Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../assignment/05-assignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5: Statistical Models and Uncertainty</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Group Projects</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../groupproject/project1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Project 1</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#turning-this-in" id="toc-turning-this-in" class="nav-link active" data-scroll-target="#turning-this-in">Turning This In</a></li>
+  <li><a href="#part-1-rats-rats-rats." id="toc-part-1-rats-rats-rats." class="nav-link" data-scroll-target="#part-1-rats-rats-rats.">Part 1: Rats, rats, rats.</a>
+  <ul class="collapse">
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  <li><a href="#starter-code" id="toc-starter-code" class="nav-link" data-scroll-target="#starter-code">Starter code</a></li>
+  </ul></li>
+  <li><a href="#part-2-data-hunting" id="toc-part-2-data-hunting" class="nav-link" data-scroll-target="#part-2-data-hunting">Part 2: Data Hunting</a></li>
+  <li><a href="#evaluations" id="toc-evaluations" class="nav-link" data-scroll-target="#evaluations">Evaluations</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../groupproject/project1.html">Group Projects</a></li><li class="breadcrumb-item"><a href="../groupproject/project1.html">Project 1</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Project 1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="turning-this-in" class="level3 callout-info">
+<h3 class="anchored" data-anchor-id="turning-this-in">Turning This In</h3>
+<p><strong>Only one member of your group should turn in your project on D2L</strong>. The copy turned in must have each member’s name at the top.</p>
+<p>One group member should turn in your project on D2L under “Project 1” no later than <strong>Saturday October 12th, 11:59pm</strong></p>
+</section>
+<section id="part-1-rats-rats-rats." class="level2">
+<h2 class="anchored" data-anchor-id="part-1-rats-rats-rats.">Part 1: Rats, rats, rats.</h2>
+<p>New York City is full of urban wildlife, and rats are one of the city’s most infamous animal mascots. Rats in NYC are plentiful, but they also deliver food, so they’re useful too.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/PeJUqcbool4" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>NYC keeps incredibly detailed data regarding animal sightings, including rats, and <a href="https://www.kaggle.com/new-york-city/nyc-rat-sightings/data">it makes this data publicly available</a>.</p>
+<p>For this first project, pretend that you are an analyst with the NYC Mayor’s office, and you have been tasked with getting a better understanding of the rat problem. Your job is to use <strong>R and ggplot2</strong> to tell an interesting story hidden in the data. You must create a story by looking carefully at the data, finding some insight into where or when rat sightings occur, and describing to the Mayor how this insight may inform a strategy to address the rats. Your assignment will take the form of a professional memo that presents the data and insights along with appropriate visualizations that communicate the story in-line. Your memo should be approximately 2-4 pages (including plots) and, of course, will use Rmarkdown rendered to PDF using LaTeX.</p>
+<section id="instructions" class="level3">
+<h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
+<p>Here’s what you need to do:</p>
+<ol type="1">
+<li><p><strong>Download</strong> New York City’s database of rat sightings since 2010:</p>
+<ul>
+<li><a href="..\data/Rat_sightings.csv"><i class="fas fa-file-csv"></i> <code>Rat_sightings.csv</code></a></li>
+</ul></li>
+<li><p><strong>Summarize</strong> the data somehow. The raw data has more than 150,000 rows, which means you’ll need to aggregate the data (<code>filter()</code>, <code>group_by()</code>, and <code>summarize()</code> will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2024. Consider the meaning of variables you create – remember how the total numbers of murders in a state was mostly just a function of size, but that murder <em>rate</em> was a more useful variable. (Of course, I just gave you these ideas, so you’ll need to be a bit more creative than just doing exactly what I just said.)</p></li>
+<li><p><strong>Explore</strong> the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use <code>case_when()</code> to add data that’s at a coarse level (year, borough, etc.), or <code>merge()</code> if you’re comfortable with it. <span class="font-orange">Be create</span>, but do so to further explore and analyze. Drill down on something you see in the data to <em>tell a story</em>. Remember, as analysts, we are looking for “patterns in the data” that are not easily written in closed form.</p></li>
+<li><p><strong>Create</strong> appropriate visualizations based on the data you summarized and explored. Pay attention to every detail - color choice, labels, axis text, etc. Use proper capitalization. Make sure everything lays out in your final product. This is not trivial - it will take you some time to get everything just right.</p></li>
+<li><p><strong>Write</strong> a polished, professional memo presenting your analysis to the Mayor. The memo should tell the story you found in the data. It should not narrarate your discovery process (e.g.&nbsp;it should <strong>not</strong> say “we tried looking at…and then ran ggplot(…))” but rather should weave your exploration into a narrarative driven by your graphics, with the text filling in the context. We are specifically looking for a discussion of the following:</p>
+<ul>
+<li>What story are you telling with your graphics?</li>
+<li>What new insight have you found?</li>
+<li>How have you applied reasonable standards in visual storytelling?</li>
+<li>What policy implication is there (if any)?</li>
+</ul></li>
+<li><p><strong>Upload</strong> the following outputs to D2L:</p>
+<ul>
+<li>A PDF file of your memo with your graphics embedded in it.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This means you’ll need to do all your coding in an <code>R</code> Markdown file and embed your code in chunks.</li>
+<li>Note that Part 2 of this project should be included in this PDF in it’s own section (see below).</li>
+<li>Nothing else. <strong>No .Rmd, no code</strong>, nothing but your clean, polished memo with Part 1 and Part 2.</li>
+</ul></li>
+</ol>
+<p>Some important notes on your assignment</p>
+<ul>
+<li>Your assignment should be clean and polished as if you were a city employee and you were turning in a work product. It should should flow nicely and use subsections (using <code>###</code> at the start of the line) as appropriate.</li>
+<li>Again, do <strong>not</strong> “annotate” your thought process (e.g.&nbsp;do not write “we tried X but there were too many NA’s, so we did Y instead”). This should be a polished memo suitable for turning in as a work product. Each graphic should guide the analysis towards the next.</li>
+<li>Your code should <strong>not</strong> appear in your output - it should be only your plots and memo writing.
+<ul>
+<li>To turn off code echoing, add <code>echo = FALSE</code> in each of your code chunk options (e.g.&nbsp;<code>{r setup, echo = FALSE}</code>), or set it globally in the first code chunk inside the <code>knitr::opts_chunk$set</code> function.</li>
+</ul></li>
+<li>Make sure you take a look at the <strong>Evaluation</strong> critera, below.</li>
+</ul>
+</section>
+<section id="starter-code" class="level3">
+<h3 class="anchored" data-anchor-id="starter-code">Starter code</h3>
+<p>I’ve provided some starter code below. A couple comments about it:</p>
+<ul>
+<li>By default, <code>read_csv()</code> treats cells that are empty or “NA” as missing values. This rat dataset uses “N/A” to mark missing values, so we need to add that as a possible marker of missingness (hence <code>na = c("", "NA", "N/A")</code>)</li>
+<li>To make life easier, I’ve renamed some of the key variables you might work with. You can rename others if you want.</li>
+<li>I’ve also created a few date-related variables (<code>sighting_year</code>, <code>sighting_month</code>, <code>sighting_day</code>, and <code>sighting_weekday</code>). You don’t have to use them, but they’re there if you need them. The functions that create these, like <code>year()</code> and <code>wday()</code> are part of the <strong>lubridate</strong> library.</li>
+<li>The date/time variables are formatted like <code>04/03/2017 12:00:00 AM</code>, which R is not able to automatically parse as a date when reading the CSV file. You can use the <code>mdy_hms()</code> function in the <strong>lubridate</strong> library to parse dates that are structured as “month-day-year-hour-minute”. There are also a bunch of other iterations of this function, like <code>ymd()</code>, <code>dmy()</code>, etc., for other date formats.</li>
+<li>There’s one row with an unspecified borough, so I filter that out.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rats_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rat_Sightings.csv"</span>, <span class="at">na =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">"N/A"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># If you get an error that says "All formats failed to parse. No formats</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># found", it's because the mdy_hms function couldn't parse the date. The date</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># variable *should* be in this format: "04/03/2017 12:00:00 AM", but in some</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># rare instances, it might load without the seconds as "04/03/2017 12:00 AM".</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># If there are no seconds, use mdy_hm() instead of mdy_hms().</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>rats_clean <span class="ot">&lt;-</span> rats_raw <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">created_date =</span> <span class="st">`</span><span class="at">Created Date</span><span class="st">`</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">location_type =</span> <span class="st">`</span><span class="at">Location Type</span><span class="st">`</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">borough =</span> Borough) <span class="sc">%&gt;%</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">created_date =</span> <span class="fu">mdy_hms</span>(created_date)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sighting_year =</span> <span class="fu">year</span>(created_date),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">sighting_month =</span> <span class="fu">month</span>(created_date),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">sighting_day =</span> <span class="fu">day</span>(created_date),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">sighting_weekday =</span> <span class="fu">wday</span>(created_date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">FALSE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(borough <span class="sc">!=</span> <span class="st">"Unspecified"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You’ll summarize the data with functions from <strong>dplyr</strong> in the <strong>tidyverse</strong>, including stuff like <code>count()</code>, <code>arrange()</code>, <code>filter()</code>, <code>group_by()</code>, <code>summarize()</code>, and <code>mutate()</code>. As mentioned before, if you’re bringing in outside data (e.g.&nbsp;population of a borough), you can use <code>case_when()</code> to add it, or try using <code>merge()</code> and seek help at office hours if it’s not clear to you.</p>
+</section>
+</section>
+<section id="part-2-data-hunting" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-data-hunting">Part 2: Data Hunting</h2>
+<p>For the second part of the project, your task is simple. Your group must identify three different data sources<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> for potential use in your final project. You are not bound to this decision.</p>
+<p>Do <strong>not</strong> use Kaggle data. While Kaggle is useful for learning data science, part of this assignment is learning how to find actual data in the wild. I give zero credit for data links to Kaggle data. You must find your data from the source.</p>
+<p>For each dataset, you must write a single short <em>paragraph</em> about what about this data interests the group and what general questions one could answer with it. Add this to the memo from Part 1, using <code>##</code> to make a new header in Rmarkdown for this section.</p>
+</section>
+<section id="evaluations" class="level2">
+<h2 class="anchored" data-anchor-id="evaluations">Evaluations</h2>
+<p>I will only give top marks to those groups showing initiative and cleverness. I will use the following weights for final scores:</p>
+<p><strong>Part 1</strong></p>
+<ol type="1">
+<li><p>Technical difficulty: Does the final project show mastery of the R and ggplot skills we’ve discussed thus far? Did the underlying data analysis use and expand on the tools we learned in class? Full credit requires going beyond the basic <strong>tidyverse</strong> filtering / grouping / summarizing. (10 points)</p></li>
+<li><p>Clarity / use of ggplot: Are all of the design elements property executed in the plots and memo. Are axes and legends appropriately labeled and are colorblind-friendly colors used? Does the plot display properly in the memo without any cut-off axes? Is everything properly spelled? (5 points)</p></li>
+<li><p>Appropriateness of visuals: Do the visualizations communicate the analysis? Does it use visual cues to show the analysis? (10 points)</p></li>
+<li><p>Storytelling: Does your memo clearly convey the analysis? Does it flow appropriately with the visuals? Does it include a policy recommendation? (10 points)</p></li>
+</ol>
+<p><strong>Part 2</strong></p>
+<p>Each piece of data and description is worth 5 points. (15 points total)</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>You can approach this in a couple different ways—you can write the memo and then include the full figure and code at the end, <a href="https://rud.is/b/2017/09/18/mapping-fall-foliage-with-sf/">similar to this blog post</a>, or you can write the memo in an incremental way, describing the analytical steps that each figure illuminates, ultimately arriving at a final figure, <a href="https://rudeboybert.github.io/fivethirtyeight/articles/bechdel.html">like this blog post</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The three different sources need not be different websites or from different organizations. For example, three different tables from the US Census would be sufficient<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
