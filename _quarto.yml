@@ -59,12 +59,12 @@ execute:
 
 website:
   title: "EC242"
-  # announcement:
-  #   icon: info-circle
-  #   dismissable: true
-  #   content: "A small (but necessary) update to the [embedding image resource](/resource/rmarkdown#images-inserted-in-code-chunks)"
-  #   type: primary
-  #   position: below-navbar
+  announcement:
+    icon: info-circle
+    dismissable: true
+    content: "I have moved the end of Tuesday's unit to the beginning of today's. And Project 1 is now up."
+    type: primary
+    position: below-navbar
   search: 
     show-item-context: tree
     location: navbar

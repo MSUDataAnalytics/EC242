@@ -14,7 +14,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r}
+```{r, echo=F, include=F, eval=T}
 
 filter = dplyr::filter
 ```

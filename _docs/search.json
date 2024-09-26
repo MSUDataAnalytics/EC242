@@ -1814,7 +1814,7 @@
     "href": "content/Week_05/05b.html",
     "title": "Visualizing Uncertainty",
     "section": "",
-    "text": "filter = dplyr::filter",
+    "text": "We will go back and briefly cover some of the material from Tuesday that we didn’t get to. I have moved the Random Variables section from Tuesday to the top here on Thursday as well. If you read through today’s material already, you’ll see that it starts with “Part II” below, and the in-class exercise has been removed.",
     "crumbs": [
       "Course Content",
       "Week 05",
