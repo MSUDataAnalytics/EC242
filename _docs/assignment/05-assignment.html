@@ -664,10 +664,10 @@ Y_{i,j} = d + b_i + \varepsilon_{i,j}
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pollster<span class="sc">==</span><span class="st">"Rasmussen Reports/Pulse Opinion Research"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">N_1 =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>What is the expected value of <span class="math inline">\(\bar{Y}_1\)</span>?</p>
+<p>What is the expected value of <span class="math inline">\(\bar{Y}_1\)</span>? What is the sample mean <span class="math inline">\(\bar{y}_1\)</span>?</p>
 <ol start="4" type="1">
-<li><p>What is the sample variance <span class="math inline">\(s^2_1\)</span> of the sample <span class="math inline">\(Y_1\)</span>? Using <span class="math inline">\(s^2_1\)</span>, what is the standard error of the mean <span class="math inline">\(\bar{Y}_1\)</span>?</p></li>
-<li><p>Suppose we define <span class="math inline">\(\bar{Y}_2\)</span> as the average of poll results from the second pollster, <span class="math inline">\(Y_{2,1},\dots,Y_{2,N_2}\)</span> with <span class="math inline">\(N_2\)</span> the number of polls conducted by the second pollster. What is the expected value <span class="math inline">\(\bar{Y}_2\)</span>, the sample variance <span class="math inline">\(s^2_2\)</span>, and the standard error of the mean <span class="math inline">\(\bar{Y}_2\)</span>?</p></li>
+<li><p>What is the sample variance <span class="math inline">\(s^2_1\)</span> of the sample <span class="math inline">\(Y_1\)</span>? Using <span class="math inline">\(s^2_1\)</span>, what is your estimate of the standard error of the mean <span class="math inline">\(\bar{Y}_1\)</span>?</p></li>
+<li><p>Suppose we define <span class="math inline">\(\bar{Y}_2\)</span> as the average of poll results from the second pollster, <span class="math inline">\(Y_{2,1},\dots,Y_{2,N_2}\)</span> with <span class="math inline">\(N_2\)</span> the number of polls conducted by the second pollster. What is the expected value <span class="math inline">\(\bar{Y}_2\)</span>, the sample mean <span class="math inline">\(\bar{y}_2\)</span>, the sample variance <span class="math inline">\(s^2_2\)</span>, and the standard error of the mean <span class="math inline">\(\bar{Y}_2\)</span>?</p></li>
 <li><p>What does the CLT tell us about the distribution of a new random variable that is defined as <span class="math inline">\(\bar{Y}_2 - \bar{Y}_1\)</span>?</p></li>
 </ol>
 <ol type="a">
@@ -677,13 +677,13 @@ Y_{i,j} = d + b_i + \varepsilon_{i,j}
 <li>The data are not 0 or 1, so CLT does not apply.</li>
 </ol>
 <ol start="7" type="1">
-<li>The new random variable defined as <span class="math inline">\(\bar{Y}_2 - \bar{Y}_1\)</span> has an expected value of <span class="math inline">\(b_2 - b_1\)</span>. To see this, take the equation from problem 2 defined for each pollster, write out the difference, and take expectations. <span class="math inline">\(b_2 = b_1\)</span> is the pollster bias difference we want to learn about statistically. If our model holds, then this random variable has an approximately normal distribution and we know its standard error – by the rules of random variable variance, the standard error is the square root of the variance of the new random variable, and the variance of the new variable is the <em>sum of the variances minus twice the covariance (which is zero by our assumptions)</em>. The standard error of our new random variable depends on the standard errors of the <span class="math inline">\(Y\)</span> above, which we already estimated in 3-5.</li>
+<li>The new random variable defined as <span class="math inline">\(\bar{Y}_2 - \bar{Y}_1\)</span> has an expected value of <span class="math inline">\(b_2 - b_1\)</span>. To see this, take the equation from problem 2 defined for each pollster, write out the difference, and take expectations. <span class="math inline">\(b_2 = b_1\)</span> is the pollster bias difference we want to learn about statistically. If our model holds, then this random variable has an approximately normal distribution and we know its standard error – by the rules of random variable variance, the standard error is the square root of the variance of the new random variable, and the variance of the new variable is the <em>sum of the variances minus twice the covariance (which is zero by our assumptions)</em>. The standard error of our new random variable depends on (and can be calculated using) the standard errors of the <span class="math inline">\(Y\)</span> above, which we already estimated in 3-5.</li>
 </ol>
 <p>The statistic formed by dividing our estimate of <span class="math inline">\(b_2-b_1\)</span> by its estimated standard error:</p>
 <p><span class="math display">\[
-\frac{\bar{Y}_2 - \bar{Y}_1}{\sqrt{\underbrace{s_2^2/N_2}_{\text{Std error of mean from 4, squared}} + \underbrace{s_1^2/N_1}_{\text{Std error of mean from 5, squared}}}}
+\frac{\bar{y}_2 - \bar{y}_1}{\sqrt{\underbrace{s_2^2/N_2}_{\text{Std error of mean from 4, squared}} + \underbrace{s_1^2/N_1}_{\text{Std error of mean from 5, squared}}}}
 \]</span></p>
-<p>is called the t-statistic. Now you should be able to do the calculations necessary to answer the question: is <span class="math inline">\(b_2 - b_1\)</span> different from 0? Hint: you can build a 95% confidence interval around your estimate and see if it includes 0.</p>
+<p>is called the t-statistic. Now you should be able to do the calculations necessary to answer the question: is <span class="math inline">\(b_2 - b_1\)</span> different from 0? You can use the t-statistic (via a t-test), or you can build a 95% confidence interval around your estimate and see if it includes 0.</p>
 </div>
 </div>
 
