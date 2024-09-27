@@ -42,12 +42,12 @@ weather_atl <- read_csv("data/atl-weather-2019.csv")
 ```
 
 ```{r load-data-real, include=FALSE, message=FALSE}
-weather_atl <- read_csv(here::here("static", "data", "atl-weather-2019.csv"))
+weather_atl <- read_csv(here::here("data", "atl-weather-2019.csv"))
 ```
 
 
 ```{r load-data-real-Ames, include=FALSE, message = FALSE}
-ames <- read_csv('https://ssc442kirkpatrick.netlify.app/projects/data/ames.csv')
+ames <- read_csv('https://ec242.netlify.app/data/ames.csv')
 ```
 
 
