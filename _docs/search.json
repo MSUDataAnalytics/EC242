@@ -888,6 +888,382 @@
     ]
   },
   {
+    "objectID": "groupproject/project1.html",
+    "href": "groupproject/project1.html",
+    "title": "Project 1",
+    "section": "",
+    "text": "Only one member of your group should turn in your project on D2L. The copy turned in must have each member’s name at the top.\nOne group member should turn in your project on D2L under “Project 1” no later than Saturday October 12th, 11:59pm",
+    "crumbs": [
+      "Assignments",
+      "Group Projects",
+      "Project 1"
+    ]
+  },
+  {
+    "objectID": "groupproject/project1.html#part-1-rats-rats-rats.",
+    "href": "groupproject/project1.html#part-1-rats-rats-rats.",
+    "title": "Project 1",
+    "section": "Part 1: Rats, rats, rats.",
+    "text": "Part 1: Rats, rats, rats.\nNew York City is full of urban wildlife, and rats are one of the city’s most infamous animal mascots. Rats in NYC are plentiful, but they also deliver food, so they’re useful too.\n\nNYC keeps incredibly detailed data regarding animal sightings, including rats, and it makes this data publicly available.\nFor this first project, pretend that you are an analyst with the NYC Mayor’s office, and you have been tasked with getting a better understanding of the rat problem. Your job is to use R and ggplot2 to tell an interesting story hidden in the data. You must create a story by looking carefully at the data, finding some insight into where or when rat sightings occur, and describing to the Mayor how this insight may inform a strategy to address the rats. Your assignment will take the form of a professional memo that presents the data and insights along with appropriate visualizations that communicate the story in-line. Your memo should be approximately 2-4 pages (including plots) and, of course, will use Rmarkdown rendered to PDF using LaTeX.\n\nInstructions\nHere’s what you need to do:\n\nDownload New York City’s database of rat sightings since 2010:\n\n Rat_sightings.csv\n\nSummarize the data somehow. The raw data has more than 150,000 rows, which means you’ll need to aggregate the data (filter(), group_by(), and summarize() will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2024. Consider the meaning of variables you create – remember how the total numbers of murders in a state was mostly just a function of size, but that murder rate was a more useful variable. (Of course, I just gave you these ideas, so you’ll need to be a bit more creative than just doing exactly what I just said.)\nExplore the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use case_when() to add data that’s at a coarse level (year, borough, etc.), or merge() if you’re comfortable with it. Be create, but do so to further explore and analyze. Drill down on something you see in the data to tell a story. Remember, as analysts, we are looking for “patterns in the data” that are not easily written in closed form.\nCreate appropriate visualizations based on the data you summarized and explored. Pay attention to every detail - color choice, labels, axis text, etc. Use proper capitalization. Make sure everything lays out in your final product. This is not trivial - it will take you some time to get everything just right.\nWrite a polished, professional memo presenting your analysis to the Mayor. The memo should tell the story you found in the data. It should not narrarate your discovery process (e.g. it should not say “we tried looking at…and then ran ggplot(…))” but rather should weave your exploration into a narrarative driven by your graphics, with the text filling in the context. We are specifically looking for a discussion of the following:\n\nWhat story are you telling with your graphics?\nWhat new insight have you found?\nHow have you applied reasonable standards in visual storytelling?\nWhat policy implication is there (if any)?\n\nUpload the following outputs to D2L:\n\nA PDF file of your memo with your graphics embedded in it.1 This means you’ll need to do all your coding in an R Markdown file and embed your code in chunks.\nNote that Part 2 of this project should be included in this PDF in it’s own section (see below).\nNothing else. No .Rmd, no code, nothing but your clean, polished memo with Part 1 and Part 2.\n\n\nSome important notes on your assignment\n\nYour assignment should be clean and polished as if you were a city employee and you were turning in a work product. It should should flow nicely and use subsections (using ### at the start of the line) as appropriate.\nAgain, do not “annotate” your thought process (e.g. do not write “we tried X but there were too many NA’s, so we did Y instead”). This should be a polished memo suitable for turning in as a work product. Each graphic should guide the analysis towards the next.\nYour code should not appear in your output - it should be only your plots and memo writing.\n\nTo turn off code echoing, add echo = FALSE in each of your code chunk options (e.g. {r setup, echo = FALSE}), or set it globally in the first code chunk inside the knitr::opts_chunk$set function.\n\nMake sure you take a look at the Evaluation critera, below.\n\n\n\nStarter code\nI’ve provided some starter code below. A couple comments about it:\n\nBy default, read_csv() treats cells that are empty or “NA” as missing values. This rat dataset uses “N/A” to mark missing values, so we need to add that as a possible marker of missingness (hence na = c(\"\", \"NA\", \"N/A\"))\nTo make life easier, I’ve renamed some of the key variables you might work with. You can rename others if you want.\nI’ve also created a few date-related variables (sighting_year, sighting_month, sighting_day, and sighting_weekday). You don’t have to use them, but they’re there if you need them. The functions that create these, like year() and wday() are part of the lubridate library.\nThe date/time variables are formatted like 04/03/2017 12:00:00 AM, which R is not able to automatically parse as a date when reading the CSV file. You can use the mdy_hms() function in the lubridate library to parse dates that are structured as “month-day-year-hour-minute”. There are also a bunch of other iterations of this function, like ymd(), dmy(), etc., for other date formats.\nThere’s one row with an unspecified borough, so I filter that out.\n\n\nlibrary(tidyverse)\nlibrary(lubridate)\nrats_raw &lt;- read_csv(\"data/Rat_Sightings.csv\", na = c(\"\", \"NA\", \"N/A\"))\n# If you get an error that says \"All formats failed to parse. No formats\n# found\", it's because the mdy_hms function couldn't parse the date. The date\n# variable *should* be in this format: \"04/03/2017 12:00:00 AM\", but in some\n# rare instances, it might load without the seconds as \"04/03/2017 12:00 AM\".\n# If there are no seconds, use mdy_hm() instead of mdy_hms().\nrats_clean &lt;- rats_raw %&gt;%\n  rename(created_date = `Created Date`,\n         location_type = `Location Type`,\n         borough = Borough) %&gt;%\n  mutate(created_date = mdy_hms(created_date)) %&gt;%\n  mutate(sighting_year = year(created_date),\n         sighting_month = month(created_date),\n         sighting_day = day(created_date),\n         sighting_weekday = wday(created_date, label = TRUE, abbr = FALSE)) %&gt;%\n  filter(borough != \"Unspecified\")\n\nYou’ll summarize the data with functions from dplyr in the tidyverse, including stuff like count(), arrange(), filter(), group_by(), summarize(), and mutate(). As mentioned before, if you’re bringing in outside data (e.g. population of a borough), you can use case_when() to add it, or try using merge() and seek help at office hours if it’s not clear to you.",
+    "crumbs": [
+      "Assignments",
+      "Group Projects",
+      "Project 1"
+    ]
+  },
+  {
+    "objectID": "groupproject/project1.html#part-2-data-hunting",
+    "href": "groupproject/project1.html#part-2-data-hunting",
+    "title": "Project 1",
+    "section": "Part 2: Data Hunting",
+    "text": "Part 2: Data Hunting\nFor the second part of the project, your task is simple. Your group must identify three different data sources2 for potential use in your final project. You are not bound to this decision.\nDo not use Kaggle data. While Kaggle is useful for learning data science, part of this assignment is learning how to find actual data in the wild. I give zero credit for data links to Kaggle data. You must find your data from the source.\nFor each dataset, you must write a single short paragraph about what about this data interests the group and what general questions one could answer with it. Add this to the memo from Part 1, using ## to make a new header in Rmarkdown for this section.",
+    "crumbs": [
+      "Assignments",
+      "Group Projects",
+      "Project 1"
+    ]
+  },
+  {
+    "objectID": "groupproject/project1.html#evaluations",
+    "href": "groupproject/project1.html#evaluations",
+    "title": "Project 1",
+    "section": "Evaluations",
+    "text": "Evaluations\nI will only give top marks to those groups showing initiative and cleverness. I will use the following weights for final scores:\nPart 1\n\nTechnical difficulty: Does the final project show mastery of the R and ggplot skills we’ve discussed thus far? Did the underlying data analysis use and expand on the tools we learned in class? Full credit requires going beyond the basic tidyverse filtering / grouping / summarizing. (10 points)\nClarity / use of ggplot: Are all of the design elements property executed in the plots and memo. Are axes and legends appropriately labeled and are colorblind-friendly colors used? Does the plot display properly in the memo without any cut-off axes? Is everything properly spelled? (5 points)\nAppropriateness of visuals: Do the visualizations communicate the analysis? Does it use visual cues to show the analysis? (10 points)\nStorytelling: Does your memo clearly convey the analysis? Does it flow appropriately with the visuals? Does it include a policy recommendation? (10 points)\n\nPart 2\nEach piece of data and description is worth 5 points. (15 points total)",
+    "crumbs": [
+      "Assignments",
+      "Group Projects",
+      "Project 1"
+    ]
+  },
+  {
+    "objectID": "groupproject/project1.html#footnotes",
+    "href": "groupproject/project1.html#footnotes",
+    "title": "Project 1",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nYou can approach this in a couple different ways—you can write the memo and then include the full figure and code at the end, similar to this blog post, or you can write the memo in an incremental way, describing the analytical steps that each figure illuminates, ultimately arriving at a final figure, like this blog post.↩︎\nThe three different sources need not be different websites or from different organizations. For example, three different tables from the US Census would be sufficient↩︎",
+    "crumbs": [
+      "Assignments",
+      "Group Projects",
+      "Project 1"
+    ]
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Below is a roadmap for the semester. Note that this will inevitably change from the first day you access this course. However, whatever is listed below should be considered canon. Accordingly, you should visit this page frequently throughout the term.\nAs mentioned in the syllabus, the course is structured by topics; each week introduces a new topic. Moreover, every week is divided into four important sections that you should engage with: principles, applications, weekly writings, and assignments."
+  },
+  {
+    "objectID": "schedule.html#course-calendar",
+    "href": "schedule.html#course-calendar",
+    "title": "Schedule",
+    "section": " Course Calendar",
+    "text": "Course Calendar\n\n\n\n\n\nWeek\nDates\nProgramming Foundations\nPrinciples\nApplications\nAssignment\n\n\n\n\n1\nAug 27 & Aug 29\n(Re-)introduction to R\n\n\n\n\n\n2\nSep 3 & Sep 5\nProgramming basics, tidyverse, and visualization\n\n\n\n\n\n3\nSep 10 & Sep 12\nVisualization II\n\n\n\n\n\n4\nSep 17 & Sep 19\nVisualization III\n\n\n\n\n\n\n\nData Analysis Foundations\nPrinciples\nApplications\nAssignment\n\n\n5\nSep 24 & Sep 26\nUncertainty and Probability in R\n\n\n\n\n\n6\nOct 1 & Oct 3\nLinear Regression I\n\n\n\n\n\n7\nOct 8 & Oct 10\nLinear Regression II\n\n\n\n\n\n\nSat Oct 12th\nProject 1 Due\n\n\n\n\n\n8\nOct 15 & Oct 17\nLinear Regression III\n\n\n\n\n\n\n\nApplications of Data Analysis\nPrinciples\nApplications\nAssignment\n\n\n9\nOct 22& Oct 24\nLASSO: Least Absolute Shrinkage and Selection\n\n\n\n\n\n10\nOct 29 & Oct 31\nNonlinear Regression\n\n\n\n\n\n11\nNov 5 & Nov 7\nBias vs. Variance (No lab this week)\n\n\n\n\n\n12\nNov 12 & Nov 14\nClassification\n\n\n\n\n\n\nSat Nov 16\nProject 2 Due\n\n\n\n\n\n\n\nFurther Extensions\nPrinciples\nApplications\nAssignment\n\n\n13\nNov 19 & Nov 21\nText as Data\n\n\n\n\n\n14\nNov 26 &Nov 28\nWrangling Data\n\n\n\n\n\n15\nDec 3 & Dec 5\nGeospatial in R (Last lab)\n\n\n\n\n\n\n\nConclusions\nPrinciples\nApplications\nAssignment\n\n\n\nThurs Dec 12\nFinal Project Due"
+  },
+  {
+    "objectID": "assignment/04-assignment.html",
+    "href": "assignment/04-assignment.html",
+    "title": "4: Visualizing Large(ish) Data",
+    "section": "",
+    "text": "Due Date\n\n\n\nThis assignment is due on Monday, September 23rd, 11:59pm\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "4: Visualizing Large(ish) Data"
+    ]
+  },
+  {
+    "objectID": "assignment/04-assignment.html#postscript-how-we-got-this-unemployment-data",
+    "href": "assignment/04-assignment.html#postscript-how-we-got-this-unemployment-data",
+    "title": "4: Visualizing Large(ish) Data",
+    "section": "Postscript: how we got this unemployment data",
+    "text": "Postscript: how we got this unemployment data\nFor the curious, here’s the code we used to download the unemployment data from the BLS.\nAnd to pull the curtain back and show how much googling is involved in data visualization (and data analysis and programming in general), here was my process for getting this data:\n\nWe thought “We want to have students show variation in something domestic over time” and then we googled “us data by state”. Nothing really came up (since it was an exceedingly vague search in the first place), but some results mentioned unemployment rates, so we figured that could be cool.\nWe googled “unemployment statistics by state over time” and found that the BLS keeps statistics on this. We clicked on the “Data Tools” link in their main navigation bar, clicked on “Unemployment”, and then clicked on the “Multi-screen data search” button for the Local Area Unemployment Statistics (LAUS).\nWe walked through the multiple screens and got excited that we’d be able to download all unemployment stats for all states for a ton of years, but then the final page had links to 51 individual Excel files, which was dumb.\nSo we went back to Google and searched for “download bls data r” and found a few different packages people have written to do this. The first one we clicked on was blscrapeR at GitHub, and it looked like it had been updated recently, so we went with it.\nWe followed the examples in the blscrapeR package and downloaded data for every state.\n\nAnother day in the life of doing modern data science. This is an example of something you will be able to do by the end of this class. we had no idea people had written R packages to access BLS data, but there are (at least) 3 packages out there. After a few minutes of tinkering, we got it working and it is relatively straightforward.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "4: Visualizing Large(ish) Data"
+    ]
+  },
+  {
+    "objectID": "resource/index.html",
+    "href": "resource/index.html",
+    "title": "Helpful resources",
+    "section": "",
+    "text": "In these reference pages, I’ve included some useful resources to help you in the course."
+  },
+  {
+    "objectID": "resource/data.html",
+    "href": "resource/data.html",
+    "title": "Data",
+    "section": "",
+    "text": "There are a ton of places to find data related to public policy and administration (as well as data on pretty much any topic you want) online:\n\nData is Plural newsletter: Jeremy Singer-Vine sends a weekly newsletter of the most interesting public datasets he’s found. You should subscribe to it. He also has an archive of all the datasets he’s highlighted.\nGoogle Dataset Search: Google indexes thousands of public datasets; search for them here.\nKaggle: Kaggle hosts machine learning competitions where people compete to create the fastest, most efficient, most predictive algorithms. A byproduct of these competitions is a host of fascinating datasets that are generally free and open to the public. See, for example, the European Soccer Database, the Salem Witchcraft Dataset or results from an Oreo flavors taste test. Note: when you are asked in an assignment or project to find data, Kaggle is not a valid source. You learn nothing about farming by getting fruit from the market. Similarly, you learn nothing about data analysis by getting pre-packaged data from Kaggle.\n360Giving: Dozens of British foundations follow a standard file format for sharing grant data and have made that data available online.\nUS City Open Data Census: More than 100 US cities have committed to sharing dozens of types of data, including data about crime, budgets, campaign finance, lobbying, transit, and zoning. This site from the Sunlight Foundation and Code for America collects this data and rates cities by how well they’re doing.\nPolitical science and economics datasets: There’s a wealth of data available for political science- and economics-related topics:\n\nFrançois Briatte’s extensive curated lists: Includes data from/about intergovernmental organizations (IGOs), nongovernmental organizations (NGOs), public opinion surveys, parliaments and legislatures, wars, human rights, elections, and municipalities.\nThomas Leeper’s list of political science datasets: Good short list of useful datasets, divided by type of data (country-level data, survey data, social media data, event data, text data, etc.).\nErik Gahner’s list of political science datasets: Huge list of useful datasets, divided by topic (governance, elections, policy, political elites, etc.)\n\nGeospatial datasets: For our geospatial unit, many entities (government agencies, etc.) post repositories of spatial data via arcgis.com, which is owned by ESRI, the company that makes the predominant commercial GIS software. The data owner decides what data to post and how to present it, but arcgis.com provides the hosting. R has excellent geospatial functionalities, so we cover (when time permits) geospatial data. It is easy to find geospatial data to import into R. Here are a few:\n\nState of Michigan Open Data Portal\nHomeland Infrastructure Foundation-Level Data (HIFLD)\nCity of East Lansing Data Viewer",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Data"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html",
+    "href": "assignment/index.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "This course is the capstone of the Data Analytics Minor in the College of Social Science. Accordingly, you should—fingers crossed—enjoy data analysis. You will get the most of out this class if you:\nAssignments consist of Weekly Writings and Lab Assignments. Each type of assignment in this class helps with one of these strategies. Weekly writings engage with the materials, and lab assignments engage directly with R. The assignments are described below.\nTo get started, download and save the following files (right-click to Save Link As…)",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html#weekly-writings",
+    "href": "assignment/index.html#weekly-writings",
+    "title": "Assignments",
+    "section": "Weekly Writings",
+    "text": "Weekly Writings\nTo encourage you to actively engage with the course content, you will write a ≈150 word memorandum about the reading or lecture each week. That’s fairly short: there are ≈250 words on a typical double-spaced page. You must complete eleven of these in the course. I will drop your one lowest weekly writing score. Your actual prompt will be assigned in class, so you must login each day to ensure you get these assignments. To keep you on your toes, we will vary whether these are assigned on Tuesdays or Thursdays. Each week’s weekly writing will be due on D2L by 11:59pm on Saturday\nYou can do a lot of different things with this memo: discuss something you learned from the course content, write about the best or worst data visualization you saw recently, connect the course content to your own work, etc. These reflections let you explore and answer some of the key questions of this course, including:\n\nWhen is a link correlational vs causal? How can we still make useful statements about non-causal things?\nWhy do we visualize data?\nWhat makes a great data analysis? What makes a bad analysis?\nHow do you choose which kind of analysis method to use?\nWhat is the role of the data structure in choosing an analysis? Can we be flexible?\n\nThe course content for each day will also include a set of questions specific to that topic. You do not have to answer all (or any) of these questions. That would be impossible. They exist to guide your thinking and to make complex reading more digestible. The specific topic for each week will be assigned in class. (We can’t emphasize this enough.)\nThe TA will grade these mini-exercises using a very simple system:\n\n✔+: (9.2 points (115%) in gradebook) Work shows phenomenal thought and engagement with the course content. We will not assign these often.\n✔: (8 points (100%) in gradebook) Work is thoughtful, well-written, and shows engagement with the course content. This is the expected level of performance.\n✔−: (4 points (50%) in gradebook) Work is hastily composed, too short, and/or only cursorily engages with the course content. This grade signals that you need to improve next time. I will hopefully not assign these often.\n\n(There is an implicit 0 above for work that is not turned in by Saturday at 11:59pm). Notice that this is essentially a pass/fail or completion-based system. We’re not grading your writing ability; we’re not counting the exact number of words you’re writing; and we’re not looking for encyclopedic citations of every single reading to prove that you did indeed read everything. We are looking for thoughtful engagement. Read the material, engage with the work and you’ll get a ✓.\n\nWeekly Writing Template\nYou will turn these reflections in via D2L. You will write them using R Markdown and this template  Weekly writing template. You must knit your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc.",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html#lab-assignments",
+    "href": "assignment/index.html#lab-assignments",
+    "title": "Assignments",
+    "section": "Lab Assignments",
+    "text": "Lab Assignments\nEach week of the course has examples of code that teach and demonstrate how to do specific tasks in R. However, without practicing these principles and making graphics on your own, you won’t remember what you learn.\nPlease do not do labs more than one week ahead of time. I am updating the assignments as the semester proceeds, and you may do an entire assignment that is completely changed.\nFor example, to practice working with ggplot2 and making data-based graphics, you will complete a brief set of exercises over a few class sessions. These exercises will have 1–3 short tasks that are directly related to the topic for the week. You need to show that you made a good faith effort to work each question. There will also be a final question which requires significantly more thought and work. This will be where you get to show some creativity and stretch your abilities. Overall, labs will be graded the same check system:\n\n✔+: (17.5 points (115%) in gradebook) Exercises are complete. Every task was attempted and answered, and most answers are correct. Knitted document is clean and easy to follow. Work on the final problem shows creativity or is otherwise exceptional. We will not assign these often.\n✔: (15 points (100%) in gradebook) Exercises are complete and most answers are correct. This is the expected level of performance.\n✔−: (7.5 points (50%) in gradebook) Exercises are less than 70% complete and/or most answers are incorrect. This indicates that you need to improve next time. We will hopefully not assign these often, but subpar work can expect a ✔−.\n\nThere is an implicit 0 for any assignment not turned in on time. If you have only partial work, then turn that in for partial credit. As noted in the syllabus, we are not grading your coding ability. We are not checking each line of code to make sure it produces some exact final figure, and we do not expect perfection. Also note that a ✓ does not require 100% success. You will sometimes get stuck with weird errors that you can’t solve, or the demands of pandemic living might occasionally become overwhelming. We are looking for good faith effort. Try hard, engage with the task, and you’ll get a ✓.\nYou may work together on the labs, but you must turn in your own answers.\n\nLab Template\nYou will turn these labs in via D2L. You will write them using R Markdown and this  Lab assignment template. You must knit your work to a PDF document (this will be what you turn in). Your output must be rendered in latex. I do not accept rendering to HTML or Word and then converting to PDF and unrendered .rmd files are not allowed.",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html#projects",
+    "href": "assignment/index.html#projects",
+    "title": "Assignments",
+    "section": "Projects",
+    "text": "Projects\nTo give you practice with the data and design principles you’ll learn in this class, you will complete two projects en route to the overarching final project of the course. Both these mini projects and the final project must be completed in groups. I will assign groups after the drop deadline passes. Groups will be 2-3 people. You are allowed to form your own groups, but I will assign groups. More details will follow later.\nThe two (mini) projects are checkpoints to ensure you’re working on your project seriously. They will be graded using a check system:\n\n✔+: (55 points (≈115%) in gradebook) Project is phenomenally well-designed and uses advanced R techniques. The project uncovers an important story that is not readily apparent from just looking at the raw data. I will not assign these often.\n✔: (50 points (100%) in gradebook) Project is fine, follows most design principles, answers a question from the data, and uses R correctly. This is the expected level of performance.\n✔−: (25 points (50%) in gradebook) Project is missing large components, is poorly designed, does not answer a relevant question, and/or uses R incorrectly. This indicates that you need to improve next time. I will hopefully not assign these often.\n\nBecause these mini projects give you practice for the final project, we will provide you with substantial feedback on your design and code.",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html#final-project",
+    "href": "assignment/index.html#final-project",
+    "title": "Assignments",
+    "section": "Final project",
+    "text": "Final project\nAt the end of the course, you will demonstrate your skills by completing a final project. Complete details for the final project (including past examples of excellent projects) are here. In brief, the final project has the following elements:\n\nYou must find existing data to analyze.1 Aggregating data from multiple sources is encouraged, but is not required.\n\n\nYou must visualize (at least) three interesting features of that data. Visualizations should aid the reader in understanding something about the data that might not be readily aparent.2\n\n\nYou must come up with some analysis—using tools from the course—which relates your data to either a prediction or a policy conclusion. For example, if you collected data from Major League Baseball games, you could try to “predict” whether a left-hander was pitching based solely on the outcomes of the batsmen.3\n\n\nYou must write your analysis as if presenting to a C-suite executive. If you are not familiar with this terminology, the C-suite includes, e.g., the CEO, CFO, and COO of a given company. Generally speaking, such executives are not particularly analytically oriented, and therefore your explanations need to be clear, consise (their time is valuable) and contain actionable (or valuable) information.\n\nThere is no final exam. This project is your final exam.\nThe project will not be graded using a check system, and will be graded by me (the main instructor, not a TA). I will evaluate the following four elements of your project:\n\nTechnical skills: Was the project easy? Does it showcase mastery of data analysis?\nVisual design: Was the information smartly conveyed and usable? Was it beautiful?\nAnalytic design: Was the analysis appropriate? Was it sensible, given the dataset?\nStory: Did we learn something?\n\nIf you’ve engaged with the course content and completed the exercises and mini projects throughout the course, you should do just fine with the final project.",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html#footnotes",
+    "href": "assignment/index.html#footnotes",
+    "title": "Assignments",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nNote that existing is taken to mean that you are not permitted to collect data by interacting with other people. That is not to say that you cannot gather data that previously has not been gathered into a single place—this sort of exercise is encouraged.↩︎\nPie charts of any kind will result in a 25% grade deduction.↩︎\nThis is an extremely dumb idea for a number of reasons. Moreover, it’s worth mentioning that sports data, while rich, can be overwhelming due to its sheer magnitude and the variety of approaches that can be applied. Use with caution.↩︎",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "content/index.html",
+    "href": "content/index.html",
+    "title": "Course Content",
+    "section": "",
+    "text": "Each week has two sets of required readings (pages in the sidebar) that you should complete before coming to lecture. Read the first before our first meeting of the week, and read the second before the second meetings. That is, you should complete the first reading, attend Tuesday class, then do the associated exercises contained within the reading, and read the second reading before Thursday. You will be working each week’s lab between Thursday afternoon and Monday at 11:59 PM (when the labs are due). Don’t forget your weekly writing in between, due Saturday at 11:59pm.\nThe course content is structured as follows. For each topic, we begin with a set of questions that might guide your reading and help frame your thoughts. These questions can serve as helpful starting places for your thinking; they are not representative of the totality of the content and are not intended to be limiting. You should not try to respond to all of these (or any of them if you don’t want to)—they’ll just help you know what to look for and think about as you read. The first reading is generally a “principles” reading, discussing the concepts for the week. The second is generally an “applications” reading, meant to give concrete examples and code. This isn’t always the case, but holds in general.",
+    "crumbs": [
+      "Syllabus",
+      "Course Content"
+    ]
+  },
+  {
+    "objectID": "content/index.html#content-navigation",
+    "href": "content/index.html#content-navigation",
+    "title": "Course Content",
+    "section": "Content navigation",
+    "text": "Content navigation\nUse the links on the sidebar to navigate between required reading. Readings are ordered by week, and within each week, by order of the class meetings.",
+    "crumbs": [
+      "Syllabus",
+      "Course Content"
+    ]
+  },
+  {
+    "objectID": "resource/design.html",
+    "href": "resource/design.html",
+    "title": "Design",
+    "section": "",
+    "text": "Vischeck: Simulate how your images look for people with different forms of colorblindness (web-based)\nColor Oracle: Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/design.html#accessibility",
+    "href": "resource/design.html#accessibility",
+    "title": "Design",
+    "section": "",
+    "text": "Vischeck: Simulate how your images look for people with different forms of colorblindness (web-based)\nColor Oracle: Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/design.html#colors",
+    "href": "resource/design.html#colors",
+    "title": "Design",
+    "section": "Colors",
+    "text": "Colors\n\nAdobe Color: Create, share, and explore rule-based and custom color palettes.\nColourLovers: Like Facebook for color palettes.\nviridis: Percetually uniform color scales.\nScientific Colour-Maps: Perceptually uniform color scales like viridis. Use them in R with scico.\nColorBrewer: Sequential, diverging, and qualitative color palettes that take accessibility into account.\nColorgorical: Create color palettes based on fancy mathematical rules for perceptual distance.\nColorpicker for data: More fancy mathematical rules for color palettes (explanation).\niWantHue: Yet another perceptual distance-based color palette builder.\nPhotochrome: Word-based color pallettes.\nPolicyViz Design Color Tools: Large collection of useful color resources",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/design.html#fonts",
+    "href": "resource/design.html#fonts",
+    "title": "Design",
+    "section": "Fonts",
+    "text": "Fonts\n\nGoogle Fonts: Huge collection of free, well-made fonts.\nThe Ultimate Collection of Google Font Pairings: A list of great, well-designed font pairings from all those fonts hosted by Google (for when you’re looking for good contrasting or complementary fonts).",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/design.html#graphic-assets",
+    "href": "resource/design.html#graphic-assets",
+    "title": "Design",
+    "section": "Graphic assets",
+    "text": "Graphic assets\n\nImages\n\nUse the Creative Commons filters on Google Images or Flickr\nUnsplash\nPexels\nPixabay\nStockSnap.io\nBurst\nfreephotos.cc\n\n\n\nVectors\n\nNoun Project: Thousands of free simple vector images\naiconica: 1,000+ vector icons\nVecteezy: Thousands of free vector images\n\n\n\nVectors, photos, videos, and other assets\n\nStockio",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html",
+    "href": "resource/markdown.html",
+    "title": "Using Markdown",
+    "section": "",
+    "text": "Markdown is a special kind of markup language that lets you format text with simple syntax. You can then use a converter program like pandoc to convert Markdown into whatever format you want: HTML, PDF, Word, PowerPoint, etc. (see the full list of output types here)",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html#basic-markdown-formatting",
+    "href": "resource/markdown.html#basic-markdown-formatting",
+    "title": "Using Markdown",
+    "section": "Basic Markdown formatting",
+    "text": "Basic Markdown formatting\n\n\n\n              Type…\n    …or…\n            …to get\n\n\n\n\nSome text in a paragraph.\n\nMore text in the next paragraph. Always\nuse empty lines between paragraphs.\n\nSome text in a paragraph.\nMore text in the next paragraph. Always use empty lines between paragraphs.\n\n\n*Italic*\n_Italic_\nItalic\n\n\n**Bold**\n__Bold__\nBold\n\n\n# Heading 1\n\n\nHeading 1\n\n\n\n## Heading 2\n\n\nHeading 2\n\n\n\n### Heading 3\n\n\nHeading 3\n\n\n\n(Go up to heading level 6 with ######)\n\n\n\n\n[Link text](http://www.example.com)\n\nLink text\n\n\n![Image caption](/path/to/image.png)\n\n |\n\n\n`Inline code` with backticks\n\nInline code with backticks\n\n\n&gt; Blockquote\n\n\nBlockquote\n\n\n\n- Things in\n- an unordered\n- list\n* Things in\n* an unordered\n* list\n\nThings in\nan unordered\nlist\n\n\n\n1. Things in\n2. an ordered\n3. list\n1) Things in\n2) an ordered\n3) list\n\nThings in\nan ordered\nlist\n\n\n\nHorizontal line\n\n---\nHorizontal line\n\n***\nHorizontal line",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html#math",
+    "href": "resource/markdown.html#math",
+    "title": "Using Markdown",
+    "section": "Math",
+    "text": "Math\nMarkdown uses LaTeX to create fancy mathematical equations. This is useful for things as simple as making a \\(\\beta\\), or for writing out long, complex equations. In fact, Markdown does not like, and will error out on, “unicode” characters like the version of \\(\\beta\\) you get by using the text symbols. Needless to say, don’t do that – use LaTeX.\nIn LaTeX, there are like a billion little options and features available for math equations—you can find helpful examples of the the most common basic commands here, but the basic usage is easy.\nYou can use math in two different ways: inline or in a display block. To use math inline, wrap it in single dollar signs, like $y = mx + b$:\n\n\n\n\n\n\n\n                            Type…\n                        …to get\n\n\n\n\nBased on the DAG, the regression model for\nestimating the effect of education on wages\nis $\\hat{y} = \\beta_0 + \\beta_1 x_1 + \\epsilon$, or\n$\\text{Wages} = \\beta_0 + \\beta_1 \\text{Education} + \\epsilon$.\nBased on the DAG, the regression model for estimating the effect of education on wages is \\(\\hat{y} = \\beta_0 + \\beta_1 x_1 + \\epsilon\\), or \\(\\text{Wages} = \\beta_0 + \\beta_1 \\text{Education} + \\epsilon\\).\n\n\n\nTo put an equation on its own line in a display block, wrap it in double dollar signs, like this:\nType…\nThe quadratic equation was an important part of high school math:\n\n$$\nx = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\n$$\n\nBut now we just use computers to solve for $x$.\n…to get…\n\nThe quadratic equation was an important part of high school math:\n\\[\nx = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\n\\]\nBut now we just use computers to solve for \\(x\\).\n\n\nBecause dollar signs are used to indicate math equations, you can’t just use dollar signs like normal if you’re writing about actual dollars. For instance, if you write This book costs $5.75 and this other costs $40, Markdown will treat everything that comes between the dollar signs as math, like so: “This book costs $5.75 and this other costs $40”.\nTo get around that, put a backslash (\\) in front of the dollar signs, so that This book costs \\$5.75 and this other costs \\$40 becomes “This book costs $5.75 and this other costs $40”.",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html#superscripts-and-subscripts",
+    "href": "resource/markdown.html#superscripts-and-subscripts",
+    "title": "Using Markdown",
+    "section": "Superscripts and Subscripts",
+    "text": "Superscripts and Subscripts\nSubscripts and superscripts are used often in this class. They are made by adding _{sub} or ^{super}. See the \\beta_0 in the table above, which made a nice \\(\\beta_{0}\\). If you have only one character or number, you don’t need to use the {}. That is beta_i,j will give \\(\\beta_i,j\\), and beta_{i,j} will give \\(\\beta_{i,j}\\).",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html#tables-1",
+    "href": "resource/markdown.html#tables-1",
+    "title": "Using Markdown",
+    "section": "Tables",
+    "text": "Tables\nThere are 4 different ways to hand-create tables in Markdown—I say “hand-create” because it’s normally way easier to use R to generate these things with packages like pander (use pandoc.table()) or knitr (use kable()). The two most common are simple tables and pipe tables. You should look at the full documentation here.\nFor simple tables, type…\n  Right     Left     Center     Default\n-------     ------ ----------   -------\n     12     12        12            12\n    123     123       123          123\n      1     1          1             1\n\nTable: Caption goes here\n…to get…\n\nCaption goes here\n\n\nRight\nLeft\nCenter\nDefault\n\n\n\n\n12\n12\n12\n12\n\n\n123\n123\n123\n123\n\n\n1\n1\n1\n1\n\n\n\nFor pipe tables, type…\n| Right | Left | Default | Center |\n|------:|:-----|---------|:------:|\n|   12  |  12  |    12   |    12  |\n|  123  |  123 |   123   |   123  |\n|    1  |    1 |     1   |     1  |\n\nTable: Caption goes here\n…to get…\n\nCaption goes here\n\n\nRight\nLeft\nDefault\nCenter\n\n\n\n\n12\n12\n12\n12\n\n\n123\n123\n123\n123\n\n\n1\n1\n1\n1",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html#footnotes",
+    "href": "resource/markdown.html#footnotes",
+    "title": "Using Markdown",
+    "section": "Footnotes",
+    "text": "Footnotes\nThere are two different ways to add footnotes (see here for complete documentation): regular and inline.\nRegular notes need (1) an identifier and (2) the actual note. The identifier can be whatever you want. Some people like to use numbers like [^1], but if you ever rearrange paragraphs or add notes before #1, the numbering will be wrong (in your Markdown file, not in the output; everything will be correct in the output). Because of that, I prefer to use some sort of text label:\nType…\nHere is a footnote reference[^1] and here is another [^note-on-dags].\n\n[^1]: This is a note.\n\n[^note-on-dags]: DAGs are neat.\n\nAnd here's more of the document.\n…to get…\n\nHere is a footnote reference1 and here is another.2\nAnd here’s more of the document.\n\n\n\n\n\nThis is a note.↩︎\n\n\n\n\nDAGs are neat.↩︎\n\n\n\n\n\n\nYou can also use inline footnotes with ^[Text of the note goes here], which are often easier because you don’t need to worry about identifiers:\nType…\nCausal inference is neat.^[But it can be hard too!]\n…to get…\n\nCausal inference is neat.1\n\n\n\n\n\nBut it can be hard too!↩︎",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html#front-matter",
+    "href": "resource/markdown.html#front-matter",
+    "title": "Using Markdown",
+    "section": "Front matter",
+    "text": "Front matter\nYou can include a special section at the top of a Markdown document that contains metadata (or data about your document) like the title, date, author, etc. This section uses a special simple syntax named YAML (or “YAML Ain’t Markup Language”) that follows this basic outline: setting: value for setting. Here’s an example YAML metadata section. Note that it must start and end with three dashes (---).\n---\ntitle: Title of your document\ndate: \"January 13, 2020\"\nauthor: \"Your name\"\n---\nYou can put the values inside quotes (like the date and name in the example above), or you can leave them outside of quotes (like the title in the example above). I typically use quotes just to be safe—if the value you’re using has a colon (:) in it, it’ll confuse Markdown since it’ll be something like title: My cool title: a subtitle, which has two colons. It’s better to do this:\n---\ntitle: \"My cool title: a subtitle\"\n---\nIf you want to use quotes inside one of the values (e.g. your document is An evaluation of \"scare quotes\"), you can use single quotes instead:\n---\ntitle: 'An evaluation of \"scare quotes\"'\n---",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html#citations",
+    "href": "resource/markdown.html#citations",
+    "title": "Using Markdown",
+    "section": "Citations",
+    "text": "Citations\nSSC442 and EC420, you won’t use this part\nOne of the most powerful features of Markdown + pandoc is the ability to automatically cite things and generate bibliographies. to use citations, you need to create a BibTeX file (ends in .bib) that contains a database of the things you want to cite. You can do this with bibliography managers designed to work with BibTeX directly (like BibDesk on macOS), or you can use Zotero (macOS and Windows) to export a .bib file. You can download an example .bib file of all the readings from this class here.\nComplete details for using citations can be found here. In brief, you need to do three things:\n\nAdd a bibliography: entry to the YAML metadata:\n---\ntitle: Title of your document\ndate: \"January 13, 2020\"\nauthor: \"Your name\"\nbibliography: name_of_file.bib\n---\nChoose a citation style based on a CSL file. The default is Chicago author-date, but you can choose from 2,000+ at this repository. Download the CSL file, put it in your project folder, and add an entry to the YAML metadata (or provide a URL to the online version):\n---\ntitle: Title of your document\ndate: \"January 13, 2020\"\nauthor: \"Your name\"\nbibliography: name_of_file.bib\ncsl: \"https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl\"\n---\nSome of the most common CSLs are:\n\nChicago author-date\nChicago note-bibliography\nChicago full note-bibliography (no shortened notes or ibids)\nAPA 7th edition\nMLA 8th edition\n\nCite things in your document. Check the documentation for full details of how to do this. Essentially, you use @citationkey inside square brackets ([]):\n\n\n\n\n\n\n\nType…\n…to get…\n\n\n\n\nCausal inference is neat [@Rohrer:2018; @AngristPischke:2015].\nCausal inference is neat (Rohrer 2018; Angrist and Pischke 2015).\n\n\nCausal inference is neat [see @Rohrer:2018, p. 34; also @AngristPischke:2015, chapter 1].\nCausal inference is neat (see Rohrer 2018, 34; also Angrist and Pischke 2015, chap. 1).\n\n\nAngrist and Pischke say causal inference is neat [-@AngristPischke:2015; see also @Rohrer:2018].\nAngrist and Pischke say causal inference is neat (2015; see also Rohrer 2018).\n\n\n@AngristPischke:2015 [chapter 1] say causal inference is neat, and @Rohrer:2018 agrees.\nAngrist and Pischke (2015, chap. 1) say causal inference is neat, and Rohrer (2018) agrees.\n\n\n\nAfter compiling, you should have a perfectly formatted bibliography added to the end of your document too:\n\nAngrist, Joshua D., and Jörn-Steffen Pischke. 2015. Mastering ’Metrics: The Path from Cause to Effect. Princeton, NJ: Princeton University Press.\nRohrer, Julia M. 2018. “Thinking Clearly About Correlations and Causation: Graphical Causal Models for Observational Data.” Advances in Methods and Practices in Psychological Science 1 (1): 27–42. https://doi.org/10.1177/2515245917745629.",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "resource/markdown.html#other-references",
+    "href": "resource/markdown.html#other-references",
+    "title": "Using Markdown",
+    "section": "Other references",
+    "text": "Other references\nThese websites have additional details and examples and practice tools:\n\nCommonMark’s Markdown tutorial: A quick interactive Markdown tutorial.\nMarkdown tutorial: Another interactive tutorial to practice using Markdown.\nMarkdown cheatsheet: Useful one-page reminder of Markdown syntax.\nThe Plain Person’s Guide to Plain Text Social Science: A comprehensive explanation and tutorial about why you should write data-based reports in Markdown.",
+    "crumbs": [
+      "Syllabus",
+      "Markdown",
+      "Using Markdown"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "\n            Social Science Data Analytics\n        ",
+    "section": "",
+    "text": "Social Science Data Analytics\n        \n        \n            EC242 - Fall 2024\n        \n        \n            Tu/Th 1:20 - 2:40pmNatSci 116Michigan State UniversityDepartment of Economics\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\n\n\nInstructor\n\n Justin Kirkpatrick\n Old Botany 105 (off W. Circle Ave)\n jkirk@msu.edu\n Slack\n\n\n\nCourse details\n\n Tu/Th 1:20 - 2:40pm\n NatSci 116\n\n\n\nContacting me\nFor individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
+  },
+  {
     "objectID": "assignment/02-assignment.html",
     "href": "assignment/02-assignment.html",
     "title": "2: Visualization with ggplot",
@@ -966,379 +1342,42 @@
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "\n            Social Science Data Analytics\n        ",
+    "objectID": "assignment/06-assignment.html",
+    "href": "assignment/06-assignment.html",
+    "title": "6: Correlations and Simple Linear Models",
     "section": "",
-    "text": "Social Science Data Analytics\n        \n        \n            EC242 - Fall 2024\n        \n        \n            Tu/Th 1:20 - 2:40pmNatSci 116Michigan State UniversityDepartment of Economics\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\n\n\nInstructor\n\n Justin Kirkpatrick\n Old Botany 105 (off W. Circle Ave)\n jkirk@msu.edu\n Slack\n\n\n\nCourse details\n\n Tu/Th 1:20 - 2:40pm\n NatSci 116\n\n\n\nContacting me\nFor individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
-  },
-  {
-    "objectID": "resource/markdown.html",
-    "href": "resource/markdown.html",
-    "title": "Using Markdown",
-    "section": "",
-    "text": "Markdown is a special kind of markup language that lets you format text with simple syntax. You can then use a converter program like pandoc to convert Markdown into whatever format you want: HTML, PDF, Word, PowerPoint, etc. (see the full list of output types here)",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/markdown.html#basic-markdown-formatting",
-    "href": "resource/markdown.html#basic-markdown-formatting",
-    "title": "Using Markdown",
-    "section": "Basic Markdown formatting",
-    "text": "Basic Markdown formatting\n\n\n\n              Type…\n    …or…\n            …to get\n\n\n\n\nSome text in a paragraph.\n\nMore text in the next paragraph. Always\nuse empty lines between paragraphs.\n\nSome text in a paragraph.\nMore text in the next paragraph. Always use empty lines between paragraphs.\n\n\n*Italic*\n_Italic_\nItalic\n\n\n**Bold**\n__Bold__\nBold\n\n\n# Heading 1\n\n\nHeading 1\n\n\n\n## Heading 2\n\n\nHeading 2\n\n\n\n### Heading 3\n\n\nHeading 3\n\n\n\n(Go up to heading level 6 with ######)\n\n\n\n\n[Link text](http://www.example.com)\n\nLink text\n\n\n![Image caption](/path/to/image.png)\n\n |\n\n\n`Inline code` with backticks\n\nInline code with backticks\n\n\n&gt; Blockquote\n\n\nBlockquote\n\n\n\n- Things in\n- an unordered\n- list\n* Things in\n* an unordered\n* list\n\nThings in\nan unordered\nlist\n\n\n\n1. Things in\n2. an ordered\n3. list\n1) Things in\n2) an ordered\n3) list\n\nThings in\nan ordered\nlist\n\n\n\nHorizontal line\n\n---\nHorizontal line\n\n***\nHorizontal line",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/markdown.html#math",
-    "href": "resource/markdown.html#math",
-    "title": "Using Markdown",
-    "section": "Math",
-    "text": "Math\nMarkdown uses LaTeX to create fancy mathematical equations. This is useful for things as simple as making a \\(\\beta\\), or for writing out long, complex equations. In fact, Markdown does not like, and will error out on, “unicode” characters like the version of \\(\\beta\\) you get by using the text symbols. Needless to say, don’t do that – use LaTeX.\nIn LaTeX, there are like a billion little options and features available for math equations—you can find helpful examples of the the most common basic commands here, but the basic usage is easy.\nYou can use math in two different ways: inline or in a display block. To use math inline, wrap it in single dollar signs, like $y = mx + b$:\n\n\n\n\n\n\n\n                            Type…\n                        …to get\n\n\n\n\nBased on the DAG, the regression model for\nestimating the effect of education on wages\nis $\\hat{y} = \\beta_0 + \\beta_1 x_1 + \\epsilon$, or\n$\\text{Wages} = \\beta_0 + \\beta_1 \\text{Education} + \\epsilon$.\nBased on the DAG, the regression model for estimating the effect of education on wages is \\(\\hat{y} = \\beta_0 + \\beta_1 x_1 + \\epsilon\\), or \\(\\text{Wages} = \\beta_0 + \\beta_1 \\text{Education} + \\epsilon\\).\n\n\n\nTo put an equation on its own line in a display block, wrap it in double dollar signs, like this:\nType…\nThe quadratic equation was an important part of high school math:\n\n$$\nx = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\n$$\n\nBut now we just use computers to solve for $x$.\n…to get…\n\nThe quadratic equation was an important part of high school math:\n\\[\nx = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\n\\]\nBut now we just use computers to solve for \\(x\\).\n\n\nBecause dollar signs are used to indicate math equations, you can’t just use dollar signs like normal if you’re writing about actual dollars. For instance, if you write This book costs $5.75 and this other costs $40, Markdown will treat everything that comes between the dollar signs as math, like so: “This book costs $5.75 and this other costs $40”.\nTo get around that, put a backslash (\\) in front of the dollar signs, so that This book costs \\$5.75 and this other costs \\$40 becomes “This book costs $5.75 and this other costs $40”.",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/markdown.html#superscripts-and-subscripts",
-    "href": "resource/markdown.html#superscripts-and-subscripts",
-    "title": "Using Markdown",
-    "section": "Superscripts and Subscripts",
-    "text": "Superscripts and Subscripts\nSubscripts and superscripts are used often in this class. They are made by adding _{sub} or ^{super}. See the \\beta_0 in the table above, which made a nice \\(\\beta_{0}\\). If you have only one character or number, you don’t need to use the {}. That is beta_i,j will give \\(\\beta_i,j\\), and beta_{i,j} will give \\(\\beta_{i,j}\\).",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/markdown.html#tables",
-    "href": "resource/markdown.html#tables",
-    "title": "Using Markdown",
-    "section": "Tables",
-    "text": "Tables\nThere are 4 different ways to hand-create tables in Markdown—I say “hand-create” because it’s normally way easier to use R to generate these things with packages like pander (use pandoc.table()) or knitr (use kable()). The two most common are simple tables and pipe tables. You should look at the full documentation here.\nFor simple tables, type…\n  Right     Left     Center     Default\n-------     ------ ----------   -------\n     12     12        12            12\n    123     123       123          123\n      1     1          1             1\n\nTable: Caption goes here\n…to get…\n\nCaption goes here\n\n\nRight\nLeft\nCenter\nDefault\n\n\n\n\n12\n12\n12\n12\n\n\n123\n123\n123\n123\n\n\n1\n1\n1\n1\n\n\n\nFor pipe tables, type…\n| Right | Left | Default | Center |\n|------:|:-----|---------|:------:|\n|   12  |  12  |    12   |    12  |\n|  123  |  123 |   123   |   123  |\n|    1  |    1 |     1   |     1  |\n\nTable: Caption goes here\n…to get…\n\nCaption goes here\n\n\nRight\nLeft\nDefault\nCenter\n\n\n\n\n12\n12\n12\n12\n\n\n123\n123\n123\n123\n\n\n1\n1\n1\n1",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/markdown.html#footnotes",
-    "href": "resource/markdown.html#footnotes",
-    "title": "Using Markdown",
-    "section": "Footnotes",
-    "text": "Footnotes\nThere are two different ways to add footnotes (see here for complete documentation): regular and inline.\nRegular notes need (1) an identifier and (2) the actual note. The identifier can be whatever you want. Some people like to use numbers like [^1], but if you ever rearrange paragraphs or add notes before #1, the numbering will be wrong (in your Markdown file, not in the output; everything will be correct in the output). Because of that, I prefer to use some sort of text label:\nType…\nHere is a footnote reference[^1] and here is another [^note-on-dags].\n\n[^1]: This is a note.\n\n[^note-on-dags]: DAGs are neat.\n\nAnd here's more of the document.\n…to get…\n\nHere is a footnote reference1 and here is another.2\nAnd here’s more of the document.\n\n\n\n\n\nThis is a note.↩︎\n\n\n\n\nDAGs are neat.↩︎\n\n\n\n\n\n\nYou can also use inline footnotes with ^[Text of the note goes here], which are often easier because you don’t need to worry about identifiers:\nType…\nCausal inference is neat.^[But it can be hard too!]\n…to get…\n\nCausal inference is neat.1\n\n\n\n\n\nBut it can be hard too!↩︎",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/markdown.html#front-matter",
-    "href": "resource/markdown.html#front-matter",
-    "title": "Using Markdown",
-    "section": "Front matter",
-    "text": "Front matter\nYou can include a special section at the top of a Markdown document that contains metadata (or data about your document) like the title, date, author, etc. This section uses a special simple syntax named YAML (or “YAML Ain’t Markup Language”) that follows this basic outline: setting: value for setting. Here’s an example YAML metadata section. Note that it must start and end with three dashes (---).\n---\ntitle: Title of your document\ndate: \"January 13, 2020\"\nauthor: \"Your name\"\n---\nYou can put the values inside quotes (like the date and name in the example above), or you can leave them outside of quotes (like the title in the example above). I typically use quotes just to be safe—if the value you’re using has a colon (:) in it, it’ll confuse Markdown since it’ll be something like title: My cool title: a subtitle, which has two colons. It’s better to do this:\n---\ntitle: \"My cool title: a subtitle\"\n---\nIf you want to use quotes inside one of the values (e.g. your document is An evaluation of \"scare quotes\"), you can use single quotes instead:\n---\ntitle: 'An evaluation of \"scare quotes\"'\n---",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/markdown.html#citations",
-    "href": "resource/markdown.html#citations",
-    "title": "Using Markdown",
-    "section": "Citations",
-    "text": "Citations\nSSC442 and EC420, you won’t use this part\nOne of the most powerful features of Markdown + pandoc is the ability to automatically cite things and generate bibliographies. to use citations, you need to create a BibTeX file (ends in .bib) that contains a database of the things you want to cite. You can do this with bibliography managers designed to work with BibTeX directly (like BibDesk on macOS), or you can use Zotero (macOS and Windows) to export a .bib file. You can download an example .bib file of all the readings from this class here.\nComplete details for using citations can be found here. In brief, you need to do three things:\n\nAdd a bibliography: entry to the YAML metadata:\n---\ntitle: Title of your document\ndate: \"January 13, 2020\"\nauthor: \"Your name\"\nbibliography: name_of_file.bib\n---\nChoose a citation style based on a CSL file. The default is Chicago author-date, but you can choose from 2,000+ at this repository. Download the CSL file, put it in your project folder, and add an entry to the YAML metadata (or provide a URL to the online version):\n---\ntitle: Title of your document\ndate: \"January 13, 2020\"\nauthor: \"Your name\"\nbibliography: name_of_file.bib\ncsl: \"https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl\"\n---\nSome of the most common CSLs are:\n\nChicago author-date\nChicago note-bibliography\nChicago full note-bibliography (no shortened notes or ibids)\nAPA 7th edition\nMLA 8th edition\n\nCite things in your document. Check the documentation for full details of how to do this. Essentially, you use @citationkey inside square brackets ([]):\n\n\n\n\n\n\n\nType…\n…to get…\n\n\n\n\nCausal inference is neat [@Rohrer:2018; @AngristPischke:2015].\nCausal inference is neat (Rohrer 2018; Angrist and Pischke 2015).\n\n\nCausal inference is neat [see @Rohrer:2018, p. 34; also @AngristPischke:2015, chapter 1].\nCausal inference is neat (see Rohrer 2018, 34; also Angrist and Pischke 2015, chap. 1).\n\n\nAngrist and Pischke say causal inference is neat [-@AngristPischke:2015; see also @Rohrer:2018].\nAngrist and Pischke say causal inference is neat (2015; see also Rohrer 2018).\n\n\n@AngristPischke:2015 [chapter 1] say causal inference is neat, and @Rohrer:2018 agrees.\nAngrist and Pischke (2015, chap. 1) say causal inference is neat, and Rohrer (2018) agrees.\n\n\n\nAfter compiling, you should have a perfectly formatted bibliography added to the end of your document too:\n\nAngrist, Joshua D., and Jörn-Steffen Pischke. 2015. Mastering ’Metrics: The Path from Cause to Effect. Princeton, NJ: Princeton University Press.\nRohrer, Julia M. 2018. “Thinking Clearly About Correlations and Causation: Graphical Causal Models for Observational Data.” Advances in Methods and Practices in Psychological Science 1 (1): 27–42. https://doi.org/10.1177/2515245917745629.",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/markdown.html#other-references",
-    "href": "resource/markdown.html#other-references",
-    "title": "Using Markdown",
-    "section": "Other references",
-    "text": "Other references\nThese websites have additional details and examples and practice tools:\n\nCommonMark’s Markdown tutorial: A quick interactive Markdown tutorial.\nMarkdown tutorial: Another interactive tutorial to practice using Markdown.\nMarkdown cheatsheet: Useful one-page reminder of Markdown syntax.\nThe Plain Person’s Guide to Plain Text Social Science: A comprehensive explanation and tutorial about why you should write data-based reports in Markdown.",
-    "crumbs": [
-      "Syllabus",
-      "Markdown",
-      "Using Markdown"
-    ]
-  },
-  {
-    "objectID": "resource/design.html",
-    "href": "resource/design.html",
-    "title": "Design",
-    "section": "",
-    "text": "Vischeck: Simulate how your images look for people with different forms of colorblindness (web-based)\nColor Oracle: Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Design"
-    ]
-  },
-  {
-    "objectID": "resource/design.html#accessibility",
-    "href": "resource/design.html#accessibility",
-    "title": "Design",
-    "section": "",
-    "text": "Vischeck: Simulate how your images look for people with different forms of colorblindness (web-based)\nColor Oracle: Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Design"
-    ]
-  },
-  {
-    "objectID": "resource/design.html#colors",
-    "href": "resource/design.html#colors",
-    "title": "Design",
-    "section": "Colors",
-    "text": "Colors\n\nAdobe Color: Create, share, and explore rule-based and custom color palettes.\nColourLovers: Like Facebook for color palettes.\nviridis: Percetually uniform color scales.\nScientific Colour-Maps: Perceptually uniform color scales like viridis. Use them in R with scico.\nColorBrewer: Sequential, diverging, and qualitative color palettes that take accessibility into account.\nColorgorical: Create color palettes based on fancy mathematical rules for perceptual distance.\nColorpicker for data: More fancy mathematical rules for color palettes (explanation).\niWantHue: Yet another perceptual distance-based color palette builder.\nPhotochrome: Word-based color pallettes.\nPolicyViz Design Color Tools: Large collection of useful color resources",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Design"
-    ]
-  },
-  {
-    "objectID": "resource/design.html#fonts",
-    "href": "resource/design.html#fonts",
-    "title": "Design",
-    "section": "Fonts",
-    "text": "Fonts\n\nGoogle Fonts: Huge collection of free, well-made fonts.\nThe Ultimate Collection of Google Font Pairings: A list of great, well-designed font pairings from all those fonts hosted by Google (for when you’re looking for good contrasting or complementary fonts).",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Design"
-    ]
-  },
-  {
-    "objectID": "resource/design.html#graphic-assets",
-    "href": "resource/design.html#graphic-assets",
-    "title": "Design",
-    "section": "Graphic assets",
-    "text": "Graphic assets\n\nImages\n\nUse the Creative Commons filters on Google Images or Flickr\nUnsplash\nPexels\nPixabay\nStockSnap.io\nBurst\nfreephotos.cc\n\n\n\nVectors\n\nNoun Project: Thousands of free simple vector images\naiconica: 1,000+ vector icons\nVecteezy: Thousands of free vector images\n\n\n\nVectors, photos, videos, and other assets\n\nStockio",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Design"
-    ]
-  },
-  {
-    "objectID": "content/index.html",
-    "href": "content/index.html",
-    "title": "Course Content",
-    "section": "",
-    "text": "Each week has two sets of required readings (pages in the sidebar) that you should complete before coming to lecture. Read the first before our first meeting of the week, and read the second before the second meetings. That is, you should complete the first reading, attend Tuesday class, then do the associated exercises contained within the reading, and read the second reading before Thursday. You will be working each week’s lab between Thursday afternoon and Monday at 11:59 PM (when the labs are due). Don’t forget your weekly writing in between, due Saturday at 11:59pm.\nThe course content is structured as follows. For each topic, we begin with a set of questions that might guide your reading and help frame your thoughts. These questions can serve as helpful starting places for your thinking; they are not representative of the totality of the content and are not intended to be limiting. You should not try to respond to all of these (or any of them if you don’t want to)—they’ll just help you know what to look for and think about as you read. The first reading is generally a “principles” reading, discussing the concepts for the week. The second is generally an “applications” reading, meant to give concrete examples and code. This isn’t always the case, but holds in general.",
-    "crumbs": [
-      "Syllabus",
-      "Course Content"
-    ]
-  },
-  {
-    "objectID": "content/index.html#content-navigation",
-    "href": "content/index.html#content-navigation",
-    "title": "Course Content",
-    "section": "Content navigation",
-    "text": "Content navigation\nUse the links on the sidebar to navigate between required reading. Readings are ordered by week, and within each week, by order of the class meetings.",
-    "crumbs": [
-      "Syllabus",
-      "Course Content"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html",
-    "href": "assignment/index.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "This course is the capstone of the Data Analytics Minor in the College of Social Science. Accordingly, you should—fingers crossed—enjoy data analysis. You will get the most of out this class if you:\nAssignments consist of Weekly Writings and Lab Assignments. Each type of assignment in this class helps with one of these strategies. Weekly writings engage with the materials, and lab assignments engage directly with R. The assignments are described below.\nTo get started, download and save the following files (right-click to Save Link As…)",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html#weekly-writings",
-    "href": "assignment/index.html#weekly-writings",
-    "title": "Assignments",
-    "section": "Weekly Writings",
-    "text": "Weekly Writings\nTo encourage you to actively engage with the course content, you will write a ≈150 word memorandum about the reading or lecture each week. That’s fairly short: there are ≈250 words on a typical double-spaced page. You must complete eleven of these in the course. I will drop your one lowest weekly writing score. Your actual prompt will be assigned in class, so you must login each day to ensure you get these assignments. To keep you on your toes, we will vary whether these are assigned on Tuesdays or Thursdays. Each week’s weekly writing will be due on D2L by 11:59pm on Saturday\nYou can do a lot of different things with this memo: discuss something you learned from the course content, write about the best or worst data visualization you saw recently, connect the course content to your own work, etc. These reflections let you explore and answer some of the key questions of this course, including:\n\nWhen is a link correlational vs causal? How can we still make useful statements about non-causal things?\nWhy do we visualize data?\nWhat makes a great data analysis? What makes a bad analysis?\nHow do you choose which kind of analysis method to use?\nWhat is the role of the data structure in choosing an analysis? Can we be flexible?\n\nThe course content for each day will also include a set of questions specific to that topic. You do not have to answer all (or any) of these questions. That would be impossible. They exist to guide your thinking and to make complex reading more digestible. The specific topic for each week will be assigned in class. (We can’t emphasize this enough.)\nThe TA will grade these mini-exercises using a very simple system:\n\n✔+: (9.2 points (115%) in gradebook) Work shows phenomenal thought and engagement with the course content. We will not assign these often.\n✔: (8 points (100%) in gradebook) Work is thoughtful, well-written, and shows engagement with the course content. This is the expected level of performance.\n✔−: (4 points (50%) in gradebook) Work is hastily composed, too short, and/or only cursorily engages with the course content. This grade signals that you need to improve next time. I will hopefully not assign these often.\n\n(There is an implicit 0 above for work that is not turned in by Saturday at 11:59pm). Notice that this is essentially a pass/fail or completion-based system. We’re not grading your writing ability; we’re not counting the exact number of words you’re writing; and we’re not looking for encyclopedic citations of every single reading to prove that you did indeed read everything. We are looking for thoughtful engagement. Read the material, engage with the work and you’ll get a ✓.\n\nWeekly Writing Template\nYou will turn these reflections in via D2L. You will write them using R Markdown and this template  Weekly writing template. You must knit your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc.",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html#lab-assignments",
-    "href": "assignment/index.html#lab-assignments",
-    "title": "Assignments",
-    "section": "Lab Assignments",
-    "text": "Lab Assignments\nEach week of the course has examples of code that teach and demonstrate how to do specific tasks in R. However, without practicing these principles and making graphics on your own, you won’t remember what you learn.\nPlease do not do labs more than one week ahead of time. I am updating the assignments as the semester proceeds, and you may do an entire assignment that is completely changed.\nFor example, to practice working with ggplot2 and making data-based graphics, you will complete a brief set of exercises over a few class sessions. These exercises will have 1–3 short tasks that are directly related to the topic for the week. You need to show that you made a good faith effort to work each question. There will also be a final question which requires significantly more thought and work. This will be where you get to show some creativity and stretch your abilities. Overall, labs will be graded the same check system:\n\n✔+: (17.5 points (115%) in gradebook) Exercises are complete. Every task was attempted and answered, and most answers are correct. Knitted document is clean and easy to follow. Work on the final problem shows creativity or is otherwise exceptional. We will not assign these often.\n✔: (15 points (100%) in gradebook) Exercises are complete and most answers are correct. This is the expected level of performance.\n✔−: (7.5 points (50%) in gradebook) Exercises are less than 70% complete and/or most answers are incorrect. This indicates that you need to improve next time. We will hopefully not assign these often, but subpar work can expect a ✔−.\n\nThere is an implicit 0 for any assignment not turned in on time. If you have only partial work, then turn that in for partial credit. As noted in the syllabus, we are not grading your coding ability. We are not checking each line of code to make sure it produces some exact final figure, and we do not expect perfection. Also note that a ✓ does not require 100% success. You will sometimes get stuck with weird errors that you can’t solve, or the demands of pandemic living might occasionally become overwhelming. We are looking for good faith effort. Try hard, engage with the task, and you’ll get a ✓.\nYou may work together on the labs, but you must turn in your own answers.\n\nLab Template\nYou will turn these labs in via D2L. You will write them using R Markdown and this  Lab assignment template. You must knit your work to a PDF document (this will be what you turn in). Your output must be rendered in latex. I do not accept rendering to HTML or Word and then converting to PDF and unrendered .rmd files are not allowed.",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html#projects",
-    "href": "assignment/index.html#projects",
-    "title": "Assignments",
-    "section": "Projects",
-    "text": "Projects\nTo give you practice with the data and design principles you’ll learn in this class, you will complete two projects en route to the overarching final project of the course. Both these mini projects and the final project must be completed in groups. I will assign groups after the drop deadline passes. Groups will be 2-3 people. You are allowed to form your own groups, but I will assign groups. More details will follow later.\nThe two (mini) projects are checkpoints to ensure you’re working on your project seriously. They will be graded using a check system:\n\n✔+: (55 points (≈115%) in gradebook) Project is phenomenally well-designed and uses advanced R techniques. The project uncovers an important story that is not readily apparent from just looking at the raw data. I will not assign these often.\n✔: (50 points (100%) in gradebook) Project is fine, follows most design principles, answers a question from the data, and uses R correctly. This is the expected level of performance.\n✔−: (25 points (50%) in gradebook) Project is missing large components, is poorly designed, does not answer a relevant question, and/or uses R incorrectly. This indicates that you need to improve next time. I will hopefully not assign these often.\n\nBecause these mini projects give you practice for the final project, we will provide you with substantial feedback on your design and code.",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html#final-project",
-    "href": "assignment/index.html#final-project",
-    "title": "Assignments",
-    "section": "Final project",
-    "text": "Final project\nAt the end of the course, you will demonstrate your skills by completing a final project. Complete details for the final project (including past examples of excellent projects) are here. In brief, the final project has the following elements:\n\nYou must find existing data to analyze.1 Aggregating data from multiple sources is encouraged, but is not required.\n\n\nYou must visualize (at least) three interesting features of that data. Visualizations should aid the reader in understanding something about the data that might not be readily aparent.2\n\n\nYou must come up with some analysis—using tools from the course—which relates your data to either a prediction or a policy conclusion. For example, if you collected data from Major League Baseball games, you could try to “predict” whether a left-hander was pitching based solely on the outcomes of the batsmen.3\n\n\nYou must write your analysis as if presenting to a C-suite executive. If you are not familiar with this terminology, the C-suite includes, e.g., the CEO, CFO, and COO of a given company. Generally speaking, such executives are not particularly analytically oriented, and therefore your explanations need to be clear, consise (their time is valuable) and contain actionable (or valuable) information.\n\nThere is no final exam. This project is your final exam.\nThe project will not be graded using a check system, and will be graded by me (the main instructor, not a TA). I will evaluate the following four elements of your project:\n\nTechnical skills: Was the project easy? Does it showcase mastery of data analysis?\nVisual design: Was the information smartly conveyed and usable? Was it beautiful?\nAnalytic design: Was the analysis appropriate? Was it sensible, given the dataset?\nStory: Did we learn something?\n\nIf you’ve engaged with the course content and completed the exercises and mini projects throughout the course, you should do just fine with the final project.",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html#footnotes",
-    "href": "assignment/index.html#footnotes",
-    "title": "Assignments",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nNote that existing is taken to mean that you are not permitted to collect data by interacting with other people. That is not to say that you cannot gather data that previously has not been gathered into a single place—this sort of exercise is encouraged.↩︎\nPie charts of any kind will result in a 25% grade deduction.↩︎\nThis is an extremely dumb idea for a number of reasons. Moreover, it’s worth mentioning that sports data, while rich, can be overwhelming due to its sheer magnitude and the variety of approaches that can be applied. Use with caution.↩︎",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "resource/data.html",
-    "href": "resource/data.html",
-    "title": "Data",
-    "section": "",
-    "text": "There are a ton of places to find data related to public policy and administration (as well as data on pretty much any topic you want) online:\n\nData is Plural newsletter: Jeremy Singer-Vine sends a weekly newsletter of the most interesting public datasets he’s found. You should subscribe to it. He also has an archive of all the datasets he’s highlighted.\nGoogle Dataset Search: Google indexes thousands of public datasets; search for them here.\nKaggle: Kaggle hosts machine learning competitions where people compete to create the fastest, most efficient, most predictive algorithms. A byproduct of these competitions is a host of fascinating datasets that are generally free and open to the public. See, for example, the European Soccer Database, the Salem Witchcraft Dataset or results from an Oreo flavors taste test. Note: when you are asked in an assignment or project to find data, Kaggle is not a valid source. You learn nothing about farming by getting fruit from the market. Similarly, you learn nothing about data analysis by getting pre-packaged data from Kaggle.\n360Giving: Dozens of British foundations follow a standard file format for sharing grant data and have made that data available online.\nUS City Open Data Census: More than 100 US cities have committed to sharing dozens of types of data, including data about crime, budgets, campaign finance, lobbying, transit, and zoning. This site from the Sunlight Foundation and Code for America collects this data and rates cities by how well they’re doing.\nPolitical science and economics datasets: There’s a wealth of data available for political science- and economics-related topics:\n\nFrançois Briatte’s extensive curated lists: Includes data from/about intergovernmental organizations (IGOs), nongovernmental organizations (NGOs), public opinion surveys, parliaments and legislatures, wars, human rights, elections, and municipalities.\nThomas Leeper’s list of political science datasets: Good short list of useful datasets, divided by type of data (country-level data, survey data, social media data, event data, text data, etc.).\nErik Gahner’s list of political science datasets: Huge list of useful datasets, divided by topic (governance, elections, policy, political elites, etc.)\n\nGeospatial datasets: For our geospatial unit, many entities (government agencies, etc.) post repositories of spatial data via arcgis.com, which is owned by ESRI, the company that makes the predominant commercial GIS software. The data owner decides what data to post and how to present it, but arcgis.com provides the hosting. R has excellent geospatial functionalities, so we cover (when time permits) geospatial data. It is easy to find geospatial data to import into R. Here are a few:\n\nState of Michigan Open Data Portal\nHomeland Infrastructure Foundation-Level Data (HIFLD)\nCity of East Lansing Data Viewer",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Data"
-    ]
-  },
-  {
-    "objectID": "resource/index.html",
-    "href": "resource/index.html",
-    "title": "Helpful resources",
-    "section": "",
-    "text": "In these reference pages, I’ve included some useful resources to help you in the course."
-  },
-  {
-    "objectID": "assignment/04-assignment.html",
-    "href": "assignment/04-assignment.html",
-    "title": "4: Visualizing Large(ish) Data",
-    "section": "",
-    "text": "Due Date\n\n\n\nThis assignment is due on Monday, September 23rd, 11:59pm\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.",
+    "text": "Due Date\n\n\n\nThis assignment is due on Monday, October 7th, 11:59pm\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.",
     "crumbs": [
       "Assignments",
       "Lab Assignments",
       "Assignments",
-      "4: Visualizing Large(ish) Data"
+      "6: Correlations and Simple Linear Models"
     ]
   },
   {
-    "objectID": "assignment/04-assignment.html#postscript-how-we-got-this-unemployment-data",
-    "href": "assignment/04-assignment.html#postscript-how-we-got-this-unemployment-data",
-    "title": "4: Visualizing Large(ish) Data",
-    "section": "Postscript: how we got this unemployment data",
-    "text": "Postscript: how we got this unemployment data\nFor the curious, here’s the code we used to download the unemployment data from the BLS.\nAnd to pull the curtain back and show how much googling is involved in data visualization (and data analysis and programming in general), here was my process for getting this data:\n\nWe thought “We want to have students show variation in something domestic over time” and then we googled “us data by state”. Nothing really came up (since it was an exceedingly vague search in the first place), but some results mentioned unemployment rates, so we figured that could be cool.\nWe googled “unemployment statistics by state over time” and found that the BLS keeps statistics on this. We clicked on the “Data Tools” link in their main navigation bar, clicked on “Unemployment”, and then clicked on the “Multi-screen data search” button for the Local Area Unemployment Statistics (LAUS).\nWe walked through the multiple screens and got excited that we’d be able to download all unemployment stats for all states for a ton of years, but then the final page had links to 51 individual Excel files, which was dumb.\nSo we went back to Google and searched for “download bls data r” and found a few different packages people have written to do this. The first one we clicked on was blscrapeR at GitHub, and it looked like it had been updated recently, so we went with it.\nWe followed the examples in the blscrapeR package and downloaded data for every state.\n\nAnother day in the life of doing modern data science. This is an example of something you will be able to do by the end of this class. we had no idea people had written R packages to access BLS data, but there are (at least) 3 packages out there. After a few minutes of tinkering, we got it working and it is relatively straightforward.",
+    "objectID": "assignment/06-assignment.html#backstory-and-set-up",
+    "href": "assignment/06-assignment.html#backstory-and-set-up",
+    "title": "6: Correlations and Simple Linear Models",
+    "section": "Backstory and Set Up",
+    "text": "Backstory and Set Up\nYou have been recently hired to Zillow’s Zestimate product team as a junior analyst. As a part of their regular hazing, they have given you access to a small subset of their historic sales data. Your job is to present some basic predictions for housing values in a small geographic area (Ames, IA) using this historical pricing.\nFirst, let’s load the data.\n\nameslist  &lt;- read.csv('https://ec242.netlify.app/data/ames.csv',\n                      stringsAsFactors = FALSE)\n\nBefore we proceed, let’s note one thing about the (simple) code above. We specify an argument to read.csv called stringsAsFactors. By default, read.csv (the base CSV reading function, which is different from read_csv, the tidyverse CSV function) turns anything that is a character vector into a factor variable. That’s great if you’re importing things like state abbreviations. That’s not helpful if you’re importing character strings that don’t have any repitition (e.g. names), or character strings that really should be numeric. We’ll handle our character strings our selves, thankyouverymuch.\n\nData Exploration and Processing\nWe are not going to tell you anything about this data. This is intended to replicate a real-world experience that you will all encounter in the (possibly near) future: someone hands you data and you’re expected to make sense of it. Fortunately for us, this data is (somewhat) self-contained. We’ll first check the variable names to try to divine some information. Recall, we have a handy little function for that:\n\nnames(ameslist)\n\nNote that, when doing data exploration, we will sometimes choose to not save our output. This is a judgement call; here we’ve chosen to merely inspect the variables rather than diving in.\nInspection yields some obvious truths. For example:\n\n\n\nVariable\nExplanation\nType\n\n\n\n\nID\nUnique identifier for each row\nint\n\n\nLotArea\nSize of lot (units unknown)\nint\n\n\nSalePrice\nSale price of house ($)\nint\n\n\n\n…but we face some not-so-obvious things as well. For example:\n\n\n\nVariable\nExplanation\nType\n\n\n\n\nLotShape\n? Something about the lot\nchr\n\n\nMSSubClass\n? No clue at all\nint\n\n\nCondition1\n? Seems like street info\nchr\n\n\n\nIt will be difficult to learn anything about the data that is of type int without outside documentation unless it refers to a count of something (e.g. bedrooms). However, we can learn something more about the chr-type variables. In order to understand these a little better, we need to review some of the values that each take on. We can use unique() to see the unique values it takes. Sometimes, it helps to see how often some value comes up if we’re trying to understand a variable’s meaning. One handy way of learning this is to use table() (which we’ve seen before) to get a count of the different values a variable can take. This dataset will have some pernicious NAs in it, so when you use table, add useNA = 'always' as an argument to ensure that we see counts of all values.\nTry it: Go through the variables in the dataset and make a note about your interpretation for each. Many will be obvious, but some require additional thought.\nAlthough there are some variables that would be difficult to clean, there are a few that we can address with relative ease. Consider, for instance, the variable GarageType. This might not be that important, but, remember, the weather in Ames, IA is pretty crummy—a detached garage might be a dealbreaker for some would-be homebuyers. Let’s inspect the values:\n\n&gt; unique(ameslist$GarageType)\n[1] Attchd  Detchd  BuiltIn CarPort &lt;NA&gt; Basment 2Types\n\nWith this, we could make an informed decision and create a new variable. Let’s create OutdoorGarage to indicate, say, homes that have any type of garage that requires the homeowner to walk outdoors after parking their car. (For those who aren’t familiar with different garage types, a car port is not insulated and is therefore considered outdoors. A detached garage presumably requires that the person walks outside after parking. The three other types are inside the main structure, and 2Types we can assume includes at least one attached garage of some sort).\n\n\n\n\n\n\nEXERCISE 1 of 5\n\n\n\n\nUse case_when to add a OutdoorGarage column to ameslist that takes the value of 1 when the house has an outdoor garage, and 0 otherwise. Make sure this is a numeric variable (type int). It’s up to you to take a stand on what to do with NA values. Are those outdoor? Indoors? Do we drop all NA values? You often have to decide what to do in cases like this using your knowledge of the context. Document your reasoning for how you handle NA values.\n\n\n\nGenerally speaking, this is a persistent issue, and you will spend an extraordinary amount of time dealing with missing data or data that does not encode a variable exactly as you want it. This is expecially true if you deal with real-world data: you will need to learn how to handle NAs. There are a number of fixes (as always, Google is your friend) and anything that works is good. But you should spend some time thinking about this and learning at least one approach.\nOur goal now is to learn something about correlates between home sale price and the rest of the data. Along the way, you may want to create more variables like OutdoorGarage – for now, make sure those variables are represented as 0 and 1. We’ll work with factor variables more later.\n\n\n\n\n\n\nEXERCISES 2-5\n\n\n\n\nPrune the data to 6-8 of the variables that are type = int about which you have some reasonable intuition for what they mean. Choose those that you believe are likely to be correlated with SalePrice. This must include the variable SalePrice and GrLivArea. Call this new dataset Ames. Produce documentation for this object in the form of a Markdown table or see further documentation here. This must describe each of the 6-8 preserved variables, the values it can take (e.g., can it be negative?) and your definition of the variable. Counting the variable name, this means your table should have three columns. Markdown tables are entered in the text body, not code chunks, of your .rmd, so your code creating Ames will be in a code chunk, and your table will be right after it.\nProduce a scatterplot matrix of the chosen variables1\nCompute a matrix of correlations between these variables using the function cor(). Do the correlations match your prior beliefs? Briefly discuss the correlation between the chosen variables and SalePrice and any correlations between these variables.\nProduce a scatterplot between SalePrice and GrLivArea. Run a linear model using lm() to explore the relationship. Finally, use the geom_abline() function to plot the relationship that you’ve found in the simple linear regression. You’ll need to extract the intercept and slope from your lm object. See coef(...) for information on this.2\n\nWhat is the largest outlier that is above the regression line? Produce the other information about this house.\n\n\n(Bonus) Create a visualization that shows the rise of air conditioning over time in homes in Ames.",
     "crumbs": [
       "Assignments",
       "Lab Assignments",
       "Assignments",
-      "4: Visualizing Large(ish) Data"
+      "6: Correlations and Simple Linear Models"
     ]
   },
   {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
-    "title": "Schedule",
-    "section": "",
-    "text": "Below is a roadmap for the semester. Note that this will inevitably change from the first day you access this course. However, whatever is listed below should be considered canon. Accordingly, you should visit this page frequently throughout the term.\nAs mentioned in the syllabus, the course is structured by topics; each week introduces a new topic. Moreover, every week is divided into four important sections that you should engage with: principles, applications, weekly writings, and assignments."
-  },
-  {
-    "objectID": "schedule.html#course-calendar",
-    "href": "schedule.html#course-calendar",
-    "title": "Schedule",
-    "section": " Course Calendar",
-    "text": "Course Calendar\n\n\n\n\n\nWeek\nDates\nProgramming Foundations\nPrinciples\nApplications\nAssignment\n\n\n\n\n1\nAug 27 & Aug 29\n(Re-)introduction to R\n\n\n\n\n\n2\nSep 3 & Sep 5\nProgramming basics, tidyverse, and visualization\n\n\n\n\n\n3\nSep 10 & Sep 12\nVisualization II\n\n\n\n\n\n4\nSep 17 & Sep 19\nVisualization III\n\n\n\n\n\n\n\nData Analysis Foundations\nPrinciples\nApplications\nAssignment\n\n\n5\nSep 24 & Sep 26\nUncertainty and Probability in R\n\n\n\n\n\n6\nOct 1 & Oct 3\nLinear Regression I\n\n\n\n\n\n7\nOct 8 & Oct 10\nLinear Regression II\n\n\n\n\n\n\nSat Oct 12th\nProject 1 Due\n\n\n\n\n\n8\nOct 15 & Oct 17\nLinear Regression III\n\n\n\n\n\n\n\nApplications of Data Analysis\nPrinciples\nApplications\nAssignment\n\n\n9\nOct 22& Oct 24\nLASSO: Least Absolute Shrinkage and Selection\n\n\n\n\n\n10\nOct 29 & Oct 31\nNonlinear Regression\n\n\n\n\n\n11\nNov 5 & Nov 7\nBias vs. Variance (No lab this week)\n\n\n\n\n\n12\nNov 12 & Nov 14\nClassification\n\n\n\n\n\n\nSat Nov 16\nProject 2 Due\n\n\n\n\n\n\n\nFurther Extensions\nPrinciples\nApplications\nAssignment\n\n\n13\nNov 19 & Nov 21\nText as Data\n\n\n\n\n\n14\nNov 26 &Nov 28\nWrangling Data\n\n\n\n\n\n15\nDec 3 & Dec 5\nGeospatial in R (Last lab)\n\n\n\n\n\n\n\nConclusions\nPrinciples\nApplications\nAssignment\n\n\n\nThurs Dec 12\nFinal Project Due"
-  },
-  {
-    "objectID": "groupproject/project1.html",
-    "href": "groupproject/project1.html",
-    "title": "Project 1",
-    "section": "",
-    "text": "Only one member of your group should turn in your project on D2L. The copy turned in must have each member’s name at the top.\nOne group member should turn in your project on D2L under “Project 1” no later than Saturday October 12th, 11:59pm",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html#part-1-rats-rats-rats.",
-    "href": "groupproject/project1.html#part-1-rats-rats-rats.",
-    "title": "Project 1",
-    "section": "Part 1: Rats, rats, rats.",
-    "text": "Part 1: Rats, rats, rats.\nNew York City is full of urban wildlife, and rats are one of the city’s most infamous animal mascots. Rats in NYC are plentiful, but they also deliver food, so they’re useful too.\n\nNYC keeps incredibly detailed data regarding animal sightings, including rats, and it makes this data publicly available.\nFor this first project, pretend that you are an analyst with the NYC Mayor’s office, and you have been tasked with getting a better understanding of the rat problem. Your job is to use R and ggplot2 to tell an interesting story hidden in the data. You must create a story by looking carefully at the data, finding some insight into where or when rat sightings occur, and describing to the Mayor how this insight may inform a strategy to address the rats. Your assignment will take the form of a professional memo that presents the data and insights along with appropriate visualizations that communicate the story in-line. Your memo should be approximately 2-4 pages (including plots) and, of course, will use Rmarkdown rendered to PDF using LaTeX.\n\nInstructions\nHere’s what you need to do:\n\nDownload New York City’s database of rat sightings since 2010:\n\n Rat_sightings.csv\n\nSummarize the data somehow. The raw data has more than 150,000 rows, which means you’ll need to aggregate the data (filter(), group_by(), and summarize() will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2024. Consider the meaning of variables you create – remember how the total numbers of murders in a state was mostly just a function of size, but that murder rate was a more useful variable. (Of course, I just gave you these ideas, so you’ll need to be a bit more creative than just doing exactly what I just said.)\nExplore the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use case_when() to add data that’s at a coarse level (year, borough, etc.), or merge() if you’re comfortable with it. Be create, but do so to further explore and analyze. Drill down on something you see in the data to tell a story. Remember, as analysts, we are looking for “patterns in the data” that are not easily written in closed form.\nCreate appropriate visualizations based on the data you summarized and explored. Pay attention to every detail - color choice, labels, axis text, etc. Use proper capitalization. Make sure everything lays out in your final product. This is not trivial - it will take you some time to get everything just right.\nWrite a polished, professional memo presenting your analysis to the Mayor. The memo should tell the story you found in the data. It should not narrarate your discovery process (e.g. it should not say “we tried looking at…and then ran ggplot(…))” but rather should weave your exploration into a narrarative driven by your graphics, with the text filling in the context. We are specifically looking for a discussion of the following:\n\nWhat story are you telling with your graphics?\nWhat new insight have you found?\nHow have you applied reasonable standards in visual storytelling?\nWhat policy implication is there (if any)?\n\nUpload the following outputs to D2L:\n\nA PDF file of your memo with your graphics embedded in it.1 This means you’ll need to do all your coding in an R Markdown file and embed your code in chunks.\nNote that Part 2 of this project should be included in this PDF in it’s own section (see below).\nNothing else. No .Rmd, no code, nothing but your clean, polished memo with Part 1 and Part 2.\n\n\nSome important notes on your assignment\n\nYour assignment should be clean and polished as if you were a city employee and you were turning in a work product. It should should flow nicely and use subsections (using ### at the start of the line) as appropriate.\nAgain, do not “annotate” your thought process (e.g. do not write “we tried X but there were too many NA’s, so we did Y instead”). This should be a polished memo suitable for turning in as a work product. Each graphic should guide the analysis towards the next.\nYour code should not appear in your output - it should be only your plots and memo writing.\n\nTo turn off code echoing, add echo = FALSE in each of your code chunk options (e.g. {r setup, echo = FALSE}), or set it globally in the first code chunk inside the knitr::opts_chunk$set function.\n\nMake sure you take a look at the Evaluation critera, below.\n\n\n\nStarter code\nI’ve provided some starter code below. A couple comments about it:\n\nBy default, read_csv() treats cells that are empty or “NA” as missing values. This rat dataset uses “N/A” to mark missing values, so we need to add that as a possible marker of missingness (hence na = c(\"\", \"NA\", \"N/A\"))\nTo make life easier, I’ve renamed some of the key variables you might work with. You can rename others if you want.\nI’ve also created a few date-related variables (sighting_year, sighting_month, sighting_day, and sighting_weekday). You don’t have to use them, but they’re there if you need them. The functions that create these, like year() and wday() are part of the lubridate library.\nThe date/time variables are formatted like 04/03/2017 12:00:00 AM, which R is not able to automatically parse as a date when reading the CSV file. You can use the mdy_hms() function in the lubridate library to parse dates that are structured as “month-day-year-hour-minute”. There are also a bunch of other iterations of this function, like ymd(), dmy(), etc., for other date formats.\nThere’s one row with an unspecified borough, so I filter that out.\n\n\nlibrary(tidyverse)\nlibrary(lubridate)\nrats_raw &lt;- read_csv(\"data/Rat_Sightings.csv\", na = c(\"\", \"NA\", \"N/A\"))\n# If you get an error that says \"All formats failed to parse. No formats\n# found\", it's because the mdy_hms function couldn't parse the date. The date\n# variable *should* be in this format: \"04/03/2017 12:00:00 AM\", but in some\n# rare instances, it might load without the seconds as \"04/03/2017 12:00 AM\".\n# If there are no seconds, use mdy_hm() instead of mdy_hms().\nrats_clean &lt;- rats_raw %&gt;%\n  rename(created_date = `Created Date`,\n         location_type = `Location Type`,\n         borough = Borough) %&gt;%\n  mutate(created_date = mdy_hms(created_date)) %&gt;%\n  mutate(sighting_year = year(created_date),\n         sighting_month = month(created_date),\n         sighting_day = day(created_date),\n         sighting_weekday = wday(created_date, label = TRUE, abbr = FALSE)) %&gt;%\n  filter(borough != \"Unspecified\")\n\nYou’ll summarize the data with functions from dplyr in the tidyverse, including stuff like count(), arrange(), filter(), group_by(), summarize(), and mutate(). As mentioned before, if you’re bringing in outside data (e.g. population of a borough), you can use case_when() to add it, or try using merge() and seek help at office hours if it’s not clear to you.",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html#part-2-data-hunting",
-    "href": "groupproject/project1.html#part-2-data-hunting",
-    "title": "Project 1",
-    "section": "Part 2: Data Hunting",
-    "text": "Part 2: Data Hunting\nFor the second part of the project, your task is simple. Your group must identify three different data sources2 for potential use in your final project. You are not bound to this decision.\nDo not use Kaggle data. While Kaggle is useful for learning data science, part of this assignment is learning how to find actual data in the wild. I give zero credit for data links to Kaggle data. You must find your data from the source.\nFor each dataset, you must write a single short paragraph about what about this data interests the group and what general questions one could answer with it. Add this to the memo from Part 1, using ## to make a new header in Rmarkdown for this section.",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html#evaluations",
-    "href": "groupproject/project1.html#evaluations",
-    "title": "Project 1",
-    "section": "Evaluations",
-    "text": "Evaluations\nI will only give top marks to those groups showing initiative and cleverness. I will use the following weights for final scores:\nPart 1\n\nTechnical difficulty: Does the final project show mastery of the R and ggplot skills we’ve discussed thus far? Did the underlying data analysis use and expand on the tools we learned in class? Full credit requires going beyond the basic tidyverse filtering / grouping / summarizing. (10 points)\nClarity / use of ggplot: Are all of the design elements property executed in the plots and memo. Are axes and legends appropriately labeled and are colorblind-friendly colors used? Does the plot display properly in the memo without any cut-off axes? Is everything properly spelled? (5 points)\nAppropriateness of visuals: Do the visualizations communicate the analysis? Does it use visual cues to show the analysis? (10 points)\nStorytelling: Does your memo clearly convey the analysis? Does it flow appropriately with the visuals? Does it include a policy recommendation? (10 points)\n\nPart 2\nEach piece of data and description is worth 5 points. (15 points total)",
-    "crumbs": [
-      "Assignments",
-      "Group Projects",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "groupproject/project1.html#footnotes",
-    "href": "groupproject/project1.html#footnotes",
-    "title": "Project 1",
+    "objectID": "assignment/06-assignment.html#footnotes",
+    "href": "assignment/06-assignment.html#footnotes",
+    "title": "6: Correlations and Simple Linear Models",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nYou can approach this in a couple different ways—you can write the memo and then include the full figure and code at the end, similar to this blog post, or you can write the memo in an incremental way, describing the analytical steps that each figure illuminates, ultimately arriving at a final figure, like this blog post.↩︎\nThe three different sources need not be different websites or from different organizations. For example, three different tables from the US Census would be sufficient↩︎",
+    "text": "Footnotes\n\n\nIf you are not familiar with this type of visualization, consult the book (Introduction to Statistical Learning), Chapters 2 and 3.↩︎\nWe could also use geom_smooth(method = 'lm') to add the regression line, but it’s good practice to work with lm objects.↩︎",
     "crumbs": [
       "Assignments",
-      "Group Projects",
-      "Project 1"
+      "Lab Assignments",
+      "Assignments",
+      "6: Correlations and Simple Linear Models"
     ]
   },
   {

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2: Visualization with ggplot – EC242</title>
+<title>6: Correlations and Simple Linear Models – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,7 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-sidebar docked nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -163,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/02-assignment.html">2: Visualization with ggplot</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/06-assignment.html">6: Correlations and Simple Linear Models</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -209,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../assignment/02-assignment.html" class="sidebar-item-text sidebar-link active">
+  <a href="../assignment/02-assignment.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2: Visualization with ggplot</span></a>
   </div>
 </li>
@@ -233,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../assignment/06-assignment.html" class="sidebar-item-text sidebar-link">
+  <a href="../assignment/06-assignment.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">6: Correlations and Simple Linear Models</span></a>
   </div>
 </li>
@@ -263,15 +263,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/02-assignment.html">2: Visualization with ggplot</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/06-assignment.html">6: Correlations and Simple Linear Models</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">2: Visualization with ggplot</h1>
+<h1 class="title">6: Correlations and Simple Linear Models</h1>
 </div>
 
 
@@ -298,239 +296,125 @@ Due Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This assignment is due on Monday, September 9th, 11:59pm.</p>
+<p>This assignment is due on <strong>Monday, October 7th, 11:59pm</strong></p>
 </div>
 </div>
 <p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.</p>
-<section id="a-note-on-exercises" class="level2">
-<h2 class="anchored" data-anchor-id="a-note-on-exercises">A note on exercises</h2>
-<p>Instead of putting all of your exercises at the end in 1 section, each of the 3 exercises are contained in a callout box like this:</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 1 of 3
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Do this stuff</p>
-</div>
-</div>
-<p>So find those in the assignment below. There are a lot of questions clearly labeled “OPTIONAL” as well – it helps to at least take a look at them, but only those questions in the labeled boxes are required for this lab assignment.</p>
-</section>
-<section id="data-viz" class="level2">
-<h2 class="anchored" data-anchor-id="data-viz">Data Viz</h2>
-<p>Our primary tool for data visualization in the course will be <code>ggplot</code>. Technically, we’re using <code>ggplot2</code>; the o.g. version lacked some of the modern features of its big brother. <code>ggplot2</code> implements the grammar of graphics, a coherent and relatively straightforward system for describing and building graphs. With <code>ggplot2</code>, you can do more faster by learning one system and applying it in many places. Other languages provide more specific tools, but require you to learn a different tool for each application. In this class, we’ll dig into a single package for our visuals.</p>
-</section>
-<section id="using-ggplot2" class="level2">
-<h2 class="anchored" data-anchor-id="using-ggplot2">Using ggplot2</h2>
-<p>In order to get our hands dirty, we will first have to load <code>ggplot2</code>. To do this, and to access the datasets, help pages, and functions that we will use in this assignment, we will load the so-called tidyverse by running this code:</p>
-<pre><code>library(tidyverse)</code></pre>
-<p>If you run this code and get an error message “there is no package called ‘tidyverse’”, you’ll need to first install it, then run library() once again. To install packages in <code>R</code>, we utilize the simple function install.packages(). In this case, we would write:</p>
-<pre><code>install.packages("tidyverse")
-library(tidyverse)</code></pre>
-<p>Once we’re up and running, we’re ready to dive into some basic exercises. <code>ggplot2</code> works by specifying the connections between the variables in the data and the colors, points, and shapes you see on the screen. These logical connections are called <em>aesthetic mappings</em> or simply <em>aesthetics</em>.</p>
-<section id="how-to-use-ggplot2-the-too-fast-and-wholly-unclear-recipe" class="level3">
-<h3 class="anchored" data-anchor-id="how-to-use-ggplot2-the-too-fast-and-wholly-unclear-recipe">How to use <code>ggplot2</code> – the too-fast and wholly unclear recipe</h3>
-<ul>
-<li><p><code>data =</code>: Define what your data is. For instance, below we’ll use the mpg data frame found in ggplot2 (by using <code>ggplot2::mpg</code>). As a reminder, a data frame is a rectangular collection of variables (in the columns) and observations (in the rows). This structure of data is often called a “table” but we’ll try to use terms slightly more precisely. The <code>mpg</code> data frame contains observations collected by the US Environmental Protection Agency on 38 different models of car.</p></li>
-<li><p><code>mapping = aes(...)</code>: How to map the variables in the data to aesthetics</p>
-<ul>
-<li>Axes, size of points, intensities of colors, which colors, shape of points, lines/points</li>
-</ul></li>
-<li><p>Then say what type of plot you want:</p>
-<ul>
-<li>boxplot, scatterplot, histogram, …</li>
-<li>these are called ‘geoms’ in ggplot’s grammar, such as <code>geom_point()</code> giving scatter plots</li>
-</ul></li>
-</ul>
-<pre><code>library(ggplot2)
-... + geom_point() # Produces scatterplots
-... + geom_bar() # Bar plots
-.... + geom_boxplot() # boxplots
-... #</code></pre>
-<p>You link these steps by <em>literally</em> adding them together with <code>+</code> as we’ll see.</p>
-<p><strong>Try it:</strong> (OPTIONAL) What other types of plots are there? Try to find several more <code>geom_</code> functions.</p>
-</section>
-</section>
-<section id="mappings-link-data-to-things-you-see" class="level2">
-<h2 class="anchored" data-anchor-id="mappings-link-data-to-things-you-see">Mappings Link Data to Things You See</h2>
+<section id="backstory-and-set-up" class="level2">
+<h2 class="anchored" data-anchor-id="backstory-and-set-up">Backstory and Set Up</h2>
+<p>You have been recently hired to Zillow’s Zestimate product team as a junior analyst. As a part of their regular hazing, they have given you access to a small subset of their historic sales data. Your job is to present some basic predictions for housing values in a small geographic area (Ames, IA) using this historical pricing.</p>
+<p>First, let’s load the data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">::</span>gapminder)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 6</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   country     continent  year lifeExp      pop gdpPercap</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Afghanistan Asia       1952    28.8  8425333      779.</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Afghanistan Asia       1957    30.3  9240934      821.</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Afghanistan Asia       1962    32.0 10267083      853.</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Afghanistan Asia       1967    34.0 11537966      836.</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Afghanistan Asia       1972    36.1 13079460      740.</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Afghanistan Asia       1977    38.4 14880372      786.</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> gapminder,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdpPercap, <span class="at">y =</span> lifeExp))</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="02-assignment_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ameslist  <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'https://ec242.netlify.app/data/ames.csv'</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Before we proceed, let’s note one thing about the (simple) code above. We specify an argument to <code>read.csv</code> called <code>stringsAsFactors</code>. By default, <code>read.csv</code> (the base CSV reading function, which is different from <code>read_csv</code>, the <code>tidyverse</code> CSV function) turns anything that is a character vector into a factor variable. That’s great if you’re importing things like state abbreviations. That’s not helpful if you’re importing character strings that don’t have any repitition (e.g.&nbsp;names), or character strings that really should be numeric. We’ll handle our character strings our selves, thankyouverymuch.</p>
+<section id="data-exploration-and-processing" class="level3">
+<h3 class="anchored" data-anchor-id="data-exploration-and-processing">Data Exploration and Processing</h3>
+<p>We are not going to tell you anything about this data. This is intended to replicate a real-world experience that you will all encounter in the (possibly near) future: someone hands you data and you’re expected to make sense of it. Fortunately for us, this data is (somewhat) self-contained. We’ll first check the variable names to try to divine some information. Recall, we have a handy little function for that:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ameslist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Note that, when doing data exploration, we will sometimes choose to not save our output. This is a judgement call; here we’ve chosen to merely inspect the variables rather than diving in.</p>
+<p>Inspection yields some obvious truths. For example:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: center;">Explanation</th>
+<th style="text-align: right;">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ID</code></td>
+<td style="text-align: center;">Unique identifier for each row</td>
+<td style="text-align: right;"><code>int</code></td>
+</tr>
+<tr class="even">
+<td><code>LotArea</code></td>
+<td style="text-align: center;">Size of lot (<strong>units unknown</strong>)</td>
+<td style="text-align: right;"><code>int</code></td>
+</tr>
+<tr class="odd">
+<td><code>SalePrice</code></td>
+<td style="text-align: center;">Sale price of house ($)</td>
+<td style="text-align: right;"><code>int</code></td>
+</tr>
+</tbody>
+</table>
+<p>…but we face some not-so-obvious things as well. For example:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: center;">Explanation</th>
+<th style="text-align: right;">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>LotShape</code></td>
+<td style="text-align: center;">? Something about the lot</td>
+<td style="text-align: right;"><code>chr</code></td>
+</tr>
+<tr class="even">
+<td><code>MSSubClass</code></td>
+<td style="text-align: center;">? No clue at all</td>
+<td style="text-align: right;"><code>int</code></td>
+</tr>
+<tr class="odd">
+<td><code>Condition1</code></td>
+<td style="text-align: center;">? Seems like street info</td>
+<td style="text-align: right;"><code>chr</code></td>
+</tr>
+</tbody>
+</table>
+<p>It will be difficult to learn anything about the data that is of type <code>int</code> without outside documentation unless it refers to a count of something (e.g.&nbsp;bedrooms). However, we can learn something more about the <code>chr</code>-type variables. In order to understand these a little better, we need to review some of the values that each take on. We can use <code>unique()</code> to see the unique values it takes. Sometimes, it helps to see how often some value comes up if we’re trying to understand a variable’s meaning. One handy way of learning this is to use <code>table()</code> (which we’ve seen before) to get a count of the different values a variable can take. <strong>This dataset will have some pernicious <code>NA</code>s in it, so when you use <code>table</code>, add <code>useNA = 'always'</code> as an argument to ensure that we see counts of all values</strong>.</p>
+<p><strong>Try it:</strong> Go through the variables in the dataset and make a note about your interpretation for each. Many will be obvious, but some require additional thought.</p>
+<p>Although there are some variables that would be difficult to clean, there are a few that we can address with relative ease. Consider, for instance, the variable <code>GarageType</code>. This might not be that important, but, remember, the weather in Ames, IA is pretty crummy—a detached garage might be a dealbreaker for some would-be homebuyers. Let’s inspect the values:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">unique</span>(ameslist<span class="sc">$</span>GarageType)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] Attchd  Detchd  BuiltIn CarPort <span class="sc">&lt;</span><span class="cn">NA</span><span class="sc">&gt;</span> Basment <span class="dv">2</span>Types</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><span class="text-red">Note that this gapminder dataset is from the gapminder package is not the same as the dslabs gapminder</span>. If you’re in doubt, use <code>gapminder = gapminder::gapminder</code> to set the gapminder package’s gapminder datset as your gapminder object (whew!). Compare <code>head(dslabs::gapminder)</code> and <code>head(gapminder::gapminder)</code> to see the difference. The <code>dslabs::...</code> says to find the thing in the <code>dslabs</code> package called “gapminder”.</p>
-<p>Above we’ve loaded a different dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what <em>might</em> be going on in this ggplot code. Any ideas?</p>
-<p>Here’s a breakdown of everything that happens after the <code>p&lt;- ggplot()</code> call:</p>
-<ul>
-<li><code>data = gapminder</code> tells ggplot to use gapminder dataset, so if variable names are mentioned, they should be looked up in gapminder</li>
-<li><code>mapping = aes(...)</code> shows that the mapping is a function call. There is a deeper logic to this that I will disucss below, but it’s easiest to simply accept that this is how you write it. Put another way, the <code>mapping = aes(...)</code> argument <em>links variables</em> to <em>things you will see</em> on the plot.</li>
-<li><code>aes(x = gdpPercap, y = lifeExp)</code> maps the GDP data onto <code>x</code>, which is a known aesthetic (the x-coordinate) and life expectancy data onto <code>y</code>
-<ul>
-<li><code>x</code> and <code>y</code> are predefined names that are used by <code>ggplot</code> and friends</li>
-</ul></li>
-</ul>
+<p>With this, we could make an informed decision and create a new variable. Let’s create <code>OutdoorGarage</code> to indicate, say, homes that have any type of garage that requires the homeowner to walk outdoors after parking their car. (For those who aren’t familiar with different garage types, a car port is not insulated and is therefore considered outdoors. A detached garage presumably requires that the person walks outside after parking. The three other types are inside the main structure, and <code>2Types</code> we can assume includes at least one attached garage of some sort).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercise 1 of 3
+EXERCISE 1 of 5
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let’s use some new data. Assuming you have <code>ggplot2</code> loaded using <code>library(ggplot2)</code>, you can load up a dataset called <code>mpg</code> using <code>data(mpg)</code>.</p>
-<p>Among the variables in <code>mpg</code> are:</p>
-<ul>
-<li><p><code>displ</code>, a car’s engine size, in litres. Bigger means more powerful.</p></li>
-<li><p><code>hwy</code>, a car’s fuel efficiency on the highway, in miles per gallon (mpg). A car with a low fuel efficiency consumes more fuel than a car with a high fuel efficiency when they travel the same distance.</p></li>
-</ul>
-<p>Generate a scatterplot between these two variables. Does it capture the intuitive relationship you expected? What happens if you make a scatterplot of <code>class</code> vs <code>drv</code>? Why is the plot not useful?</p>
-</div>
-</div>
-<section id="what-do-you-see" class="level3">
-<h3 class="anchored" data-anchor-id="what-do-you-see">What do you see?</h3>
-<p>It turns out there’s a reason for doing all of this:</p>
-<blockquote class="blockquote">
-<p>“The greatest value of a picture is when it forces us to notice what we never expected to see.”” — John Tukey</p>
-</blockquote>
-<p>In the plot you made above, one group of points seems to fall outside of the linear trend. These cars have a higher mileage than you might expect. How can you explain these cars?</p>
-<p>Let’s hypothesize that the cars are hybrids. One way to test this hypothesis is to look at the class value for each car. The <code>class</code> variable of the <code>mpg</code> dataset classifies cars into groups such as compact, midsize, and SUV. If the outlying points are hybrids, they should be classified as compact cars or, perhaps, subcompact cars (keep in mind that this data was collected before hybrid trucks and SUVs became popular).</p>
-<p>You can add a third variable, like <code>class</code>, to a two dimensional scatterplot by mapping it to an aesthetic. An aesthetic is a visual property of the objects in your plot. Aesthetics include things like the size, the shape, or the color of your points. You can display a point (like the one below) in different ways by changing the values of its aesthetic properties. Since we already use the word “<strong>value</strong>” to describe data, let’s use the word “<strong>level</strong>” to describe aesthetic properties. Thus, we are interested in exploring <code>class</code> as a level.</p>
-<p>You can convey information about your data by mapping the aesthetics in your plot to the variables in your dataset. For example, you can map the colors of your points to the class variable to reveal the class of each car. To map an aesthetic to a variable, associate the name of the aesthetic to the name of the variable inside <code>aes()</code>. <code>ggplot2</code> will automatically assign a unique level of the aesthetic (here a unique color) to each unique value of the variable, a process known as scaling. <code>ggplot2</code> will also add a legend that explains which levels correspond to which values.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 2 of 3
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Using your previous scatterplot of <code>displ</code> and <code>hwy</code>, map the colors of your points to the class variable to reveal the class of each car. What conclusions can we make?</p>
-</div>
-</div>
-</section>
-<section id="back-to-gapmindergapminder" class="level3">
-<h3 class="anchored" data-anchor-id="back-to-gapmindergapminder">Back to gapminder::gapminder</h3>
-<p>Let’s explore our previously saved <code>p</code> (using <code>gapminder::gapminder</code>) in greater detail. As with Exercise 1, we’ll add a <em>layer</em>. This says how some data gets turned into concrete visual aspects.</p>
-<pre><code>p + geom_point()
-p + geom_smooth()</code></pre>
-<p><strong>Note:</strong> Both of the above geom’s use the same mapping, where the x-axis represents <code>gdpPercap</code> and the y-axis represents <code>lifeExp</code>. You can find this yourself with some ease. But the first one maps the data to individual points, the other one maps it to a smooth line with error ranges.</p>
-<p>We get a message that tells us that <code>geom_smooth()</code> is using the method = ‘gam’, so presumably we can use other methods. Let’s see if we can figure out which other methods there are.</p>
-<pre><code>?geom_smooth
-p + geom_point() + geom_smooth() + geom_smooth(method = ...) + geom_smooth(method = ...)
-p + geom_point() + geom_smooth() + geom_smooth(method = ...) + geom_smooth(method = ..., color = "red")</code></pre>
-<p>You may start to see why <code>ggplot2</code>’s way of breaking up tasks is quite powerful: the geometric objects can all reuse the <em>same</em> mapping of data to aesthetics, yet the results are quite different. And if we want later geoms to use different mappings, then we can override them – but it isn’t necessary.</p>
-<p>Consider the output we’ve explored thus far. One potential issue lurking in the data is that most of it is bunched to the left. If we instead used a logarithmic scale, we should be able to spread the data out better.</p>
-<pre><code>p + geom_point() + geom_smooth(method = "lm") + scale_x_log10()</code></pre>
-<p><strong>Try it:</strong> (OPTIONAL) Describe what the <code>scale_x_log10()</code> does. Why is it a more evenly distributed cloud of points now? (2-3 sentences.)</p>
-<p>Nice. We’re starting to get somewhere. But, you might notice that the x-axis now has scientific notation. Let’s change that.</p>
-<pre><code>library(scales)
-p + geom_point() +
-  geom_smooth(method = "lm") +
-  scale_x_log10(labels = scales::dollar)
-p + geom_point() +
-  geom_smooth(method = "lm") +
-  scale_x_log10(labels = scales::...)</code></pre>
-<p><strong>Try it:</strong> (OPTIONAL) What does the <code>dollar()</code> call do? How can you find other ways of relabeling the scales when using <code>scale_x_log10()</code>?</p>
-<pre><code>?dollar()</code></pre>
-</section>
-</section>
-<section id="the-recipe" class="level2">
-<h2 class="anchored" data-anchor-id="the-recipe">The Recipe</h2>
 <ol type="1">
-<li>Tell the <code>ggplot()</code> function what our data is.</li>
-<li>Tell <code>ggplot()</code> <em>what</em> relationships we want to see. For convenience we will put the results of the first two steps in an object called <code>p</code>.</li>
-<li>Tell <code>ggplot</code> <em>how</em> we want to see the relationships in our data.</li>
-<li>Layer on geoms as needed, by adding them on the <code>p</code> object one at a time.</li>
-<li>Use some additional functions to adjust scales, labels, tickmarks, titles.</li>
+<li>Use <code>case_when</code> to add a <code>OutdoorGarage</code> column to <code>ameslist</code> that takes the value of <code>1</code> when the house has an outdoor garage, and <code>0</code> otherwise. Make sure this is a numeric variable (type <code>int</code>). It’s up to you to take a stand on what to do with <code>NA</code> values. Are those outdoor? Indoors? Do we drop all <code>NA</code> values? You often have to decide what to do in cases like this using your knowledge of the context. <strong>Document your reasoning</strong> for how you handle <code>NA</code> values.</li>
 </ol>
-<ul>
-<li>e.g.&nbsp;<code>scale_</code>, <code>labs()</code>, and <code>guides()</code> functions</li>
-</ul>
-<p>As you start to run more <code>R</code> code, you’re likely to run into problems. Don’t worry — it happens to everyone. I have been writing code in numerous languages for years, and every day I still write code that doesn’t work. Sadly, <code>R</code> is particularly persnickity, and its error messages are often opaque.</p>
-<p>Start by carefully comparing the code that you’re running to the code in these notes. <code>R</code> is extremely picky, and a misplaced character can make all the difference. Make sure that every ( is matched with a ) and every ” is paired with another “. Sometimes you’ll run the code and nothing happens. Check the left-hand of your console: if it’s a +, it means that R doesn’t think you’ve typed a complete expression and it’s waiting for you to finish it. In this case, it’s usually easy to start from scratch again by pressing ESCAPE to abort processing the current command.</p>
-<p>One common problem when creating ggplot2 graphics is to put the + in the wrong place: it has to come at the end of the line, not the start.</p>
-<section id="mapping-aesthetics-vs-setting-them" class="level3">
-<h3 class="anchored" data-anchor-id="mapping-aesthetics-vs-setting-them">Mapping Aesthetics vs Setting them</h3>
-<pre><code>p &lt;- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp, color = 'yellow'))
-p + geom_point() + scale_x_log10()</code></pre>
-<p>This is interesting (or annoying): the points are not yellow. How can we tell ggplot to draw yellow points?</p>
-<pre><code>p &lt;- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp, ...))
-p + geom_point(...) + scale_x_log10()</code></pre>
-<p><strong>Try it:</strong> (OPTIONAL) describe in your words what is going on. One way to avoid such mistakes is to read arguments inside <code>aes(&lt;property&gt; = &lt;variable&gt;)</code>as <em>the property <property> in the graph is determined by the data in <variable></variable></property></em>.</p>
-<p><strong>Try it:</strong> (OPTIONAL) Write the above sentence for the original call <code>aes(x = gdpPercap, y = lifeExp, color = 'yellow')</code>.</p>
-<p>Aesthetics convey information about a variable in the dataset, whereas setting the color of all points to yellow conveys no information about the dataset - it changes the appearance of the plot in a way that is independent of the underlying data.</p>
-<p>Remember: <code>color = 'yellow'</code> and <code>aes(color = 'yellow')</code> are very different, and the second makes usually no sense, as <code>'yellow'</code> is treated as <em>data</em>.</p>
-<pre><code>p &lt;- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp))
-p + geom_point() + geom_smooth(color = "orange", se = FALSE, size = 8, method = "lm") + scale_x_log10()</code></pre>
-<p><strong>Try it:</strong> (OPTIONAL) Write down what all those arguments in <code>geom_smooth(...)</code> do.</p>
-<pre><code>p + geom_point(alpha = 0.3) +
-  geom_smooth(method = "gam") +
-  scale_x_log10(labels = scales::dollar) +
-  labs(x = "GDP Per Capita", y = "Life Expectancy in Years",
-       title = "Economic Growth and Life Expectancy",
-       subtitle = "Data Points are country-years",
-       caption = "Source: Gapminder")</code></pre>
-<p>Coloring by continent:</p>
-<pre><code>library(scales)
-p &lt;- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp, color = continent, fill = continent))
-p + geom_point()
-p + geom_point() + scale_x_log10(labels = dollar)
-p + geom_point() + scale_x_log10(labels = dollar) + geom_smooth()</code></pre>
-<p><strong>Try it:</strong> (OPTIONAL) What does <code>fill = continent</code> do? What do you think about the match of colors between lines and error bands?</p>
-<pre><code>p &lt;- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp))
-p + geom_point(mapping = aes(color = continent)) + geom_smooth() + scale_x_log10()</code></pre>
-<p><strong>Try it:</strong> (OPTIONAL) Notice how the above code leads to a single smooth line, not one per continent. Why?</p>
-<p><strong>Try it:</strong> (OPTIONAL) What is bad about the following example, assuming the graph is the one we want? Think about why you should set aesthetics at the top level rather than at the individual geometry level if that’s your intent.</p>
-<pre><code>p &lt;- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp))
-p + geom_point(mapping = aes(color = continent)) +
-  geom_smooth(mapping = aes(color = continent, fill = continent)) +
-  scale_x_log10() +
-  geom_smooth(mapping = aes(color = continent), method = "gam")</code></pre>
+</div>
+</div>
+<p>Generally speaking, this is a persistent issue, and you will spend an extraordinary amount of time dealing with missing data or data that does not encode a variable exactly as you want it. This is expecially true if you deal with real-world data: you will need to learn how to handle <code>NA</code>s. There are a number of fixes (as always, Google is your friend) and anything that works is good. But you should spend some time thinking about this and learning at least one approach.</p>
+<p>Our goal now is to learn something about correlates between home sale price and the rest of the data. Along the way, you may want to create more variables like <code>OutdoorGarage</code> – for now, make sure those variables are represented as <code>0</code> and <code>1</code>. We’ll work with factor variables more later.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercise 3 of 3
+EXERCISES 2-5
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Generate two new plots with <code>data = gapminder</code> (note: you’ll need to install the package by the same name if you have not already). Label the axes and the header with clear, easy to understand language. In a few sentences, describe what you’ve visualized and why.</p>
-<p>Note that this is your first foray into <code>ggplot2</code>; accordingly, you should try to make sure that you do not bite off more than you can chew. We will improve and refine our abilities as we progress through the semester.</p>
+<ol start="2" type="1">
+<li><p>Prune the data to 6-8 of the variables that are <code>type = int</code> about which you have some reasonable intuition for what they mean. Choose those that you believe are likely to be correlated with <code>SalePrice</code>. This <strong>must</strong> include the variable <code>SalePrice</code> and <code>GrLivArea</code>. Call this new dataset <code>Ames</code>. Produce documentation for this object in the form of a <a href="..\resource/markdown/#tables-1">Markdown table</a> or see <a href="https://www.markdownguide.org/extended-syntax/">further documentation here</a>. This must describe each of the 6-8 preserved variables, the values it can take (e.g., can it be negative?) and your definition of the variable. Counting the variable name, this means your table should have three columns. Markdown tables are entered in the text body, not code chunks, of your .rmd, so your code creating <code>Ames</code> will be in a code chunk, and your table will be right after it.</p></li>
+<li><p>Produce a <em>scatterplot matrix</em> of the chosen variables<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
+<li><p>Compute a matrix of correlations between these variables using the function <code>cor()</code>. Do the correlations match your prior beliefs? Briefly discuss the correlation between the chosen variables and <code>SalePrice</code> and any correlations between these variables.</p></li>
+<li><p>Produce a scatterplot between <code>SalePrice</code> and <code>GrLivArea</code>. Run a linear model using <code>lm()</code> to explore the relationship. Finally, use the <code>geom_abline()</code> function to plot the relationship that you’ve found in the simple linear regression. You’ll need to extract the intercept and slope from your <code>lm</code> object. See <code>coef(...)</code> for information on this.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<ul>
+<li>What is the largest outlier that is above the regression line? Produce the other information about this house.</li>
+</ul></li>
+</ol>
+<p><strong>(Bonus)</strong> Create a visualization that shows the rise of air conditioning over time in homes in Ames.</p>
 </div>
 </div>
 
@@ -538,7 +422,14 @@ Exercise 3 of 3
 </section>
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>If you are not familiar with this type of visualization, consult the book (<em>Introduction to Statistical Learning</em>), Chapters 2 and 3.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>We could also use <code>geom_smooth(method = 'lm')</code> to add the regression line, but it’s good practice to work with <code>lm</code> objects.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

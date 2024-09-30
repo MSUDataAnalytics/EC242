@@ -100,7 +100,7 @@ To get around that, put a backslash (`\`) in front of the dollar signs, so that 
 
 Subscripts and superscripts are used often in this class. They are made by adding `_{sub}` or `^{super}`. See the `\beta_0` in the table above, which made a nice $\beta_{0}$. If you have only one character or number, you don't need to use the `{}`. That is `beta_i,j` will give $\beta_i,j$, and `beta_{i,j}` will give $\beta_{i,j}$.
 
-## Tables
+## Tables {#tables-1}
 
 There are 4 different ways to hand-create tables in Markdown—I say "hand-create" because it's normally way easier to use R to generate these things with packages like [**pander**](https://rapporter.github.io/pander/) (use `pandoc.table()`) or **knitr** (use [`kable()`](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html)). The two most common are simple tables and pipe tables. [You should look at the full documentation here](https://pandoc.org/MANUAL.html#tables).
 

@@ -23,7 +23,7 @@ project:
     #- "!*/03-assignment.qmd"
     #- "!*/04-assignment.qmd"
     #- "!*/05-assignment.qmd"
-    - "!*/06-assignment.qmd"
+    #- "!*/06-assignment.qmd"
     - "!*/07-assignment.qmd"
     - "!*/08-assignment.qmd"
     - "!*/09-assignment.qmd"

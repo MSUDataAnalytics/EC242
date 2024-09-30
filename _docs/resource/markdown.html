@@ -318,7 +318,7 @@ window.Quarto = {
   <li><a href="#basic-markdown-formatting" id="toc-basic-markdown-formatting" class="nav-link active" data-scroll-target="#basic-markdown-formatting">Basic Markdown formatting</a></li>
   <li><a href="#math" id="toc-math" class="nav-link" data-scroll-target="#math">Math</a></li>
   <li><a href="#superscripts-and-subscripts" id="toc-superscripts-and-subscripts" class="nav-link" data-scroll-target="#superscripts-and-subscripts">Superscripts and Subscripts</a></li>
-  <li><a href="#tables" id="toc-tables" class="nav-link" data-scroll-target="#tables">Tables</a></li>
+  <li><a href="#tables-1" id="toc-tables-1" class="nav-link" data-scroll-target="#tables-1">Tables</a></li>
   <li><a href="#footnotes" id="toc-footnotes" class="nav-link" data-scroll-target="#footnotes">Footnotes</a></li>
   <li><a href="#front-matter" id="toc-front-matter" class="nav-link" data-scroll-target="#front-matter">Front matter</a></li>
   <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations">Citations</a></li>
@@ -517,8 +517,8 @@ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 <h2 class="anchored" data-anchor-id="superscripts-and-subscripts">Superscripts and Subscripts</h2>
 <p>Subscripts and superscripts are used often in this class. They are made by adding <code>_{sub}</code> or <code>^{super}</code>. See the <code>\beta_0</code> in the table above, which made a nice <span class="math inline">\(\beta_{0}\)</span>. If you have only one character or number, you don’t need to use the <code>{}</code>. That is <code>beta_i,j</code> will give <span class="math inline">\(\beta_i,j\)</span>, and <code>beta_{i,j}</code> will give <span class="math inline">\(\beta_{i,j}\)</span>.</p>
 </section>
-<section id="tables" class="level2">
-<h2 class="anchored" data-anchor-id="tables">Tables</h2>
+<section id="tables-1" class="level2">
+<h2 class="anchored" data-anchor-id="tables-1">Tables</h2>
 <p>There are 4 different ways to hand-create tables in Markdown—I say “hand-create” because it’s normally way easier to use R to generate these things with packages like <a href="https://rapporter.github.io/pander/"><strong>pander</strong></a> (use <code>pandoc.table()</code>) or <strong>knitr</strong> (use <a href="https://bookdown.org/yihui/rmarkdown-cookbook/kable.html"><code>kable()</code></a>). The two most common are simple tables and pipe tables. <a href="https://pandoc.org/MANUAL.html#tables">You should look at the full documentation here</a>.</p>
 <p><strong>For simple tables, type…</strong></p>
 <pre class="text"><code>  Right     Left     Center     Default
