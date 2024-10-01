@@ -1,5 +1,5 @@
 ---
-title: "Introduction to Regression"
+title: "Foundations of Linear Regression"
 lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
@@ -177,6 +177,10 @@ ggplot(aes(sample=R), data = data.frame(R)) +
   stat_qq() +
   geom_abline(intercept = mean(R), slope = sqrt((1-mean(R)^2)/(N-2)))
 ```
+
+::: {.callout-tip collapse="true"}
+The above plot is called a `qq plot`. It compares two things: the quantiles of the numeric variable, and the quantiles that one would get from a normal distribution with the same mean and standard deviation as the numeric variable. Points on the 45 degree line indicate ranges of the data where the empirical quantile is equal to the theoretical (normal) quantile. Points off the line indicate ranges where the numeric variable is not normal. Small samples will be very noisy, but you should be able to see systematic deviations.
+:::
 
 If you increase $N$, you will see the distribution converging to normal.
 
