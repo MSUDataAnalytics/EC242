@@ -179,6 +179,7 @@ ggplot(aes(sample=R), data = data.frame(R)) +
 ```
 
 ::: {.callout-tip collapse="true"}
+## QQ plots
 The above plot is called a `qq plot`. It compares two things: the quantiles of the numeric variable, and the quantiles that one would get from a normal distribution with the same mean and standard deviation as the numeric variable. Points on the 45 degree line indicate ranges of the data where the empirical quantile is equal to the theoretical (normal) quantile. Points off the line indicate ranges where the numeric variable is not normal. Small samples will be very noisy, but you should be able to see systematic deviations.
 :::
 
