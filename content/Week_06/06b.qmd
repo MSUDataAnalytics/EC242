@@ -4,6 +4,7 @@ lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
     toc: true
+    code-overflow: wrap
 ---
 
 
@@ -50,6 +51,7 @@ weather_atl <- read_csv(here::here("data", "atl-weather-2019.csv"))
 ames <- read_csv('https://ec242.netlify.app/data/ames.csv')
 ```
 
+Of course, you can also load it directly with the URL from above (as we showed before).
 
 
 ### Scatterplot matrices
@@ -83,7 +85,7 @@ Here's some code to load data from the Residential Energy Consumption Survey (RE
 
 Most of the variables are self-explanatory except the following:
 
-- `AgeOfHome` is on a 1-9 scale where 1 is the oldest and 9 is the newest. 
+- `AgeOfHome` is on a 1-9 scale where 1 is the oldest and 9 is the newest. This is "discretized" age.
 
 - `HeaterAge` is the age of the home's heater from 1 to 6 where 6 is the oldest and 1 is the newest.
 
@@ -111,7 +113,7 @@ RECS = read.csv('https://www.eia.gov/consumption/residential/data/2009/csv/recs2
 
 ### Correlograms
 
-Scatterplot matrices typically include way too much information to be used in actual publications. I use them when doing my own analysis just to see how different variables are related, but I rarely polish them up for public consumption. In the readings for today, Claus Wilke showed a type of plot called a [*correlogram*](https://serialmentor.com/dataviz/visualizing-associations.html#associations-correlograms) which *is* more appropriate for publication.
+Scatterplot matrices typically include way too much information to be used in actual publications. I use them when doing my own analysis just to see how different variables are related, but I rarely polish them up for public consumption. In some interesting supplemental material [located here](https://clauswilke.com/dataviz/visualizing-associations.html#associations-correlograms), Claus Wilke showed a type of plot called a [*correlogram*](https://serialmentor.com/dataviz/visualizing-associations.html#associations-correlograms) which *is* more appropriate for publication.
 
 These are essentially heatmaps of the different correlation coefficients. To make these with ggplot, we need to do a little bit of extra data processing, mostly to reshape data into a long, tidy format that we can plot. Here's how.
 
@@ -177,7 +179,7 @@ ggplot(things_to_correlate_long,
   theme(panel.grid = element_blank())
 ```
 
-Instead of using a heatmap, we can also use points, which encode the correlation information both as color *and* as size. To do that, we just need to switch `geom_tile()` to `geom_point()` and set the `size = cor` mapping:
+Instead of using a heatmap, we can also use points, which encode the correlation information both as color *and* as size. To do that, we just need to switch `geom_tile()` to `geom_point()` and set the `size = cor` mapping (note the use of the absolute value function):
 
 ```{r cor-points, fig.width=5, fig.height=5}
 ggplot(things_to_correlate_long,
@@ -213,7 +215,19 @@ weather_atl_summer <- weather_atl %>%
          cloudCover_scaled = cloudCover * 100)
 ```
 
-Then we can build a simple regression model for the high temperature "regressed on" humidity. First, we'll use the formula from [Content 05](content/05-content/#the-regression-line-1):
+Then we can build a simple, single-variable regression model for the high temperature "regressed on" humidity. We would write this regression as:
+
+$$HighTempScaled_i = \beta_0 + \beta_1 HumidityScaled_i + \varepsilon_i$$
+
+Each of our `r NROW(weather_atl_summer)` observations is indexed by $i$. Since it will almost never be the case that $\beta_0 + \beta_1 HumidityScaled_i = HighTempScaled$, we include the error term $\varepsilon_i$ to account for things that aren't in our regression. 
+
+Our estimated parameters $\beta_0, \beta_1$ define the line of best fit, or the "regression line". That regression line is our conditional expectation function:
+
+$$E[HighTempScaled|HumidityScaled] = \beta_0 + \beta_1 HumidityScaled$$
+
+Note that we do not have an error term here -- the $E[]$ doesn't have an error term in it, only the regression function does.
+
+To do this in R, we'll first use the formula from [Principles 06](content/Week_06/06a.html#the-regression-line-1):
 
 ```{r simple-model-corr, message = FALSE}
 
@@ -231,16 +245,16 @@ print(weather_atl_results)
 
 ```
 
-Note that the formulas from [Content 05](content/05-content/#the-regression-line-1) have a direct translation into the code. Also note that we used `summarize` on the data so that we get only **one** row of data (no more 1,000+ rows, we've summarized them using `mean` and `sd`).
+Note that the formulas from  [Principles 06](content/Week_06/06a.html#the-regression-line-1) have a direct translation into the code. Also note that we used `summarize` on the data so that we get only **one** row of data (no more 1,000+ rows, we've summarized them using `mean` and `sd`).
 
 
 We can interpret these coefficients like so:
 
 - `beta_0` (or $\beta_0$) is the intercept. By definition of an intercept, it shows that the average temperature when there's **0% humidity** is 104°. There are no days with 0% humidity though, so we can ignore the intercept—it's really just here so that we can draw the line.
 
-- `beta_1` (or $\beta_1$) is the coefficient for `humidity_scaled`. It shows that a one percent increase in humidity is associated with a 0.241° decrease in temperature, on average.
+- `beta_1` (or $\beta_1$) is the coefficient for `HumidityScaled`. It is the slope of the regression line, and thus the change in E[HighTempScaled] per 1-unit increase in $HumidityScaled$. It shows that a one percent increase in humidity is **associated with** a 0.241° decrease in temperature, on average.
 
-  - This (and $\beta_0$) are random variables -- if we re-draw the sample, we'll see a slightly different relationship. We'll talk about the standard error of this in a little bit.
+  - This (and $\beta_0$) are random variables -- if we re-draw the sample, we'll see a slightly different relationship. We'll talk about the standard error of this (and how to see it) in a little bit.
 
 Visualizing this model is simple, since there are only two variables. We visualized the regression line in the Galton Heights data during Content 05, so let's just use that code.
 
@@ -252,7 +266,7 @@ ggplot(weather_atl_summer, aes(x = humidity_scaled, y = temperatureHigh)) +
 
 ```
 
-Every point along the regression line is the $E[temperatureHigh|humidity scaled]$. Put in whatever value of humidity you want, and the line tells you what the expectation of the high temperature will be.
+Every point along the regression line is the $E[HighTempScaled|HumidityScaled]$. Put in whatever value of humidity you want, and the line tells you what the expectation of the high temperature will be.
 
 Another way we can add a regression line in a 2-D plot is using `geom_smooth`. `geom_smooth` is a `ggplot` geometry that adds a line of best fit. This can be flexible, or this can be based on a linear relationship -- the regression line. We'll see how to use built-in functions in R to do regression later, but for now, we'll just ask ggplot to make a **l**inear **m**odel ("lm") for a line of best fit. The slope of that line is going to be exactly our estimate of $\beta_1$.
 
@@ -274,6 +288,8 @@ And indeed, we see the same line as we made "manually" before.
 Let's use that `RECS` data to regress `EnergyUsed` on one of the variables from your scatterplot matrix. Note that we say the left-hand-side variable (the "Y") is *regressed on* the right-hand-side (the "X") variable. 
 
 Using the formulas and codes for regression, choose the variable you want to use in the regression, run it, and visualize the result.
+
+We'll have you share your work and interpret the results when done. [https://bit.ly/EC242](https://bit.ly/EC242)
 
 :::
 

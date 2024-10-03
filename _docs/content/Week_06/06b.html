@@ -422,6 +422,7 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>weather_atl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/atl-weather-2019.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Of course, you can also load it directly with the URL from above (as we showed before).</p>
 </section>
 <section id="scatterplot-matrices" class="level3">
 <h3 class="anchored" data-anchor-id="scatterplot-matrices">Scatterplot matrices</h3>
@@ -468,7 +469,7 @@ TRY IT
 <p>Here’s some code to load data from the Residential Energy Consumption Survey (RECS), a <a href="https://www.eia.gov/consumption/residential/data/2020/">once-a-decade survey of household energy consumption done by the Energy Information Administration.</a>. Use the code here to load the data. I’ve selected a few variables and renamed them to something intuitive. Each observation is a household surveyed by the EIA. The variable named <code>EnergyUsed</code> is the total BTU’s of energy consumed by that household.</p>
 <p>Most of the variables are self-explanatory except the following:</p>
 <ul>
-<li><p><code>AgeOfHome</code> is on a 1-9 scale where 1 is the oldest and 9 is the newest.</p></li>
+<li><p><code>AgeOfHome</code> is on a 1-9 scale where 1 is the oldest and 9 is the newest. This is “discretized” age.</p></li>
 <li><p><code>HeaterAge</code> is the age of the home’s heater from 1 to 6 where 6 is the oldest and 1 is the newest.</p></li>
 <li><p><code>TVSize</code> is on a scale of 1 (smallest) to 4 (largest)</p></li>
 <li><p><code>TempHome</code> tells us the home’s thermostat setting when home (in degrees farenheit)</p></li>
@@ -488,7 +489,7 @@ TRY IT
 </section>
 <section id="correlograms" class="level3">
 <h3 class="anchored" data-anchor-id="correlograms">Correlograms</h3>
-<p>Scatterplot matrices typically include way too much information to be used in actual publications. I use them when doing my own analysis just to see how different variables are related, but I rarely polish them up for public consumption. In the readings for today, Claus Wilke showed a type of plot called a <a href="https://serialmentor.com/dataviz/visualizing-associations.html#associations-correlograms"><em>correlogram</em></a> which <em>is</em> more appropriate for publication.</p>
+<p>Scatterplot matrices typically include way too much information to be used in actual publications. I use them when doing my own analysis just to see how different variables are related, but I rarely polish them up for public consumption. In some interesting supplemental material <a href="https://clauswilke.com/dataviz/visualizing-associations.html#associations-correlograms">located here</a>, Claus Wilke showed a type of plot called a <a href="https://serialmentor.com/dataviz/visualizing-associations.html#associations-correlograms"><em>correlogram</em></a> which <em>is</em> more appropriate for publication.</p>
 <p>These are essentially heatmaps of the different correlation coefficients. To make these with ggplot, we need to do a little bit of extra data processing, mostly to reshape data into a long, tidy format that we can plot. Here’s how.</p>
 <p>First we need to build a correlation matrix of the main variables we care about. Ordinarily the <code>cor()</code> function in R takes two arguments—x and y—and it will return a single correlation value. If you feed a data frame into <code>cor()</code> though, it’ll calculate the correlation between each pair of columns. <span style="     color: red !important;">But be careful - don’t feed in hundreds of variables by accident!</span></p>
 <div class="cell" data-layout-align="center" width="150">
@@ -582,7 +583,7 @@ precipProbability              NA             NA       NA        NA             
 </div>
 </div>
 </div>
-<p>Instead of using a heatmap, we can also use points, which encode the correlation information both as color <em>and</em> as size. To do that, we just need to switch <code>geom_tile()</code> to <code>geom_point()</code> and set the <code>size = cor</code> mapping:</p>
+<p>Instead of using a heatmap, we can also use points, which encode the correlation information both as color <em>and</em> as size. To do that, we just need to switch <code>geom_tile()</code> to <code>geom_point()</code> and set the <code>size = cor</code> mapping (note the use of the absolute value function):</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(things_to_correlate_long,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> measure2, <span class="at">y =</span> measure1, <span class="at">color =</span> cor)) <span class="sc">+</span></span>
@@ -617,7 +618,13 @@ precipProbability              NA             NA       NA        NA             
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">precipProbability_scaled =</span> precipProbability <span class="sc">*</span> <span class="dv">100</span>,</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">cloudCover_scaled =</span> cloudCover <span class="sc">*</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then we can build a simple regression model for the high temperature “regressed on” humidity. First, we’ll use the formula from <a href="content/05-content/#the-regression-line-1">Content 05</a>:</p>
+<p>Then we can build a simple, single-variable regression model for the high temperature “regressed on” humidity. We would write this regression as:</p>
+<p><span class="math display">\[HighTempScaled_i = \beta_0 + \beta_1 HumidityScaled_i + \varepsilon_i\]</span></p>
+<p>Each of our 153 observations is indexed by <span class="math inline">\(i\)</span>. Since it will almost never be the case that <span class="math inline">\(\beta_0 + \beta_1 HumidityScaled_i = HighTempScaled\)</span>, we include the error term <span class="math inline">\(\varepsilon_i\)</span> to account for things that aren’t in our regression.</p>
+<p>Our estimated parameters <span class="math inline">\(\beta_0, \beta_1\)</span> define the line of best fit, or the “regression line”. That regression line is our conditional expectation function:</p>
+<p><span class="math display">\[E[HighTempScaled|HumidityScaled] = \beta_0 + \beta_1 HumidityScaled\]</span></p>
+<p>Note that we do not have an error term here – the <span class="math inline">\(E[]\)</span> doesn’t have an error term in it, only the regression function does.</p>
+<p>To do this in R, we’ll first use the formula from <a href="content/Week_06/06a.html#the-regression-line-1">Principles 06</a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>weather_atl_results <span class="ot">=</span> weather_atl_summer <span class="sc">%&gt;%</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mu_x =</span> <span class="fu">mean</span>(humidity_scaled),</span>
@@ -637,13 +644,13 @@ precipProbability              NA             NA       NA        NA             
 1  64.8  88.5  10.6  5.33 -0.481 -0.241   104.</code></pre>
 </div>
 </div>
-<p>Note that the formulas from <a href="content/05-content/#the-regression-line-1">Content 05</a> have a direct translation into the code. Also note that we used <code>summarize</code> on the data so that we get only <strong>one</strong> row of data (no more 1,000+ rows, we’ve summarized them using <code>mean</code> and <code>sd</code>).</p>
+<p>Note that the formulas from <a href="content/Week_06/06a.html#the-regression-line-1">Principles 06</a> have a direct translation into the code. Also note that we used <code>summarize</code> on the data so that we get only <strong>one</strong> row of data (no more 1,000+ rows, we’ve summarized them using <code>mean</code> and <code>sd</code>).</p>
 <p>We can interpret these coefficients like so:</p>
 <ul>
 <li><p><code>beta_0</code> (or <span class="math inline">\(\beta_0\)</span>) is the intercept. By definition of an intercept, it shows that the average temperature when there’s <strong>0% humidity</strong> is 104°. There are no days with 0% humidity though, so we can ignore the intercept—it’s really just here so that we can draw the line.</p></li>
-<li><p><code>beta_1</code> (or <span class="math inline">\(\beta_1\)</span>) is the coefficient for <code>humidity_scaled</code>. It shows that a one percent increase in humidity is associated with a 0.241° decrease in temperature, on average.</p>
+<li><p><code>beta_1</code> (or <span class="math inline">\(\beta_1\)</span>) is the coefficient for <code>HumidityScaled</code>. It is the slope of the regression line, and thus the change in E[HighTempScaled] per 1-unit increase in <span class="math inline">\(HumidityScaled\)</span>. It shows that a one percent increase in humidity is <strong>associated with</strong> a 0.241° decrease in temperature, on average.</p>
 <ul>
-<li>This (and <span class="math inline">\(\beta_0\)</span>) are random variables – if we re-draw the sample, we’ll see a slightly different relationship. We’ll talk about the standard error of this in a little bit.</li>
+<li>This (and <span class="math inline">\(\beta_0\)</span>) are random variables – if we re-draw the sample, we’ll see a slightly different relationship. We’ll talk about the standard error of this (and how to see it) in a little bit.</li>
 </ul></li>
 </ul>
 <p>Visualizing this model is simple, since there are only two variables. We visualized the regression line in the Galton Heights data during Content 05, so let’s just use that code.</p>
@@ -659,7 +666,7 @@ precipProbability              NA             NA       NA        NA             
 </div>
 </div>
 </div>
-<p>Every point along the regression line is the <span class="math inline">\(E[temperatureHigh|humidity scaled]\)</span>. Put in whatever value of humidity you want, and the line tells you what the expectation of the high temperature will be.</p>
+<p>Every point along the regression line is the <span class="math inline">\(E[HighTempScaled|HumidityScaled]\)</span>. Put in whatever value of humidity you want, and the line tells you what the expectation of the high temperature will be.</p>
 <p>Another way we can add a regression line in a 2-D plot is using <code>geom_smooth</code>. <code>geom_smooth</code> is a <code>ggplot</code> geometry that adds a line of best fit. This can be flexible, or this can be based on a linear relationship – the regression line. We’ll see how to use built-in functions in R to do regression later, but for now, we’ll just ask ggplot to make a <strong>l</strong>inear <strong>m</strong>odel (“lm”) for a line of best fit. The slope of that line is going to be exactly our estimate of <span class="math inline">\(\beta_1\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(weather_atl_summer,</span>
