@@ -247,8 +247,9 @@ print(weather_atl_results)
 
 Note that the formulas from  [Principles 06](content/Week_06/06a.html#the-regression-line-1) have a direct translation into the code. Also note that we used `summarize` on the data so that we get only **one** row of data (no more 1,000+ rows, we've summarized them using `mean` and `sd`).
 
+### Interpretation of coefficients
 
-We can interpret these coefficients like so:
+Our estimates of the $\beta_0, \beta_1$ are our "coefficients". It's important we interpret them correctly. We can interpret these coefficients like so:
 
 - `beta_0` (or $\beta_0$) is the intercept. By definition of an intercept, it shows that the average temperature when there's **0% humidity** is 104°. There are no days with 0% humidity though, so we can ignore the intercept—it's really just here so that we can draw the line.
 

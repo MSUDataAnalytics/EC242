@@ -645,7 +645,9 @@ precipProbability              NA             NA       NA        NA             
 </div>
 </div>
 <p>Note that the formulas from <a href="content/Week_06/06a.html#the-regression-line-1">Principles 06</a> have a direct translation into the code. Also note that we used <code>summarize</code> on the data so that we get only <strong>one</strong> row of data (no more 1,000+ rows, we’ve summarized them using <code>mean</code> and <code>sd</code>).</p>
-<p>We can interpret these coefficients like so:</p>
+<section id="interpretation-of-coefficients" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-of-coefficients">Interpretation of coefficients</h3>
+<p>Our estimates of the <span class="math inline">\(\beta_0, \beta_1\)</span> are our “coefficients”. It’s important we interpret them correctly. We can interpret these coefficients like so:</p>
 <ul>
 <li><p><code>beta_0</code> (or <span class="math inline">\(\beta_0\)</span>) is the intercept. By definition of an intercept, it shows that the average temperature when there’s <strong>0% humidity</strong> is 104°. There are no days with 0% humidity though, so we can ignore the intercept—it’s really just here so that we can draw the line.</p></li>
 <li><p><code>beta_1</code> (or <span class="math inline">\(\beta_1\)</span>) is the coefficient for <code>HumidityScaled</code>. It is the slope of the regression line, and thus the change in E[HighTempScaled] per 1-unit increase in <span class="math inline">\(HumidityScaled\)</span>. It shows that a one percent increase in humidity is <strong>associated with</strong> a 0.241° decrease in temperature, on average.</p>
@@ -694,10 +696,12 @@ TRY IT
 <div class="callout-body-container callout-body">
 <p>Let’s use that <code>RECS</code> data to regress <code>EnergyUsed</code> on one of the variables from your scatterplot matrix. Note that we say the left-hand-side variable (the “Y”) is <em>regressed on</em> the right-hand-side (the “X”) variable.</p>
 <p>Using the formulas and codes for regression, choose the variable you want to use in the regression, run it, and visualize the result.</p>
+<p>We’ll have you share your work and interpret the results when done. <a href="https://bit.ly/EC242">https://bit.ly/EC242</a></p>
 </div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
