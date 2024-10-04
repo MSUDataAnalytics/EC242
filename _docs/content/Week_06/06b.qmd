@@ -4,7 +4,7 @@ lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
     toc: true
-    code-overflow: wrap
+    code-overflow: scroll
 ---
 
 

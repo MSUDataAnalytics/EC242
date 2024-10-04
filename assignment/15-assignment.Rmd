@@ -1,0 +1,42 @@
+---
+title: "Applied Data Wrangling"
+linktitle: "14: Geospatial in R"
+output:
+  blogdown::html_page:
+    toc: false
+menu:
+  assignment:
+    parent: Labs
+    weight: 3
+type: docs
+weight: 1
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+:::fyi
+
+You must turn in a PDF document of your `R Markdown` code. Submit this to D2L by 11:59 PM Eastern Time on *Monday December 11th.**
+
+::: 
+
+This assignment builds from the Example for this week. Your assignment is to make a map of some interesting census variable for your home county. If your home county is outside the US, you can use any county you like.
+
+
+:::fyi
+
+__Exercise 1 of 1__ 
+
+1. Load up all the necessary packages
+
+2. Find the FIPS for your home county
+
+3. Choose a variable you're interested in. Finding census variables can be tricky!
+
+4. Using `load_variables`, find the best representation of that variable
+
+5. Make a map of that variable at the census tract level
+
+:::

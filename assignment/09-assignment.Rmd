@@ -1,0 +1,19 @@
+---
+title: "Least Absolute Shrinkage and Selection Operator"
+linktitle: "8: None"
+output:
+  blogdown::html_page:
+    toc: true
+menu:
+  assignment:
+    parent: Labs
+    weight: 2
+type: docs
+weight: 1
+editor_options:
+  chunk_output_type: console
+---
+
+There is no Lab 08. Lab 07 is due on October 30th due to Fall Break, which would have been the due date for Lab 08. We pick up again at Lab 09 due the first week in November.
+
+

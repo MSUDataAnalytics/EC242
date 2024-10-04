@@ -1,0 +1,111 @@
+---
+title: "Nonlinear Regression Model Evaluation"
+linktitle: "9: Nonlinear Regression Model Evaluation"
+output:
+  blogdown::html_page:
+    toc: true
+menu:
+  assignment:
+    parent: Labs
+    weight: 2
+type: docs
+weight: 1
+editor_options:
+  chunk_output_type: console
+---
+
+<!-- Updated 11/7/23 fixed data/bank23.csv data no default y is still character, not yet knit -->
+
+:::fyi
+
+You must turn in a PDF document of your `R Markdown` knitted document. Submit this to D2L by 11:59 PM Eastern Time on the date listed on the Syllabus calendar
+
+:::
+
+## Backstory and Set Up
+You work for a bank. This bank is trying to predict defaults on loans. These are costly to the bank and, while rare, avoiding them is how banks make money. They've given you a dataset on defaults (encoded as the variable `default`). You're going to try to predict this (that is, `default` is your *target* variable).
+
+This is some new data. The snippet below loads it. 
+
+```{r}
+
+bank <- read.csv("https://ssc442kirkpatrick.netlify.app/data/bank23.csv",
+                 stringsAsFactors = FALSE)
+``` 
+
+There's not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).
+
+:::fyi
+
+__EXERCISE 1__
+
+1. Check the data using `skim` and `str` to see what sort of data you have. kNN, as we've covered it so far, takes an average of the target variable for the $k$ nearest neighbors. Do any data processing necessary to use kNN to predict `default`.
+
+2. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability, but do not share your seed with others in the class. (We may compare some results across people.)
+
+3. Run a series of KNN models with $k$ ranging from 2 to 200. Use whatever variables you think will help predict defaults. Remember, $k$ is our complexity parameter -- we do not add or subtract any of the explanatory variables, we vary only $k$. You must have at least 50 different values of $k$. You can easily write a short function to do this using this week's lessons and should avoid hand-coding 50 different models.
+
+4. Create a chart plotting the model complexity as the $x$-axis variable and RMSE as the $y$-axis variable for __both__ the training and test data. Pay attention to the values of $k$ that are "higher" in complexity and "lower" in complexity, and make sure the $x$-axis is increasing in complexity as you go to the right.
+
+5. Answer the following questions:
+
+  a. What do you think is the optimal $k$?
+  
+  b. What are you using to decide the optimal $k$?
+  
+  c. If we were to allow the model a little more complexity than the optimal, how will our training RMSE change? How will our test RMSE change?
+
+:::
+
+
+
+```{r, include=F}
+
+
+library(caret); library(tidyverse)
+
+bank = bank %>%
+  dplyr::mutate(default = case_when(default=='yes' ~ 1,
+                                    default=='no' ~ 0))
+
+bX = bank[,c('balance', 'education','job','duration')]
+bY = bank[,'default']
+
+k5 = knnreg(bX, bY, k=5)
+
+k100 = knnreg(default ~ balance + education + job + duration, bank, k=100)
+knnreg(default ~ age + gender + student, bank, k=100)
+predict(k5, newdata = bank)
+
+```
+
+
+
+```{r, include=F}
+
+
+bank = bank23 %>%
+  dplyr::mutate(default = case_when(default=='yes' ~ 1,
+                                    default=='no' ~ 0))
+
+idx = sample(NROW(bank), round(.8*NROW(bank)), replace=F)
+bank_train = bank[idx,]
+bank_test = bank[-idx,]
+
+ks <-seq(from=200, to=2, by=-4)
+
+mods<-lapply(ks, function(x){
+  knnreg(default ~ age + job + marital + education + balance + duration + campaign, bank_train, k = x)
+})
+
+
+train_rmses = lapply(mods, function(x){
+  sqrt(sum((bank_train$default - predict(x, newdata = bank_train))^2)/NROW(bank_train))
+})
+
+test_rmses = lapply(mods, function(x){
+  sqrt(sum((bank_test$default - predict(x, newdata = bank_test))^2)/NROW(bank_test))
+})
+
+
+

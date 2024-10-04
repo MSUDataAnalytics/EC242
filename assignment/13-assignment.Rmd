@@ -1,0 +1,86 @@
+---
+title: "Text as Data"
+linktitle: "12: Text as Data"
+output:
+  blogdown::html_page:
+    toc: false
+menu:
+  assignment:
+    parent: Labs
+    weight: 3
+type: docs
+weight: 1
+editor_options:
+  chunk_output_type: console
+---
+
+<!-- Updated 8.30.22 -->
+
+# Using `str_` functions and RegEx
+
+
+::: fyi
+
+You must turn in a PDF document of your `R Markdown` code. Submit this to D2L by 11:59 PM Eastern Time on the date listed on the syllabus calendar
+
+:::
+
+
+For this lab, you will need to make sure you set `echo = T` in the knitr options that are set in your template's first chunk. Before turning your assignment in, check to make sure your code is showing. Labs that do not show all code will earn a zero.
+
+
+This lab is deceptively short. Regular expressions can take a while to learn, and can be very frustrating. Leave yourself ample time.
+
+
+
+:::fyi
+
+
+1. Create the following `Sales2020` object. We want to convert the sales into a numeric format, but have to wrestle with the extra characters. Using no more than two lines of code, convert these to numeric.
+
+```
+Sales2020 = c('$1,420,142',
+              '$438,125.82',
+              '120,223.50',
+              '42,140')
+```
+
+
+2. We have the following student names:
+
+```
+Students = c('Ali',' Meza','McAvoy', 'Mc Evoy', '.Donaldson','Kirkpatrick ')
+```
+We would like to clean these student names and place them in alphabetical order. However, we note that "Mc Evoy" is a different name from "McEvoy" (the Irish are particular about that), so we need no more than two lines of code that can print these names in order (use `order` to place the cleaned names in order).
+
+
+
+3. We want to check if each of these are valid, complete (including two decimal places for cents) prices. Write a line of code that returns TRUE if the price is in US dollars and includes cents to two digits.
+
+```
+Prices = c('$12.95',
+           '$\beta$',
+           '$1944.55',
+           '3.14',
+           '$CAN',
+           '$12.',
+           '$109',
+           '4,05',
+           '$200.00')
+```
+
+
+
+4. We will use groups to extract **two** columns of information from the following text we scraped from a land sales website:
+
+```
+landSales = c('Sold 12 acres at $105 per acre',
+              '200 ac. at $58.90 each',
+              '.25 acre lot for $1,000.00 ea',
+              'Offered 50 acres for $5,000 per')
+```
+
+We want to calculate the total amount spent on each of these transactions (which are all in "per acre" prices). In no more than 5 lines of code (each pipe is a separate line), extract the acres offered, the price per acre, and then calculate the total transaction (acres x price per acre). You can print the data.frame / tibble, or use `%>% knitr::kable()` to output the table. Your final output should have four rows and three columns. Hint: use `str_match` with groups.
+
+:::
+
