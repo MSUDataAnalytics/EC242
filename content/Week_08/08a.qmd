@@ -173,7 +173,7 @@ Previously, we (briefly) described alternatives to the average and standard devi
 
 ```{r scatter-plot-of-ranks}
 ggplot() +
-  geom_point(rank(x), rank(y))
+  geom_point(aes(x = rank(x), y = rank(y)))
 ```
 
 The outlier is no longer associated with a very large value and the correlation comes way down:

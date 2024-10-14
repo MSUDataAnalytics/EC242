@@ -147,7 +147,7 @@ get_complexity(flexible.lm)
 
 But we don't really believe that TV advertising of around 20 would result in almost 40 in sales. We certainly don't trust that huge spike at 250, either! But how do we stop ourselves from overfitting?
 
-::: {.calllout-note}
+::: {.callout-note}
 ## TRY IT
 
 When I was a teenager and had to drive in the snow for the first time, my mom took me out to an empty, frozen roller rink parking lot. She had me drive fast, then slam on the brakes so that we slid on the ice. The point was, you can be told what it's like to skid, but until you do it, it's abstract. 
