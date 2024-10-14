@@ -98,7 +98,7 @@ When deciding how complex of a model to use, we can utilize two techniques: *for
 
 
 ::: {.callout-note}
-## _EXERCISE 1 of 2
+## EXERCISE 1 of 2
 
 Your task is to, once again, predict `SalePrice` using the data. In this exercise, we will build 15 increasingly flexible models to minimize RMSE. In the next exercise, we will look at (and address) overfitting. But for now, ignore it.
 
@@ -263,7 +263,7 @@ Specifically, we say that a model is overfitting if there exists a less complex 
 
 [^2]: The labels of under and overfitting are *relative* to the best model we see. Any model more complex with higher Test RMSE is overfitting. Any model less complex with higher Test RMSE is underfitting.
 
-::: .{callout-note}
+::: {.callout-note}
 
 ## EXERCISE 2 of 2
 

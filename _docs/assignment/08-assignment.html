@@ -412,7 +412,7 @@ Due Date
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-_EXERCISE 1 of 2
+EXERCISE 1 of 2
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -581,20 +581,29 @@ _EXERCISE 1 of 2
 <li><strong>Overfitting models:</strong> In general <em>Low</em> Train RMSE, <em>High</em> Test RMSE.</li>
 </ul>
 <p>Specifically, we say that a model is overfitting if there exists a less complex model with lower <strong>Test</strong> RMSE.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Then a model is underfitting if there exists a more complex model with lower Test RMSE.</p>
-</section>
-</section>
-<section id="exercise-2-of-2" class="level2 .{callout-note}">
-<h2 class="anchored" data-anchor-id="exercise-2-of-2">EXERCISE 2 of 2</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+EXERCISE 2 of 2
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ol type="1">
 <li><p>Using <code>lm()</code> and any number of regressors, predict <code>SalePrice</code> with no fewer than eight models of increasing complexity (as in the try-it above). Complexity can be increased by adding variables <em>or</em> by adding interactions or polynomials of existing variables. You can use the models you made in Exercise 1 if you’d like. Put the models into a list.</p></li>
 <li><p>Calculate the Train and Test RMSE. The Test RMSE is what we’re really interested in.</p></li>
 <li><p>Make a table exactly like the table in Exercise 1, but for the 8 or more models you just fit, and include both the Train <strong>and</strong> the Test RMSE. The first column should have the name of the model (e.g.&nbsp;<code>fit_1</code>). Hint: you can get the names of the entries in a list using <code>names(model_list)</code> provided you named the list items when you added them.</p></li>
 <li><p>In a short paragraph, describe the resulting model. Discuss how you arrived at this model, what interactions you’re using (if any) and how confident you are that your prediction will perform well, relative to other people in the class.</p></li>
 </ol>
-</section>
+</div>
+</div>
 <p>A final note on the analysis performed here; we paid no attention whatsoever to the “assumptions” of a linear model. We only sought a model that <strong>predicted</strong> well, and paid no attention to a model for <strong>explaination</strong>. This is especially true if we interacted variables without any theory as to why they might need to be interacted – “exterior type interacted with number of half-baths” may help with RMSE, but it certainly isn’t grounded in a story that a real estate agent might tell. Hypothesis testing did not play a role in deciding the model, only prediction accuracy. Collinearity? We don’t care. Assumptions? Still don’t care. Diagnostics? Never heard of them. (These statements are a little over the top, and not completely true, but just to drive home the point that we only care about prediction. Often we latch onto methods that we have seen before, even when they are not needed.)</p>
 
 
+</section>
+</section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
