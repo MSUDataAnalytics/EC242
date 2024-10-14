@@ -12,7 +12,6 @@ project:
     #- "!Week_06/"
     #- "!Week_07/"
     #- "!Week_08/"
-    - "!Week_08/"
     - "!Week_09/"
     - "!Week_10/"
     - "!Week_11/"
@@ -40,6 +39,7 @@ project:
     - "!groupproject/project2.qmd"
     - "!slides/"
     - "!templates/"
+    - "!*_cache/"
   output-dir: _docs
   resources:
     - "files/"
