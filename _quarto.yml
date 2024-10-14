@@ -12,7 +12,7 @@ project:
     #- "!Week_06/"
     #- "!Week_07/"
     #- "!Week_08/"
-    - "!Week_09/"
+    #- "!Week_09/"
     - "!Week_10/"
     - "!Week_11/"
     - "!Week_12/"
@@ -26,8 +26,8 @@ project:
     #- "!*/05-assignment.qmd"
     #- "!*/06-assignment.qmd"
     #- "!*/07-assignment.qmd"
-    - "!*/08-assignment.qmd"
-    - "!*/09-assignment.qmd"
+    #- "!*/08-assignment.qmd"
+    #- "!*/09-assignment.qmd"
     - "!*/10-assignment.qmd"
     - "!*/11-assignment.qmd"
     - "!*/12-assignment.qmd"
@@ -39,7 +39,6 @@ project:
     - "!groupproject/project2.qmd"
     - "!slides/"
     - "!templates/"
-    - "!*_cache/"
   output-dir: _docs
   resources:
     - "files/"

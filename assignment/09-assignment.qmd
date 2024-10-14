@@ -1,0 +1,112 @@
+---
+title: "9: LASSO"
+duedate: "{{< var duedates.lab9 >}}"
+---
+
+
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
+:::
+
+{{< var blurbs.homeworkdue >}}
+
+
+## Oh no. Really? Ames again?
+
+Yes, Ames again. Let's predict some `SalePrice`s!
+
+
+```{r}
+
+Ames <- read.table('https://raw.githubusercontent.com/ajkirkpatrick/FS20/postS21_rev/classdata/ames.csv', 
+                   header = TRUE,
+                   sep = ',') %>%
+  dplyr::select(-Id)
+```
+
+
+```{r, include=F, eval=F}
+library(caret); library(glmnet)
+
+
+Amesuse = Ames %>% 
+  dplyr::select(-FireplaceQu, -PoolQC, -Fence, -MiscFeature, -Alley,
+                -Utilities) %>%
+  na.omit()
+
+
+  lambdas = 10^seq(from =4, to = -2, length = 100)
+
+  myform = SalePrice ~ LandContour + BldgType*HouseStyle*YearBuilt + YearBuilt*YearRemodAdd + LotArea*Street + FullBath*WoodDeckSF
+  # myform = SalePrice ~ .
+  
+  x = model.matrix(myform, data = Amesuse) 
+  
+ net_cv = cv.glmnet(
+  x = x,
+  y = Amesuse$SalePrice,
+  alpha = 1,
+  standardize = T,
+  lambda = lambdas,
+  # New: How we make decisions and number of folds
+  type.measure = "mse",
+  nfolds = 5
+)
+#   
+# net_cv = train(
+#   # The formula
+#   SalePrice ~ .,
+#   # The dataset
+#   data = Amesuse,
+#   # The 'glmnet' package does ridge and lasso
+#   method = "glmnet",
+#   metric = 'RMSE',
+#   # 5-fold cross validation
+#   trControl = trainControl("cv", number = 10),
+#   # The parameters of 'glmnet'
+#   tuneGrid = expand.grid(alpha = 1, lambda = lambdas)
+# )
+
+  
+
+res = data.frame(lambda =  net_cv$lambda,
+                 mse = sqrt(net_cv$cvm))
+
+ggplot(res, aes(x = lambda, y = mse)) + 
+  geom_path()
+
+
+
+```
+
+### Data cleaning
+Repeat the data cleaning exercise from last week's lab. The point is to make sure that every observation is non-`NA` and all predictor variables have more than one value. Use `skimr::skim` on `Ames` to find predictors with only one value or are missing many values. Take them out, and use `na.omit` to ensure there are no `NA` values left. Check to make sure you still have at least 800 or so observations!
+
+::: {.callout-note}
+## Exercise 1 of 1
+
+1. Clean your data as described above.
+
+2. Choose up to **16** predictor variables and clean your data so that no `NA` values are left
+
+3. Choose at least 5 interactions between your predictor variables and print out the formula you'll use to predict `SalePrice`.
+
+4. In your code, use `set.seed(24224)` so that your results will always be the same. Why do we need to set seed? When we (well, `caret::train`) makes the Train and Test sample(s), it'll select them randomly. If you don't set seed, every time you run it, you'll get slightly different answers!
+
+5. Using `glmnet::cv.glmnet` to estimate a LASSO model (see lecture notes this week) that predicts `SalePrice` given the observed data and using your formula. Slide 33 shows cross-validation using both `alpha` and `lambda` -- a LASSO model holds `alpha` fixed at `alpha = 1`. We'll search using `lambda` as our tuning parameter. Call the resulting object `net_cv`.
+
+- To do this, you'll have to make a matrix to give to `cv.glmnet` in the `x` argument because it doesn't take a formula. You can use `model.matrix()` to create the matrix. Use that matrix as your `x`. It will not add the `SalePrice` variable to the `x` matrix -- you just have to give it `SalePrice` as the `y` variable.
+
+6. The resulting object will be a `glmnet` object. You can see the optimal lambda just by printing the object `print(net_cv)` and looking at the min value for Lambda. **Make sure the optimal (RMSE-minimizing) value of lambda is not the largest or smallest value of lambda you gave it**. If it is, then extend the range of lambdas until you get an interior solution. Following the instructions from our lecture note's **TRY IT**, extract the lambdas and their respective RMSE values into a data.frame and make a plot similar to the RMSE plot from lecture.
+
+7. Answer the following question: What is the optimal `lambda` based on the plot/data? Do you see a minimum point in the plot?
+
+8. Extracting the non-zero coefficients is a little tricky, but let's do it. We'll use the `coef` function to extract the coefficients. The `coef` function, when used on a `glmnet` object, takes the argument `s` which is the `lambda` value for which you'd like to extract coefficients. Our `s` value should be the best value of lambda, which we can extract from `net_cv$lambda.min`. Put those together: `coef(net_cv, s = net_cv$lambda.min)`. **This may be kinda long, that's OK**.
+
+
+:::
+
+
+
+
