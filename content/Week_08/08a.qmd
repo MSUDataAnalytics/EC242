@@ -43,10 +43,10 @@ DesMoines %>% dplyr::select(varnames[1:N])
 
 would select the first `N` variables. A loop on `N` from 2 to 4 would give you `c('Y','X1')` then `c('Y','X1','X2')` and so on. 
 
-Another handy tip is using `paste` with `collapse = '+'`.
+Another handy tip is using `paste` with `collapse = '+'`. **This will let you include interactions**
 
 ```{r pastevar, echo = T}
-varnames = c('Y','X1','X2','X3')
+varnames = c('Y','X1','X2','X3','X1:X3','X4*X5')
 
 paste(varnames[2:4], collapse = ' + ')
 

@@ -148,9 +148,10 @@ get_complexity(flexible.lm)
 But we don't really believe that TV advertising of around 20 would result in almost 40 in sales. We certainly don't trust that huge spike at 250, either! But how do we stop ourselves from overfitting?
 
 ::: {.callout-note}
+
 ## TRY IT
 
-When I was a teenager and had to drive in the snow for the first time, my mom took me out to an empty, frozen roller rink parking lot. She had me drive fast, then slam on the brakes so that we slid on the ice. The point was, you can be told what it's like to skid, but until you do it, it's abstract. 
+When I was a teenager and had to drive in the snow for the first time, my mom took me out to the empty, frozen parking lot for my local roller rink. She had me drive fast, then slam on the brakes so that we skidded on the ice. The point of doing this was to get a feel for what skidding on ice is like. You can be **told** what it's like to skid, but until you do it, it's abstract. Same thing with overfitting.
 
 Let's make overfitting concrete.
 
@@ -185,6 +186,8 @@ ggplot(RECS) +
 Now, my challenge to you is to estimate a linear-in-parameters model that minimizes RMSE (using your RMSE function) for a prediction of `EnergyUsed`. Use as many variables as you want. Don't use the `poly` function like we did before, since that's too easy. Who can get the lowest RMSE? 
 
 :::
+
+
 
 ### Avoiding overfitting
 

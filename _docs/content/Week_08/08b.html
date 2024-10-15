@@ -438,7 +438,6 @@ window.Quarto = {
   <li><a href="#assesing-model-accuracy" id="toc-assesing-model-accuracy" class="nav-link" data-scroll-target="#assesing-model-accuracy">Assesing Model Accuracy</a></li>
   <li><a href="#model-complexity" id="toc-model-complexity" class="nav-link" data-scroll-target="#model-complexity">Model Complexity</a></li>
   <li><a href="#test-train-split" id="toc-test-train-split" class="nav-link" data-scroll-target="#test-train-split">Test-Train Split</a></li>
-  <li><a href="#try-it" id="toc-try-it" class="nav-link" data-scroll-target="#try-it">TRY IT</a></li>
   <li><a href="#adding-flexibility-to-linear-models" id="toc-adding-flexibility-to-linear-models" class="nav-link" data-scroll-target="#adding-flexibility-to-linear-models">Adding Flexibility to Linear Models</a></li>
   <li><a href="#choosing-a-model" id="toc-choosing-a-model" class="nav-link" data-scroll-target="#choosing-a-model">Choosing a Model</a></li>
   </ul>
@@ -633,11 +632,17 @@ F-statistic: 0.9732 on 16 and 3 DF,  p-value: 0.5933</code></pre>
 </div>
 </div>
 <p>But we don’t really believe that TV advertising of around 20 would result in almost 40 in sales. We certainly don’t trust that huge spike at 250, either! But how do we stop ourselves from overfitting?</p>
-</section>
-</section>
-<section id="try-it" class="level2 calllout-note">
-<h2 class="anchored" data-anchor-id="try-it">TRY IT</h2>
-<p>When I was a teenager and had to drive in the snow for the first time, my mom took me out to an empty, frozen roller rink parking lot. She had me drive fast, then slam on the brakes so that we slid on the ice. The point was, you can be told what it’s like to skid, but until you do it, it’s abstract.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+TRY IT
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When I was a teenager and had to drive in the snow for the first time, my mom took me out to the empty, frozen parking lot for my local roller rink. She had me drive fast, then slam on the brakes so that we skidded on the ice. The point of doing this was to get a feel for what skidding on ice is like. You can be <strong>told</strong> what it’s like to skid, but until you do it, it’s abstract. Same thing with overfitting.</p>
 <p>Let’s make overfitting concrete.</p>
 <p>Run the following code to download and subset some data. The code does a couple other things. Can you tell what?</p>
 <div class="cell">
@@ -670,6 +675,8 @@ F-statistic: 0.9732 on 16 and 3 DF,  p-value: 0.5933</code></pre>
 </div>
 </div>
 <p>Now, my challenge to you is to estimate a linear-in-parameters model that minimizes RMSE (using your RMSE function) for a prediction of <code>EnergyUsed</code>. Use as many variables as you want. Don’t use the <code>poly</code> function like we did before, since that’s too easy. Who can get the lowest RMSE?</p>
+</div>
+</div>
 </section>
 <section id="avoiding-overfitting" class="level3">
 <h3 class="anchored" data-anchor-id="avoiding-overfitting">Avoiding overfitting</h3>
@@ -742,6 +749,7 @@ F-statistic: 0.9732 on 16 and 3 DF,  p-value: 0.5933</code></pre>
 <pre><code>[1] 5.211881</code></pre>
 </div>
 </div>
+</section>
 </section>
 <section id="adding-flexibility-to-linear-models" class="level2">
 <h2 class="anchored" data-anchor-id="adding-flexibility-to-linear-models">Adding Flexibility to Linear Models</h2>

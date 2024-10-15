@@ -496,9 +496,9 @@ window.Quarto = {
 <p>If you have a dataset called <code>DesMoines</code> and a character vector of all of your columns in <code>DesMoines</code> like so <code>varnames = c('Y','X1','X2','X3')</code>, and it’s in the order in which you’d like to add the variables to the model, then:</p>
 <pre><code>DesMoines %&gt;% dplyr::select(varnames[1:N])</code></pre>
 <p>would select the first <code>N</code> variables. A loop on <code>N</code> from 2 to 4 would give you <code>c('Y','X1')</code> then <code>c('Y','X1','X2')</code> and so on.</p>
-<p>Another handy tip is using <code>paste</code> with <code>collapse = '+'</code>.</p>
+<p>Another handy tip is using <code>paste</code> with <code>collapse = '+'</code>. <strong>This will let you include interactions</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>varnames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'Y'</span>,<span class="st">'X1'</span>,<span class="st">'X2'</span>,<span class="st">'X3'</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>varnames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'Y'</span>,<span class="st">'X1'</span>,<span class="st">'X2'</span>,<span class="st">'X3'</span>,<span class="st">'X1:X3'</span>,<span class="st">'X4*X5'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(varnames[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">collapse =</span> <span class="st">' + '</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
