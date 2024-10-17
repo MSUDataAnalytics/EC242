@@ -5,6 +5,9 @@ output:
     toc: true
 ---
 
+<!-- Spring 2025: Shorten this -- the causality part is redundant to others, and the conditioning is repetitive of moneyball, though it makes an OK review. The spurious correlation helps to motivate overfitting with pure noise, though, which is nice. Keep p-hacking part. Move beginning of 8b through the TRY IT onto here. -->
+
+
 ```{r opts, echo = FALSE, include = FALSE}
 require(knitr)
 knitr::opts_chunk$set(warning = FALSE, error = FALSE, message = FALSE)

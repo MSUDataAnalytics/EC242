@@ -650,7 +650,7 @@ TRY IT
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>RECS <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://www.eia.gov/consumption/residential/data/2009/csv/recs2009_public.csv'</span>, <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span>  </span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()), <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="dv">30</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">EnergyUsed =</span> TOTALBTU, </span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                REGIONC, DIVISION, Climate_Region_Pub, METROMICRO, <span class="at">Urban=</span>UR, <span class="at">OWNRENT =</span> KOWNRENT,YEARMADERANGE, </span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">Occupants =</span> OCCUPYYRANGE,<span class="at">ColdDays =</span> HDD65, <span class="at">HotDayss =</span> CDD65, <span class="at">SquareFeet =</span> TOTHSQFT, <span class="at">CarsGarage =</span> SIZEOFGARAGE, </span>
@@ -662,19 +662,8 @@ TRY IT
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">var3 =</span> <span class="fu">rpois</span>(<span class="fu">n</span>(), <span class="dv">5</span>),</span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">var4 =</span> <span class="fu">runif</span>(<span class="fu">n</span>(), <span class="sc">-</span><span class="dv">10</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We have a lot of potential X-values here, so we don’t just make a scatterplot (what would we put on the X axis?). But we can plot a histogram of this just to see what we’re up against:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(RECS) <span class="sc">+</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> EnergyUsed))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Now, my challenge to you is to estimate a linear-in-parameters model that minimizes RMSE (using your RMSE function) for a prediction of <code>EnergyUsed</code>. Use as many variables as you want. Don’t use the <code>poly</code> function like we did before, since that’s too easy. Who can get the lowest RMSE?</p>
+<p>We have a lot of potential X-values here, so have at it. Use interactions, use polynomials, use polynomials of interactions – just make a <code>lm()</code> model that gets the RMSE down low. To use your <code>rmse</code> function, give it the prediction from your <code>lm()</code> model and the original date: <code>rmse(RECS$EnergyUsed, predict(MyOLS)</code>.</p>
+<p>Now, my challenge to you is to estimate a linear-in-parameters model that minimizes RMSE (using your <code>rmse</code> function) for a prediction of <code>EnergyUsed</code>. Use as many variables as you want. Don’t use the <code>poly</code> function like we did before, since that’s too easy. Who can get the lowest RMSE?</p>
 </div>
 </div>
 </section>
@@ -684,12 +673,12 @@ TRY IT
 <p>Note that sometimes the terms <em>evaluation set</em> and <em>test set</em> are used interchangeably. We will give somewhat specific definitions to these later. For now we will simply use a single test set for a training set.</p>
 <p>Here we use the <code>sample()</code> function to obtain a random sample of the rows of the original data. We then use those row numbers (and remaining row numbers) to split the data accordingly. Notice we used the <code>set.seed()</code> function to allow use to reproduce the same random split each time we perform this analysis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">90</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>num_obs <span class="ot">=</span> <span class="fu">nrow</span>(Advertising)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">=</span> <span class="fu">sample</span>(num_obs, <span class="at">size =</span> <span class="fu">trunc</span>(<span class="fl">0.50</span> <span class="sc">*</span> num_obs))</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">=</span> Advertising[train_index, ]</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">=</span> Advertising[<span class="sc">-</span>train_index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">90</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>num_obs <span class="ot">=</span> <span class="fu">nrow</span>(Advertising)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">=</span> <span class="fu">sample</span>(num_obs, <span class="at">size =</span> <span class="fu">trunc</span>(<span class="fl">0.50</span> <span class="sc">*</span> num_obs))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">=</span> Advertising[train_index, ]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">=</span> Advertising[<span class="sc">-</span>train_index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will look at two measures that assess how well a model is predicting, the <strong>train RMSE</strong> and the <strong>test RMSE</strong>.</p>
 <p><span class="math display">\[
@@ -702,49 +691,49 @@ TRY IT
 <p>Here <span class="math inline">\(n_{Te}\)</span> is the number of observations in the test set. Test RMSE uses the model fit to the training data, but evaluated on the unused test data. This is a measure of how well the fitted model will predict <strong>in general</strong>, not simply how well it fits data used to train the model, as is the case with train RMSE. What happens to test RMSE as the size of the model increases? That is what we will investigate.</p>
 <p>We will start with the simplest possible linear model, that is, a model with no predictors.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fit_0 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> train_data)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fit_0 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> train_data)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train RMSE</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((train_data<span class="sc">$</span>sales <span class="sc">-</span> <span class="fu">predict</span>(fit_0, train_data)) <span class="sc">^</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train RMSE</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((train_data<span class="sc">$</span>sales <span class="sc">-</span> <span class="fu">predict</span>(fit_0, train_data)) <span class="sc">^</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.224106</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test RMSE</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((test_data<span class="sc">$</span>sales <span class="sc">-</span> <span class="fu">predict</span>(fit_0, test_data)) <span class="sc">^</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test RMSE</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((test_data<span class="sc">$</span>sales <span class="sc">-</span> <span class="fu">predict</span>(fit_0, test_data)) <span class="sc">^</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.211881</code></pre>
 </div>
 </div>
 <p>The previous two operations obtain the train and test RMSE. Since these are operations we are about to use repeatedly, we should use the function that we happen to have already written.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train RMSE</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(<span class="at">actual =</span> train_data<span class="sc">$</span>sales, <span class="at">predicted =</span> <span class="fu">predict</span>(fit_0, train_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train RMSE</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(<span class="at">actual =</span> train_data<span class="sc">$</span>sales, <span class="at">predicted =</span> <span class="fu">predict</span>(fit_0, train_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.224106</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test RMSE</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(<span class="at">actual =</span> test_data<span class="sc">$</span>sales, <span class="at">predicted =</span> <span class="fu">predict</span>(fit_0, test_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test RMSE</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(<span class="at">actual =</span> test_data<span class="sc">$</span>sales, <span class="at">predicted =</span> <span class="fu">predict</span>(fit_0, test_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.211881</code></pre>
 </div>
 </div>
 <p>This function can actually be improved for the inputs that we are using. We would like to obtain train and test RMSE for a fitted model, given a train or test dataset, and the appropriate response variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>get_rmse <span class="ot">=</span> <span class="cf">function</span>(model, data, response) {</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rmse</span>(<span class="at">actual =</span> <span class="fu">subset</span>(data, <span class="at">select =</span> response, <span class="at">drop =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">predicted =</span> <span class="fu">predict</span>(model, data))</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>get_rmse <span class="ot">=</span> <span class="cf">function</span>(model, data, response) {</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rmse</span>(<span class="at">actual =</span> <span class="fu">subset</span>(data, <span class="at">select =</span> response, <span class="at">drop =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">predicted =</span> <span class="fu">predict</span>(model, data))</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>By using this function, our code becomes easier to read, and it is more obvious what task we are accomplishing.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_0, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_0, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.224106</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_0, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_0, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.211881</code></pre>
 </div>
@@ -755,78 +744,78 @@ TRY IT
 <h2 class="anchored" data-anchor-id="adding-flexibility-to-linear-models">Adding Flexibility to Linear Models</h2>
 <p>Each successive model we fit will be more and more flexible using both interactions and polynomial terms. We will see the training error decrease each time the model is made more flexible. We expect the test error to decrease a number of times, then eventually start going up, as a result of overfitting.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fit_1 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> ., <span class="at">data =</span> train_data)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fit_1 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> ., <span class="at">data =</span> train_data)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_1, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_1, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.649346</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_1, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_1, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.741642</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fit_2 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV, <span class="at">data =</span> train_data)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fit_2 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV, <span class="at">data =</span> train_data)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_2, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_2, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9875248</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_2, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_2, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9014459</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>fit_3 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span> <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>fit_3 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span> <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_3, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_3, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6685005</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_3, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_3, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6242491</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>fit_4 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>fit_4 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_4, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_4, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6676294</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_4, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_4, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6232819</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>fit_5 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>fit_5 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">get_complexity</span>(fit_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 14</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_5, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_5, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># train RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6359041</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_5, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_rmse</span>(<span class="at">model =</span> fit_5, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>) <span class="co"># test RMSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7809674</code></pre>
 </div>
@@ -837,38 +826,38 @@ TRY IT
 <p>To better understand the relationship between train RMSE, test RMSE, and model complexity, we summarize our results, as the above is somewhat cluttered.</p>
 <p>First, we recap the models that we have fit.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>fit_1 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> ., <span class="at">data =</span> train_data)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>fit_2 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV, <span class="at">data =</span> train_data)</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>fit_3 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span> <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>fit_4 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>fit_5 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
-<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>fit_1 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> ., <span class="at">data =</span> train_data)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>fit_2 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV, <span class="at">data =</span> train_data)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>fit_3 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span> <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>fit_4 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>fit_5 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, we create a list of the models fit.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>model_list <span class="ot">=</span> <span class="fu">list</span>(fit_1, fit_2, fit_3, fit_4, fit_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>model_list <span class="ot">=</span> <span class="fu">list</span>(fit_1, fit_2, fit_3, fit_4, fit_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We then obtain train RMSE, test RMSE, and model complexity for each.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>train_rmse <span class="ot">=</span> <span class="fu">sapply</span>(model_list, get_rmse, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>)</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>test_rmse <span class="ot">=</span> <span class="fu">sapply</span>(model_list, get_rmse, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>)</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>model_complexity <span class="ot">=</span> <span class="fu">sapply</span>(model_list, get_complexity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>train_rmse <span class="ot">=</span> <span class="fu">sapply</span>(model_list, get_rmse, <span class="at">data =</span> train_data, <span class="at">response =</span> <span class="st">"sales"</span>)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>test_rmse <span class="ot">=</span> <span class="fu">sapply</span>(model_list, get_rmse, <span class="at">data =</span> test_data, <span class="at">response =</span> <span class="st">"sales"</span>)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>model_complexity <span class="ot">=</span> <span class="fu">sapply</span>(model_list, get_complexity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We then plot the results. The train RMSE can be seen in blue, while the test RMSE is given in orange.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model_complexity, train_rmse, <span class="at">type =</span> <span class="st">"b"</span>,</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(<span class="fu">c</span>(train_rmse, test_rmse)) <span class="sc">-</span> <span class="fl">0.02</span>,</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">max</span>(<span class="fu">c</span>(train_rmse, test_rmse)) <span class="sc">+</span> <span class="fl">0.02</span>),</span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"dodgerblue"</span>,</span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Model Size"</span>,</span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"RMSE"</span>)</span>
-<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(model_complexity, test_rmse, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">col =</span> <span class="st">"darkorange"</span>)</span>
-<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">'train'</span>,<span class="st">'test'</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">'dodgerblue'</span>,<span class="st">'darkorange'</span>), <span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model_complexity, train_rmse, <span class="at">type =</span> <span class="st">"b"</span>,</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(<span class="fu">c</span>(train_rmse, test_rmse)) <span class="sc">-</span> <span class="fl">0.02</span>,</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">max</span>(<span class="fu">c</span>(train_rmse, test_rmse)) <span class="sc">+</span> <span class="fl">0.02</span>),</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"dodgerblue"</span>,</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Model Size"</span>,</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"RMSE"</span>)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(model_complexity, test_rmse, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">col =</span> <span class="st">"darkorange"</span>)</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">'train'</span>,<span class="st">'test'</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">'dodgerblue'</span>,<span class="st">'darkorange'</span>), <span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

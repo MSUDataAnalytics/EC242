@@ -162,7 +162,7 @@ set.seed(242)
 
 RECS = read.csv('https://www.eia.gov/consumption/residential/data/2009/csv/recs2009_public.csv', stringsAsFactors = F) %>%
   as_tibble() %>%  
-  slice(sample(1:n()), 30) %>%
+  slice(sample(1:n(), 30)) %>%
   dplyr::select(EnergyUsed = TOTALBTU, 
                 REGIONC, DIVISION, Climate_Region_Pub, METROMICRO, Urban=UR, OWNRENT = KOWNRENT,YEARMADERANGE, 
                 Occupants = OCCUPYYRANGE,ColdDays = HDD65, HotDayss = CDD65, SquareFeet = TOTHSQFT, CarsGarage = SIZEOFGARAGE, 
@@ -176,14 +176,9 @@ RECS = read.csv('https://www.eia.gov/consumption/residential/data/2009/csv/recs2
 
 ```
 
-We have a lot of potential X-values here, so we don't just make a scatterplot (what would we put on the X axis?). But we can plot a histogram of this just to see what we're up against:
+We have a lot of potential X-values here, so have at it. Use interactions, use polynomials, use polynomials of interactions -- just make a `lm()` model that gets the RMSE down low. To use your `rmse` function, give it the prediction from your `lm()` model and the original date: `rmse(RECS$EnergyUsed, predict(MyOLS)`.
 
-```{r, echo=T}
-ggplot(RECS) + 
-  geom_histogram(aes(x = EnergyUsed))
-```
-
-Now, my challenge to you is to estimate a linear-in-parameters model that minimizes RMSE (using your RMSE function) for a prediction of `EnergyUsed`. Use as many variables as you want. Don't use the `poly` function like we did before, since that's too easy. Who can get the lowest RMSE? 
+Now, my challenge to you is to estimate a linear-in-parameters model that minimizes RMSE (using your `rmse` function) for a prediction of `EnergyUsed`. Use as many variables as you want. Don't use the `poly` function like we did before, since that's too easy. Who can get the lowest RMSE? 
 
 :::
 
