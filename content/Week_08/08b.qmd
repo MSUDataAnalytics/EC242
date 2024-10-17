@@ -376,3 +376,143 @@ A number of notes on these results:
 - Often we expect train RMSE to be lower than test RMSE. Again, due to the randomness of the split, you may get lucky and this will not be true.
 
 A final note on the analysis performed here; we paid no attention whatsoever to the "assumptions" of a linear model. We only sought a model that **predicted** well, and paid no attention to a model for **explaination**. Hypothesis testing did not play a role in deciding the model, only prediction accuracy. Collinearity? We don't care. Assumptions? Still don't care. Diagnostics? Never heard of them. (These statements are a little over the top, and not completely true, but just to drive home the point that we only care about prediction. Often we latch onto methods that we have seen before, even when they are not needed.)
+
+
+
+
+## Coding for Test-Train Split
+
+### Making the split:
+Above, when [we created the split datasets](#avoiding-overfitting), you'll notice we used a sampled index to make our training and testing split. Let's take a closer look using a "dataset" of 10:
+
+```{r}
+dataset = data.frame(index = 1:10)
+
+train_index = sample(NROW(dataset), size = trunc(.50*NROW(dataset)))
+print(train_index)
+```
+
+
+In the first line, we create a 10-row (and 1-column and very boring) dataset to use to illustrate the train/test index.
+
+In the second line, we make a sample by drawing row *numbers*. The first argument to `sample` is "what do you want to draw from" and if we give it a single number, it assumes we meant 1 through that number. So giving it `NROW(dataset)` samples from the numbers 1:10, because we have 10 rows. The second argument is "how many should we draw", and here, we ask for 50%. Since sometimes 50% will be fraction (if an odd number of rows), we use `trunc` to round it down. If we had 11 rows, this would give us a training sample of 5. Note that we don't use replacement here -- we don't want to draw the same row index twice!
+
+Now we create the split data:
+
+```{r}
+train_dataset = dataset[train_index,]
+test_dataset = dataset[-train_index,]
+
+```
+
+We want to make sure that all data is either in the training or the testing data, not both, and not left out. The first line should be intuitive -- it keeps the row numbers corresponding to those drawn in `train_index`.
+
+The second line, though, **looks** like it's keeping the...negative rows? Huh? Let's take a look:
+
+```{r}
+print(train_index)
+
+print(-train_index)
+```
+
+So what does it mean to ask R to give you the `r -train_index[1]` row of `dataset`? R knows you can't have negative rows, so the original authors thought it handy to use negatives to mean "omit". So `(1:5)[-2]` would give you the numbers 1 to 5, but without the 2nd entry (gotta use the () or you'll be asking for something different). `r (1:5)[-2]`
+
+So when we look at the `test_dataset` we see:
+
+```{r}
+dataset[-train_index,,drop=F]
+# 'drop=F' keeps it from making the single column into a vector
+```
+
+And that is the numbers 1:10, but without `train_index`: `r train_index`
+
+Now we know that every row is either in train or test. Super!
+
+### `lapply` for model building 
+While `R` has some great functionality for building and estimating multiple models, we're going to learn how to do it at the most base level so that we can build from there. The best way is to use `lapply` since we're fundamentally going to be using the same *functions* on different *models*. If we make a list of models, we can `lapply` our way to finding the best out-of-sample (test) fit!
+
+So we start with a list of models. There are many ways to do this (see previous lecture), but here I'm going to write them out manually in a way that you should be able to do faster with code:
+
+```{r}
+# Create some random data:
+set.seed(242)
+N = 1000
+dat = data.frame(Y = rnorm(N),
+                 X1 = rnorm(N),
+                 X2 = rnorm(N),
+                 X3 = rpois(N, 5))
+train_index = sample(N, trunc(.5*N))
+
+dat.train = dat[train_index,]
+dat.test = dat[-train_index,]
+
+model_c = c(
+ "Y ~ 1", # just intercept
+ "Y ~ X1",
+ "Y ~ X1*X2",
+ "Y ~ X1*X2*X3",
+ "Y ~ X1*X2*X3*I(X1^2)",
+ "Y ~ X1*X2*X3*I(X1^2)*I(X2^2)",
+ "Y ~ X1*X2*X3*I(X1^2)*I(X2^2)*I(X3^2)",
+ "Y ~ poly(X1, 3)*poly(X2,3)*poly(X3,3)", 
+ "Y ~ poly(X1, 4)*poly(X2,4)*poly(X3,4)"
+)
+
+model_list = as.list(model_c)
+
+model_list_form = lapply(X = model_list, FUN = as.formula)
+
+print(model_list_form)
+
+```
+
+First we make some fake data to illustrate. Then, we get to the real business -- this is the structure we'll follow: we make a vector of model specifications, then we make it a list using `as.list`. Then, we use `lapply` (list-apply) to hit every entry with `as.formula`. Remember, for `lapply`, it takes each list element and uses it as the first argument in the given `FUN`, so it'll run `as.formula(model_list[[1]])` and then, in the output's first list entry, place the result.
+
+Now, we `lapply` that model, returning the fit object (which we can use to `predict` results using new data). This requires an "anonymous function". The anonymous function lets you, on the fly, write a function with one argument that lets you reference the list element being applied:
+
+```{r}
+model_ests = lapply(model_list_form, function(x) lm(x, data = dat.train ))
+```
+
+Alright, no errors. Looks like we estimated seven models. You wouldn't usually do this, but let's look at the first 2 and the last one
+
+```{r}
+print(lapply(model_ests[c(1:2, 9)], function(x) summary(x)))
+```
+
+::: {.callout-warning}
+## WARNING
+
+Don't print out the coefficient tables of your results for any of your models. We only want to predict, we don't want to interpret.
+
+:::
+
+
+Now, calculate the rmse for train and test:
+
+```{r}
+model_rmse_train = lapply(model_ests, function(x) get_rmse(model = x, data = dat.train, response = 'Y'))
+print(model_rmse_train)
+```
+
+```{r}
+model_rmse_test = lapply(model_ests, function(x) get_rmse(model = x, data = dat.test, response = 'Y'))
+print(model_rmse_test)
+```
+
+Then, we can make the data.frame of results. We'd usually have `complexity` in there too, but I'll put the formulas in. In later work, we won't really have "formulas" to put in here.
+
+```{r}
+data.frame(formula = as.character(unlist(model_list_form)), # usually you'd have complexity here
+           train_rmse = unlist(model_rmse_train),
+           test_rmse = unlist(model_rmse_test))
+```
+
+::: {.callout-tip}
+## What's our takeaway from this?
+
+1. Which model does best?
+
+2. Does this seem like an odd outcome? What did the data look like in the first place?
+
+:::

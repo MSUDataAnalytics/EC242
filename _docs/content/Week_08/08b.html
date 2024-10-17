@@ -440,6 +440,7 @@ window.Quarto = {
   <li><a href="#test-train-split" id="toc-test-train-split" class="nav-link" data-scroll-target="#test-train-split">Test-Train Split</a></li>
   <li><a href="#adding-flexibility-to-linear-models" id="toc-adding-flexibility-to-linear-models" class="nav-link" data-scroll-target="#adding-flexibility-to-linear-models">Adding Flexibility to Linear Models</a></li>
   <li><a href="#choosing-a-model" id="toc-choosing-a-model" class="nav-link" data-scroll-target="#choosing-a-model">Choosing a Model</a></li>
+  <li><a href="#coding-for-test-train-split" id="toc-coding-for-test-train-split" class="nav-link" data-scroll-target="#coding-for-test-train-split">Coding for Test-Train Split</a></li>
   </ul>
 </nav>
     </div>
@@ -924,8 +925,430 @@ TRY IT
 <li>Often we expect train RMSE to be lower than test RMSE. Again, due to the randomness of the split, you may get lucky and this will not be true.</li>
 </ul>
 <p>A final note on the analysis performed here; we paid no attention whatsoever to the “assumptions” of a linear model. We only sought a model that <strong>predicted</strong> well, and paid no attention to a model for <strong>explaination</strong>. Hypothesis testing did not play a role in deciding the model, only prediction accuracy. Collinearity? We don’t care. Assumptions? Still don’t care. Diagnostics? Never heard of them. (These statements are a little over the top, and not completely true, but just to drive home the point that we only care about prediction. Often we latch onto methods that we have seen before, even when they are not needed.)</p>
+</section>
+<section id="coding-for-test-train-split" class="level2">
+<h2 class="anchored" data-anchor-id="coding-for-test-train-split">Coding for Test-Train Split</h2>
+<section id="making-the-split" class="level3">
+<h3 class="anchored" data-anchor-id="making-the-split">Making the split:</h3>
+<p>Above, when <a href="#avoiding-overfitting">we created the split datasets</a>, you’ll notice we used a sampled index to make our training and testing split. Let’s take a closer look using a “dataset” of 10:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">index =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">NROW</span>(dataset), <span class="at">size =</span> <span class="fu">trunc</span>(.<span class="dv">50</span><span class="sc">*</span><span class="fu">NROW</span>(dataset)))</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(train_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6 7 2 4 5</code></pre>
+</div>
+</div>
+<p>In the first line, we create a 10-row (and 1-column and very boring) dataset to use to illustrate the train/test index.</p>
+<p>In the second line, we make a sample by drawing row <em>numbers</em>. The first argument to <code>sample</code> is “what do you want to draw from” and if we give it a single number, it assumes we meant 1 through that number. So giving it <code>NROW(dataset)</code> samples from the numbers 1:10, because we have 10 rows. The second argument is “how many should we draw”, and here, we ask for 50%. Since sometimes 50% will be fraction (if an odd number of rows), we use <code>trunc</code> to round it down. If we had 11 rows, this would give us a training sample of 5. Note that we don’t use replacement here – we don’t want to draw the same row index twice!</p>
+<p>Now we create the split data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="ot">=</span> dataset[train_index,]</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>test_dataset <span class="ot">=</span> dataset[<span class="sc">-</span>train_index,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We want to make sure that all data is either in the training or the testing data, not both, and not left out. The first line should be intuitive – it keeps the row numbers corresponding to those drawn in <code>train_index</code>.</p>
+<p>The second line, though, <strong>looks</strong> like it’s keeping the…negative rows? Huh? Let’s take a look:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(train_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6 7 2 4 5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="sc">-</span>train_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -6 -7 -2 -4 -5</code></pre>
+</div>
+</div>
+<p>So what does it mean to ask R to give you the -6 row of <code>dataset</code>? R knows you can’t have negative rows, so the original authors thought it handy to use negatives to mean “omit”. So <code>(1:5)[-2]</code> would give you the numbers 1 to 5, but without the 2nd entry (gotta use the () or you’ll be asking for something different). 1, 3, 4, 5</p>
+<p>So when we look at the <code>test_dataset</code> we see:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>dataset[<span class="sc">-</span>train_index,,drop<span class="ot">=</span>F]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   index
+1      1
+3      3
+8      8
+9      9
+10    10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 'drop=F' keeps it from making the single column into a vector</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And that is the numbers 1:10, but without <code>train_index</code>: 6, 7, 2, 4, 5</p>
+<p>Now we know that every row is either in train or test. Super!</p>
+</section>
+<section id="lapply-for-model-building" class="level3">
+<h3 class="anchored" data-anchor-id="lapply-for-model-building"><code>lapply</code> for model building</h3>
+<p>While <code>R</code> has some great functionality for building and estimating multiple models, we’re going to learn how to do it at the most base level so that we can build from there. The best way is to use <code>lapply</code> since we’re fundamentally going to be using the same <em>functions</em> on different <em>models</em>. If we make a list of models, we can <code>lapply</code> our way to finding the best out-of-sample (test) fit!</p>
+<p>So we start with a list of models. There are many ways to do this (see previous lecture), but here I’m going to write them out manually in a way that you should be able to do faster with code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create some random data:</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">242</span>)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Y =</span> <span class="fu">rnorm</span>(N),</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">X1 =</span> <span class="fu">rnorm</span>(N),</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">X2 =</span> <span class="fu">rnorm</span>(N),</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">X3 =</span> <span class="fu">rpois</span>(N, <span class="dv">5</span>))</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">=</span> <span class="fu">sample</span>(N, <span class="fu">trunc</span>(.<span class="dv">5</span><span class="sc">*</span>N))</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>dat.train <span class="ot">=</span> dat[train_index,]</span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>dat.test <span class="ot">=</span> dat[<span class="sc">-</span>train_index,]</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a>model_c <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ 1"</span>, <span class="co"># just intercept</span></span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ X1"</span>,</span>
+<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ X1*X2"</span>,</span>
+<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ X1*X2*X3"</span>,</span>
+<span id="cb75-18"><a href="#cb75-18" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ X1*X2*X3*I(X1^2)"</span>,</span>
+<span id="cb75-19"><a href="#cb75-19" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ X1*X2*X3*I(X1^2)*I(X2^2)"</span>,</span>
+<span id="cb75-20"><a href="#cb75-20" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ X1*X2*X3*I(X1^2)*I(X2^2)*I(X3^2)"</span>,</span>
+<span id="cb75-21"><a href="#cb75-21" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ poly(X1, 3)*poly(X2,3)*poly(X3,3)"</span>, </span>
+<span id="cb75-22"><a href="#cb75-22" aria-hidden="true" tabindex="-1"></a> <span class="st">"Y ~ poly(X1, 4)*poly(X2,4)*poly(X3,4)"</span></span>
+<span id="cb75-23"><a href="#cb75-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb75-24"><a href="#cb75-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-25"><a href="#cb75-25" aria-hidden="true" tabindex="-1"></a>model_list <span class="ot">=</span> <span class="fu">as.list</span>(model_c)</span>
+<span id="cb75-26"><a href="#cb75-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-27"><a href="#cb75-27" aria-hidden="true" tabindex="-1"></a>model_list_form <span class="ot">=</span> <span class="fu">lapply</span>(<span class="at">X =</span> model_list, <span class="at">FUN =</span> as.formula)</span>
+<span id="cb75-28"><a href="#cb75-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-29"><a href="#cb75-29" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(model_list_form)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+Y ~ 1
+&lt;environment: 0x00000241ae7f21e8&gt;
+
+[[2]]
+Y ~ X1
+&lt;environment: 0x00000241ae7f21e8&gt;
+
+[[3]]
+Y ~ X1 * X2
+&lt;environment: 0x00000241ae7f21e8&gt;
+
+[[4]]
+Y ~ X1 * X2 * X3
+&lt;environment: 0x00000241ae7f21e8&gt;
+
+[[5]]
+Y ~ X1 * X2 * X3 * I(X1^2)
+&lt;environment: 0x00000241ae7f21e8&gt;
+
+[[6]]
+Y ~ X1 * X2 * X3 * I(X1^2) * I(X2^2)
+&lt;environment: 0x00000241ae7f21e8&gt;
+
+[[7]]
+Y ~ X1 * X2 * X3 * I(X1^2) * I(X2^2) * I(X3^2)
+&lt;environment: 0x00000241ae7f21e8&gt;
+
+[[8]]
+Y ~ poly(X1, 3) * poly(X2, 3) * poly(X3, 3)
+&lt;environment: 0x00000241ae7f21e8&gt;
+
+[[9]]
+Y ~ poly(X1, 4) * poly(X2, 4) * poly(X3, 4)
+&lt;environment: 0x00000241ae7f21e8&gt;</code></pre>
+</div>
+</div>
+<p>First we make some fake data to illustrate. Then, we get to the real business – this is the structure we’ll follow: we make a vector of model specifications, then we make it a list using <code>as.list</code>. Then, we use <code>lapply</code> (list-apply) to hit every entry with <code>as.formula</code>. Remember, for <code>lapply</code>, it takes each list element and uses it as the first argument in the given <code>FUN</code>, so it’ll run <code>as.formula(model_list[[1]])</code> and then, in the output’s first list entry, place the result.</p>
+<p>Now, we <code>lapply</code> that model, returning the fit object (which we can use to <code>predict</code> results using new data). This requires an “anonymous function”. The anonymous function lets you, on the fly, write a function with one argument that lets you reference the list element being applied:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>model_ests <span class="ot">=</span> <span class="fu">lapply</span>(model_list_form, <span class="cf">function</span>(x) <span class="fu">lm</span>(x, <span class="at">data =</span> dat.train ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Alright, no errors. Looks like we estimated seven models. You wouldn’t usually do this, but let’s look at the first 2 and the last one</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">lapply</span>(model_ests[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">9</span>)], <span class="cf">function</span>(x) <span class="fu">summary</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+
+Call:
+lm(formula = x, data = dat.train)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.5197 -0.6295  0.0288  0.5899  2.7199 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  0.02306    0.04289   0.538    0.591
+
+Residual standard error: 0.959 on 499 degrees of freedom
 
 
+[[2]]
+
+Call:
+lm(formula = x, data = dat.train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.52846 -0.62851  0.01821  0.57194  2.71830 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  0.02357    0.04291   0.549    0.583
+X1           0.03165    0.04400   0.719    0.472
+
+Residual standard error: 0.9594 on 498 degrees of freedom
+Multiple R-squared:  0.001038,  Adjusted R-squared:  -0.0009678 
+F-statistic: 0.5175 on 1 and 498 DF,  p-value: 0.4722
+
+
+[[3]]
+
+Call:
+lm(formula = x, data = dat.train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.61031 -0.47422  0.00208  0.49912  2.91785 
+
+Coefficients:
+                                         Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)                             5.336e-01  5.435e-01   0.982    0.327
+poly(X1, 4)1                            2.988e+00  2.586e+01   0.116    0.908
+poly(X1, 4)2                            4.434e+01  4.541e+01   0.976    0.329
+poly(X1, 4)3                            5.822e+00  2.359e+01   0.247    0.805
+poly(X1, 4)4                            3.352e+01  3.547e+01   0.945    0.345
+poly(X2, 4)1                            6.035e+00  2.471e+01   0.244    0.807
+poly(X2, 4)2                            3.983e+01  5.033e+01   0.791    0.429
+poly(X2, 4)3                            1.200e+01  2.954e+01   0.406    0.685
+poly(X2, 4)4                            3.147e+01  3.462e+01   0.909    0.364
+poly(X3, 4)1                            1.680e+01  2.693e+01   0.624    0.533
+poly(X3, 4)2                            3.898e+01  3.782e+01   1.031    0.303
+poly(X3, 4)3                            1.108e+01  2.601e+01   0.426    0.670
+poly(X3, 4)4                            1.803e+01  1.766e+01   1.021    0.308
+poly(X1, 4)1:poly(X2, 4)1              -3.454e+02  9.044e+02  -0.382    0.703
+poly(X1, 4)2:poly(X2, 4)1              -9.672e+01  1.835e+03  -0.053    0.958
+poly(X1, 4)3:poly(X2, 4)1              -3.718e+02  8.203e+02  -0.453    0.651
+poly(X1, 4)4:poly(X2, 4)1              -3.746e+02  1.240e+03  -0.302    0.763
+poly(X1, 4)1:poly(X2, 4)2               2.363e+02  1.986e+03   0.119    0.905
+poly(X1, 4)2:poly(X2, 4)2               3.420e+03  4.136e+03   0.827    0.409
+poly(X1, 4)3:poly(X2, 4)2               2.352e+02  1.844e+03   0.127    0.899
+poly(X1, 4)4:poly(X2, 4)2               2.403e+03  3.164e+03   0.760    0.448
+poly(X1, 4)1:poly(X2, 4)3              -4.684e+02  1.018e+03  -0.460    0.646
+poly(X1, 4)2:poly(X2, 4)3               1.980e+02  2.174e+03   0.091    0.927
+poly(X1, 4)3:poly(X2, 4)3              -5.913e+02  9.579e+02  -0.617    0.537
+poly(X1, 4)4:poly(X2, 4)3               6.899e+00  1.433e+03   0.005    0.996
+poly(X1, 4)1:poly(X2, 4)4               2.933e+02  1.314e+03   0.223    0.823
+poly(X1, 4)2:poly(X2, 4)4               2.561e+03  2.868e+03   0.893    0.372
+poly(X1, 4)3:poly(X2, 4)4               2.453e+02  1.260e+03   0.195    0.846
+poly(X1, 4)4:poly(X2, 4)4               1.835e+03  2.202e+03   0.833    0.405
+poly(X1, 4)1:poly(X3, 4)1              -3.567e+02  9.755e+02  -0.366    0.715
+poly(X1, 4)2:poly(X3, 4)1               1.752e+03  2.150e+03   0.815    0.416
+poly(X1, 4)3:poly(X3, 4)1              -4.906e+01  8.957e+02  -0.055    0.956
+poly(X1, 4)4:poly(X3, 4)1               1.549e+03  1.706e+03   0.908    0.364
+poly(X1, 4)1:poly(X3, 4)2               2.176e+01  1.666e+03   0.013    0.990
+poly(X1, 4)2:poly(X3, 4)2               3.285e+03  3.157e+03   1.040    0.299
+poly(X1, 4)3:poly(X3, 4)2               1.420e+02  1.546e+03   0.092    0.927
+poly(X1, 4)4:poly(X3, 4)2               2.227e+03  2.607e+03   0.854    0.393
+poly(X1, 4)1:poly(X3, 4)3              -4.456e+02  8.990e+02  -0.496    0.620
+poly(X1, 4)2:poly(X3, 4)3               1.567e+03  2.000e+03   0.784    0.434
+poly(X1, 4)3:poly(X3, 4)3              -1.302e+02  8.559e+02  -0.152    0.879
+poly(X1, 4)4:poly(X3, 4)3               1.446e+03  1.594e+03   0.907    0.365
+poly(X1, 4)1:poly(X3, 4)4               4.225e+01  8.185e+02   0.052    0.959
+poly(X1, 4)2:poly(X3, 4)4               1.294e+03  1.503e+03   0.861    0.390
+poly(X1, 4)3:poly(X3, 4)4              -6.803e+00  7.924e+02  -0.009    0.993
+poly(X1, 4)4:poly(X3, 4)4               8.678e+02  1.249e+03   0.695    0.488
+poly(X2, 4)1:poly(X3, 4)1               6.100e+02  1.142e+03   0.534    0.593
+poly(X2, 4)2:poly(X3, 4)1               1.344e+03  2.537e+03   0.530    0.597
+poly(X2, 4)3:poly(X3, 4)1               8.483e+02  1.351e+03   0.628    0.530
+poly(X2, 4)4:poly(X3, 4)1               1.129e+03  1.816e+03   0.622    0.534
+poly(X2, 4)1:poly(X3, 4)2               5.422e+02  1.877e+03   0.289    0.773
+poly(X2, 4)2:poly(X3, 4)2               3.146e+03  3.468e+03   0.907    0.365
+poly(X2, 4)3:poly(X3, 4)2               8.970e+02  2.224e+03   0.403    0.687
+poly(X2, 4)4:poly(X3, 4)2               2.266e+03  2.418e+03   0.937    0.349
+poly(X2, 4)1:poly(X3, 4)3               6.174e+02  1.067e+03   0.579    0.563
+poly(X2, 4)2:poly(X3, 4)3               6.257e+02  2.456e+03   0.255    0.799
+poly(X2, 4)3:poly(X3, 4)3               9.380e+02  1.267e+03   0.740    0.460
+poly(X2, 4)4:poly(X3, 4)3               4.870e+02  1.777e+03   0.274    0.784
+poly(X2, 4)1:poly(X3, 4)4               2.291e+02  9.218e+02   0.248    0.804
+poly(X2, 4)2:poly(X3, 4)4               1.047e+03  1.549e+03   0.676    0.500
+poly(X2, 4)3:poly(X3, 4)4               5.522e+02  1.054e+03   0.524    0.601
+poly(X2, 4)4:poly(X3, 4)4               5.095e+02  1.105e+03   0.461    0.645
+poly(X1, 4)1:poly(X2, 4)1:poly(X3, 4)1 -1.028e+04  4.271e+04  -0.241    0.810
+poly(X1, 4)2:poly(X2, 4)1:poly(X3, 4)1  2.452e+04  8.704e+04   0.282    0.778
+poly(X1, 4)3:poly(X2, 4)1:poly(X3, 4)1 -1.324e+04  3.764e+04  -0.352    0.725
+poly(X1, 4)4:poly(X2, 4)1:poly(X3, 4)1  8.597e+03  6.093e+04   0.141    0.888
+poly(X1, 4)1:poly(X2, 4)2:poly(X3, 4)1 -3.084e+04  7.146e+04  -0.432    0.666
+poly(X1, 4)2:poly(X2, 4)2:poly(X3, 4)1  1.458e+05  1.990e+05   0.732    0.464
+poly(X1, 4)3:poly(X2, 4)2:poly(X3, 4)1 -2.507e+04  6.755e+04  -0.371    0.711
+poly(X1, 4)4:poly(X2, 4)2:poly(X3, 4)1  1.365e+05  1.523e+05   0.897    0.371
+poly(X1, 4)1:poly(X2, 4)3:poly(X3, 4)1 -1.007e+04  4.498e+04  -0.224    0.823
+poly(X1, 4)2:poly(X2, 4)3:poly(X3, 4)1  3.755e+04  1.009e+05   0.372    0.710
+poly(X1, 4)3:poly(X2, 4)3:poly(X3, 4)1 -1.758e+04  4.105e+04  -0.428    0.669
+poly(X1, 4)4:poly(X2, 4)3:poly(X3, 4)1  1.840e+04  6.872e+04   0.268    0.789
+poly(X1, 4)1:poly(X2, 4)4:poly(X3, 4)1 -1.843e+04  4.705e+04  -0.392    0.695
+poly(X1, 4)2:poly(X2, 4)4:poly(X3, 4)1  1.158e+05  1.425e+05   0.813    0.417
+poly(X1, 4)3:poly(X2, 4)4:poly(X3, 4)1 -1.754e+04  4.755e+04  -0.369    0.712
+poly(X1, 4)4:poly(X2, 4)4:poly(X3, 4)1  1.012e+05  1.074e+05   0.942    0.347
+poly(X1, 4)1:poly(X2, 4)1:poly(X3, 4)2 -3.281e+04  6.566e+04  -0.500    0.618
+poly(X1, 4)2:poly(X2, 4)1:poly(X3, 4)2 -3.988e+03  1.418e+05  -0.028    0.978
+poly(X1, 4)3:poly(X2, 4)1:poly(X3, 4)2 -4.125e+04  5.842e+04  -0.706    0.481
+poly(X1, 4)4:poly(X2, 4)1:poly(X3, 4)2 -1.954e+04  9.760e+04  -0.200    0.841
+poly(X1, 4)1:poly(X2, 4)2:poly(X3, 4)2  1.159e+04  1.230e+05   0.094    0.925
+poly(X1, 4)2:poly(X2, 4)2:poly(X3, 4)2  2.661e+05  2.818e+05   0.944    0.346
+poly(X1, 4)3:poly(X2, 4)2:poly(X3, 4)2  9.999e+02  1.181e+05   0.008    0.993
+poly(X1, 4)4:poly(X2, 4)2:poly(X3, 4)2  1.913e+05  2.275e+05   0.841    0.401
+poly(X1, 4)1:poly(X2, 4)3:poly(X3, 4)2 -4.594e+04  7.314e+04  -0.628    0.530
+poly(X1, 4)2:poly(X2, 4)3:poly(X3, 4)2  8.388e+03  1.670e+05   0.050    0.960
+poly(X1, 4)3:poly(X2, 4)3:poly(X3, 4)2 -6.232e+04  6.911e+04  -0.902    0.368
+poly(X1, 4)4:poly(X2, 4)3:poly(X3, 4)2 -5.225e+03  1.121e+05  -0.047    0.963
+poly(X1, 4)1:poly(X2, 4)4:poly(X3, 4)2  1.304e+04  8.228e+04   0.158    0.874
+poly(X1, 4)2:poly(X2, 4)4:poly(X3, 4)2  1.900e+05  1.946e+05   0.977    0.329
+poly(X1, 4)3:poly(X2, 4)4:poly(X3, 4)2  2.041e+03  8.242e+04   0.025    0.980
+poly(X1, 4)4:poly(X2, 4)4:poly(X3, 4)2  1.291e+05  1.559e+05   0.828    0.408
+poly(X1, 4)1:poly(X2, 4)1:poly(X3, 4)3 -6.263e+03  3.857e+04  -0.162    0.871
+poly(X1, 4)2:poly(X2, 4)1:poly(X3, 4)3  2.736e+04  8.086e+04   0.338    0.735
+poly(X1, 4)3:poly(X2, 4)1:poly(X3, 4)3 -5.336e+03  3.407e+04  -0.157    0.876
+poly(X1, 4)4:poly(X2, 4)1:poly(X3, 4)3  4.121e+03  5.720e+04   0.072    0.943
+poly(X1, 4)1:poly(X2, 4)2:poly(X3, 4)3 -4.828e+04  6.792e+04  -0.711    0.478
+poly(X1, 4)2:poly(X2, 4)2:poly(X3, 4)3  1.051e+05  1.854e+05   0.567    0.571
+poly(X1, 4)3:poly(X2, 4)2:poly(X3, 4)3 -3.908e+04  6.719e+04  -0.582    0.561
+poly(X1, 4)4:poly(X2, 4)2:poly(X3, 4)3  1.112e+05  1.416e+05   0.786    0.432
+poly(X1, 4)1:poly(X2, 4)3:poly(X3, 4)3 -8.359e+03  4.110e+04  -0.203    0.839
+poly(X1, 4)2:poly(X2, 4)3:poly(X3, 4)3  4.491e+04  9.429e+04   0.476    0.634
+poly(X1, 4)3:poly(X2, 4)3:poly(X3, 4)3 -1.304e+04  3.845e+04  -0.339    0.735
+poly(X1, 4)4:poly(X2, 4)3:poly(X3, 4)3  1.609e+04  6.491e+04   0.248    0.804
+poly(X1, 4)1:poly(X2, 4)4:poly(X3, 4)3 -3.632e+04  4.687e+04  -0.775    0.439
+poly(X1, 4)2:poly(X2, 4)4:poly(X3, 4)3  7.222e+04  1.329e+05   0.543    0.587
+poly(X1, 4)3:poly(X2, 4)4:poly(X3, 4)3 -3.442e+04  4.914e+04  -0.700    0.484
+poly(X1, 4)4:poly(X2, 4)4:poly(X3, 4)3  6.978e+04  9.955e+04   0.701    0.484
+poly(X1, 4)1:poly(X2, 4)1:poly(X3, 4)4 -2.251e+04  3.229e+04  -0.697    0.486
+poly(X1, 4)2:poly(X2, 4)1:poly(X3, 4)4 -3.537e+03  6.841e+04  -0.052    0.959
+poly(X1, 4)3:poly(X2, 4)1:poly(X3, 4)4 -2.899e+04  2.935e+04  -0.988    0.324
+poly(X1, 4)4:poly(X2, 4)1:poly(X3, 4)4 -5.152e+03  4.699e+04  -0.110    0.913
+poly(X1, 4)1:poly(X2, 4)2:poly(X3, 4)4  1.062e+04  6.631e+04   0.160    0.873
+poly(X1, 4)2:poly(X2, 4)2:poly(X3, 4)4  6.806e+04  1.271e+05   0.536    0.593
+poly(X1, 4)3:poly(X2, 4)2:poly(X3, 4)4 -8.527e+03  6.655e+04  -0.128    0.898
+poly(X1, 4)4:poly(X2, 4)2:poly(X3, 4)4  3.659e+04  1.031e+05   0.355    0.723
+poly(X1, 4)1:poly(X2, 4)3:poly(X3, 4)4 -3.521e+04  3.727e+04  -0.945    0.345
+poly(X1, 4)2:poly(X2, 4)3:poly(X3, 4)4  9.278e+03  7.880e+04   0.118    0.906
+poly(X1, 4)3:poly(X2, 4)3:poly(X3, 4)4 -4.595e+04  3.646e+04  -1.260    0.208
+poly(X1, 4)4:poly(X2, 4)3:poly(X3, 4)4  1.224e+04  5.329e+04   0.230    0.818
+poly(X1, 4)1:poly(X2, 4)4:poly(X3, 4)4  6.892e+03  4.890e+04   0.141    0.888
+poly(X1, 4)2:poly(X2, 4)4:poly(X3, 4)4  2.929e+04  8.802e+04   0.333    0.740
+poly(X1, 4)3:poly(X2, 4)4:poly(X3, 4)4 -6.078e+03  4.986e+04  -0.122    0.903
+poly(X1, 4)4:poly(X2, 4)4:poly(X3, 4)4  6.372e+03  7.030e+04   0.091    0.928
+
+Residual standard error: 0.9853 on 375 degrees of freedom
+Multiple R-squared:  0.2066,    Adjusted R-squared:  -0.05575 
+F-statistic: 0.7875 on 124 and 375 DF,  p-value: 0.9419</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+WARNING
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Don’t print out the coefficient tables of your results for any of your models. We only want to predict, we don’t want to interpret.</p>
+</div>
+</div>
+<p>Now, calculate the rmse for train and test:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>model_rmse_train <span class="ot">=</span> <span class="fu">lapply</span>(model_ests, <span class="cf">function</span>(x) <span class="fu">get_rmse</span>(<span class="at">model =</span> x, <span class="at">data =</span> dat.train, <span class="at">response =</span> <span class="st">'Y'</span>))</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(model_rmse_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 0.957994
+
+[[2]]
+[1] 0.9574966
+
+[[3]]
+[1] 0.9551141
+
+[[4]]
+[1] 0.952224
+
+[[5]]
+[1] 0.9429713
+
+[[6]]
+[1] 0.9291898
+
+[[7]]
+[1] 0.9106093
+
+[[8]]
+[1] 0.9106093
+
+[[9]]
+[1] 0.8533138</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>model_rmse_test <span class="ot">=</span> <span class="fu">lapply</span>(model_ests, <span class="cf">function</span>(x) <span class="fu">get_rmse</span>(<span class="at">model =</span> x, <span class="at">data =</span> dat.test, <span class="at">response =</span> <span class="st">'Y'</span>))</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(model_rmse_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 1.008688
+
+[[2]]
+[1] 1.012111
+
+[[3]]
+[1] 1.014515
+
+[[4]]
+[1] 1.018176
+
+[[5]]
+[1] 1.045088
+
+[[6]]
+[1] 1.134584
+
+[[7]]
+[1] 1.509911
+
+[[8]]
+[1] 1.509911
+
+[[9]]
+[1] 13.29548</code></pre>
+</div>
+</div>
+<p>Then, we can make the data.frame of results. We’d usually have <code>complexity</code> in there too, but I’ll put the formulas in. In later work, we won’t really have “formulas” to put in here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">formula =</span> <span class="fu">as.character</span>(<span class="fu">unlist</span>(model_list_form)), <span class="co"># usually you'd have complexity here</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">train_rmse =</span> <span class="fu">unlist</span>(model_rmse_train),</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">test_rmse =</span> <span class="fu">unlist</span>(model_rmse_test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                         formula train_rmse test_rmse
+1                                          Y ~ 1  0.9579940  1.008688
+2                                         Y ~ X1  0.9574966  1.012111
+3                                    Y ~ X1 * X2  0.9551141  1.014515
+4                               Y ~ X1 * X2 * X3  0.9522240  1.018176
+5                     Y ~ X1 * X2 * X3 * I(X1^2)  0.9429713  1.045088
+6           Y ~ X1 * X2 * X3 * I(X1^2) * I(X2^2)  0.9291898  1.134584
+7 Y ~ X1 * X2 * X3 * I(X1^2) * I(X2^2) * I(X3^2)  0.9106093  1.509911
+8    Y ~ poly(X1, 3) * poly(X2, 3) * poly(X3, 3)  0.9106093  1.509911
+9    Y ~ poly(X1, 4) * poly(X2, 4) * poly(X3, 4)  0.8533138 13.295477</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What’s our takeaway from this?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>Which model does best?</p></li>
+<li><p>Does this seem like an odd outcome? What did the data look like in the first place?</p></li>
+</ol>
+</div>
+</div>
+
+
+</section>
 </section>
 
 </main> <!-- /main -->
