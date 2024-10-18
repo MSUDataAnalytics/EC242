@@ -128,6 +128,11 @@ summary(flexible.lm)
 
 ```
 
+```{r, echo=F, eval=T}
+smallset_holdout = Advertising %>% slice(21:40)
+```
+
+
 Looks great - we are explaining a **lot** of the variation in sales! Let's plot this 16-degree polynomial:
 
 ```{r}
@@ -299,6 +304,19 @@ get_rmse(model = fit_5, data = train_data, response = "sales") # train RMSE
 get_rmse(model = fit_5, data = test_data, response = "sales") # test RMSE
 ```
 
+
+```{r}
+fit_6 = lm(sales ~ radio * newspaper * TV +
+           I(TV ^ 2) * I(radio ^ 2) * I(newspaper ^ 2) +
+             I(TV ^ 3) * I(radio ^ 3) * I(newspaper ^ 3), data = train_data)
+get_complexity(fit_6)
+
+get_rmse(model = fit_6, data = train_data, response = "sales") # train RMSE
+get_rmse(model = fit_6, data = test_data, response = "sales") # test RMSE
+```
+
+
+
 ## Choosing a Model
 
 To better understand the relationship between train RMSE, test RMSE, and model complexity, we summarize our results, as the above is somewhat cluttered.
@@ -313,12 +331,15 @@ fit_4 = lm(sales ~ radio * newspaper * TV +
            I(TV ^ 2) + I(radio ^ 2) + I(newspaper ^ 2), data = train_data)
 fit_5 = lm(sales ~ radio * newspaper * TV +
            I(TV ^ 2) * I(radio ^ 2) * I(newspaper ^ 2), data = train_data)
+fit_6 = lm(sales ~ radio * newspaper * TV +
+           I(TV ^ 2) * I(radio ^ 2) * I(newspaper ^ 2) +
+             I(TV ^ 3) * I(radio ^ 3) * I(newspaper ^ 3), data = train_data)
 ```
 
 Next, we create a list of the models fit.
 
 ```{r}
-model_list = list(fit_1, fit_2, fit_3, fit_4, fit_5)
+model_list = list(fit_0, fit_1, fit_2, fit_3, fit_4, fit_5, fit_6)
 ```
 
 We then obtain train RMSE, test RMSE, and model complexity for each.
@@ -332,11 +353,13 @@ model_complexity = sapply(model_list, get_complexity)
 ```{r, echo = FALSE, eval = FALSE}
 # the following is the same as the apply command above
 
-test_rmse = c(get_rmse(fit_1, test_data, "sales"),
+test_rmse = c(get_rmse(fit_0, test_data, "sales"),
+              get_rmse(fit_1, test_data, "sales"),
               get_rmse(fit_2, test_data, "sales"),
               get_rmse(fit_3, test_data, "sales"),
               get_rmse(fit_4, test_data, "sales"),
-              get_rmse(fit_5, test_data, "sales"))
+              get_rmse(fit_5, test_data, "sales"),
+              get_rmse(fit_6, test_data, "sales"))
 ```
 
 We then plot the results. The train RMSE can be seen in blue, while the test RMSE is given in orange.
@@ -346,7 +369,7 @@ plot(model_complexity, train_rmse, type = "b",
      ylim = c(min(c(train_rmse, test_rmse)) - 0.02,
               max(c(train_rmse, test_rmse)) + 0.02),
      col = "dodgerblue",
-     xlab = "Model Size",
+     xlab = "Model Size (complexity)",
      ylab = "RMSE")
 lines(model_complexity, test_rmse, type = "b", col = "darkorange")
 legend('topright', legend = c('train','test'), col = c('dodgerblue','darkorange'), lty=1)
@@ -356,31 +379,50 @@ We also summarize the results as a table. `fit_1` is the least flexible, and `fi
 
 | Model   | Train RMSE        | Test RMSE        | Predictors              |
 |---------|-------------------|------------------|-------------------------|
+| `fit_0` | `r train_rmse[0]` | `r test_rmse[0]` | `r model_complexity[0]` |
 | `fit_1` | `r train_rmse[1]` | `r test_rmse[1]` | `r model_complexity[1]` |
 | `fit_2` | `r train_rmse[2]` | `r test_rmse[2]` | `r model_complexity[2]` |
 | `fit_3` | `r train_rmse[3]` | `r test_rmse[3]` | `r model_complexity[3]` |
 | `fit_4` | `r train_rmse[4]` | `r test_rmse[4]` | `r model_complexity[4]` |
 | `fit_5` | `r train_rmse[5]` | `r test_rmse[5]` | `r model_complexity[5]` |
+| `fit_6` | `r train_rmse[6]` | `r test_rmse[6]` | `r model_complexity[6]` |
 
 To summarize:
 
 - **Underfitting models:** In general *High* Train RMSE, *High* Test RMSE. Seen in `fit_1` and `fit_2`.
-- **Overfitting models:** In general *Low* Train RMSE, *High* Test RMSE. Seen in `fit_4` and `fit_5`.
+- **Overfitting models:** In general *Low* Train RMSE, *High* Test RMSE. Seen in `fit_5` and `fit_6`.
 
 Specifically, we say that a model is overfitting if there exists a less complex model with lower Test RMSE. Then a model is underfitting if there exists a more complex model with lower Test RMSE.
 
 A number of notes on these results:
 
-- The labels of under and overfitting are *relative* to the best model we see, `fit_3`. Any model more complex with higher Test RMSE is overfitting. Any model less complex with higher Test RMSE is underfitting.
-- The train RMSE is guaranteed to follow this non-increasing pattern. The same is not true of test RMSE. Here we see a nice U-shaped curve. There are theoretical reasons why we should expect this, but that is on average. Because of the randomness of one test-train split, we may not always see this result. Re-perform this analysis with a different seed value and the pattern may not hold. We will discuss why we expect this next chapter. We will discuss how we can help create this U-shape much later.
+- The labels of under and overfitting are *relative* to the best model we see, `fit_4`. Any model more complex with higher Test RMSE is overfitting. Any model less complex with higher Test RMSE is underfitting.
+- The train RMSE is guaranteed to follow this non-increasing pattern. The same is not true of test RMSE. Here we see a nice U-shaped curve. There are theoretical reasons why we should expect this, but that is on average. Because of the randomness of one test-train split, we may not always see this result. Re-perform this analysis with a different seed value and the pattern may not hold. There will always be a minimum point, though. 
 - Often we expect train RMSE to be lower than test RMSE. Again, due to the randomness of the split, you may get lucky and this will not be true.
 
 A final note on the analysis performed here; we paid no attention whatsoever to the "assumptions" of a linear model. We only sought a model that **predicted** well, and paid no attention to a model for **explaination**. Hypothesis testing did not play a role in deciding the model, only prediction accuracy. Collinearity? We don't care. Assumptions? Still don't care. Diagnostics? Never heard of them. (These statements are a little over the top, and not completely true, but just to drive home the point that we only care about prediction. Often we latch onto methods that we have seen before, even when they are not needed.)
 
 
+### Why does test RMSE increase?
+Based on our discussion above, the short answer is overfitting. To illustrate, here's the overfit polynomial from earlier, but now I'm going to add to more randomly sampled points from `Advertising`. It's in random order, so here I can just take the next 20 points. Usually we'd want to sample carefully
 
+```{r}
+smallset_holdout = Advertising %>% slice(21:40)
 
-## Coding for Test-Train Split
+# Plot a curve using predict over a very fine set of values
+plotseq = seq(from = min(smallset$TV), to = max(smallset$TV), length = 300)
+predseq = predict(flexible.lm, newdata = data.frame(TV = plotseq))
+
+plot(sales ~ TV, smallset, ylim = c(0, 100))
+lines(y = predseq, x = plotseq)
+
+# and add the next 20 points
+points(y = smallset_holdout$sales, x = smallset_holdout$TV, col='red')
+```
+
+ The RMSE is the square of the distance (in the vertical Y direction) between the point and the line. Where the black line meets the black points, the model is fitting well in *training*. But the red points to the black line have some much larger distances, which means much larger RMSE. As we wrangle the black line to the black points, we put a lot of wiggle in it that does not accommodate the red points well.
+
+## Coding for Test-Train Split {#coding-test-train}
 
 ### Making the split:
 Above, when [we created the split datasets](#avoiding-overfitting), you'll notice we used a sampled index to make our training and testing split. Let's take a closer look using a "dataset" of 10:

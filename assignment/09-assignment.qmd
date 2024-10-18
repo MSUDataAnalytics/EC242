@@ -83,6 +83,9 @@ ggplot(res, aes(x = lambda, y = mse)) +
 ### Data cleaning
 Repeat the data cleaning exercise from last week's lab. The point is to make sure that every observation is non-`NA` and all predictor variables have more than one value. Use `skimr::skim` on `Ames` to find predictors with only one value or are missing many values. Take them out, and use `na.omit` to ensure there are no `NA` values left. Check to make sure you still have at least 800 or so observations!
 
+### Predicive model
+For the assignment below, we'll use `glmnet::cv.glmnet` to estimate a LASSO model. Note that you're asked to state 16 predictors and 5 interactions. You can go beyond this. **Unlike our linear model building, complexity in LASSO is not controlled by writing out a bunch of formulas with more terms. It's in the lambda parameter.** So we write one formula and let lambda vary.
+
 ::: {.callout-note}
 ## Exercise 1 of 1
 
@@ -92,7 +95,7 @@ Repeat the data cleaning exercise from last week's lab. The point is to make sur
 
 3. Choose at least 5 interactions between your predictor variables and print out the formula you'll use to predict `SalePrice`.
 
-4. In your code, use `set.seed(24224)` so that your results will always be the same. Why do we need to set seed? When we (well, `caret::train`) makes the Train and Test sample(s), it'll select them randomly. If you don't set seed, every time you run it, you'll get slightly different answers!
+4. In your code, use `set.seed(24224)` so that your results will always be the same. Why do we need to set seed? When we (well, `glmnet::cvglmnet`) makes the Train and Test sample(s), it'll select them randomly. If you don't set seed, every time you run it, you'll get slightly different answers!
 
 5. Using `glmnet::cv.glmnet` to estimate a LASSO model (see lecture notes this week) that predicts `SalePrice` given the observed data and using your formula. Slide 33 shows cross-validation using both `alpha` and `lambda` -- a LASSO model holds `alpha` fixed at `alpha = 1`. We'll search using `lambda` as our tuning parameter. Call the resulting object `net_cv`.
 

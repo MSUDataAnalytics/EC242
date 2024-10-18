@@ -330,6 +330,10 @@ Due Date
 <section id="data-cleaning" class="level3">
 <h3 class="anchored" data-anchor-id="data-cleaning">Data cleaning</h3>
 <p>Repeat the data cleaning exercise from last week’s lab. The point is to make sure that every observation is non-<code>NA</code> and all predictor variables have more than one value. Use <code>skimr::skim</code> on <code>Ames</code> to find predictors with only one value or are missing many values. Take them out, and use <code>na.omit</code> to ensure there are no <code>NA</code> values left. Check to make sure you still have at least 800 or so observations!</p>
+</section>
+<section id="predicive-model" class="level3">
+<h3 class="anchored" data-anchor-id="predicive-model">Predicive model</h3>
+<p>For the assignment below, we’ll use <code>glmnet::cv.glmnet</code> to estimate a LASSO model. Note that you’re asked to state 16 predictors and 5 interactions. You can go beyond this. <strong>Unlike our linear model building, complexity in LASSO is not controlled by writing out a bunch of formulas with more terms. It’s in the lambda parameter.</strong> So we write one formula and let lambda vary.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -344,7 +348,7 @@ Exercise 1 of 1
 <li><p>Clean your data as described above.</p></li>
 <li><p>Choose up to <strong>16</strong> predictor variables and clean your data so that no <code>NA</code> values are left</p></li>
 <li><p>Choose at least 5 interactions between your predictor variables and print out the formula you’ll use to predict <code>SalePrice</code>.</p></li>
-<li><p>In your code, use <code>set.seed(24224)</code> so that your results will always be the same. Why do we need to set seed? When we (well, <code>caret::train</code>) makes the Train and Test sample(s), it’ll select them randomly. If you don’t set seed, every time you run it, you’ll get slightly different answers!</p></li>
+<li><p>In your code, use <code>set.seed(24224)</code> so that your results will always be the same. Why do we need to set seed? When we (well, <code>glmnet::cvglmnet</code>) makes the Train and Test sample(s), it’ll select them randomly. If you don’t set seed, every time you run it, you’ll get slightly different answers!</p></li>
 <li><p>Using <code>glmnet::cv.glmnet</code> to estimate a LASSO model (see lecture notes this week) that predicts <code>SalePrice</code> given the observed data and using your formula. Slide 33 shows cross-validation using both <code>alpha</code> and <code>lambda</code> – a LASSO model holds <code>alpha</code> fixed at <code>alpha = 1</code>. We’ll search using <code>lambda</code> as our tuning parameter. Call the resulting object <code>net_cv</code>.</p></li>
 </ol>
 <ul>
