@@ -466,6 +466,8 @@ window.Quarto = {
 </header>
 
 
+<!-- For Sp 2025, probably move the first chunk of this on overfitting to 08a (it was short). The natural split is when test-train is introduced. -->
+<!-- Many other changes were added to this one. -->
 <section id="model-selection" class="level2">
 <h2 class="anchored" data-anchor-id="model-selection">Model Selection</h2>
 <p>Often when we are developing a linear regression model, part of our goal is to <strong>explain</strong> a relationship. Now, we will ignore much of what we have learned and instead simply use regression as a tool to <strong>predict</strong>. Instead of a model which explains relationships, we seek a model which minimizes errors.</p>
@@ -844,16 +846,17 @@ TRY IT
 <p>To better understand the relationship between train RMSE, test RMSE, and model complexity, we summarize our results, as the above is somewhat cluttered.</p>
 <p>First, we recap the models that we have fit.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>fit_1 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> ., <span class="at">data =</span> train_data)</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>fit_2 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV, <span class="at">data =</span> train_data)</span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>fit_3 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span> <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
-<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>fit_4 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
-<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
-<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>fit_5 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
-<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
-<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>fit_6 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
-<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>             <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">3</span>), <span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>fit_0 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> train_data)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>fit_1 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> ., <span class="at">data =</span> train_data)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>fit_2 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV, <span class="at">data =</span> train_data)</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>fit_3 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span> <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>fit_4 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>fit_5 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>), <span class="at">data =</span> train_data)</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>fit_6 <span class="ot">=</span> <span class="fu">lm</span>(sales <span class="sc">~</span> radio <span class="sc">*</span> newspaper <span class="sc">*</span> TV <span class="sc">+</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>           <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>             <span class="fu">I</span>(TV <span class="sc">^</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="fu">I</span>(radio <span class="sc">^</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="fu">I</span>(newspaper <span class="sc">^</span> <span class="dv">3</span>), <span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, we create a list of the models fit.</p>
 <div class="cell">
@@ -902,45 +905,45 @@ TRY IT
 <tbody>
 <tr class="odd">
 <td><code>fit_0</code></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><code>fit_1</code></td>
 <td>5.224106</td>
 <td>5.2118814</td>
 <td>0</td>
 </tr>
-<tr class="odd">
-<td><code>fit_2</code></td>
+<tr class="even">
+<td><code>fit_1</code></td>
 <td>1.6493463</td>
 <td>1.7416416</td>
 <td>3</td>
 </tr>
-<tr class="even">
-<td><code>fit_3</code></td>
+<tr class="odd">
+<td><code>fit_2</code></td>
 <td>0.9875248</td>
 <td>0.9014459</td>
 <td>7</td>
 </tr>
-<tr class="odd">
-<td><code>fit_4</code></td>
+<tr class="even">
+<td><code>fit_3</code></td>
 <td>0.6685005</td>
 <td>0.6242491</td>
 <td>8</td>
 </tr>
-<tr class="even">
-<td><code>fit_5</code></td>
+<tr class="odd">
+<td><code>fit_4</code></td>
 <td>0.6676294</td>
 <td>0.6232819</td>
 <td>10</td>
 </tr>
-<tr class="odd">
-<td><code>fit_6</code></td>
+<tr class="even">
+<td><code>fit_5</code></td>
 <td>0.6359041</td>
 <td>0.7809674</td>
 <td>14</td>
+</tr>
+<tr class="odd">
+<td><code>fit_6</code></td>
+<td>0.4637712</td>
+<td>1.5793789</td>
+<td>21</td>
 </tr>
 </tbody>
 </table>
@@ -1070,39 +1073,39 @@ TRY IT
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 Y ~ 1
-&lt;environment: 0x000002e4e0bb3d30&gt;
+&lt;environment: 0x0000024b779791a8&gt;
 
 [[2]]
 Y ~ X1
-&lt;environment: 0x000002e4e0bb3d30&gt;
+&lt;environment: 0x0000024b779791a8&gt;
 
 [[3]]
 Y ~ X1 * X2
-&lt;environment: 0x000002e4e0bb3d30&gt;
+&lt;environment: 0x0000024b779791a8&gt;
 
 [[4]]
 Y ~ X1 * X2 * X3
-&lt;environment: 0x000002e4e0bb3d30&gt;
+&lt;environment: 0x0000024b779791a8&gt;
 
 [[5]]
 Y ~ X1 * X2 * X3 * I(X1^2)
-&lt;environment: 0x000002e4e0bb3d30&gt;
+&lt;environment: 0x0000024b779791a8&gt;
 
 [[6]]
 Y ~ X1 * X2 * X3 * I(X1^2) * I(X2^2)
-&lt;environment: 0x000002e4e0bb3d30&gt;
+&lt;environment: 0x0000024b779791a8&gt;
 
 [[7]]
 Y ~ X1 * X2 * X3 * I(X1^2) * I(X2^2) * I(X3^2)
-&lt;environment: 0x000002e4e0bb3d30&gt;
+&lt;environment: 0x0000024b779791a8&gt;
 
 [[8]]
 Y ~ poly(X1, 3) * poly(X2, 3) * poly(X3, 3)
-&lt;environment: 0x000002e4e0bb3d30&gt;
+&lt;environment: 0x0000024b779791a8&gt;
 
 [[9]]
 Y ~ poly(X1, 4) * poly(X2, 4) * poly(X3, 4)
-&lt;environment: 0x000002e4e0bb3d30&gt;</code></pre>
+&lt;environment: 0x0000024b779791a8&gt;</code></pre>
 </div>
 </div>
 <p>First we make some fake data to illustrate. Then, we get to the real business – this is the structure we’ll follow: we make a vector of model specifications, then we make it a list using <code>as.list</code>. Then, we use <code>lapply</code> (list-apply) to hit every entry with <code>as.formula</code>. Remember, for <code>lapply</code>, it takes each list element and uses it as the first argument in the given <code>FUN</code>, so it’ll run <code>as.formula(model_list[[1]])</code> and then, in the output’s first list entry, place the result.</p>

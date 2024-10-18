@@ -7,7 +7,9 @@ editor_options:
   chunk_output_type: console
 ---
 
+<!-- For Sp 2025, probably move the first chunk of this on overfitting to 08a (it was short). The natural split is when test-train is introduced. -->
 
+<!-- Many other changes were added to this one. -->
 
 ##  Model Selection
 
@@ -324,6 +326,7 @@ To better understand the relationship between train RMSE, test RMSE, and model c
 First, we recap the models that we have fit.
 
 ```{r, eval = FALSE}
+fit_0 = lm(sales ~ 1, data = train_data)
 fit_1 = lm(sales ~ ., data = train_data)
 fit_2 = lm(sales ~ radio * newspaper * TV, data = train_data)
 fit_3 = lm(sales ~ radio * newspaper * TV + I(TV ^ 2), data = train_data)
@@ -379,13 +382,13 @@ We also summarize the results as a table. `fit_1` is the least flexible, and `fi
 
 | Model   | Train RMSE        | Test RMSE        | Predictors              |
 |---------|-------------------|------------------|-------------------------|
-| `fit_0` | `r train_rmse[0]` | `r test_rmse[0]` | `r model_complexity[0]` |
-| `fit_1` | `r train_rmse[1]` | `r test_rmse[1]` | `r model_complexity[1]` |
-| `fit_2` | `r train_rmse[2]` | `r test_rmse[2]` | `r model_complexity[2]` |
-| `fit_3` | `r train_rmse[3]` | `r test_rmse[3]` | `r model_complexity[3]` |
-| `fit_4` | `r train_rmse[4]` | `r test_rmse[4]` | `r model_complexity[4]` |
-| `fit_5` | `r train_rmse[5]` | `r test_rmse[5]` | `r model_complexity[5]` |
-| `fit_6` | `r train_rmse[6]` | `r test_rmse[6]` | `r model_complexity[6]` |
+| `fit_0` | `r train_rmse[1]` | `r test_rmse[1]` | `r model_complexity[1]` |
+| `fit_1` | `r train_rmse[2]` | `r test_rmse[2]` | `r model_complexity[2]` |
+| `fit_2` | `r train_rmse[3]` | `r test_rmse[3]` | `r model_complexity[3]` |
+| `fit_3` | `r train_rmse[4]` | `r test_rmse[4]` | `r model_complexity[4]` |
+| `fit_4` | `r train_rmse[5]` | `r test_rmse[5]` | `r model_complexity[5]` |
+| `fit_5` | `r train_rmse[6]` | `r test_rmse[6]` | `r model_complexity[6]` |
+| `fit_6` | `r train_rmse[7]` | `r test_rmse[7]` | `r model_complexity[7]` |
 
 To summarize:
 
