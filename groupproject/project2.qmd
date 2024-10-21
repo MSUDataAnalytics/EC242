@@ -36,7 +36,7 @@ While not super-helpful for this application, the survey itself can be viewed on
 
 This is a new project, so there may be some unclear descriptions or details that are necessary. I'll add questions and answers here as they come in.
 
-- None at the moment!
+- You *show* your code in 1, but suppress your code using `echo=F` in 2-5.
 :::
 
 ## The project
@@ -46,7 +46,7 @@ This project will take the form of a short memo-style documentation and evaluati
 
 2. **State your priors** (5 points): In 1-2 paragraphs, discuss your *prior beliefs* about the relationship between three of the variables and the target variable, `TOTALBTU`. While our predictive models often become un-interpretable, we have to start with some set of beliefs about the relationship, starting with the existence of some relationship. You cannot choose `HDD65` or `CDD65`, though. These are too obvious. Make *one* plot of the relationship between `TOTALBTU` and some variable(s) that you think will be important and include that plot in this section. The plot has to be clean and clear, but the analysis behind it can be very simple and straightforward (this assignment is about the prediction, not a re-hash of Project 1). Do not include any of the code here.
 
-3. **Estimate a model** (20 points): Estimate a robust and detailed predictive model that includes the relationship from (1) and anything and everything else you think will provide predictive power. The sky is the limit. Use the train-test paradigm to arrive at your best prediction. Do not use the "canned" routines -- you'll need to set a range of complexity and use `lapply` or a loop to estimate over those complexity parameters. However, **do not output your estimation code or underlying output**. In the write-up for this section, include a table showing the range of *complexity* that was tried (e.g. the *lambda* from a LASSO), the training RMSE, and the testing RMSE. Make a plot showing the progression of both RMSE's as complexity increases. The plot should show the nadir where the testing RMSE reaches it's minimum. If you are using a method that has two complexity parameters, you'll need to include test and train RMSE's for every combination of parameter values. In that case, choose a coarse number of parameter values in the complexity parameters so that you are not searching over too many values. You can plot across one complexity parameter with the other complexity parameter held fixed. Your write-up should **not** include any code, just the table and the plot. In a 2-3 sentence discussion, note which model you have selected as your optimal model and why.
+3. **Estimate a model** (20 points): Estimate a robust and detailed predictive model that includes the relationship from (1) and anything and everything else you think will provide predictive power. The sky is the limit. Use the train-test paradigm to arrive at your best prediction. Do not use the "canned" routines -- you'll need to set a range of complexity and use `lapply` or a loop to estimate over those complexity parameters. However, **do not output your estimation code or underlying output**. In the write-up for this section, include a table showing the range of *complexity* that was tried (e.g. the *lambda* from a LASSO), the training RMSE, and the testing RMSE. Make a plot showing the progression of both RMSE's as complexity increases. The plot should show the nadir where the testing RMSE reaches it's minimum. If you are using a method that has two complexity parameters, you'll need to include test and train RMSE's for every combination of parameter values. In that case, choose a coarse number of parameter values in the complexity parameters so that you are not searching over too many values. You can plot across one complexity parameter with the other complexity parameter held fixed. Your write-up should **not** include any code in this section, just the table and the plot. In a 2-3 sentence discussion, note which model you have selected as your optimal model and why.
 
 4. **Evaluate the Model** (10 points): Take your model to the evaluation sample (see below) and calculate the RMSE for your optimal model on this sample. Then, see if your priors were correct by changing the variable you hypothesized to be related, and see if your predictive model changes it's prediction accordingly. For instance, I think an increase in `HDD65` will increase the energy consumed when it increases. To see if this holds in my model, I can increase `HDD65` by some amount (a percent or a fixed amount, or a change in category if a categorical/factor variable) across all the data, and compare the new prediction to the old. Do this for each of the three predictions you made in (2). 
 
@@ -80,8 +80,9 @@ The project is worth a total of 50 points. I will evaluate according to the foll
 __Section 1 (10 points)__
 
 - Did you drop the stated variables?
-- Did you convert factrrs correctly?
+- Did you convert factors correctly?
 - Did you correctly sample your data into three sets?
+- Did you show your processing code?
 
 __Part 2 (6 points, 2 points per prior)__
 
@@ -95,7 +96,7 @@ __Part 3 (20 points)__
 - Does your table show the relationship between complexity and the train and test RMSEs?
 - Is it nicely formatted and clear to read?
 - Did you suppress the code and model results so that only the RMSE table, plot, and discussion is showing?
-- Does the plot meet the technical requirements (properly labeled, clear, colorblind-friendly, etc.)?
+- Does the plot meet the technical requirements (properly labeled, clear, colorblind-friendly, etc.)?s
 
 __Part 4 (8 points)__
 
