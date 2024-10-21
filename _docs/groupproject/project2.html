@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6: Correlations and Simple Linear Models – EC242</title>
+<title>Project 2 – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -107,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-sidebar docked nav-fixed fullcontent">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -163,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/06-assignment.html">6: Correlations and Simple Linear Models</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../groupproject/project1.html">Group Projects</a></li><li class="breadcrumb-item"><a href="../groupproject/project2.html">Project 2</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -196,11 +162,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../assignment/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Assignments</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../assignment/01-assignment.html" class="sidebar-item-text sidebar-link">
@@ -233,7 +199,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../assignment/06-assignment.html" class="sidebar-item-text sidebar-link active">
+  <a href="../assignment/06-assignment.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">6: Correlations and Simple Linear Models</span></a>
   </div>
 </li>
@@ -276,7 +242,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../groupproject/project2.html" class="sidebar-item-text sidebar-link">
+  <a href="../groupproject/project2.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Project 2</span></a>
   </div>
 </li>
@@ -287,13 +253,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#predicting-energy-consumption" id="toc-predicting-energy-consumption" class="nav-link active" data-scroll-target="#predicting-energy-consumption">Predicting Energy Consumption</a>
+  <ul class="collapse">
+  <li><a href="#the-recs-data" id="toc-the-recs-data" class="nav-link" data-scroll-target="#the-recs-data">The RECS Data</a></li>
+  <li><a href="#data-details" id="toc-data-details" class="nav-link" data-scroll-target="#data-details">Data Details</a></li>
+  </ul></li>
+  <li><a href="#the-project" id="toc-the-project" class="nav-link" data-scroll-target="#the-project">The project</a>
+  <ul class="collapse">
+  <li><a href="#your-data-processing-approach-should-be" id="toc-your-data-processing-approach-should-be" class="nav-link" data-scroll-target="#your-data-processing-approach-should-be">Your data processing approach should be:</a></li>
+  </ul></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">Evaluation</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/06-assignment.html">6: Correlations and Simple Linear Models</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../groupproject/project1.html">Group Projects</a></li><li class="breadcrumb-item"><a href="../groupproject/project2.html">Project 2</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">6: Correlations and Simple Linear Models</h1>
+<h1 class="title">Project 2</h1>
 </div>
 
 
@@ -310,150 +293,104 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-warning callout-titled">
+<section id="predicting-energy-consumption" class="level2">
+<h2 class="anchored" data-anchor-id="predicting-energy-consumption">Predicting Energy Consumption</h2>
+<p>The goal of this project is to predict household energy consumption using the Department of Energy’s <em>Residential Energy Consuption Survey</em> for 2020 using one of the predictive models you have learned: LASSO, elastic net, ridge, KNN, or trees. The RECS is a sample of around 18,000 households that asks myriad questions about housing characteristics (age of house, size of house), appliances (heat pump, gas furnace, EV), and total energy consumption (measured in BTU’s such that electricity, gas, propane, etc. are all included). This is <em>microdata</em>, so each household is an observation in the data.</p>
+<p>This survey exists to provide data to utilities (power companies, gas companies, etc.) and state government’s for planning future energy consumption so that grids and utilities can be prepared for trends in energy use. Usually, this sort of analysis would be done in an interpretable way (modeling consumption with, say, and EV versus without tells you something about how aggregate energy use will look if more people have EV’s). For this project, though, we just want a good and useful prediction of energy consumption. And so, we will bring our prediction model tools to bear on the data.</p>
+<p>Your task is to develop, estimate, and evaluate a predictive model of the variable<code>TOTALBTU</code>. To compare across groups, we will hold out around 5% of the sample that will be the “evaluation” sample. The group with the lowest evaluation sample RMSE wins fame and fortune beyond comprehension. Also, +1% of your total grade in extra credit.</p>
+<section id="the-recs-data" class="level3">
+<h3 class="anchored" data-anchor-id="the-recs-data">The RECS Data</h3>
+<p>Part of being a data analyst is learning your data. While our predictive models don’t necessarily need us to know every variable’s definition, we do need to use the data correctly. So part of your task will be to import, clean, process, and understand the data. Most categorical variables (like “Year Built”) are held in the data as integers, but represent ranges of years. You’ll need to make sure you’re handling these correctly. There are also many variables that likely aren’t going to help: for instance, “flags” probably shouldn’t be included (they are variables that indicate when an observation has some values that are missing or imputed). Use the “variable and response codebook” (also known as the <em>data dictionary</em>) understand the variables. Make sure you know the units you’re working in as well.</p>
+<p>Each observation has a <code>TOTALBTU</code> that you want to predict. There are also subcategories of <code>TOTALBTU</code> that you will need to drop right away: <code>TOTALBTUSPH</code>, <code>TOTALBTUWTH</code>, and <code>TOTALBTUOTH</code>. These are subsets of <code>TOTALBTU</code> representing space heating, water heating, and other, and will add up to <code>TOTALBTU</code>. <strong>Do not use them</strong>.</p>
+<p>It will take you some time to digest the data, so you won’t start predicting right out of the gate. Take your time to understand the data, and explore it as you work your way through the data dictionary. For many of our predictive models, you have to specify (possibly many, many, many) potential interactions. You’ll need to have some idea of what might be an important interaction to do this. For instance, <code>HDD65</code> tells you how many cold days the household had. An interaction with <code>TOTSQFT</code> is probably useful to include.</p>
+</section>
+<section id="data-details" class="level3">
+<h3 class="anchored" data-anchor-id="data-details">Data Details</h3>
+<p>On the <em>microdata</em> tab for RECS 2020 <a href="https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata">https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata</a>, down at the bottom, you’ll find a link to the .csv file (ignore the SAS file), as well as an Excel “variable and response codebook”. The codebook has five columns: <code>Variable</code> contains the name of the variable exactly how you’ll find it in the .csv, <code>Type</code> tells you if the variable is numeric or character or logical. When it says “numeric” it doesn’t mean the variable itself is represented as a number – note that <code>CELLAR</code> (row 17) is represented as a numeric, but the numbers map to values of “1 Yes”, “0 No” and “-2 Not applicable”. Column 3 is the description of the data, and Column 4 contains all of the <em>response codes</em> which tell you what each value means. Note that including something like <code>CELLAR</code> without making it a factor variable will use it in a bizarre and unhelpful way (as a continuous number). Column 5 tells you what section of the survey the data comes from.</p>
+<p>While not super-helpful for this application, the survey itself can be viewed on the microdata page. It can help in undertanding the responses.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Due Date
+Clarifications
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This assignment is due on <strong>Monday, October 7th, 11:59pm</strong></p>
-</div>
-</div>
-<p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.</p>
-<section id="backstory-and-set-up" class="level2">
-<h2 class="anchored" data-anchor-id="backstory-and-set-up">Backstory and Set Up</h2>
-<p>You have been recently hired to Zillow’s Zestimate product team as a junior analyst. As a part of their regular hazing, they have given you access to a small subset of their historic sales data. Your job is to present some basic predictions for housing values in a small geographic area (Ames, IA) using this historical pricing.</p>
-<p>First, let’s load the data.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ameslist  <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'https://ec242.netlify.app/data/ames.csv'</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Before we proceed, let’s note one thing about the (simple) code above. We specify an argument to <code>read.csv</code> called <code>stringsAsFactors</code>. By default, <code>read.csv</code> (the base CSV reading function, which is different from <code>read_csv</code>, the <code>tidyverse</code> CSV function) turns anything that is a character vector into a factor variable. That’s great if you’re importing things like state abbreviations. That’s not helpful if you’re importing character strings that don’t have any repitition (e.g.&nbsp;names), or character strings that really should be numeric. We’ll handle our character strings our selves, thankyouverymuch.</p>
-<section id="data-exploration-and-processing" class="level3">
-<h3 class="anchored" data-anchor-id="data-exploration-and-processing">Data Exploration and Processing</h3>
-<p>We are not going to tell you anything about this data. This is intended to replicate a real-world experience that you will all encounter in the (possibly near) future: someone hands you data and you’re expected to make sense of it. Fortunately for us, this data is (somewhat) self-contained. We’ll first check the variable names to try to divine some information. Recall, we have a handy little function for that:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ameslist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Note that, when doing data exploration, we will sometimes choose to not save our output. This is a judgement call; here we’ve chosen to merely inspect the variables rather than diving in.</p>
-<p>Inspection yields some obvious truths. For example:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Variable</th>
-<th style="text-align: center;">Explanation</th>
-<th style="text-align: right;">Type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>ID</code></td>
-<td style="text-align: center;">Unique identifier for each row</td>
-<td style="text-align: right;"><code>int</code></td>
-</tr>
-<tr class="even">
-<td><code>LotArea</code></td>
-<td style="text-align: center;">Size of lot (<strong>units unknown</strong>)</td>
-<td style="text-align: right;"><code>int</code></td>
-</tr>
-<tr class="odd">
-<td><code>SalePrice</code></td>
-<td style="text-align: center;">Sale price of house ($)</td>
-<td style="text-align: right;"><code>int</code></td>
-</tr>
-</tbody>
-</table>
-<p>…but we face some not-so-obvious things as well. For example:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Variable</th>
-<th style="text-align: center;">Explanation</th>
-<th style="text-align: right;">Type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>LotShape</code></td>
-<td style="text-align: center;">? Something about the lot</td>
-<td style="text-align: right;"><code>chr</code></td>
-</tr>
-<tr class="even">
-<td><code>MSSubClass</code></td>
-<td style="text-align: center;">? No clue at all</td>
-<td style="text-align: right;"><code>int</code></td>
-</tr>
-<tr class="odd">
-<td><code>Condition1</code></td>
-<td style="text-align: center;">? Seems like street info</td>
-<td style="text-align: right;"><code>chr</code></td>
-</tr>
-</tbody>
-</table>
-<p>It will be difficult to learn anything about the data that is of type <code>int</code> without outside documentation unless it refers to a count of something (e.g.&nbsp;bedrooms). However, we can learn something more about the <code>chr</code>-type variables. In order to understand these a little better, we need to review some of the values that each take on. We can use <code>unique()</code> to see the unique values it takes. Sometimes, it helps to see how often some value comes up if we’re trying to understand a variable’s meaning. One handy way of learning this is to use <code>table()</code> (which we’ve seen before) to get a count of the different values a variable can take. <strong>This dataset will have some pernicious <code>NA</code>s in it, so when you use <code>table</code>, add <code>useNA = 'always'</code> as an argument to ensure that we see counts of all values</strong>.</p>
-<p><strong>Try it:</strong> Go through the variables in the dataset and make a note about your interpretation for each. Many will be obvious, but some require additional thought.</p>
-<p>Although there are some variables that would be difficult to clean, there are a few that we can address with relative ease. Consider, for instance, the variable <code>GarageType</code>. This might not be that important, but, remember, the weather in Ames, IA is pretty crummy—a detached garage might be a dealbreaker for some would-be homebuyers. Let’s inspect the values:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">unique</span>(ameslist<span class="sc">$</span>GarageType)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] Attchd  Detchd  BuiltIn CarPort <span class="sc">&lt;</span><span class="cn">NA</span><span class="sc">&gt;</span> Basment <span class="dv">2</span>Types</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>With this, we could make an informed decision and create a new variable. Let’s create <code>OutdoorGarage</code> to indicate, say, homes that have any type of garage that requires the homeowner to walk outdoors after parking their car. (For those who aren’t familiar with different garage types, a car port is not insulated and is therefore considered outdoors. A detached garage presumably requires that the person walks outside after parking. The three other types are inside the main structure, and <code>2Types</code> we can assume includes at least one attached garage of some sort).</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-EXERCISE 1 of 5
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ol type="1">
-<li>Use <code>case_when</code> to add a <code>OutdoorGarage</code> column to <code>ameslist</code> that takes the value of <code>1</code> when the house has an outdoor garage, and <code>0</code> otherwise. Make sure this is a numeric variable (type <code>int</code>). It’s up to you to take a stand on what to do with <code>NA</code> values. Are those outdoor? Indoors? Do we drop all <code>NA</code> values? You often have to decide what to do in cases like this using your knowledge of the context. <strong>Document your reasoning</strong> for how you handle <code>NA</code> values.</li>
-</ol>
-</div>
-</div>
-<p>Generally speaking, this is a persistent issue, and you will spend an extraordinary amount of time dealing with missing data or data that does not encode a variable exactly as you want it. This is expecially true if you deal with real-world data: you will need to learn how to handle <code>NA</code>s. There are a number of fixes (as always, Google is your friend) and anything that works is good. But you should spend some time thinking about this and learning at least one approach.</p>
-<p>Our goal now is to learn something about correlates between home sale price and the rest of the data. Along the way, you may want to create more variables like <code>OutdoorGarage</code> – for now, make sure those variables are represented as <code>0</code> and <code>1</code>. We’ll work with factor variables more later.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-EXERCISES 2-5
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ol start="2" type="1">
-<li><p>Prune the data to 6-8 of the variables that are <code>type = int</code> about which you have some reasonable intuition for what they mean. Choose those that you believe are likely to be correlated with <code>SalePrice</code>. This <strong>must</strong> include the variable <code>SalePrice</code> and <code>GrLivArea</code>. Call this new dataset <code>Ames</code>. Produce documentation for this object in the form of a <a href="..\resource/markdown/#tables-1">Markdown table</a> or see <a href="https://www.markdownguide.org/extended-syntax/">further documentation here</a>. This must describe each of the 6-8 preserved variables, the values it can take (e.g., can it be negative?) and your definition of the variable. Counting the variable name, this means your table should have three columns. Markdown tables are entered in the text body, not code chunks, of your .rmd, so your code creating <code>Ames</code> will be in a code chunk, and your table will be right after it.</p></li>
-<li><p>Produce a <em>scatterplot matrix</em> of the chosen variables<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
-<li><p>Compute a matrix of correlations between these variables using the function <code>cor()</code>. Do the correlations match your prior beliefs? Briefly discuss the correlation between the chosen variables and <code>SalePrice</code> and any correlations between these variables.</p></li>
-<li><p>Produce a scatterplot between <code>SalePrice</code> and <code>GrLivArea</code>. Run a linear model using <code>lm()</code> to explore the relationship. Finally, use the <code>geom_abline()</code> function to plot the relationship that you’ve found in the simple linear regression. You’ll need to extract the intercept and slope from your <code>lm</code> object. See <code>coef(...)</code> for information on this.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>This is a new project, so there may be some unclear descriptions or details that are necessary. I’ll add questions and answers here as they come in.</p>
 <ul>
-<li>What is the largest outlier that is above the regression line? Produce the other information about this house.</li>
+<li>None at the moment!</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="the-project" class="level2">
+<h2 class="anchored" data-anchor-id="the-project">The project</h2>
+<p>This project will take the form of a short memo-style documentation and evaluation of your predictive model prepared using R and RMarkdown as usual. It will have five sections, each of which should be separated with a proper header.</p>
+<ol type="1">
+<li><p><strong>Data Processing</strong> (10 points): Clean and process the RECS 2020 data starting by loading in the data .csv. Below, in the “Your approach should be…” section, I’ve included some important steps you must take. For this section, use <code>echo=T</code> in your code chunk so that your cleaning and processing code is shown. It’s OK if it’s long (though try to be an efficient coder). All cleaning and processing should be shown here. If you find yourself taking extra steps later on with the data, move those steps up into this section. No write-up or description is required here.</p></li>
+<li><p><strong>State your priors</strong> (5 points): In 1-2 paragraphs, discuss your <em>prior beliefs</em> about the relationship between three of the variables and the target variable, <code>TOTALBTU</code>. While our predictive models often become un-interpretable, we have to start with some set of beliefs about the relationship, starting with the existence of some relationship. You cannot choose <code>HDD65</code> or <code>CDD65</code>, though. These are too obvious. Make <em>one</em> plot of the relationship between <code>TOTALBTU</code> and some variable(s) that you think will be important and include that plot in this section. The plot has to be clean and clear, but the analysis behind it can be very simple and straightforward (this assignment is about the prediction, not a re-hash of Project 1). Do not include any of the code here.</p></li>
+<li><p><strong>Estimate a model</strong> (20 points): Estimate a robust and detailed predictive model that includes the relationship from (1) and anything and everything else you think will provide predictive power. The sky is the limit. Use the train-test paradigm to arrive at your best prediction. Do not use the “canned” routines – you’ll need to set a range of complexity and use <code>lapply</code> or a loop to estimate over those complexity parameters. However, <strong>do not output your estimation code or underlying output</strong>. In the write-up for this section, include a table showing the range of <em>complexity</em> that was tried (e.g.&nbsp;the <em>lambda</em> from a LASSO), the training RMSE, and the testing RMSE. Make a plot showing the progression of both RMSE’s as complexity increases. The plot should show the nadir where the testing RMSE reaches it’s minimum. If you are using a method that has two complexity parameters, you’ll need to include test and train RMSE’s for every combination of parameter values. In that case, choose a coarse number of parameter values in the complexity parameters so that you are not searching over too many values. You can plot across one complexity parameter with the other complexity parameter held fixed. Your write-up should <strong>not</strong> include any code, just the table and the plot. In a 2-3 sentence discussion, note which model you have selected as your optimal model and why.</p></li>
+<li><p><strong>Evaluate the Model</strong> (10 points): Take your model to the evaluation sample (see below) and calculate the RMSE for your optimal model on this sample. Then, see if your priors were correct by changing the variable you hypothesized to be related, and see if your predictive model changes it’s prediction accordingly. For instance, I think an increase in <code>HDD65</code> will increase the energy consumed when it increases. To see if this holds in my model, I can increase <code>HDD65</code> by some amount (a percent or a fixed amount, or a change in category if a categorical/factor variable) across all the data, and compare the new prediction to the old. Do this for each of the three predictions you made in (2).</p></li>
+<li><p><strong>Data and Hypotheses</strong> (5 points): Go back to the five datasets from your first project. Choose one that you think you, as a group, might want to study further. Write up <strong>three</strong> hypothesis (labeled H1, H2, and H3) that you might want to test or predictions you might want to make (you can mix if you’d like - two hypothesis and one prediction, etc.) and <em>why</em> those might be interesting to others. That is, tell me why you or others would be interested in testing each hypothesis, or predicting an outcome. This is unrelated to Sections 1-4.</p></li>
+</ol>
+<section id="your-data-processing-approach-should-be" class="level3">
+<h3 class="anchored" data-anchor-id="your-data-processing-approach-should-be">Your data processing approach should be:</h3>
+<ul>
+<li><p>Import the data from RECS at <a href="https://www.eia.gov/consumption/residential/data/2020/csv/recs2020_public_v7.csv">https://www.eia.gov/consumption/residential/data/2020/csv/recs2020_public_v7.csv</a></p></li>
+<li><p>Drop <code>TOTALBTUSPH</code>, <code>TOTALBTUWTH</code>, <code>TOTALBTUOTH</code>, and <code>DOEID</code></p></li>
+<li><p>Make sure all variables that are numeric but represent factor variables (e.g.&nbsp;<code>CELLAR</code>) are converted into factors. Do not convert variables like <code>HDD65</code> that are meant to be numeric. You can use the function <code>mutate(across(c(X,Y,Z), as.factor))</code> to convert columns X, Y, and Z (obviously, substitute your columns) to factor variables. Check to make sure you got it right using <code>str</code>!</p></li>
+<li><p>Digest and understand your data. The data is described in detail using codebooks found here: <a href="https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata">https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata</a>.</p></li>
+<li><p>Use <code>set.seed(2422024)</code> and then immediately do the following:</p>
+<ul>
+<li><p>Sample exactly 1,000 households to hold as the final evaluation data. This is neither test nor train, but a third holdout “evaluation” set with which we will evaluate the final model.</p></li>
+<li><p>Once you have <em>removed</em> the 1,000 household final evaluation data, split the remaining sample into test and train. Stick to 50/50. This should give you equal samples of 8,748 in each. You’ll have a <code>train</code>, a <code>test</code>, and an <code>evaluation</code> sample, all mutually exclusive and adding up to 18,496 rows total.</p></li>
 </ul></li>
-</ol>
-<p><strong>(Bonus)</strong> Create a visualization that shows the rise of air conditioning over time in homes in Ames.</p>
-</div>
-</div>
+</ul>
+</section>
+</section>
+<section id="evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
+<p>The project is worth a total of 50 points. I will evaluate according to the following rubric:</p>
+<p><strong>Section 1 (10 points)</strong></p>
+<ul>
+<li>Did you drop the stated variables?</li>
+<li>Did you convert factrrs correctly?</li>
+<li>Did you correctly sample your data into three sets?</li>
+</ul>
+<p><strong>Part 2 (6 points, 2 points per prior)</strong></p>
+<ul>
+<li>Do your three priorsand their description make sense?</li>
+<li>Does your plot show the relationship?</li>
+<li>Does the plot meet the technical requirements (properly labeled, clear, colorblind-friendly, etc.)</li>
+</ul>
+<p><strong>Part 3 (20 points)</strong></p>
+<ul>
+<li>Did you estimate the predictive model properly without using a “canned” routing (e.g.&nbsp;manually testing across a range of complexity)?</li>
+<li>Does your table show the relationship between complexity and the train and test RMSEs?</li>
+<li>Is it nicely formatted and clear to read?</li>
+<li>Did you suppress the code and model results so that only the RMSE table, plot, and discussion is showing?</li>
+<li>Does the plot meet the technical requirements (properly labeled, clear, colorblind-friendly, etc.)?</li>
+</ul>
+<p><strong>Part 4 (8 points)</strong></p>
+<ul>
+<li>Do you show the RMSE for the evaluation sample?</li>
+<li>Did you propertly test your three priors?</li>
+<li>Is the discussion clear and concise?</li>
+</ul>
+<p><strong>Part 5 (6 points, 2 points per hypothesis/prediction)</strong></p>
+<ul>
+<li>Did you state actual hypotheses – specific questions that are testable?</li>
+<li>For proposed predictions, did you state the variables that would be predicted?</li>
+<li>In both cases, did you properly describe why one might be interested in the prediction or hypothesis?</li>
+</ul>
 
 
 </section>
-</section>
 
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>If you are not familiar with this type of visualization, consult the book (<em>Introduction to Statistical Learning</em>), Chapters 2 and 3.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>We could also use <code>geom_smooth(method = 'lm')</code> to add the regression line, but it’s good practice to work with <code>lm</code> objects.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

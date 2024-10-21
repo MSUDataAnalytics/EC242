@@ -36,7 +36,8 @@ project:
     - "!*/15-assignment.qmd"
     - "!groupproject/final-project.qmd"
     #- "!groupproject/project1.qmd"
-    - "!groupproject/project2.qmd"
+    #- "!groupproject/project2.qmd"
+    - "!groupproject/project2_OLD.qmd"
     - "!slides/"
     - "!templates/"
   output-dir: _docs
