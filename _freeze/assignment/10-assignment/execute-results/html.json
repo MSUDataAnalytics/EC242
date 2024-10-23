@@ -1,0 +1,15 @@
+{
+  "hash": "959a00f394fd41c54690a989722f23ac",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"10: Nonparametric Models\"\nduedate: \"{{< var duedates.lab10 >}}\"\n---\n\n\n\n\n\n::: {.callout-warning}\n## Due Date\nThis assignment is due on **{{< meta duedate >}}**\n:::\n\n\n\n<!-- Updated 11/7/23 fixed data/bank23.csv data no default y is still character, not yet knit -->\n\n\n\n\n\n{{< var blurbs.homeworkdue >}}\n\n\n\n\n\n\n\n\n## Backstory and Set Up\nYou work for a bank. This bank is trying to predict defaults on loans. These are costly to the bank and, while rare, avoiding them is how banks make money. They've given you a dataset on defaults (encoded as the variable `default`). You're going to try to predict this (that is, `default` is your *target* variable).\n\nThis is some new data. The snippet below loads it. \n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nbank <- read.csv(\"https://ec242.netlify.app/data/bank23.csv\",\n                 stringsAsFactors = FALSE)\n```\n:::\n\n\n\n\nThere's not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).\n\n::: {.callout-note}\n\n## EXERCISE 1\n\n1. Check the data using `skim` and `str` to see what sort of data you have. kNN, as we've covered it so far, takes an average of the target variable for the $k$ nearest neighbors. Do any data processing necessary to use kNN to predict `default`.\n\n2. kNN needs to make a numeric prediction. Since `default` is not numeric, make a new column for it that is numeric. Of course, you'll need to encode the numbers in a meaningful way (`as.numeric('no')` will do you no good).\n\n3. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability.\n\n4. Run a series of KNN models with $k$ ranging from 2 to 200. Use whatever variables you think will help predict defaults. Remember, $k$ is our complexity parameter -- we do not add or subtract any of the explanatory variables, we vary only $k$. You must have at least 50 different values of $k$. You can easily write a short function to do this using this week's lessons and should avoid hand-coding 50 different models.\n\n5. Create a chart plotting the model complexity as the $x$-axis variable and RMSE as the $y$-axis variable for __both__ the training and test data. Pay attention to the values of $k$ that are \"higher\" in complexity and \"lower\" in complexity, and make sure the $x$-axis is increasing in complexity as you go to the right.\n\n6. Answer the following questions:\n\n  a. What do you think is the optimal $k$?\n  \n  b. What are you using to decide the optimal $k$?\n  \n  c. If we were to allow the model a little more complexity than the optimal, how will our training RMSE change? How will our test RMSE change?\n\n:::\n\n\n\n\n\n\n\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

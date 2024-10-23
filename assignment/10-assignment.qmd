@@ -1,26 +1,22 @@
 ---
-title: "Nonlinear Regression Model Evaluation"
-linktitle: "9: Nonlinear Regression Model Evaluation"
-output:
-  blogdown::html_page:
-    toc: true
-menu:
-  assignment:
-    parent: Labs
-    weight: 2
-type: docs
-weight: 1
-editor_options:
-  chunk_output_type: console
+title: "10: Nonparametric Models"
+duedate: "{{< var duedates.lab10 >}}"
 ---
+
+
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
+:::
+
+
 
 <!-- Updated 11/7/23 fixed data/bank23.csv data no default y is still character, not yet knit -->
 
-:::fyi
 
-You must turn in a PDF document of your `R Markdown` knitted document. Submit this to D2L by 11:59 PM Eastern Time on the date listed on the Syllabus calendar
+{{< var blurbs.homeworkdue >}}
 
-:::
+
 
 ## Backstory and Set Up
 You work for a bank. This bank is trying to predict defaults on loans. These are costly to the bank and, while rare, avoiding them is how banks make money. They've given you a dataset on defaults (encoded as the variable `default`). You're going to try to predict this (that is, `default` is your *target* variable).
@@ -29,25 +25,27 @@ This is some new data. The snippet below loads it.
 
 ```{r}
 
-bank <- read.csv("https://ssc442kirkpatrick.netlify.app/data/bank23.csv",
+bank <- read.csv("https://ec242.netlify.app/data/bank23.csv",
                  stringsAsFactors = FALSE)
 ``` 
 
 There's not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).
 
-:::fyi
+::: {.callout-note}
 
-__EXERCISE 1__
+## EXERCISE 1
 
 1. Check the data using `skim` and `str` to see what sort of data you have. kNN, as we've covered it so far, takes an average of the target variable for the $k$ nearest neighbors. Do any data processing necessary to use kNN to predict `default`.
 
-2. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability, but do not share your seed with others in the class. (We may compare some results across people.)
+2. kNN needs to make a numeric prediction. Since `default` is not numeric, make a new column for it that is numeric. Of course, you'll need to encode the numbers in a meaningful way (`as.numeric('no')` will do you no good).
 
-3. Run a series of KNN models with $k$ ranging from 2 to 200. Use whatever variables you think will help predict defaults. Remember, $k$ is our complexity parameter -- we do not add or subtract any of the explanatory variables, we vary only $k$. You must have at least 50 different values of $k$. You can easily write a short function to do this using this week's lessons and should avoid hand-coding 50 different models.
+3. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability.
 
-4. Create a chart plotting the model complexity as the $x$-axis variable and RMSE as the $y$-axis variable for __both__ the training and test data. Pay attention to the values of $k$ that are "higher" in complexity and "lower" in complexity, and make sure the $x$-axis is increasing in complexity as you go to the right.
+4. Run a series of KNN models with $k$ ranging from 2 to 200. Use whatever variables you think will help predict defaults. Remember, $k$ is our complexity parameter -- we do not add or subtract any of the explanatory variables, we vary only $k$. You must have at least 50 different values of $k$. You can easily write a short function to do this using this week's lessons and should avoid hand-coding 50 different models.
 
-5. Answer the following questions:
+5. Create a chart plotting the model complexity as the $x$-axis variable and RMSE as the $y$-axis variable for __both__ the training and test data. Pay attention to the values of $k$ that are "higher" in complexity and "lower" in complexity, and make sure the $x$-axis is increasing in complexity as you go to the right.
+
+6. Answer the following questions:
 
   a. What do you think is the optimal $k$?
   
@@ -74,17 +72,15 @@ bY = bank[,'default']
 k5 = knnreg(bX, bY, k=5)
 
 k100 = knnreg(default ~ balance + education + job + duration, bank, k=100)
-knnreg(default ~ age + gender + student, bank, k=100)
-predict(k5, newdata = bank)
-
 ```
 
 
 
-```{r, include=F}
+```{r, include=F, eval = F, echo=F}
 
 
-bank = bank23 %>%
+bank = read.csv("https://ec242.netlify.app/data/bank23.csv",
+                 stringsAsFactors = FALSE) %>%
   dplyr::mutate(default = case_when(default=='yes' ~ 1,
                                     default=='no' ~ 0))
 
@@ -108,4 +104,4 @@ test_rmses = lapply(mods, function(x){
 })
 
 
-
+```
