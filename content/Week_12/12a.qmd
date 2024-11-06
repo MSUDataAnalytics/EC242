@@ -1,12 +1,5 @@
 ---
 title: "Classification"
-linktitle: "11: Classification"
-read_date: "2023-11-14"
-lastmod: "`r Sys.Date()`"
-menu:
-  content:
-    parent: Course content
-    weight: 2
 type: docs
 output:
   blogdown::html_page:

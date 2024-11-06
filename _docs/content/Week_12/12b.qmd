@@ -1,34 +1,16 @@
 ---
 title: "Illustrating Classification"
-linktitle: "11: Classification"
-read_date: "2023-11-16"
-output:
-  blogdown::html_page:
-    toc: true
-menu:
-  example:
-    parent: Examples
-    weight: 2
 type: docs
 weight: 1
 editor_options:
   chunk_output_type: console
 ---
 
-:::fyi
+::: {.callout-note}
 
-Today's example will build on material in the "Content" tab.
-
+Today's example will build on material from the Principles lecture (earlier this week).
 
 :::
-
-## Some (F23) Business
-
-- I won't be here the Thursday *after* Thanksgiving
-
-- We will meet the Tuesday *before* Thanksgiving
-
-- Let's look at the ROC curve one more time.
 
 
 
@@ -42,7 +24,7 @@ library(tibble)
 Default = ISLR::Default
 ```
 
-:::fyi
+::: {.callout-note}
 In our first breakout:
 
 1. Clean the data so that the `default` column is a binary indicator for default
@@ -57,7 +39,7 @@ In our first breakout:
 Back in class, let's look at how we did. What variables were most useful in explaining `default`? 
 
 
-:::fyi
+::: {.callout-note}
 In our second breakout, we will create a ROC curve manually. To do this
 
 1. Take your model from the first breakout, and using a loop (or `sapply`), step through a large number of possible cutoffs for classification ranging from 0 to 1.

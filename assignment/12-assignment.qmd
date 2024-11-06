@@ -1,0 +1,78 @@
+---
+title: "Applied Logistic Regression - Classification"
+duedate: "{{< var duedates.lab12 >}}"
+---
+
+<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
+
+
+
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
+:::
+
+{{< var blurbs.homeworkdue >}}
+
+
+
+
+## Backstory and Set Up
+You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They've given you a dataset on defaults (encoded as the variable `y`, and not the column *default*). You're going to try to predict this.
+
+This is some new data. The snippet below loads it.
+
+```{r}
+
+bank <- read.table("https://ec242.netlify.app/data/bank.csv",
+                 header = TRUE,
+                 sep = ",")
+```
+
+There's not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).
+
+::: {.callout-note}
+
+__EXERCISE 1__
+
+0. Encode the outcome we're trying to predict (`y`, and not `default`) as a binary.
+
+1. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability.
+
+2. Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).
+
+3. Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. **Briefly discuss your findings.** How does the error rate, sensitivity, and specificity change as the number of predictors increases? 
+
+A few hints:
+
+- If you are not getting a 2x2 confusion matrix, you might need to adjust your cutoff probability.
+- It might be the case that your model perfectly predicts the outcome variable when the setup cutoff probability is too high.
+- You need to make sure your predictions take the same possible values as the `actual` data (which, remember, you had to convert to a binary 0/1 variable)
+
+:::
+
+
+
+```{r, echo=F, eval = F, include = F}
+library(caret)
+bank = bank %>%
+  dplyr::mutate(y = case_when(y == 'yes' ~ 'yes',
+                              balance>5000 ~ sample(c('yes','no'), size = sum(balance>500), prob = c(.75,.25))))
+
+bank_sample = sample(NROW(bank), size = trunc(.80*NROW(bank)))
+
+bank$y=ifelse(bank$y=='yes',1,0)
+bank_train = bank[bank_sample,]
+bank_test = bank[-bank_sample,]
+
+m1 = glm(y ~ ., bank_train, family = 'binomial')
+m2 = glm(y ~. + .^2, bank_train, family = 'binomial')
+m3 = glm(y ~ . + .^2 + age, bank_train, family = 'binomial')
+m4 = glm(y ~. + .^2 + age*marital + education, bank_train, family = 'binomial')
+
+confusionMatrix(table(predicted = ifelse(predict(m2, type = "response") > 0.5, "Yes", "No"),
+                      actual = ifelse(bank_train$y==1, "Yes", "No")),
+                      positive = "Yes")
+
+
+```
