@@ -1,5 +1,5 @@
 ---
-title: "Applied Logistic Regression - Classification"
+title: "12: Applied Logistic Regression - Classification"
 duedate: "{{< var duedates.lab12 >}}"
 ---
 

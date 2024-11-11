@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11: The Bias-Variance Tradeoff – EC242</title>
+<title>Bias-Variance Tradeoff and Random Forests – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -520,7 +520,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11b.html">Week 11</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11b.html">Bias-Variance Tradeoff and Random Forests</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">11: The Bias-Variance Tradeoff</h1>
+<h1 class="title">Bias-Variance Tradeoff and Random Forests</h1>
 </div>
 
 
@@ -542,6 +542,7 @@ window.Quarto = {
 <ul>
 <li>This page.</li>
 <li><i class="fas fa-book"></i> <a href="https://trevorhastie.github.io/ISLR/ISLR%20Seventh%20Printing.pdf">Chapter 2</a> in <em>Introduction to Statistical Learning with Applications in R</em>.</li>
+<li><i class="fas fa-book"></i> <a href="https://trevorhastie.github.io/ISLR/ISLR%20Seventh%20Printing.pdf">Chapter 8</a> (briefly) in <em>Introduction to Statistical Learning with Applications in R</em>.</li>
 </ul>
 <section id="guiding-questions" class="level3">
 <h3 class="anchored" data-anchor-id="guiding-questions">Guiding Questions</h3>
@@ -549,6 +550,7 @@ window.Quarto = {
 <li>What is the relationship between <strong>bias</strong>, <strong>variance</strong>, and <strong>mean squared error?</strong></li>
 <li>What is the relationship between <strong>model flexibility</strong> and training error?</li>
 <li>What is the relationship between <strong>model flexibility</strong> and validation (or test) error?</li>
+<li>What is a random forest?</li>
 </ul>
 </section>
 </section>
@@ -1012,7 +1014,7 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 <h3 class="anchored" data-anchor-id="combining-multiple-trees">Combining multiple trees</h3>
 <p>We need a way of generating a RMSE for any given tuning parameter value, but now we have <span class="math inline">\(B\)</span> different trees. We can take our test data and put it into each of the <span class="math inline">\(B\)</span> trees and get a predicted value, right? And when the tree is different, then the prediction will be different. If we take the <em>average</em> over all <span class="math inline">\(B\)</span> predictions, we’ll get a prediction that has less variance, even when each tree has variance <span class="math inline">\(\sigma\)</span>, because variance of the mean scales to <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span>.</p>
 <p>So the rmse is:</p>
-<p><span class="math display">\[\frac{1}{N} \sum_{i=1}^N (\frac{1}{B} \sum_{b=1}^B \hat{f}_{b}(x_i) - y_i)^2\]</span></p>
+<p><span class="math display">\[RMSE = \frac{1}{N} \sum_{i=1}^N \left(\frac{1}{B} \sum_{b=1}^B (\hat{f}_{b}(x_i) - y_i)^2\right)\]</span></p>
 <p>While it takes a bit longer to estimate this (especially when <span class="math inline">\(B\)</span> is large), you get much more stable results that often predict better on an evaluation hold-out sample.</p>
 </section>
 <section id="ok-technically-thats-bagging" class="level3">
@@ -1023,6 +1025,7 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 </section>
 <section id="more-examples-of-bias-variance-and-model-flexibility" class="level1">
 <h1>More examples of bias, variance, and model flexibility</h1>
+<p>If we have time, we can dive back into a little more about model flexibility, bias, and variance….</p>
 <section id="model-flexibility" class="level2">
 <h2 class="anchored" data-anchor-id="model-flexibility">Model Flexibility</h2>
 <p>Let’s return to the simulated dataset we used occaisionally in the linear regression content. Recall there was a single feature <span class="math inline">\(x\)</span> with the following properties:</p>

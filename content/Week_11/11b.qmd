@@ -740,7 +740,7 @@ We need a way of generating a RMSE for any given tuning parameter value, but now
 
 So the rmse is:
 
-$$\frac{1}{N} \sum_{i=1}^N (\frac{1}{B} \sum_{b=1}^B \hat{f}_{b}(x_i) - y_i)^2$$
+$$RMSE = \frac{1}{N} \sum_{i=1}^N \left(\frac{1}{B} \sum_{b=1}^B (\hat{f}_{b}(x_i) - y_i)^2\right)$$
 
 While it takes a bit longer to estimate this (especially when $B$ is large), you get much more stable results that often predict better on an evaluation hold-out sample.
 
@@ -753,6 +753,8 @@ You won't need to use this on your Project 2, it's purely for your own info. Ran
 
 
 # More examples of bias, variance, and model flexibility
+
+If we have time, we can dive back into a little more about model flexibility, bias, and variance....
 
 ## Model Flexibility
 
