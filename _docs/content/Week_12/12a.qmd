@@ -21,7 +21,7 @@ output:
 
 **Classification** is a form of **supervised learning** where the response variable is categorical, as opposed to numeric for regression. *Our goal is to find a rule, algorithm, or function which takes as input a feature vector, and outputs a category which is the true category as often as possible.*
 
-![](./img/classification.png)
+![](./images/classification.png)
 
 That is, the classifier $\hat{C}(x)$ returns the predicted category $\hat{y}(X)$.
 
@@ -126,7 +126,7 @@ featurePlot(x = default_trn[, c("balance", "income")],
             auto.key = list(columns = 2))
 ```
 
-Similar to `pairs` is a plot of type `ellipse`, which requires the `ellipse` package. Here we only use numeric predictors, as essentially we are assuming multivariate normality. The ellipses mark points of equal density. This will be useful later when discussing LDA and QDA.
+Similar to `pairs` is a plot of type `ellipse`, which requires the `ellipse` package. Here we only use numeric predictors, as essentially we are assuming multivariate normality. The ellipses mark points of equal density.
 
 
 ## A Simple Classifier
@@ -238,9 +238,12 @@ Accuracy values can be found by calling `confusionMatrix()`, or, if stored, can 
 # Note, R doesn't know to rename the result "err", so it keeps the name "Accuracy"
 ```
 
-We can go back to the `tst_con_mat` table before and hand-calculate accuracy
+We can go back to the `tst_con_mat` table (called `tst_tab`) before and hand-calculate accuracy
 ```{r}
-1 - ((4319 + 130) / 5000)
+
+print(tst_tab)
+
+1 - ((4343 + 137) / 5000)
 ```
 
 
@@ -283,6 +286,8 @@ Specificity is the *share of actually-"no" observations that were predicted by t
 
 Like accuracy, these can easily be found using `confusionMatrix()`.
 
+### Balance and Prevalence
+
 When considering how well a classifier is performing, often, it is understandable to assume that any accuracy in a binary classification problem above 0.50 is a reasonable classifier. This however is not the case. We need to consider the **balance** of the classes. To do so, we look at the **prevalence** of positive cases.
 
 $$
@@ -292,7 +297,7 @@ $$
 ```{r}
 trn_con_mat$byClass["Prevalence"]
 tst_con_mat$byClass["Prevalence"]
-# (28+130)/5000
+# (29+137)/5000
 ```
 
 Here, we see an extremely low prevalence, which suggests an even simpler classifier than our current based on `balance`.
@@ -332,7 +337,7 @@ Here we see that the error rate is exactly the prevelance of the minority class.
 table(default_tst$default) / length(default_tst$default)
 ```
 
-This classifier does better than the previous. But the point is, in reality, to create a good classifier, we should obtain a test error better than 0.033, which is obtained by simply manipulating the prevalences. Next section, we'll introduce much better classifiers which should have no problem accomplishing this task. Point is, think carefully about what you're putting your classifier up against. Last March when we were very worried about COVID test accuracy, and when *prevalance* was, say, 1%, it was pointed out that we could make a 99% accurate COVID test by simply returning "No COVID" for every test! We'd be the new Theranos!
+This classifier does better than the previous. But the point is, in reality, to create a good classifier, we should obtain a test error better than the 0.033, which is obtained by simply manipulating the prevalences. Next section, we'll introduce much better classifiers which should have no problem accomplishing this task. Point is, think carefully about what you're putting your classifier up against. In March 2020 when we were very worried about COVID test accuracy, and when *prevalance* was, say, 1%, it was pointed out that we could make a 99% accurate COVID test by simply returning "No COVID" for every test! We'd be the new Theranos!
 
 
 # Logistic Regression
@@ -357,14 +362,20 @@ default_tst = Default[-default_idx, ]
 
 ## Linear Regression and Binary Responses
 
-Before moving on to logistic regression, why not plain, old, linear regression?
+Before moving on to logistic regression, why not plain, old, linear regression? Let's copy the data so that we can manipulate it, then go back to the original:
 
 ```{r}
 default_trn_lm = default_trn
 default_tst_lm = default_tst
 ```
 
-Since linear regression expects a numeric response variable, we coerce the response to be numeric. (Notice that we also shift the results, as we require `0` and `1`, not `1` and `2`.) Notice we have also copied the dataset so that we can return the original data with factors later.
+Since linear regression expects a numeric response variable, we coerce the response to be numeric. Although these look like character strings, they are factors, and if you recall, factors are actually saved as integers and then have a mapping (`levels`) from each number to a value. We can look at `str(default_trn_lm` to see what the factors and levels are.
+
+```{r}
+str(default_trn_lm)
+```
+
+"No" is the first level, and it maps to `1`. "Yes" is second, and it maps to `2`. Notice that we also need to shift the results, as we require `0` and `1`, not `1` and `2`. Of course, we can always use `case_when` to do this in whatever way we wish.
 
 ```{r}
 default_trn_lm$default = as.numeric(default_trn_lm$default) - 1
@@ -471,6 +482,18 @@ Notice, we use the sigmoid function as shorthand notation, which appears often i
 $$
 \sigma(x) = \frac{e^x}{1 + e^x} = \frac{1}{1 + e^{-x}}
 $$
+
+It looks like this:
+
+```{r, echo=F}
+logisticfun<-function(x){
+  exp(x)/(1+exp(x))
+}
+
+plot(logisticfun, from = -10, to = 10)
+```
+
+
 
 The model is fit by numerically maximizing the likelihood, which we will let `R` take care of. Essentially, `R` is going to try a whole bunch of guesses for $\mathbf{\beta}$ and choose the one that best explains the data we have.
 
@@ -584,7 +607,7 @@ c(train_con_mat$overall["Accuracy"],
 We could also write a custom function for the error for use with trained logistic regression models.
 
 ```{r}
-get_logistic_error = function(mod, data, res = "y", pos = 1, neg = 0, cut = 0.5) {
+get_logistic_error = function(mod, data, res, pos = 1, neg = 0, cut = 0.5) {
   probs = predict(mod, newdata = data, type = "response")
   preds = ifelse(probs > cut, pos, neg)
   calc_class_err(actual = data[, res], predicted = preds)
