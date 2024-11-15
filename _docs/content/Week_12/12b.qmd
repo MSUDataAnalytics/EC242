@@ -51,3 +51,41 @@ In our second breakout, we will create a ROC curve manually. To do this
 4. Calculate the AUC (the *area under the curve*). This is a little tricky but can be done with your data.
 :::
 
+
+
+```{r, eval=F, include=F, echo=F}
+
+Default = Default %>%
+  dplyr::mutate(defaultNum = ifelse(default=="Yes", 1, 0))
+
+
+mod1 = glm(defaultNum ~ .^3 + poly(balance, 3), Default %>% dplyr::select(-default), family = 'binomial')
+
+ pred = ifelse(predict(mod1, type = 'response')>.5, "Yes", "No")
+ conf = confusionMatrix(table(predicted = pp, actual = Default$default), positive = 'Yes')
+ 
+  data.frame(Accuracy = cc$overall['Accuracy'],
+         Sensitivity = cc$byClass['Sensitivity'],
+         Specificity = cc$byClass['Specificity'])
+
+
+cs = seq(from=.0001, to = .978, length = 1000)
+
+results = lapply(cs, function(cutoff){
+  print(cutoff)
+  pred = ifelse(predict(mod1, type = 'response')>cutoff, "Yes", "No")
+  conf = confusionMatrix(table(predicted = pred, actual = Default$default), positive = 'Yes')
+  
+  tibble(Accuracy =    conf$overall['Accuracy'],
+         Sensitivity = conf$byClass['Sensitivity'],
+         Specificity = conf$byClass['Specificity'])
+})
+
+results_compiled = bind_rows(results)
+
+ggplot(results_compiled, aes(x = Sensitivity, y = Specificity)) + geom_line() +
+  scale_x_reverse()
+
+sum(results_compiled$Specificity*(1/NROW(results_compiled)))
+
+```
