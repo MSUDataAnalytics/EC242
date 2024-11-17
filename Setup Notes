@@ -67,7 +67,7 @@ Keep callout-warning and callout-important and callout-tip, but change callout-n
 ## Images inserted
 Right now, using here() to top of directory, then pointing to here('/images/...') or data for images. INternal copying to website folder seems to work fine, alleviating the biggest problem with the old site.
 
-
+I think to copy images to the site, the _quarto.yml doc has to allow rendering the material (e.g. comment out the !Week_13/13a.qmd)
 
 
 ## Data and Static Files

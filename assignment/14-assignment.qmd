@@ -1,29 +1,19 @@
 ---
-title: "Text as Data"
-linktitle: "12: Text as Data"
-output:
-  blogdown::html_page:
-    toc: false
-menu:
-  assignment:
-    parent: Labs
-    weight: 3
-type: docs
-weight: 1
-editor_options:
-  chunk_output_type: console
+title: "14: Text as Data"
+duedate: "{{< var duedates.lab14 >}}"
 ---
 
-<!-- Updated 8.30.22 -->
-
-# Using `str_` functions and RegEx
+<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
 
 
-::: fyi
 
-You must turn in a PDF document of your `R Markdown` code. Submit this to D2L by 11:59 PM Eastern Time on the date listed on the syllabus calendar
-
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
 :::
+
+{{< var blurbs.homeworkdue >}}
+
 
 
 For this lab, you will need to make sure you set `echo = T` in the knitr options that are set in your template's first chunk. Before turning your assignment in, check to make sure your code is showing. Labs that do not show all code will earn a zero.
@@ -33,8 +23,8 @@ This lab is deceptively short. Regular expressions can take a while to learn, an
 
 
 
-:::fyi
-
+::: {.callout-note}
+## Exercise 1 of 1
 
 1. Create the following `Sales2020` object. We want to convert the sales into a numeric format, but have to wrestle with the extra characters. Using no more than two lines of code, convert these to numeric.
 

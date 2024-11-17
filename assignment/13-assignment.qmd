@@ -1,28 +1,22 @@
 ---
-title: "Applied Data Wrangling"
-linktitle: "13: Data Wrangling"
+title: "13: Data Wrangling"
 output:
   blogdown::html_page:
     toc: false
-menu:
-  assignment:
-    parent: Labs
-    weight: 3
-type: docs
-weight: 1
-editor_options:
-  chunk_output_type: console
+duedate: "{{< var duedates.lab13 >}}"
 ---
 
-<!-- Updated 8.30.22 -->
+<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
 
 
 
-::: fyi
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
+:::
 
-You must turn in a PDF document of your `R Markdown` code. Submit this to D2L by 11:59 PM Eastern Time on *Monday December 4th.**
+{{< var blurbs.homeworkdue >}}
 
-::: 
 
 
 ## Data Wrangling Continued...
@@ -31,20 +25,18 @@ You still work for a travel booking website as a data analyst. The hotel has onc
 
 **You did this already in class, but your boss now has some __different__ data. It's similar, and your code from before will help, but it has some new wrinkles in it to tackle**. Do __not__ use the data from this week's Example. Here's your new data:
 
-- [<i class="fas fa-file-csv"></i> `booking.csv`](/data/Lab11_booking.csv) - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hotel. It was pulled by an intern who doesn't understand date-time stamps. 
+- [<i class="fas fa-file-csv"></i> `booking.csv`](/data/Lab_booking.csv) - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hotel. It was pulled by an intern who doesn't understand date-time stamps. 
 
-- [<i class="fas fa-file-csv"></i> `roomrates.csv`](/data/Lab11_roomrates.csv) - Contains the price of each room on each day. The Lab 11 version of this data is from our German affiliate, so pay attention to the date format, and be careful -- it's very wide, so using `head` will throw a lot of data at you.
+- [<i class="fas fa-file-csv"></i> `roomrates.csv`](/data/Lab_roomrates.csv) - Contains the price of each room on each day. The Lab 11 version of this data is from our German affiliate, so pay attention to the date format, and be careful -- it's very wide, so using `head` will throw a lot of data at you.
 
-- [<i class="fas fa-file-csv"></i> `parking.csv`](/data/Lab11_parking.csv) - Contains the corporations who negotiated free parking for employees. It has been updated.
+- [<i class="fas fa-file-csv"></i> `parking.csv`](/data/Lab_parking.csv) - Contains the corporations who negotiated free parking for employees. It has been updated.
 
 - Parking at the hotel is \$60 per night if you don't have free parking. This hotel is in California, so everyone drives and parks when they stay.
 
-(note: data is labeled Lab 11, but this is indeed Lab 13)
 
+::: {.callout-note}
 
-:::fyi
-
-__EXERCISE 1__
+## EXERCISE 1
 
 1. As you did in class, but with your new set of data, total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking
 
