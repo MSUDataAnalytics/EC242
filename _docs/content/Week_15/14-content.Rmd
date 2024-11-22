@@ -1,12 +1,5 @@
 ---
 title: "Geospatial with R"
-linktitle: "14: Geospatial with R"
-read_date: "2023-12-05"
-menu:
-  content:
-    parent: Course content
-    weight: 2
-type: docs
 output:
   blogdown::html_page:
     toc: true
@@ -219,7 +212,7 @@ GEOJSON, shapefiles, and KML files usually come with embedded projections stored
 
 For mapping, you might need to *transform* your data between projections (or "reproject" it, same thing). We use `st_transform` for this. We only need to give `R` the EPSG (Geodetic Parameter Dataset) of the projection you want to end up in. As long as it's already in a known projection, `R` can re-project it. The projection is refered to by the Coordinate Reference System (CRS). `st_crs` will tell us the projection (EPSG number and a lot more) of any spatial object. If they do not match, then `R` will give an error or, worse, plot them on totally different scales - sometimes you end up with points from the US landing in the middle of the Indian Ocean! In fact, look back at our map of gas plants and the US. 
 
-::: Notice
+::: {.callout-warning}
 Did you notice that a lot of the US gas plants mapped to...Canada? Those might be Alaskan plants, but the *projections* were not identical, so the definition of coordinates were different between our US map and our gas plants maps. Neither is "right" or "wrong" - they just have to be the same. Differences in projections tend to be worse at the extreme latitudes.
 :::
 

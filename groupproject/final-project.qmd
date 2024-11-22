@@ -1,115 +1,133 @@
 ---
 title: "Final project"
+duedate: "{{< var duedates.finalproject >}}"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 3
 ---
 
-<!-- Revised assignment 5-5-2022 -->
-
-<!-- Fix footnote 4. In description of intro, mention that data should be described in passing (briefly allude to). Theory section should say "don't describe data here" (Tolly was confused b/c intro asks for data description). Theory And Background should be a header, not a section with word-count (people had "Theory and Background" then "Theory" then "Background" then "Hypotheses" this is is a mess! . Make sure it's clear intro = brief mention of data; theory = no data; later on: data. Probably remove due_date as well? Also, make it clearer that this should not narrarate: "We" should not appear anywhere maybe? Just tell me what you need to tell me. 
-
-Maybe I should describe more what I want for the plots (a la British BakeOff). Mention color-blind friendly colors and proper names and such. Add where the plots should be in the flow? -->
-
-:::fyi
-
-One member of each group should turn in the group's work on D2L. The turned-in copy should have the group member's names at the top.
-
-Turn in your copies by **11:59 on the date listed on the Schedule** 
-
+::: {.callout-warning}
+## Due Date
+This Project is due on **{{< meta duedate >}}**. This is the absolute last day I can accept projects. No exceptions will be given.
 :::
 
-## Requirements
-
-Data analytics is inherently a hands-on endeavor. Accordingly, the final project for this class is hands-on. As per the overview page, the final project has the following elements:
-
-1. For your final project in this class, you will analyze **existing data** in some area of interest to you. You will aggregate (merge) datasets, "find a pattern in the data that cannot be expressed in a closed form", and communicate your findings in a memo.[^3]
-
-[^3]: Note that **existing** is taken to mean that you are not permitted to collect data by interacting with other people. That is not to say that you cannot gather data that previously has not been gathered into a single place---this sort of exercise is necessary. But you cannot stand with a clipboard outside a store and count visitors (for instance). That would require involving the Institutional Review Board (IRB) and nobody wants to do that.
-
-2. You must visualize (at least) three **interesting** features of that data. Visualizations should aid the reader in understanding something about the data that might not be readily apparent.[^4]
-
-3. You must come up with some analysis---using tools from the course---which relates your data to either a **prediction** or a **policy conclusion**. For example, if you collected data from Major League Baseball games, you could try to "predict" whether a left-hander was pitching based solely on the outcomes of the batsmen. If you assembled data from COVID lockdowns and unemployment, you could test hypotheses about the labor market and its reaction to COVID. 
-
-If you choose a **prediction** project, you should employ all of the tools we have learned regarding training and testing, and report the relevant measures of fit.
-
-If you choose a **policy conclusion** project, you should explore the relationship you're studying. If you find that low-income workers were most likely to be laid off during COVID, you should examine if this corresponds to, say, industry of employment (e.g. "service jobs were worst hit, and are most likely the job held by low-income workers"). 
-
-4. You will submit **two things** via D2L:
-
-- A PDF of your report (see the outline below for details of what this needs to contain) rendered from your R Markdown using LaTeX as in our labs. You might want to write the prose-heavy sections in a word processor like Word or Google Docs and copy/paste the text into your `R` Markdown document, since RStudio doesn't have a nice spell checker or grammar checker. This should have *no visible `R` code, warnings, or messages in it anywhere*.  To do this, you must set `echo = FALSE` in the code chunk options `knitr::opts_chunk$set(echo = FALSE, ...)` at the beginning of your document template before you knit, and review your text carefully before turning it in.
-
-- The same PDF as above, but with all the R code in it (set `echo = TRUE` at the beginning of your document and reknit the file). Please label files in an obvious way. I will usually grade from this document.
-
-This project is due by **11:59 PM on the date listed on the Schedule.** <span style="color: #81056F; font-weight: bold"> No late work will be accepted. For real. MSU has grading deadlines and I've given you every second that can be spared.</span>
-
-**There is no final exam. This project is your final exam.**
-
-The project will ***not*** be graded using a check system, and will be graded by me (the main instructor, not a TA). I will evaluate the following four elements of your project:
-
-1. Technical skills: Was the project easy? Does it showcase mastery of R for data analysis? (20%)
-
-2. Visual design: Was the information smartly conveyed and usable? Was it beautiful? (20%)
-
-3. Analytic design: Was the analysis appropriate? Was it sensible, given the dataset? Did you miss any glaring issues? (20%)
-
-4. Story: Did we learn something? Did you explore your findings sufficiently deeply? (20%)
-
-5. Following instructions: Did you suppress `R` code as asked? Did you meet approximate word counts and did your project contain all sections? (20%)
-
-If you've engaged with the course content and completed the exercises and mini projects throughout the course, you should be able to ace the final project.
-
-[^4]: Note that "interesting" is a subjective term. If you're not sure if something is interesting, ask me.
-
-## Teams
 
 
-> My team sucks; how can I punish them for their lack of effort?
+<!-- Maybe I should describe more what I want for the plots (a la British BakeOff). Mention color-blind friendly colors and proper names and such. Add where the plots should be in the flow? -->
 
-On this front, we will be more supportive. While you have to put up with your team regardless of their quality, you can indicate that your team members are not carrying their fair share by issuing a **strike**. This processs works as follows:
-1. A team member systematically fails to exert effort on collaborative projects (for example, by not showing up for meetings or not communicating, or by simply leeching off others without contributing.)
-2. Your frustration reaches a boiling point. You decide this has to stop. You decide to issue a **strike**
-3. You send an email with the following information:
-    - `Subject line:` [SSC442] Strike against [Last name of Recipient]
-    - `Body:` You do **not** need to provide detailed reasoning. However, you must discuss the actions (plural) you took to remedy the situation before sending the strike email.
 
-A strike is a serious matter, and will reduce that team member's grade on joint work by 10%. If any team-member gets strikes from all other members of his or her team, their grade will be reduced by 50%.
+As you may have guessed given Project 1 and Project 2, your final project will be a chance for you to work on an analysis pertaining to your own (group's) interest, and with data you find, clean, and analyze. 
 
-Strikes are *anonymous* so that you do not need to fear social retaliation. However, they are not anonymous to allow you to issue them without thoughtful consideration. Perhaps the other person has a serious issue that is preventing them from completing work (e.g., a relative passing away). Please be thoughtful in using this remedy and consider it a last resort.
+This assignment requires three steps which I outline here and detail below. First, you are to choose a topic, likely one that you have been writing about in the second parts of Project 1 and Project 2, and assemble and clean a rich dataset on the topic from multiple sources. Second, present an analysis of the data that *highlights a pattern in the data that is not easily expressed in a closed form* in the spirit of Project 1, primarily using visuals. This section will focus on a specific outcome (or two) that is of particular interest. Third, design and estimate using cross-validation a predictive model of the outcome of interest that performs well on an out-of-sample slice of your data. 
 
-> I'm on a smaller-than-normal team. Does this mean that I have to do more work?
-
-Your instructors are able to count and are aware the teams are imbalanced. Evaluations of final projects will take this into account. While your final product should reflect the best ability of your team, we do not anticipate that the uneven teams will lead to substantively different outputs.
+Your final product will take the form of a short memo in two versions -- one with all code turned off, and one with all code turned on. Details for each section and a rubric for scoring are below.
 
 
 
-## Suggested outline
+## The Memo
 
-You must write and present your analysis as if presenting to a **C-suite executive**. If you are not familiar with this terminology, the C-suite includes, e.g., the CEO, CFO, and COO of a given company. Generally speaking, such executives are not particularly analytically oriented, and therefore your explanations need to be clear, consise (their time is valuable) and contain actionable (or valuable) information.[^6] The report should be no more than 3 pages (excluding figures and tables). 
-    - Concretely, this requires a written memo, which describes the data, analyses, and results. This must be clear and easy to understand for a non-expert in your field. Figures and tables do not apply to the page limit. You must use headers (`#` at the beginning of a line for sections, `##` for subsections, etc.) for each of these sections. Make sure you inspect your final product before you upload it.
-    - As in Project 1, *do not narrarate your process*. "We tried using `summarize()` and then found that..." has no business in a C-suite memo. Nor does "we looked at X then decided that Y was...". Tell the reader what data you used and what you found, and not about the process.
+Begin your memo with a brief (1 paragraph max) discussion of your topic of interest and the outcome you are interested in understanding and predicting. Tell the reader what sort of questions or analysis you are going to perform, and very briefly (1-2 sentences max) discuss what your analysis finds. 
 
-Below is a very loose guide to the sort of content that we expect for the final project.
 
-[^6]: This exercise provides you with an opportunity to identify your marketable skills and to practice them. I encourage those who will be looking for jobs soon to take this exercise seriously.
 
-### Introduction
+## Section 1 of 3: Data (40 points)
 
-Describe the motivation for this analysis. Briefly describe the dataset(s), and explain why the analysis you're undertaking matters for society. (Or matters for some decision-making. You should not feel constrained to asking only "big questions." The best projects will be narrow-scope but well-defined.) (**≈300 words**)
+Find and assemble a dataset on your topic of interest using existing data.[^1] You must incorporate at least two datasets, properly merging them, though more than two is encouraged. This will require careful examination of data types and key(s), as well as attention to handling missing data. Your topic and questions may be shaped in part by what you can find -- there are many sources of publicly-available data, and wrestling with them is part of being a good data analyst. To aid in your 3rd section, try to find and use data with many observations. 
 
-### Theory and Background
+Once merged, clean your data such that it is usable in your project. Address missing data appropriately. Avoid dropping observations whenever possible. If your data includes extensive categorical variables, consider re-grouping them to relevant, coarser aggregations (e.g. all the `building_type`s in the Rats data from Project 1 could have been grouped into 4-8 more general categories for most analytical uses, though how fine/coarse your grouping should be depends on your analytical questions).
 
-Provide in-depth background about your analytics question. Provide some theoretical guidance to the functional relationship you hope to explore. If you're interested on how, say, height affects scoring in the NBA, write down a proposed function that might map height to scoring. Describe how you might look for this unknown relationship in the data, but do not describe the data yet. (**≈300 words**)
 
-### Hypotheses
+[^1]: Note that **existing** is taken to mean that you are not permitted to collect data by interacting with other people. That is not to say that you cannot gather data that previously has not been gathered into a single place---this sort of exercise is necessary. But you cannot stand with a clipboard outside a store and count visitors (for instance). That would require involving the Institutional Review Board (IRB) and nobody wants to do that.
 
-Make predictions to form the questions that you will study. Declare what you think will happen (the *theory* section will explain the "why"). You should be able to reject or fail to reject these hypotheses based on your analyses. (**≈200 words**)
+**In your memo**, make a **Data** section after your intro paragraph and, in 2-3 paragraphs max, cite the source datasets, and describe how the data was merged. Do not refer to specific column names, but rather speak generally ("we merge on County FIPS and year to link state spending to county-level average test scores....") so that the reader has an idea of how the data was assembled. In a similar manner, state how missing data was handled.
 
-### Data
+Briefly summarize the dataset including the number of observations and statistics about key variables (e.g. "the average test score was XX.XX, while the average per-pupil spending was $YYYY").
 
-Given your motivations, limits on feasibility, and hypotheses, describe the data you use. (**≈150 words**)
 
-### Analyses
+### Scoring Rubric Section 1
 
-Generate the analyses relevant to your hypotheses and interests. Here you must include three figures and must describe what they contain in simple, easy to digest language. Why did you visualize these elements? Your analyses also must include brief discussion. (**Main part; as many words as needed**)
+- **Data Source** (15 points): Do you have 2 or more data sources, and does each data source provide a relevant contribution to the topic?
 
-### Conclusion
+- **Merging** (10 points): Did you identify the proper key columns and correctly merge such that data is not distorted or unintentionally dropped? Does your work show technical mastery of the process?
 
-What caveats should we consider? Do you believe this is a truly causal relationship? Or, if a predictive project, how well did you do and should we bet money / diagnose / rely on your prediction? Why does any of this matter to the decision-maker? (**≈100 words**)
+- **Cleaning** (15 points): Did you address missing data appropriately and with clear assumptions? Did you generate meaningful categories for data that contained too much detail? Does your work show technical mastery of the process? Was it efficiently coded?
+
+- **Memo** (5 points): Did you describe the necessary parts of the data construction, merging, cleaning process, and final dataset in a readable and *concise* maner?
+
+
+## Section 2 of 3: Analysis with Visuals (45 points)
+
+With your dataset(s) cleaned and ready, explore the data. Focusing on 1-2 aspects of the data that you find elucidate the outcome of interest, explore and analyze the relationship between your outcome and the explanatory variables. For example, if you're interested in state-level educational spending and county-level test scores, you want to go beyond the simple relationship between the two: does the same relationship hold for wealthy counties vs. poor counties? Does it hold for all ages of students? Is it non-linear in some respect?
+
+You will present this analysis primarily through visuals, as in Project 1. Your memo will guide the reader through the visuals, but should let the visuals do the "talking". As in Project 1, do **not** narrarate the data exploration process ("we tried X, but it didn't show anything, so we tried Y"). The memo should communicate a clear flow of logic that starts with the question and ends with a clear pattern in the data not easily expressed in a closed form. 
+
+You should not need more than 3 visualizations for this (4 max) -- you should not substitute many shallow explorations for one deep exploration. Follow the thread through the data and take the reader along for the ride.
+
+I will be irrationally militant about the fine details in your plots. Your plots should be of publication quality, have perfect labeling and capitalization, have color-blind friendly colors, and should make a striking impact on first glance.
+
+### Scoring Rubric Section 2
+
+- **Content** (20 points): Does your analysis find an interesting pattern in the data not easily expressed in a closed form? Does the reader learn something not obvious about the question at hand? Does the analysis "follow a thread" and build in the progression through your 3-4 visualizations? Did we learn something?
+
+- **Technicals** (15 points): Are the visualizations **perfect** in spelling, capitalization, labeling, and colors?
+
+- **Memo** (10 points): Is the writing succinct, clear, and written as a polished memo without extraneous commentary or narraration?
+
+
+
+## Section 3 of  3: Predictive Model (40 points)
+Your final section requires estimating a predictive model on your data using a method of your choice. Similar to Project 2, you will need to setup your dataset such that it is appropriate for use in your chosen predictive method. You must use LASSO, K-Nearest Neighbors, or a Regression Tree (or random forest, if you wish to be adventureous). You will predict your outcome of interest, basing the model construction (to the extent there is an underlying model structure) on your knowledge of the data gleaned from Section 2.
+
+Set aside 10\% of your sample as an evaluation sample as in Project 2. In this project, you *may* use built-in cross-validation functions (e.g. `cv.glmnet()` for LASSO/ridge/elastic net), or may choose to cross-validate "manually" as we did in Project 2. If choosing the former, you must be able to extract and show the train and test RMSEs across all the values of the tuning parameters (lambda, K, minsplit, cp, etc.). Estimate the model, extract the relevant RMSE's, identify your optimal tuning parameters, and calculate the evaluation sample's final RMSE (a single number).
+
+Finally, using your evaluation sample, calculate your model's Evaluation RMSE (a single number) and report it with interpretation.
+
+In this section, the memo writing will be quite brief. In one paragraph, discuss the method you employ and briefly describe the underlying model specification (what variables are included, what isn't, etc). Show the train-test RMSEs in a properly-formatted publication-ready plot, state the final test RMSE for the optimal tuning parameter values, and discuss and interpret that RMSE of your evaluation sample.
+
+### Scoring Rubric Section 3
+
+- **Estimation** (20 points): Did you properly estimate and tune your predictive model using cross-validation? Did you use a model specification (formula) appropriate for your method? Did you identify the test-RMSE minimizing values of the tuning parameter? Did you use an appropriate range of values for the tuning parameter?
+
+- **Plot** (10 points): Did you show the train and test RMSE on an appropriately-formatted plot? Does the plot cover the relevant range of the tuning parameter such that the canonical form of the test RMSE is clear? Does the plot show a line or point at the optimal value of the tuning parameter?
+
+- **Memo** (10 points): Does the memo clearly state the model chosen, the formula used, the methods used, and the results? Does it discuss the evaluation sample RMSE and interpret it appropriately?
+
+
+
+## Additional Instruction: (10 points)
+
+One person in the group will turn in the assignment to D2L no later than the time listed on the syllabus. **I allow you the maximum amount of time to complete the project. Grades are due 48 hours after the due date, and thus I cannot extend anyone's project for any reason**. 
+
+You must turn in **TWO** PDF's, properly rendered as per our usual course requirements. ONE copy will have all code output turned off (`echo=F`). The easiest way to do this is the set the global `knitr` option in the first code chunk (and set that first code chunk's echo to the appropriate setting), knitting to PDF, then turning the global `echo` setting on and knitting it again to a differently-named PDF file. You will turn in both PDF's, and I will use them both in grading.
+
+### Scoring Rubric
+
+- **Turning in** (8 points): Did you turn in two copies, one with *zero* code showing and one with full code? Are all group member names shown on the assignment?
+
+- **Intro** (2 points): Did you start with a proper intro paragraph as specified above?
+
+
+
+
+<!-- ## Teams -->
+
+
+<!-- > My team sucks; how can I punish them for their lack of effort? -->
+
+<!-- On this front, we will be more supportive. While you have to put up with your team regardless of their quality, you can indicate that your team members are not carrying their fair share by issuing a **strike**. This processs works as follows: -->
+<!-- 1. A team member systematically fails to exert effort on collaborative projects (for example, by not showing up for meetings or not communicating, or by simply leeching off others without contributing.) -->
+<!-- 2. Your frustration reaches a boiling point. You decide this has to stop. You decide to issue a **strike** -->
+<!-- 3. You send an email with the following information: -->
+<!--     - `Subject line:` [SSC442] Strike against [Last name of Recipient] -->
+<!--     - `Body:` You do **not** need to provide detailed reasoning. However, you must discuss the actions (plural) you took to remedy the situation before sending the strike email. -->
+
+<!-- A strike is a serious matter, and will reduce that team member's grade on joint work by 10%. If any team-member gets strikes from all other members of his or her team, their grade will be reduced by 50%. -->
+
+<!-- Strikes are *anonymous* so that you do not need to fear social retaliation. However, they are not anonymous to allow you to issue them without thoughtful consideration. Perhaps the other person has a serious issue that is preventing them from completing work (e.g., a relative passing away). Please be thoughtful in using this remedy and consider it a last resort. -->
+
+<!-- > I'm on a smaller-than-normal team. Does this mean that I have to do more work? -->
+
+<!-- Your instructors are able to count and are aware the teams are imbalanced. Evaluations of final projects will take this into account. While your final product should reflect the best ability of your team, we do not anticipate that the uneven teams will lead to substantively different outputs. -->
+

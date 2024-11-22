@@ -1,15 +1,6 @@
 ---
 title: "Geospatial with R"
-linktitle: "14: Geospatial with R"
-read_date: "2023-12-07"
-menu:
-  example:
-    parent: Examples
-    weight: 2
-type: docs
-weight: 1
-editor_options:
-  chunk_output_type: console
+
 output:
   blogdown::html_page:
     toc: true
@@ -200,9 +191,9 @@ To find the exact variable you need, you'll need what's called a "table shell". 
 ### Wrapping up
 Finding census variables via `tidycensus` can be frustrating, and other sources exist to help lookup census tables. One useful tip is that you can use the "filter" button in your Rstudio `View()` window to interactively filter the `concept` column from `load_variables`. Once you find what you want there, then use the `get_acs` function in your code. Fundamentally, it's a lot of information with the ability to subset in many way, which makes it hard to wade through and find what you're looking for.
 
-:::fyi
+::: {.callout-note}
 
-Try it! (This will be your Lab 14, due on Monday)
+## Try it! (This will be your Lab 15, due on Monday)
 
 1. Load up all the necessary packages
 

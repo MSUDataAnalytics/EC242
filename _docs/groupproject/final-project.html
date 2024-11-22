@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>12: Applied Logistic Regression - Classification – EC242</title>
+<title>Final project – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -107,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-sidebar docked nav-fixed fullcontent">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -163,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/12-assignment.html">12: Applied Logistic Regression - Classification</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../groupproject/project1.html">Group Projects</a></li><li class="breadcrumb-item"><a href="../groupproject/final-project.html">Final project</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -196,11 +162,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../assignment/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Assignments</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../assignment/01-assignment.html" class="sidebar-item-text sidebar-link">
@@ -269,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../assignment/12-assignment.html" class="sidebar-item-text sidebar-link active">
+  <a href="../assignment/12-assignment.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">12: Applied Logistic Regression - Classification</span></a>
   </div>
 </li>
@@ -312,7 +278,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../groupproject/final-project.html" class="sidebar-item-text sidebar-link">
+  <a href="../groupproject/final-project.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Final project</span></a>
   </div>
 </li>
@@ -323,13 +289,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="3">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-memo" id="toc-the-memo" class="nav-link active" data-scroll-target="#the-memo">The Memo</a></li>
+  <li><a href="#section-1-of-3-data-40-points" id="toc-section-1-of-3-data-40-points" class="nav-link" data-scroll-target="#section-1-of-3-data-40-points">Section 1 of 3: Data (40 points)</a>
+  <ul class="collapse">
+  <li><a href="#scoring-rubric-section-1" id="toc-scoring-rubric-section-1" class="nav-link" data-scroll-target="#scoring-rubric-section-1">Scoring Rubric Section 1</a></li>
+  </ul></li>
+  <li><a href="#section-2-of-3-analysis-with-visuals-45-points" id="toc-section-2-of-3-analysis-with-visuals-45-points" class="nav-link" data-scroll-target="#section-2-of-3-analysis-with-visuals-45-points">Section 2 of 3: Analysis with Visuals (45 points)</a>
+  <ul class="collapse">
+  <li><a href="#scoring-rubric-section-2" id="toc-scoring-rubric-section-2" class="nav-link" data-scroll-target="#scoring-rubric-section-2">Scoring Rubric Section 2</a></li>
+  </ul></li>
+  <li><a href="#section-3-of-3-predictive-model-40-points" id="toc-section-3-of-3-predictive-model-40-points" class="nav-link" data-scroll-target="#section-3-of-3-predictive-model-40-points">Section 3 of 3: Predictive Model (40 points)</a>
+  <ul class="collapse">
+  <li><a href="#scoring-rubric-section-3" id="toc-scoring-rubric-section-3" class="nav-link" data-scroll-target="#scoring-rubric-section-3">Scoring Rubric Section 3</a></li>
+  </ul></li>
+  <li><a href="#additional-instruction-10-points" id="toc-additional-instruction-10-points" class="nav-link" data-scroll-target="#additional-instruction-10-points">Additional Instruction: (10 points)</a>
+  <ul class="collapse">
+  <li><a href="#scoring-rubric" id="toc-scoring-rubric" class="nav-link" data-scroll-target="#scoring-rubric">Scoring Rubric</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/12-assignment.html">12: Applied Logistic Regression - Classification</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../groupproject/project1.html">Group Projects</a></li><li class="breadcrumb-item"><a href="../groupproject/final-project.html">Final project</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">12: Applied Logistic Regression - Classification</h1>
+<h1 class="title">Final project</h1>
 </div>
 
 
@@ -346,7 +336,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -357,50 +346,97 @@ Due Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This assignment is due on <strong>Monday, November 18th, 11:59pm</strong></p>
+<p>This Project is due on <strong>Thursday December 12th, 11:59pm</strong>. This is the absolute last day I can accept projects. No exceptions will be given.</p>
 </div>
 </div>
-<p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.</p>
-<section id="backstory-and-set-up" class="level2">
-<h2 class="anchored" data-anchor-id="backstory-and-set-up">Backstory and Set Up</h2>
-<p>You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They’ve given you a dataset on defaults (encoded as the variable <code>y</code>, and not the column <em>default</em>). You’re going to try to predict this.</p>
-<p>This is some new data. The snippet below loads it.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>bank <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"https://ec242.netlify.app/data/bank.csv"</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">sep =</span> <span class="st">","</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>There’s not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>EXERCISE 1</strong></p>
-<ol start="0" type="1">
-<li><p>Encode the outcome we’re trying to predict (<code>y</code>, and not <code>default</code>) as a binary.</p></li>
-<li><p>Split the data into an 80/20 train vs.&nbsp;test split. Make sure you explicitly set the seed for replicability.</p></li>
-<li><p>Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).</p></li>
-<li><p>Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. <strong>Briefly discuss your findings.</strong> How does the error rate, sensitivity, and specificity change as the number of predictors increases?</p></li>
-</ol>
-<p>A few hints:</p>
+<!-- Maybe I should describe more what I want for the plots (a la British BakeOff). Mention color-blind friendly colors and proper names and such. Add where the plots should be in the flow? -->
+<p>As you may have guessed given Project 1 and Project 2, your final project will be a chance for you to work on an analysis pertaining to your own (group’s) interest, and with data you find, clean, and analyze.</p>
+<p>This assignment requires three steps which I outline here and detail below. First, you are to choose a topic, likely one that you have been writing about in the second parts of Project 1 and Project 2, and assemble and clean a rich dataset on the topic from multiple sources. Second, present an analysis of the data that <em>highlights a pattern in the data that is not easily expressed in a closed form</em> in the spirit of Project 1, primarily using visuals. This section will focus on a specific outcome (or two) that is of particular interest. Third, design and estimate using cross-validation a predictive model of the outcome of interest that performs well on an out-of-sample slice of your data.</p>
+<p>Your final product will take the form of a short memo in two versions – one with all code turned off, and one with all code turned on. Details for each section and a rubric for scoring are below.</p>
+<section id="the-memo" class="level2">
+<h2 class="anchored" data-anchor-id="the-memo">The Memo</h2>
+<p>Begin your memo with a brief (1 paragraph max) discussion of your topic of interest and the outcome you are interested in understanding and predicting. Tell the reader what sort of questions or analysis you are going to perform, and very briefly (1-2 sentences max) discuss what your analysis finds.</p>
+</section>
+<section id="section-1-of-3-data-40-points" class="level2">
+<h2 class="anchored" data-anchor-id="section-1-of-3-data-40-points">Section 1 of 3: Data (40 points)</h2>
+<p>Find and assemble a dataset on your topic of interest using existing data.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> You must incorporate at least two datasets, properly merging them, though more than two is encouraged. This will require careful examination of data types and key(s), as well as attention to handling missing data. Your topic and questions may be shaped in part by what you can find – there are many sources of publicly-available data, and wrestling with them is part of being a good data analyst. To aid in your 3rd section, try to find and use data with many observations.</p>
+<p>Once merged, clean your data such that it is usable in your project. Address missing data appropriately. Avoid dropping observations whenever possible. If your data includes extensive categorical variables, consider re-grouping them to relevant, coarser aggregations (e.g.&nbsp;all the <code>building_type</code>s in the Rats data from Project 1 could have been grouped into 4-8 more general categories for most analytical uses, though how fine/coarse your grouping should be depends on your analytical questions).</p>
+<p><strong>In your memo</strong>, make a <strong>Data</strong> section after your intro paragraph and, in 2-3 paragraphs max, cite the source datasets, and describe how the data was merged. Do not refer to specific column names, but rather speak generally (“we merge on County FIPS and year to link state spending to county-level average test scores….”) so that the reader has an idea of how the data was assembled. In a similar manner, state how missing data was handled.</p>
+<p>Briefly summarize the dataset including the number of observations and statistics about key variables (e.g.&nbsp;“the average test score was XX.XX, while the average per-pupil spending was $YYYY”).</p>
+<section id="scoring-rubric-section-1" class="level3">
+<h3 class="anchored" data-anchor-id="scoring-rubric-section-1">Scoring Rubric Section 1</h3>
 <ul>
-<li>If you are not getting a 2x2 confusion matrix, you might need to adjust your cutoff probability.</li>
-<li>It might be the case that your model perfectly predicts the outcome variable when the setup cutoff probability is too high.</li>
-<li>You need to make sure your predictions take the same possible values as the <code>actual</code> data (which, remember, you had to convert to a binary 0/1 variable)</li>
+<li><p><strong>Data Source</strong> (15 points): Do you have 2 or more data sources, and does each data source provide a relevant contribution to the topic?</p></li>
+<li><p><strong>Merging</strong> (10 points): Did you identify the proper key columns and correctly merge such that data is not distorted or unintentionally dropped? Does your work show technical mastery of the process?</p></li>
+<li><p><strong>Cleaning</strong> (15 points): Did you address missing data appropriately and with clear assumptions? Did you generate meaningful categories for data that contained too much detail? Does your work show technical mastery of the process? Was it efficiently coded?</p></li>
+<li><p><strong>Memo</strong> (5 points): Did you describe the necessary parts of the data construction, merging, cleaning process, and final dataset in a readable and <em>concise</em> maner?</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
+<section id="section-2-of-3-analysis-with-visuals-45-points" class="level2">
+<h2 class="anchored" data-anchor-id="section-2-of-3-analysis-with-visuals-45-points">Section 2 of 3: Analysis with Visuals (45 points)</h2>
+<p>With your dataset(s) cleaned and ready, explore the data. Focusing on 1-2 aspects of the data that you find elucidate the outcome of interest, explore and analyze the relationship between your outcome and the explanatory variables. For example, if you’re interested in state-level educational spending and county-level test scores, you want to go beyond the simple relationship between the two: does the same relationship hold for wealthy counties vs.&nbsp;poor counties? Does it hold for all ages of students? Is it non-linear in some respect?</p>
+<p>You will present this analysis primarily through visuals, as in Project 1. Your memo will guide the reader through the visuals, but should let the visuals do the “talking”. As in Project 1, do <strong>not</strong> narrarate the data exploration process (“we tried X, but it didn’t show anything, so we tried Y”). The memo should communicate a clear flow of logic that starts with the question and ends with a clear pattern in the data not easily expressed in a closed form.</p>
+<p>You should not need more than 3 visualizations for this (4 max) – you should not substitute many shallow explorations for one deep exploration. Follow the thread through the data and take the reader along for the ride.</p>
+<p>I will be irrationally militant about the fine details in your plots. Your plots should be of publication quality, have perfect labeling and capitalization, have color-blind friendly colors, and should make a striking impact on first glance.</p>
+<section id="scoring-rubric-section-2" class="level3">
+<h3 class="anchored" data-anchor-id="scoring-rubric-section-2">Scoring Rubric Section 2</h3>
+<ul>
+<li><p><strong>Content</strong> (20 points): Does your analysis find an interesting pattern in the data not easily expressed in a closed form? Does the reader learn something not obvious about the question at hand? Does the analysis “follow a thread” and build in the progression through your 3-4 visualizations? Did we learn something?</p></li>
+<li><p><strong>Technicals</strong> (15 points): Are the visualizations <strong>perfect</strong> in spelling, capitalization, labeling, and colors?</p></li>
+<li><p><strong>Memo</strong> (10 points): Is the writing succinct, clear, and written as a polished memo without extraneous commentary or narraration?</p></li>
+</ul>
+</section>
+</section>
+<section id="section-3-of-3-predictive-model-40-points" class="level2">
+<h2 class="anchored" data-anchor-id="section-3-of-3-predictive-model-40-points">Section 3 of 3: Predictive Model (40 points)</h2>
+<p>Your final section requires estimating a predictive model on your data using a method of your choice. Similar to Project 2, you will need to setup your dataset such that it is appropriate for use in your chosen predictive method. You must use LASSO, K-Nearest Neighbors, or a Regression Tree (or random forest, if you wish to be adventureous). You will predict your outcome of interest, basing the model construction (to the extent there is an underlying model structure) on your knowledge of the data gleaned from Section 2.</p>
+<p>Set aside 10% of your sample as an evaluation sample as in Project 2. In this project, you <em>may</em> use built-in cross-validation functions (e.g.&nbsp;<code>cv.glmnet()</code> for LASSO/ridge/elastic net), or may choose to cross-validate “manually” as we did in Project 2. If choosing the former, you must be able to extract and show the train and test RMSEs across all the values of the tuning parameters (lambda, K, minsplit, cp, etc.). Estimate the model, extract the relevant RMSE’s, identify your optimal tuning parameters, and calculate the evaluation sample’s final RMSE (a single number).</p>
+<p>Finally, using your evaluation sample, calculate your model’s Evaluation RMSE (a single number) and report it with interpretation.</p>
+<p>In this section, the memo writing will be quite brief. In one paragraph, discuss the method you employ and briefly describe the underlying model specification (what variables are included, what isn’t, etc). Show the train-test RMSEs in a properly-formatted publication-ready plot, state the final test RMSE for the optimal tuning parameter values, and discuss and interpret that RMSE of your evaluation sample.</p>
+<section id="scoring-rubric-section-3" class="level3">
+<h3 class="anchored" data-anchor-id="scoring-rubric-section-3">Scoring Rubric Section 3</h3>
+<ul>
+<li><p><strong>Estimation</strong> (20 points): Did you properly estimate and tune your predictive model using cross-validation? Did you use a model specification (formula) appropriate for your method? Did you identify the test-RMSE minimizing values of the tuning parameter? Did you use an appropriate range of values for the tuning parameter?</p></li>
+<li><p><strong>Plot</strong> (10 points): Did you show the train and test RMSE on an appropriately-formatted plot? Does the plot cover the relevant range of the tuning parameter such that the canonical form of the test RMSE is clear? Does the plot show a line or point at the optimal value of the tuning parameter?</p></li>
+<li><p><strong>Memo</strong> (10 points): Does the memo clearly state the model chosen, the formula used, the methods used, and the results? Does it discuss the evaluation sample RMSE and interpret it appropriately?</p></li>
+</ul>
+</section>
+</section>
+<section id="additional-instruction-10-points" class="level2">
+<h2 class="anchored" data-anchor-id="additional-instruction-10-points">Additional Instruction: (10 points)</h2>
+<p>One person in the group will turn in the assignment to D2L no later than the time listed on the syllabus. <strong>I allow you the maximum amount of time to complete the project. Grades are due 48 hours after the due date, and thus I cannot extend anyone’s project for any reason</strong>.</p>
+<p>You must turn in <strong>TWO</strong> PDF’s, properly rendered as per our usual course requirements. ONE copy will have all code output turned off (<code>echo=F</code>). The easiest way to do this is the set the global <code>knitr</code> option in the first code chunk (and set that first code chunk’s echo to the appropriate setting), knitting to PDF, then turning the global <code>echo</code> setting on and knitting it again to a differently-named PDF file. You will turn in both PDF’s, and I will use them both in grading.</p>
+<section id="scoring-rubric" class="level3">
+<h3 class="anchored" data-anchor-id="scoring-rubric">Scoring Rubric</h3>
+<ul>
+<li><p><strong>Turning in</strong> (8 points): Did you turn in two copies, one with <em>zero</em> code showing and one with full code? Are all group member names shown on the assignment?</p></li>
+<li><p><strong>Intro</strong> (2 points): Did you start with a proper intro paragraph as specified above?</p></li>
+</ul>
+<!-- ## Teams -->
+<!-- > My team sucks; how can I punish them for their lack of effort? -->
+<!-- On this front, we will be more supportive. While you have to put up with your team regardless of their quality, you can indicate that your team members are not carrying their fair share by issuing a **strike**. This processs works as follows: -->
+<!-- 1. A team member systematically fails to exert effort on collaborative projects (for example, by not showing up for meetings or not communicating, or by simply leeching off others without contributing.) -->
+<!-- 2. Your frustration reaches a boiling point. You decide this has to stop. You decide to issue a **strike** -->
+<!-- 3. You send an email with the following information: -->
+<!--     - `Subject line:` [SSC442] Strike against [Last name of Recipient] -->
+<!--     - `Body:` You do **not** need to provide detailed reasoning. However, you must discuss the actions (plural) you took to remedy the situation before sending the strike email. -->
+<!-- A strike is a serious matter, and will reduce that team member's grade on joint work by 10%. If any team-member gets strikes from all other members of his or her team, their grade will be reduced by 50%. -->
+<!-- Strikes are *anonymous* so that you do not need to fear social retaliation. However, they are not anonymous to allow you to issue them without thoughtful consideration. Perhaps the other person has a serious issue that is preventing them from completing work (e.g., a relative passing away). Please be thoughtful in using this remedy and consider it a last resort. -->
+<!-- > I'm on a smaller-than-normal team. Does this mean that I have to do more work? -->
+<!-- Your instructors are able to count and are aware the teams are imbalanced. Evaluations of final projects will take this into account. While your final product should reflect the best ability of your team, we do not anticipate that the uneven teams will lead to substantively different outputs. -->
 
 
 </section>
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Note that <strong>existing</strong> is taken to mean that you are not permitted to collect data by interacting with other people. That is not to say that you cannot gather data that previously has not been gathered into a single place—this sort of exercise is necessary. But you cannot stand with a clipboard outside a store and count visitors (for instance). That would require involving the Institutional Review Board (IRB) and nobody wants to do that.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

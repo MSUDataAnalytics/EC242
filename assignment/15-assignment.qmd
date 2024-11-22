@@ -3,8 +3,6 @@ title: "15: Geospatial in R"
 duedate: "{{< var duedates.lab15 >}}"
 ---
 
-<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
-
 
 
 ::: {.callout-warning}

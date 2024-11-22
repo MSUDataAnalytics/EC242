@@ -38,15 +38,22 @@ Your lab wil be based on similar data (with more wrinkles to fix) so share your 
 
 
 ```{r eval = F, include=F}
+
 ### NOTE to BEN: script creating this data is in Example_11_practice.R in the "working" directory (since I wasn't sure where to put scripts that generate data; don't need the kids finding them)
 
-booking_raw = read_csv(here('data','Travel_booking.csv'))
-roomrates_raw = read_csv(here('data','Travel_roomrates.csv'))
-parking_raw = read_csv(here('data','Travel_parking.csv'))
 
-# booking_raw = read_csv('https://ssc442kirkpatrick.netlify.app/data/Example11_booking.csv')
-# roomrates_raw = read_csv('https://ssc442kirkpatrick.netlify.app/data/Example11_roomrates.csv')
-# parking_raw = read_csv('https://ssc442kirkpatrick.netlify.app/data/Example11_parking.csv')
+library(tidyverse)
+library(lubridate)
+library(here)
+
+# 
+# booking_raw = read.csv(here('data','Travel_booking.csv'))
+# roomrates_raw = read.csv(here('data','Travel_roomrates.csv'))
+# parking_raw = read.csv(here('data','Travel_parking.csv'))
+
+booking_raw = read.csv('https://ec242.netlify.app/data/Travel_booking.csv')
+roomrates_raw = read.csv('https://ec242.netlify.app/data/Travel_roomrates.csv')
+parking_raw = read.csv('https://ec242.netlify.app/data/Travel_parking.csv')
 
 
 ## gather roomrates to merge to booking ##
@@ -61,7 +68,8 @@ booking = booking_raw %>%
   dplyr::mutate(Parking = case_when(
     FreeParking==T ~ 0,
     is.na(FreeParking) ~ 60,   # Parking is now $ spent on parking
-    TRUE ~ as.numeric(NA)))
+    TRUE ~ as.numeric(NA))) %>%
+  dplyr::mutate(date_occupied = ymd(date_occupied))
 
 booking.m = booking %>%
   separate(room_use, sep = '_', into = 'roomtype', extra = 'drop')  # NOTE: new name for room_use corresponds to the name in roomrates
