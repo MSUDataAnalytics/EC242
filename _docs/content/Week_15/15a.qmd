@@ -154,14 +154,14 @@ While it's fun to draw our own shapes (caution: my definition of fun $\neq$ your
 We can open and use any one of these filetypes. I will cover Shapefiles and GEOJSON as the latter has become a very popular way of sharing spatial datasets.
 
 ### Where to find spatial data
-Spatial data is all around us! Try searching google for a topic + "spatial shapefile". One of my favorite sources for spatial data is the DHS [HIFLD Open database](https://hifld-geoplatform.opendata.arcgis.com/), which has lots of government datasets that are well-organized by category. Click through, and when you find something you like, click the "Download" button. If there is a GEOJSON or KML file available, **right-click** and copy the link address, or click on **full details** and scroll down to *I want to...View API Resources* and copy the GEOJSON link. Then, use that with `st_read()`. On many maps (including this one), the GeoJSON link is shown under the API drop-down. Use GeoJSON over KML as some systems have issues importing the data fields in KML. 
+Spatial data is all around us! Try searching google for a topic + "spatial shapefile". One of my favorite sources for spatial data is the DHS [HIFLD Open database](https://hifld-geoplatform.hub.arcgis.com), which has lots of government datasets that are well-organized by category. Click through, choose the "open" database, and when you find something you like, click the "Download" button. If there is a GEOJSON or KML file available, **right-click** and copy the link address, or click on **full details** and scroll down to *I want to...View API Resources* and copy the GEOJSON link. Then, use that with `st_read()`. On many maps (including this one), the GeoJSON link is shown under the API drop-down. Use GeoJSON over KML as some systems have issues importing the data fields in KML. 
 
 ### Loading the data
 We'll use the `sf` package's `st_read` to open spatial data. Here, I'm loading the Natural Gas Processing Plants data from the Energy section of HIFLD. I'm using the **GeoJSON** option, which `st_read()` knows how to handle:
 
 ```{r}
-gasplants = st_read('https://opendata.arcgis.com/datasets/ca984888f8154c63bf3a023f0a1f9ac2_0.geojson') %>%
-  dplyr::select(name = NAME)
+gasplants = st_read('https://services7.arcgis.com/FGr1D95XCGALKXqM/arcgis/rest/services/NaturalGas_ProcessingPlants_US_EIA/FeatureServer/23/query?outFields=*&where=1%3D1&f=geojson') %>%
+  dplyr::select(name = Plant_Name)
 
 head(gasplants)
 ```
@@ -169,6 +169,7 @@ head(gasplants)
 The `sf` data type holds both the data (which here is just the name of the plant) *and* the "geometry", which are the points. It's tidy data - one row is one observation of one plant, and each row has a set of coordinates telling us where to find the plant.
 
 We can use ggplot with `geom_sf()` to plot these points. They're just scattered across the country and we don't automatically get a background map, but here are the points 
+
 ```{r}
 ggplot(gasplants) + geom_sf() + theme_minimal()
 ```
@@ -188,7 +189,7 @@ ggplot() + geom_sf(data = US, col = 'gray50') +
 Getting there. The problem now is that the `tigris` data covers all US territories, which are really spread out! Let's drop down to just Michigan. We can use good old `filter` just like with regular data:
 
 ```{r}
-MI = states(cb = TRUE) %>% dplyr::filter(STUSPS=='MI')
+MI = tigris::states(cb = TRUE) %>% dplyr::filter(STUSPS=='MI')
 
 ggplot() + geom_sf(data = MI, col = 'gray50') +
   geom_sf(data = gasplants) + theme_minimal()
@@ -199,6 +200,7 @@ ggplot() + geom_sf(data = MI, col = 'gray50') +
 Well, now we have a different problem. We want to have only the `gasplants` that are `over` the state of Michigan. That requires a **spatial join**. Luckily, our `tidyverse` syntax **works pretty seamlessly on `sf` objects**. First, we have to take care of a little issue with spatial data. The **projection**
 
 ### Projections, briefly
+
 The *projection* for spatial data is the translation from a 3-D object (e.g. the globe) to a 2-D space (a map, or the cartesian x-y coordinates of our screen). This is no simple matter! There are entire PhD programs dedicated to forming and processing projections and datum (which refer to the shape of the globe, which is not actually round). It can all be a nightmare. Worst of all, projections determine the definition of your coordinates, so you may be at -81 latitude, +30 longitude, but in another projection, you might be 1245349m above some reference point, and -2452849m to the left of that point. Projections define the distance along the X and Y axis, the scale of the coordinates, and a lot of other stuff about your 2-D polygons.
 
 Luckily, over the last few years, very smart people have been working on regularizing "projections". Now, we really need to know three things:
@@ -212,22 +214,23 @@ GEOJSON, shapefiles, and KML files usually come with embedded projections stored
 
 For mapping, you might need to *transform* your data between projections (or "reproject" it, same thing). We use `st_transform` for this. We only need to give `R` the EPSG (Geodetic Parameter Dataset) of the projection you want to end up in. As long as it's already in a known projection, `R` can re-project it. The projection is refered to by the Coordinate Reference System (CRS). `st_crs` will tell us the projection (EPSG number and a lot more) of any spatial object. If they do not match, then `R` will give an error or, worse, plot them on totally different scales - sometimes you end up with points from the US landing in the middle of the Indian Ocean! In fact, look back at our map of gas plants and the US. 
 
-::: {.callout-warning}
-Did you notice that a lot of the US gas plants mapped to...Canada? Those might be Alaskan plants, but the *projections* were not identical, so the definition of coordinates were different between our US map and our gas plants maps. Neither is "right" or "wrong" - they just have to be the same. Differences in projections tend to be worse at the extreme latitudes.
-:::
 
 ```{r}
 st_crs(gasplants)
 st_crs(MI)
 ```
-One is in 4326, the other in 4269. We can use `st_transform` on the `gasplants` data, which will reproject the points (and won't change the data at all). The data won't be any different, and the points won't look too much different
+
+`gasplants` from HIFLD is in EPSG: 4326, the map of MI is in EPSG: 4269. We can use `st_transform` on the `gasplants` data, which will reproject the points (and won't change the data at all). The data won't be any different, and the points won't look too much different
 
 ```{r}
 gasplants = gasplants %>%
-  st_transform(st_crs(MI))
+  st_transform(crs=4269)
 
 ggplot(gasplants) + geom_sf() + theme_minimal()
 ```
+
+But in a bit, when we spatially join, we'll avoid an error.
+
 
 #### Importing unprojected data
 Sometimes, we have data only in .csv format, but with X and Y coordinates (e.g. Longitude and Latitude). To import this data, we do the following:
@@ -262,6 +265,22 @@ ggplot() +
   geom_sf(data = ourCities.spatial, col = 'blue') +
   theme_minimal()
 ```
+
+#### Mis-projected data
+
+Let's see a *bad* example that assumes the wrong projection when importing `ourCities.spatial`:
+
+```{r}
+ourCities.spatial.bad = st_as_sf(ourCities, coords = c('lon','lat'), crs = 4000)
+ggplot() +
+  geom_sf(data = MI, fill = 'gray90') +
+  geom_sf(data = ourCities.spatial.bad, col = 'blue') +
+  theme_minimal()
+```
+
+**Ope!** That sure doesn't look right. The wrong projection can derail a project. Luckily, most shapefiles we find in the wild have the projection (CRS) attached. Now you know what a bad one looks like. Back to our correctly-projected data.
+
+
 
 ## Spatial merges
 Combining spatial data is the strength of geospatial analysis. We have our map of MI, and we have out points. Let's "merge" the points to the map, meaning let's connect the elements in our map (the state of MI) to the elements in our points (gas plants). This is a point-to-polygon merge.
@@ -301,7 +320,7 @@ mapview(MI.gasplants)
 ```
 
 ```{r, echo = F, warning=F, message = F}
-knitr::include_graphics('img/MIgas.png')
+knitr::include_graphics(here('images','MIgas.png'))
 ```
 
 In an actual mapview window (not this static image here), clicking on the points or polygons will bring up a pop-up of the data for that row. Mapview is very useful for *exploring* your spatial data. It is **not** useful for presenting your data. Please, never use `mapview` as an output from a markdown code chunk. Use it for exploring, then use `geom_sf()` to present your analysis.
@@ -318,7 +337,7 @@ mapview(MI.gasplants) + mapview(MI.counties, zcol = 'NAME')
 ```
 
 ```{r, echo = F, warning=F, message = F}
-knitr::include_graphics('img/mapview_ex2.png')
+knitr::include_graphics(here('images','mapview_ex2.png'))
 ```
 
 
@@ -584,7 +603,7 @@ library(tidyverse)
 library(tigris)
 
 
-MI = counties(state = 'MI', year = 2019) # your school district map here
+MI = counties(state = 'MI', year = 2019) # your map here
 GreatLakes = st_read('/PUT YOUR LOCAL FILEPATH TO THE GEOJSON HERE.geojson') %>%  # put your local filepath in here
   st_transform(st_crs(MI)) %>%  # need them to be in the same projection
   st_make_valid() %>%  # this fixes an issue with the shapefile after projection
@@ -592,5 +611,14 @@ GreatLakes = st_read('/PUT YOUR LOCAL FILEPATH TO THE GEOJSON HERE.geojson') %>%
 
 
 MIx = st_difference(MI, GreatLakes)  # spatial version of the difference function
+```
+
+or, try the `erase_water()` function from `tigris`. This erases any body of water, no matter how small, so on a whole state, it can take a **long** time. The `area_threshold` argument (0 to 1) tells R how detailed you want the erasure to be. A threshold of .999 will remove Great Lakes and big lakes, but leave most inland lakes and won't take as long.
+
+```{r, echo=T}
+MI = counties(state = 'MI', progress_bar = FALSE) %>%
+erase_water(area_threshold = .999)
+
+ggplot(MI) + geom_sf()
 ```
 

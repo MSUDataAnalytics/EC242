@@ -25,6 +25,7 @@ knitr::include_graphics('https://vector-conversions.com/images/vector_vs_raster.
 ```
 
 ### Vectors are scalable. Rasters are not
+
 Rasters are great for detail, like pixels in a picture, but they do not scale up very well. Vectors are great for things that do need to scale up. They are also smaller and easier to work with when they aren't trying to replicate photo-realistic images.  Vectors can handle curves by recording the properties of the curve (e.g. bezier curves), while rasters have to approximate curves along the grid of cells, so if you want a smooth curve, you need lots of cells.
 
 Geospatial work is almost always done in vectors because (1) it is easier to store data as vectors, and (2) it is easier to manipulate, project, intersect, or connect vector points, lines, and polygons.
