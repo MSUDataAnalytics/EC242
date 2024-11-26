@@ -6,6 +6,7 @@ format:
     toc: true
 ---
 
+Note: this assignment was updated 11/26/2024. Some parts may be different from the assignment as it stood when due. All additions are clarifications.
 
 ## Predicting Energy Consumption
 
@@ -36,28 +37,39 @@ While not super-helpful for this application, the survey itself can be viewed on
 
 This is a new project, so there may be some unclear descriptions or details that are necessary. I'll add questions and answers here as they come in.
 
-- You *show* your code in 1, but suppress your code using `echo=F` in 2-5.
-
-- You will need to use `lapply` or a loop, and not the built-in cross-validation, for finding the optimal test RMSE. You can use `glmnet`, for instance, to estimate a LASSO model, but you have to use `lapply` to vary the value of the tuning parameter `lambda` rather than giving it a range of values of `lambda`.
-
 - I added a short amount on 11/12 regarding the structure of the table I want you to include. If you have more than 100 values for your tuning parameters (lambda, k, etc.) then shorten the range you use so that you have under 200 rows on that table. Make sure your test-RMSE-minimizing level of complexity / tuning parameter value is in the middle of the range.
 
-- [You are required to turn in both your final, rendered project with no code showing AND your .RMD file used to render the project. All code generated with generative AI (e.g. ChatGPT) must be labeled as such as required in the syllabus.]{.text-red}. I have updated this in the assignment below.
 
 :::
 
 ## The project
 This project will take the form of a short memo-style documentation and evaluation of your predictive model prepared using R and RMarkdown as usual. It will have five sections, each of which should be separated with a proper header.
 
-1. **Data Processing** (10 points): Clean and process the RECS 2020 data starting by loading in the data .csv. Below, in the "Your approach should be..." section, I've included some important steps you must take. For this section, use `echo=T` in your code chunk so that your cleaning and processing code is shown. It's OK if it's long (though try to be an efficient coder). All cleaning and processing should be shown here. If you find yourself taking extra steps later on with the data, move those steps up into this section. No write-up or description is required here.
+1. **Data Processing** (10 points): Clean and process the RECS 2020 data starting by loading in the data .csv. Below, in the "Your approach should be..." section, I've included some important steps you must take. For this section, use `echo=T` in your code chunk(s) so that your cleaning and processing code is shown. It's OK if it's long (though try to be an efficient coder). All cleaning and processing should be shown here. If you find yourself taking extra steps later on with the data, move those steps up into this section. No write-up or description is required here, just your code.
 
-2. **State your priors** (6 points): In 1-2 paragraphs, discuss your *prior beliefs* about the relationship between three of the variables and the target variable, `TOTALBTU`. While our predictive models often become un-interpretable, we have to start with some set of beliefs about the relationship, starting with the existence of some relationship. You cannot choose `HDD65` or `CDD65`, though. These are too obvious. Make *one* plot of the relationship between `TOTALBTU` and some variable(s) that you think will be important and include that plot in this section. The plot has to be clean and clear, but the analysis behind it can be very simple and straightforward (this assignment is about the prediction, not a re-hash of Project 1). Do not include any of the code here.
+2. **State your priors** (6 points): In 1-2 paragraphs, discuss your *prior beliefs* about the relationship between three of the variables and the target variable, `TOTALBTU`. While our predictive models often become un-interpretable, we have to start with some set of beliefs about the relationship, starting with the existence of some relationship. You cannot choose `HDD65` or `CDD65`, though. These are too obvious. Make *one* plot of the relationship between `TOTALBTU` and some variable(s) that you think will be important and include that plot in this section. The plot has to be clean and clear, but the analysis behind it can be very simple and straightforward (this assignment is about the prediction, not a re-hash of Project 1). Do not include any of the code here -- use `echo=F` to ensure that your code is not showing. You will turn in your .RMD file on D2L as well should the grader need to see your code.
 
-3. **Estimate a model** (20 points): Estimate a robust and detailed predictive model that includes the relationship from (1) and anything and everything else you think will provide predictive power. The sky is the limit. Use the train-test paradigm to arrive at your best prediction. Do not use the "canned" routines -- you'll need to set a range of complexity and use `lapply` or a loop to estimate over those complexity parameters. This means that you should not directly give `glmnet` (if using LASSO or Ridge) a vector of lambdas, but should use `lapply` to estimate different models over a range of `lambda`. However, **do not output your estimation code or underlying output. Your output should be clean, but you will need to upload your .RMD file for your assignment as well**. In the write-up for this section, include a table showing the range of *complexity* that was tried (e.g. the *lambda* from a LASSO), the training RMSE, and the testing RMSE. The table will be long, but that's OK. If you have more than 200 different values, then shorten the range around the test-RMSE-minimizing point. Use `round()` to cut down on the number of digits showing, but make sure enough are showing to find the minimizing level of complexity. Make a plot showing the progression of both RMSE's as complexity increases. The plot should show the nadir where the testing RMSE reaches it's minimum. If you are using a method that has two complexity parameters, you'll need to include test and train RMSE's for every combination of parameter values. In that case, choose a coarse number of parameter values in the complexity parameters so that you are not searching over too many values. You can plot across one complexity parameter with the other complexity parameter held fixed. Your write-up should **not** include any code in this section, just the table and the plot. In a 2-3 sentence discussion, note which model you have selected as your optimal model and why.
+3. **Estimate a model** (20 points): Estimate a robust and detailed predictive model that includes the relationship from (2) and anything and everything else you think will provide predictive power -- the sky is the limit. Use one of the machine learning methods that we learned about (kNN, regression trees, LASSO/Ridge/Elastic Net, do **not** use regular OLS) and carefully use the train-test paradigm to arrive at your best prediction. 
 
-4. **Evaluate the Model** (8 points): Take your model to the evaluation sample (see below) and calculate the RMSE for your optimal model on this sample. Then, see if your priors were correct by changing the variable you hypothesized to be related, and see if your predictive model changes it's prediction accordingly. For instance, I think an increase in `HDD65` will increase the energy consumed when it increases. To see if this holds in my model, I can increase `HDD65` by some amount (a percent or a fixed amount, or a change in category if a categorical/factor variable) across all the data, and compare the new prediction to the old. Do this for each of the three predictions you made in (2). 
+  Some rules apply here: 
 
-5. **Data and Hypotheses** (6 points): Go back to the ~~five~~ three datasets from your first project. Choose one that you think you, as a group, might want to study further. Write up **three** hypothesis (labeled H1, H2, and H3) that you might want to test or predictions you might want to make (you can mix if you'd like - two hypothesis and one prediction, etc.) and *why* those might be interesting to others. That is, tell me why you or others would be interested in testing each hypothesis, or predicting an outcome. This is unrelated to Sections 1-4.
+  - Do not use the "canned" routines for finding the optimal values of your tuning parameter -- you'll need to set a range of complexity and use `lapply` or a loop to estimate over those complexity parameters. This means that you should not directly give `glmnet` (if using LASSO or Ridge) a vector of lambdas and should not use `cv.glmnet`, but rather should use `lapply` to estimate different models over a range of `lambda` (or `k` or whatever your tuning parameters are). 
+
+  - **Do not output your estimation code or underlying output.** Your output should be clean, but you will need to upload your .RMD file for your assignment as well.
+
+  Some hints may come in handy:
+
+  - Most of methods we learned start out with a specification formula that is highly complex -- unlike when we added variables to change complexity, our machine learning methods take a very deatiled formula with polynomial terms and interactions, and use the tuning parameters to change the complexity of the model. So *start with a very complex model* in your formula or data.
+
+  - As you tune your tuning parameters, you may find that a large part of the tuning parameter space (the values of the tuning parameters you're trying) result in a flat, high RMSE. As we discussed in class, there is no "right" range for the tuning parameters, so you may need to adjust the range you cover so that you focus on the RMSE-minimizing values. If you're in a tuning parameter range that results in very high RMSE, then your plot is going to "compress" the minimizing point down and you likely won't be able to even tell there's a minimum. Be smart and iterate the range for your tuning parameter estimates.
+
+  In the write-up for this section (section 3), include a table showing the range of *complexity* that was tried (e.g. the *lambda* from a LASSO), the training RMSE, and the testing RMSE. The table will be long, but that's OK. If you have more than 200 different values, then shorten the range around the test-RMSE-minimizing point. Use `round()` to cut down on the number of digits showing, but make sure enough are showing to find the minimizing level of complexity. Make a plot showing the progression of both RMSE's as complexity increases. The plot should show the nadir where the testing RMSE reaches it's minimum. If you are using a method that has two complexity parameters, you'll need to include test and train RMSE's for every combination of parameter values. In that case, choose a coarse number of parameter values in the complexity parameters so that you are not searching over too many values. You can plot across one complexity parameter with the other complexity parameter held fixed. Your write-up should **not** include any code in this section, just the table and the plot. You can try using `knitr::kable()` to output a table - this function converts data.frame-like R objects into clean tables for RMarkdown. We haven't covered it in class, but it should be easy to figure out.
+
+  Finally, in a 2-3 sentence discussion, note which model you have selected as your optimal model and why. 
+
+4. **Evaluate the Model** (8 points): Take your model to the evaluation sample (see below) and calculate the RMSE for your optimal model on this sample. Then, see if your priors were correct by changing the variable you hypothesized to be related, and see if your predictive model changes it's prediction accordingly. For instance, I think an increase in `HDD65` will increase the energy consumed when it increases. To see if this holds in my model, I can increase `HDD65` by some amount (a percent or a fixed amount, or a change in category if a categorical/factor variable) across all the data, and compare the new prediction to the old. Do this for each of the three prior predictions you stated in (2). 
+
+5. **Data and Hypotheses** (6 points): Go back to the three datasets from your first project. Choose one that you think you, as a group, might want to study further. Write up **three** hypothesis (labeled H1, H2, and H3) that you might want to test or predictions you might want to make (you can mix if you'd like - two hypothesis and one prediction, etc.) and *why* those might be interesting to others. That is, tell me why you or others would be interested in testing each hypothesis, or predicting an outcome. This is unrelated to Sections 1-4.
 
 
 
@@ -117,7 +129,9 @@ __Part 5 (6 points, 2 points per hypothesis/prediction)__
 - For proposed predictions, did you state the variables that would be predicted?
 - In both cases, did you properly describe why one might be interested in the prediction or hypothesis?
 
+## Turning it in
 
+[You are required to turn in both your final, rendered project with no code showing (except as stated in Section 1) AND your .RMD file used to render the project. All code generated with generative AI (e.g. ChatGPT) must be labeled as such as required in the syllabus.]{.text-red}.
 
-You will turn in both your final rendered project **and** your .RMD file.
+Only one group member should post on D2L. Please make sure you coordinate to ensure this is done.
 
