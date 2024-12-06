@@ -69,6 +69,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -137,6 +166,9 @@ ul.task-list li input[type="checkbox"] {
       </button>
     </div>
   </nav>
+  <div id="quarto-announcement" data-announcement-id="df1959f6ee874f14cf22eb8ff4c16bcf" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p>I have allowed a 2nd dropped lab as of 12-3-2024</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
@@ -359,6 +391,25 @@ Due Date
 <p>As you may have guessed given Project 1 and Project 2, your final project will be a chance for you to work on an analysis pertaining to your own (group’s) interest, and with data you find, clean, and analyze.</p>
 <p>This assignment requires three steps which I outline here and detail below. First, you are to choose a topic, likely one that you have been writing about in the second parts of Project 1 and Project 2, and assemble and clean a rich dataset on the topic from multiple sources. Second, present an analysis of the data that <em>highlights a pattern in the data that is not easily expressed in a closed form</em> in the spirit of Project 1, primarily using visuals. This section will focus on a specific outcome (or two) that is of particular interest. Third, design and estimate using cross-validation a predictive model of the outcome of interest that performs well on an out-of-sample slice of your data.</p>
 <p>Your final product will take the form of a short memo in two versions – one with all code turned off, and one with all code turned on. Details for each section and a rubric for scoring are below.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A few tips
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Based on Project 2’s feedback, I have added a few clarifications in the assignment. Since you are already working on the Final Project, I will summarize everything I’ve added here. Nothing has changed on the grading rubric. These are merely to help you make a good, interesting project</p>
+<section id="section-3-predictive-model" class="level4">
+<h4 class="anchored" data-anchor-id="section-3-predictive-model">Section 3: Predictive Model</h4>
+<p>For predictive models, remember that the complexity parameter (e.g.&nbsp;lambda for LASSO) <em>reduces</em> the complexity of the data. Thus, you have to start with a very complex model (e.g.&nbsp;lots of interactions) when you write the formula that you wil use, then let the method find the right amount to reduce the complexity such that test RMSE is maximized. In Project 2, you had hundreds of predictors (explanatory variables), so even if you started with a model like <code>TOTALBTU ~ .</code>, you’d still have a decent amount of complexity. But here, if you have a lot, but not hundreds, of predictors, then starting with a model like <code>Y ~ .</code> won’t be very complex. It’s even possible that, in this case, your test RMSE is minimized at the most complex point (e.g.&nbsp;lambda = 0 for LASSO, which is just linear regression).</p>
+<p><strong>Make sure you start with a complex specification</strong>. If you have panel data (multiple observations of the same unit), make sure you interact the unit with your explanatory variables.</p>
+<p>Make sure you use a range of lambdas such that you find the bottom of the “U” shape for the test RMSE. And when plotting, make sure we can see where this occurs. In your plot, make sure that complexity is increasing in the x-axis (for LASSO, you have to reverse the axis as complexity increases as lambda <span class="math inline">\(\rightarrow\)</span> 0)</p>
+</section>
+</div>
+</div>
 <section id="the-memo" class="level2">
 <h2 class="anchored" data-anchor-id="the-memo">The Memo</h2>
 <p>Begin your memo with a brief (1 paragraph max) discussion of your topic of interest and the outcome you are interested in understanding and predicting. Tell the reader what sort of questions or analysis you are going to perform, and very briefly (1-2 sentences max) discuss what your analysis finds.</p>
@@ -397,7 +448,8 @@ Due Date
 <section id="section-3-of-3-predictive-model-40-points" class="level2">
 <h2 class="anchored" data-anchor-id="section-3-of-3-predictive-model-40-points">Section 3 of 3: Predictive Model (40 points)</h2>
 <p>Your final section requires estimating a predictive model on your data using a method of your choice. Similar to Project 2, you will need to setup your dataset such that it is appropriate for use in your chosen predictive method. You must use LASSO, K-Nearest Neighbors, or a Regression Tree (or random forest, if you wish to be adventureous). You will predict your outcome of interest, basing the model construction (to the extent there is an underlying model structure) on your knowledge of the data gleaned from Section 2.</p>
-<p>Set aside 10% of your sample as an evaluation sample as in Project 2. In this project, you <em>may</em> use built-in cross-validation functions (e.g.&nbsp;<code>cv.glmnet()</code> for LASSO/ridge/elastic net), or may choose to cross-validate “manually” as we did in Project 2. If choosing the former, you must be able to extract and show the train and test RMSEs across all the values of the tuning parameters (lambda, K, minsplit, cp, etc.). Estimate the model, extract the relevant RMSE’s, identify your optimal tuning parameters, and calculate the evaluation sample’s final RMSE (a single number).</p>
+<p>Start with a very complex specification in your formula. Unless you have thousands of predictors (explanatory variables), then starting with a simple multivariate regression with no interactions won’t get you very far. Remember that your model tuning parameters (e.g.&nbsp;lambda) can decrease complexity, but cannot increase beyond what you start out with. If you have panel data (e.g.&nbsp;multiple observations of the same unit) consider adding interactions between the unit of observation and the explanatory variables. Look back at our linear regression unit to understand the role of interactions.</p>
+<p>Set aside 10% of your sample as an evaluation sample as in Project 2. In this project, you <em>may</em> use built-in cross-validation functions (e.g.&nbsp;<code>cv.glmnet()</code> for LASSO/ridge/elastic net), or may choose to cross-validate “manually” as we did in Project 2. If choosing the former, you must be able to extract and show the train and test RMSEs across all the values of the tuning parameters (lambda, K, minsplit, cp, etc.). Estimate the model, extract the relevant RMSE’s, identify your optimal tuning parameters, and calculate the evaluation sample’s final RMSE (a single number). Show a plot of both test and train RMSE over the range of values of the tuning parameter, ensuring that you show a reasonable range of the tuning parameter, that the test-RMSE-minimizing point is clear on the plot, and that the x-axis is increasing in complexity.</p>
 <p>Finally, using your evaluation sample, calculate your model’s Evaluation RMSE (a single number) and report it with interpretation.</p>
 <p>In this section, the memo writing will be quite brief. In one paragraph, discuss the method you employ and briefly describe the underlying model specification (what variables are included, what isn’t, etc). Show the train-test RMSEs in a properly-formatted publication-ready plot, state the final test RMSE for the optimal tuning parameter values, and discuss and interpret that RMSE of your evaluation sample.</p>
 <section id="scoring-rubric-section-3" class="level3">

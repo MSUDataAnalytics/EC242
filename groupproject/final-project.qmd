@@ -25,6 +25,24 @@ This assignment requires three steps which I outline here and detail below. Firs
 Your final product will take the form of a short memo in two versions -- one with all code turned off, and one with all code turned on. Details for each section and a rubric for scoring are below.
 
 
+::: {.callout-tip}
+## A few tips
+
+Based on Project 2's feedback, I have added a few clarifications in the assignment. Since you are already working on the Final Project, I will summarize everything I've added here. Nothing has changed on the grading rubric. These are merely to help you make a good, interesting project
+
+
+#### Section 3: Predictive Model
+
+For predictive models, remember that the complexity parameter (e.g. lambda for LASSO) *reduces* the complexity of the data. Thus, you have to start with a very complex model (e.g. lots of interactions) when you write the formula that you wil use, then let the method find the right amount to reduce the complexity such that test RMSE is maximized. In Project 2, you had hundreds of predictors (explanatory variables), so even if you started with a model like `TOTALBTU ~ .`, you'd still have a decent amount of complexity. But here, if you have a lot, but not hundreds, of predictors, then starting with a model like `Y ~ .` won't be very complex. It's even possible that, in this case, your test RMSE is minimized at the most complex point (e.g. lambda = 0 for LASSO, which is just linear regression).
+
+**Make sure you start with a complex specification**. If you have panel data (multiple observations of the same unit), make sure you interact the unit with your explanatory variables.
+
+Make sure you use a range of lambdas such that you find the bottom of the "U" shape for the test RMSE. And when plotting, make sure we can see where this occurs. In your plot, make sure that complexity is increasing in the x-axis (for LASSO, you have to reverse the axis as complexity increases as lambda $\rightarrow$ 0)
+
+
+
+:::
+
 
 ## The Memo
 
@@ -80,7 +98,9 @@ I will be irrationally militant about the fine details in your plots. Your plots
 ## Section 3 of  3: Predictive Model (40 points)
 Your final section requires estimating a predictive model on your data using a method of your choice. Similar to Project 2, you will need to setup your dataset such that it is appropriate for use in your chosen predictive method. You must use LASSO, K-Nearest Neighbors, or a Regression Tree (or random forest, if you wish to be adventureous). You will predict your outcome of interest, basing the model construction (to the extent there is an underlying model structure) on your knowledge of the data gleaned from Section 2.
 
-Set aside 10\% of your sample as an evaluation sample as in Project 2. In this project, you *may* use built-in cross-validation functions (e.g. `cv.glmnet()` for LASSO/ridge/elastic net), or may choose to cross-validate "manually" as we did in Project 2. If choosing the former, you must be able to extract and show the train and test RMSEs across all the values of the tuning parameters (lambda, K, minsplit, cp, etc.). Estimate the model, extract the relevant RMSE's, identify your optimal tuning parameters, and calculate the evaluation sample's final RMSE (a single number).
+Start with a very complex specification in your formula. Unless you have thousands of predictors (explanatory variables), then starting with a simple multivariate regression with no interactions won't get you very far. Remember that your model tuning parameters (e.g. lambda) can decrease complexity, but cannot increase beyond what you start out with. If you have panel data (e.g. multiple observations of the same unit) consider adding interactions between the unit of observation and the explanatory variables. Look back at our linear regression unit to understand the role of interactions.
+
+Set aside 10\% of your sample as an evaluation sample as in Project 2. In this project, you *may* use built-in cross-validation functions (e.g. `cv.glmnet()` for LASSO/ridge/elastic net), or may choose to cross-validate "manually" as we did in Project 2. If choosing the former, you must be able to extract and show the train and test RMSEs across all the values of the tuning parameters (lambda, K, minsplit, cp, etc.). Estimate the model, extract the relevant RMSE's, identify your optimal tuning parameters, and calculate the evaluation sample's final RMSE (a single number). Show a plot of both test and train RMSE over the range of values of the tuning parameter, ensuring that you show a reasonable range of the tuning parameter, that the test-RMSE-minimizing point is clear on the plot, and that the x-axis is increasing in complexity.
 
 Finally, using your evaluation sample, calculate your model's Evaluation RMSE (a single number) and report it with interpretation.
 
