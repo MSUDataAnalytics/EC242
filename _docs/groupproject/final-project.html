@@ -349,6 +349,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#scoring-rubric" id="toc-scoring-rubric" class="nav-link" data-scroll-target="#scoring-rubric">Scoring Rubric</a></li>
   </ul></li>
+  <li><a href="#some-help-to-get-you-started" id="toc-some-help-to-get-you-started" class="nav-link" data-scroll-target="#some-help-to-get-you-started">Some help to get you started</a></li>
   </ul>
 </nav>
     </div>
@@ -402,6 +403,16 @@ A few tips
 </div>
 <div class="callout-body-container callout-body">
 <p>Based on Project 2’s feedback, I have added a few clarifications in the assignment. Since you are already working on the Final Project, I will summarize everything I’ve added here. Nothing has changed on the grading rubric. These are merely to help you make a good, interesting project</p>
+<section id="section-1-data" class="level4">
+<h4 class="anchored" data-anchor-id="section-1-data">Section 1: Data</h4>
+<p>Still having trouble finding data, especially with <span class="math inline">\(N\)</span> large enough for a predictive model?</p>
+<p>One fun source is the Census <em>Public Use Microdata Survey</em>, which is the <em>individual</em> level survey response to ACS questions. “Individual-level” means we see the individual answer of every person in the ACS. <strong>PUMS</strong> is publicly available and can be downloaded from <a href="https://data.census.gov/mdat">https://data.census.gov/mdat</a>. Exploring the data, you can see that it contains the respondent’s answers to questions like “Age” and “Number of cars” and all sorts of stuff that then gets tallied into block/tract/county-level ACS estimates.</p>
+<p>Of course, there is a catch: it only reports the person’s state, census regions, and “PUMA” or “Public Use Microdata Area”. PUMAs are much larger than census tracts, but can be pretty useful. To give you an idea of scale, there are about 3 PUMA’s in the greater Lansing area.</p>
+<p>You can download the data through the link above. When doing so, at the “Download” tab, make sure you select “extract raw data (.csv)” option, otherwise it will try to summarize the data to a single observation per PUMA, and you (likely) want the individual responses.</p>
+<p>Once downloaded <code>tigris::pumas()</code> will download the PUMA polygons just like it did <code>counties</code> and <code>tracts</code>. Use <code>?pumas</code> to learn more.</p>
+<p><strong>Using <code>tidycensus</code>: </strong>Another way to access PUMS data is through the tidycensus package. This is a new feature for tidycensus, so you’ll have to lear more here <a href="https://walker-data.com/tidycensus/articles/pums-data.html">https://walker-data.com/tidycensus/articles/pums-data.html</a>. You’ll probably still want to use the census website above to make your list of variables of interest.</p>
+<p>One last note: each individual is located within a household of size 1 or more. The household is identified by <code>SERIALNO</code> and the individual people are numbered starting with 1 in <code>SPORDER</code>, so for household measures you group on <code>SERIALNO</code> and use <code>summarize</code> to calculate the family variables.</p>
+</section>
 <section id="section-3-predictive-model" class="level4">
 <h4 class="anchored" data-anchor-id="section-3-predictive-model">Section 3: Predictive Model</h4>
 <p>For predictive models, remember that the complexity parameter (e.g.&nbsp;lambda for LASSO) <em>reduces</em> the complexity of the data. Thus, you have to start with a very complex model (e.g.&nbsp;lots of interactions) when you write the formula that you wil use, then let the method find the right amount to reduce the complexity such that test RMSE is maximized. In Project 2, you had hundreds of predictors (explanatory variables), so even if you started with a model like <code>TOTALBTU ~ .</code>, you’d still have a decent amount of complexity. But here, if you have a lot, but not hundreds, of predictors, then starting with a model like <code>Y ~ .</code> won’t be very complex. It’s even possible that, in this case, your test RMSE is minimized at the most complex point (e.g.&nbsp;lambda = 0 for LASSO, which is just linear regression).</p>
@@ -423,7 +434,7 @@ A few tips
 <section id="scoring-rubric-section-1" class="level3">
 <h3 class="anchored" data-anchor-id="scoring-rubric-section-1">Scoring Rubric Section 1</h3>
 <ul>
-<li><p><strong>Data Source</strong> (15 points): Do you have 2 or more data sources, and does each data source provide a relevant contribution to the topic?</p></li>
+<li><p><strong>Data Source</strong> (<del>15</del> 10 points): Do you have 2 or more data sources, and does each data source provide a relevant contribution to the topic?</p></li>
 <li><p><strong>Merging</strong> (10 points): Did you identify the proper key columns and correctly merge such that data is not distorted or unintentionally dropped? Does your work show technical mastery of the process?</p></li>
 <li><p><strong>Cleaning</strong> (15 points): Did you address missing data appropriately and with clear assumptions? Did you generate meaningful categories for data that contained too much detail? Does your work show technical mastery of the process? Was it efficiently coded?</p></li>
 <li><p><strong>Memo</strong> (5 points): Did you describe the necessary parts of the data construction, merging, cleaning process, and final dataset in a readable and <em>concise</em> maner?</p></li>
@@ -471,6 +482,17 @@ A few tips
 <li><p><strong>Turning in</strong> (8 points): Did you turn in two copies, one with <em>zero</em> code showing and one with full code? Are all group member names shown on the assignment?</p></li>
 <li><p><strong>Intro</strong> (2 points): Did you start with a proper intro paragraph as specified above?</p></li>
 </ul>
+</section>
+</section>
+<section id="some-help-to-get-you-started" class="level2">
+<h2 class="anchored" data-anchor-id="some-help-to-get-you-started">Some help to get you started</h2>
+<p>Still having trouble finding data, especially with <span class="math inline">\(N\)</span> large enough for a predictive model?</p>
+<p>One fun source is the Census <em>Public Use Microdata Survey</em>, which is the <em>individual</em> level survey response to ACS questions. “Individual-level” means we see the individual answer of every person in the ACS. <strong>PUMS</strong> is publicly available and can be downloaded from <a href="https://data.census.gov/mdat">https://data.census.gov/mdat</a>. Exploring the data, you can see that it contains the respondent’s answers to questions like “Age” and “Number of cars” and all sorts of stuff that then gets tallied into block/tract/county-level ACS estimates.</p>
+<p>Of course, there is a catch: it only reports the person’s state, census regions, and “PUMA” or “Public Use Microdata Area”. PUMAs are much larger than census tracts, but can be pretty useful. To give you an idea of scale, there are about 3 PUMA’s in the greater Lansing area.</p>
+<p>You can download the data through the link above. When doing so, at the “Download” tab, make sure you select “extract raw data (.csv)” option, otherwise it will try to summarize the data to a single observation per PUMA, and you (likely) want the individual responses.</p>
+<p>Once downloaded <code>tigris::pumas()</code> will download the PUMA polygons just like it did <code>counties</code> and <code>tracts</code>. Use <code>?pumas</code> to learn more.</p>
+<p><strong>Using <code>tidycensus</code>: </strong>Another way to access PUMS data is through the tidycensus package. This is a new feature for tidycensus, so you’ll have to lear more here <a href="https://walker-data.com/tidycensus/articles/pums-data.html">https://walker-data.com/tidycensus/articles/pums-data.html</a>. You’ll probably still want to use the census website above to make your list of variables of interest.</p>
+<p>One last note: each individual is located within a household of size 1 or more. The household is identified by <code>SERIALNO</code> and the individual people are numbered starting with 1 in <code>SPORDER</code>, so for household measures you group on <code>SERIALNO</code> and use <code>summarize</code> to calculate the family variables.</p>
 <!-- ## Teams -->
 <!-- > My team sucks; how can I punish them for their lack of effort? -->
 <!-- On this front, we will be more supportive. While you have to put up with your team regardless of their quality, you can indicate that your team members are not carrying their fair share by issuing a **strike**. This processs works as follows: -->
@@ -485,7 +507,6 @@ A few tips
 <!-- Your instructors are able to count and are aware the teams are imbalanced. Evaluations of final projects will take this into account. While your final product should reflect the best ability of your team, we do not anticipate that the uneven teams will lead to substantively different outputs. -->
 
 
-</section>
 </section>
 
 

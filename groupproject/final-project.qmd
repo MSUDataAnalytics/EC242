@@ -30,6 +30,23 @@ Your final product will take the form of a short memo in two versions -- one wit
 
 Based on Project 2's feedback, I have added a few clarifications in the assignment. Since you are already working on the Final Project, I will summarize everything I've added here. Nothing has changed on the grading rubric. These are merely to help you make a good, interesting project
 
+#### Section 1: Data
+
+Still having trouble finding data, especially with $N$ large enough for a predictive model?
+
+One fun source is the Census *Public Use Microdata Survey*, which is the *individual* level survey response to ACS questions. "Individual-level" means we see the individual answer of every person in the ACS. **PUMS** is publicly available and can be downloaded from [https://data.census.gov/mdat](https://data.census.gov/mdat). Exploring the data, you can see that it contains the respondent's answers to questions like "Age" and "Number of cars" and all sorts of stuff that then gets tallied into block/tract/county-level ACS estimates.
+
+Of course, there is a catch: it only reports the person's state, census regions, and "PUMA" or "Public Use Microdata Area". PUMAs are much larger than census tracts, but can be pretty useful. To give you an idea of scale, there are about 3 PUMA's in the greater Lansing area.
+
+You can download the data through the link above. When doing so, at the "Download" tab, make sure you select "extract raw data (.csv)" option, otherwise it will try to summarize the data to a single observation per PUMA, and you (likely) want the individual responses.
+
+Once downloaded `tigris::pumas()` will download the PUMA polygons just like it did `counties` and `tracts`. Use `?pumas` to learn more.
+
+**Using `tidycensus`: **Another way to access PUMS data is through the tidycensus package. This is a new feature for tidycensus, so you'll have to lear more here [https://walker-data.com/tidycensus/articles/pums-data.html](https://walker-data.com/tidycensus/articles/pums-data.html). You'll probably still want to use the census website above to make your list of variables of interest.
+
+One last note: each individual is located within a household of size 1 or more. The household is identified by `SERIALNO` and the individual people are numbered starting with 1 in `SPORDER`, so for household measures you group on `SERIALNO` and use `summarize` to calculate the family variables.
+
+
 
 #### Section 3: Predictive Model
 
@@ -66,7 +83,7 @@ Briefly summarize the dataset including the number of observations and statistic
 
 ### Scoring Rubric Section 1
 
-- **Data Source** (15 points): Do you have 2 or more data sources, and does each data source provide a relevant contribution to the topic?
+- **Data Source** (~~15~~ 10 points): Do you have 2 or more data sources, and does each data source provide a relevant contribution to the topic?
 
 - **Merging** (10 points): Did you identify the proper key columns and correctly merge such that data is not distorted or unintentionally dropped? Does your work show technical mastery of the process?
 
@@ -127,6 +144,27 @@ You must turn in **TWO** PDF's, properly rendered as per our usual course requir
 - **Turning in** (8 points): Did you turn in two copies, one with *zero* code showing and one with full code? Are all group member names shown on the assignment?
 
 - **Intro** (2 points): Did you start with a proper intro paragraph as specified above?
+
+
+
+
+## Some help to get you started
+
+Still having trouble finding data, especially with $N$ large enough for a predictive model?
+
+One fun source is the Census *Public Use Microdata Survey*, which is the *individual* level survey response to ACS questions. "Individual-level" means we see the individual answer of every person in the ACS. **PUMS** is publicly available and can be downloaded from [https://data.census.gov/mdat](https://data.census.gov/mdat). Exploring the data, you can see that it contains the respondent's answers to questions like "Age" and "Number of cars" and all sorts of stuff that then gets tallied into block/tract/county-level ACS estimates.
+
+Of course, there is a catch: it only reports the person's state, census regions, and "PUMA" or "Public Use Microdata Area". PUMAs are much larger than census tracts, but can be pretty useful. To give you an idea of scale, there are about 3 PUMA's in the greater Lansing area.
+
+You can download the data through the link above. When doing so, at the "Download" tab, make sure you select "extract raw data (.csv)" option, otherwise it will try to summarize the data to a single observation per PUMA, and you (likely) want the individual responses.
+
+Once downloaded `tigris::pumas()` will download the PUMA polygons just like it did `counties` and `tracts`. Use `?pumas` to learn more.
+
+**Using `tidycensus`: **Another way to access PUMS data is through the tidycensus package. This is a new feature for tidycensus, so you'll have to lear more here [https://walker-data.com/tidycensus/articles/pums-data.html](https://walker-data.com/tidycensus/articles/pums-data.html). You'll probably still want to use the census website above to make your list of variables of interest.
+
+One last note: each individual is located within a household of size 1 or more. The household is identified by `SERIALNO` and the individual people are numbered starting with 1 in `SPORDER`, so for household measures you group on `SERIALNO` and use `summarize` to calculate the family variables.
+
+
 
 
 
