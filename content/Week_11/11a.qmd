@@ -1,0 +1,17 @@
+---
+title: "TBA"
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+
+<!-- Project 2025: Ben -- I didn' thave class on this day due to the election, and condensed Bias vs. Variance for Thursday, plus added some material about random forests. I had hoped maybe it would payoff in students using random forests, rather than regression trees, for Project 2 and the Final Project. It did naht. -->
+
+<!-- I think a unit on cross-validation might help somewhere around here. We could introduce the evaluation hold-out sample concept and use it to reinforce why we cross-validate. We could also introduce n-fold cross-validation as cv.glmnet does it. The Week 09b Project 2025 notes at the beginning of the page discuss what we should do differently there -- the introduction of cross-validation later on (e.g. here) would go well with a revision of 09b that removes cv.glmnet entirely from their knowledge. -->
+
+<!-- But this is a free unit to add whatever you please! -->
+
+
+
