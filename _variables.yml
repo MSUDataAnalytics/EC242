@@ -1,7 +1,7 @@
 
-#### Main instructor variables for the course; many edits required each semester
+## Don't edit this file -- edit _variablesJustin or _variablesBen and over-write this file.
 
-version: 1.1
+version: 1.0
 
 semester: "Spring 2025"
 
