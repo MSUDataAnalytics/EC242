@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -35,10 +35,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-da49dbfa638164ddd339dd66fa6de3b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -134,18 +134,18 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="course-title title display-7">
+            Social Science Data Analytics
+        </h1></header>
 
 <div class="grid title-block">
     <div class="course-details-title-block g-col-12 g-col-sm-8 order-2 order-sm-1 text-center text-sm-start">
-        <h1 class="course-title">
-            Social Science Data Analytics
-        </h1>
+        
         <div class="course-subtitle">
-            <p>EC242 - Fall 2024</p>
+            <p>EC242 - Spring 2025</p>
         </div>
         <div class="course-meta">
-            <p></p><p>Tu/Th 1:20 - 2:40pm<br>NatSci 116<br>Michigan State University<br>Department of Economics</p><p></p>
+            <p></p><p>Tu/Th 1:00 - 2:20pm<br>NatSci 204<br>Michigan State University<br>Department of Economics</p><p></p>
         </div>
     </div>
     <div class="g-col-12 g-col-sm-4 order-1 order-sm-2">
@@ -163,17 +163,17 @@ ul.task-list li input[type="checkbox"] {
 <section id="instructor" class="level3 g-col-12 g-col-sm-6 g-col-md-4">
 <h3 class="anchored" data-anchor-id="instructor">Instructor</h3>
 <ul>
-<li><i class="fa-solid fa-user" aria-label="user"></i> <a href="www.justinkirkpatrick.com">Justin Kirkpatrick</a></li>
-<li><i class="fa-solid fa-university" aria-label="university"></i> Old Botany 105 (off W. Circle Ave)</li>
-<li><i class="fa-solid fa-envelope" aria-label="envelope"></i> <a href="mailto:jkirk@msu.edu">jkirk@msu.edu</a></li>
+<li><i class="fa-solid fa-user" aria-label="user"></i> <a href="www.benbushong.com">Ben Bushong</a></li>
+<li><i class="fa-solid fa-university" aria-label="university"></i> Marshall-Adams Hall #25E</li>
+<li><i class="fa-solid fa-envelope" aria-label="envelope"></i> <a href="mailto:bbushong@msu.edu">bbushong@msu.edu</a></li>
 <li><i class="fa-brands fa-slack" aria-label="slack"></i> <a href="https://ec242.slack.com">Slack</a></li>
 </ul>
 </section>
 <section id="course-details" class="level3 g-col-12 g-col-sm-6 g-col-md-4">
 <h3 class="anchored" data-anchor-id="course-details">Course details</h3>
 <ul>
-<li><i class="fa-solid fa-calendar" aria-label="calendar"></i> Tu/Th 1:20 - 2:40pm</li>
-<li><i class="fa-solid fa-location-dot" aria-label="location-dot"></i> NatSci 116</li>
+<li><i class="fa-solid fa-calendar" aria-label="calendar"></i> Tu/Th 1:00 - 2:20pm</li>
+<li><i class="fa-solid fa-location-dot" aria-label="location-dot"></i> NatSci 204</li>
 </ul>
 </section>
 <section id="contacting-me" class="level3 g-col-12 g-col-md-4 contact-policy">
@@ -268,8 +268,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -385,7 +383,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

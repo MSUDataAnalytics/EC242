@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -69,10 +69,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-da49dbfa638164ddd339dd66fa6de3b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -365,7 +365,7 @@ Due Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This assignment is due on <strong>Monday, October 7th, 11:59pm</strong></p>
+<p>This assignment is due on <strong>Monday, February 24th</strong></p>
 </div>
 </div>
 <p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.</p>
@@ -475,7 +475,7 @@ EXERCISES 2-5
 </div>
 <div class="callout-body-container callout-body">
 <ol start="2" type="1">
-<li><p>Prune the data to 6-8 of the variables that are <code>type = int</code> about which you have some reasonable intuition for what they mean. Choose those that you believe are likely to be correlated with <code>SalePrice</code>. This <strong>must</strong> include the variable <code>SalePrice</code> and <code>GrLivArea</code>. Call this new dataset <code>Ames</code>. Produce documentation for this object in the form of a <a href="..\resource/markdown/#tables-1">Markdown table</a> or see <a href="https://www.markdownguide.org/extended-syntax/">further documentation here</a>. This must describe each of the 6-8 preserved variables, the values it can take (e.g., can it be negative?) and your definition of the variable. Counting the variable name, this means your table should have three columns. Markdown tables are entered in the text body, not code chunks, of your .rmd, so your code creating <code>Ames</code> will be in a code chunk, and your table will be right after it.</p></li>
+<li><p>Prune the data to 6-8 of the variables that are <code>type = int</code> about which you have some reasonable intuition for what they mean. Choose those that you believe are likely to be correlated with <code>SalePrice</code>. This <strong>must</strong> include the variable <code>SalePrice</code> and <code>GrLivArea</code>. Call this new dataset <code>Ames</code>. Produce documentation for this object in the form of a <a href="../resource/markdown/#tables-1">Markdown table</a> or see <a href="https://www.markdownguide.org/extended-syntax/">further documentation here</a>. This must describe each of the 6-8 preserved variables, the values it can take (e.g., can it be negative?) and your definition of the variable. Counting the variable name, this means your table should have three columns. Markdown tables are entered in the text body, not code chunks, of your .rmd, so your code creating <code>Ames</code> will be in a code chunk, and your table will be right after it.</p></li>
 <li><p>Produce a <em>scatterplot matrix</em> of the chosen variables<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
 <li><p>Compute a matrix of correlations between these variables using the function <code>cor()</code>. Do the correlations match your prior beliefs? Briefly discuss the correlation between the chosen variables and <code>SalePrice</code> and any correlations between these variables.</p></li>
 <li><p>Produce a scatterplot between <code>SalePrice</code> and <code>GrLivArea</code>. Run a linear model using <code>lm()</code> to explore the relationship. Finally, use the <code>geom_abline()</code> function to plot the relationship that you’ve found in the simple linear regression. You’ll need to extract the intercept and slope from your <code>lm</code> object. See <code>coef(...)</code> for information on this.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
@@ -581,8 +581,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -698,7 +696,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

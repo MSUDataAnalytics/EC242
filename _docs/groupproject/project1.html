@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -69,10 +69,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-da49dbfa638164ddd339dd66fa6de3b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -373,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="turning-this-in" class="level3 callout-info">
 <h3 class="anchored" data-anchor-id="turning-this-in">Turning This In</h3>
 <p><strong>Only one member of your group should turn in your project on D2L</strong>. The copy turned in must have each member’s name at the top.</p>
-<p>One group member should turn in your project on D2L under “Project 1” no later than <strong>Saturday October 12th, 11:59pm</strong></p>
+<p>One group member should turn in your project on D2L under “Project 1” no later than <strong>Saturday, March 1st, 11:59PM</strong></p>
 </section>
 <section id="part-1-rats-rats-rats." class="level2">
 <h2 class="anchored" data-anchor-id="part-1-rats-rats-rats.">Part 1: Rats, rats, rats.</h2>
@@ -387,7 +387,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li><p><strong>Download</strong> New York City’s database of rat sightings since 2010:</p>
 <ul>
-<li><a href="..\data/Rat_sightings.csv"><i class="fas fa-file-csv"></i> <code>Rat_sightings.csv</code></a></li>
+<li><a href="../data/Rat_sightings.csv"><i class="fas fa-file-csv"></i> <code>Rat_sightings.csv</code></a></li>
 </ul></li>
 <li><p><strong>Summarize</strong> the data somehow. The raw data has more than 150,000 rows, which means you’ll need to aggregate the data (<code>filter()</code>, <code>group_by()</code>, and <code>summarize()</code> will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2024. Consider the meaning of variables you create – remember how the total numbers of murders in a state was mostly just a function of size, but that murder <em>rate</em> was a more useful variable. (Of course, I just gave you these ideas, so you’ll need to be a bit more creative than just doing exactly what I just said.)</p></li>
 <li><p><strong>Explore</strong> the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use <code>case_when()</code> to add data that’s at a coarse level (year, borough, etc.), or <code>merge()</code> if you’re comfortable with it. <span class="font-orange">Be create</span>, but do so to further explore and analyze. Drill down on something you see in the data to <em>tell a story</em>. Remember, as analysts, we are looking for “patterns in the data” that are not easily written in closed form.</p></li>
@@ -562,8 +562,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -679,7 +677,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

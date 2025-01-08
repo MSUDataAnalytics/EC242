@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -35,10 +35,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-da49dbfa638164ddd339dd66fa6de3b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -574,7 +574,7 @@ window.Quarto = {
 <h1>Readings</h1>
 <p>Your readings will be assigned each week in this area. For this initial week, please read the course content for this week. <strong>Read closely</strong> the following:</p>
 <ul>
-<li>The <a href="../..\syllabus/">syllabus</a>, <a href="../..\content/">content</a>, and <a href="../..\assignment/">lab assignment</a> pages for this class.</li>
+<li>The <a href="../../syllabus/">syllabus</a>, <a href="../../content/">content</a>, and <a href="../../assignment/">lab assignment</a> pages for this class.</li>
 <li>This page. Yes, the whole thing.</li>
 </ul>
 <section id="guiding-question" class="level3">
@@ -622,7 +622,7 @@ New phone who dis?
 <section id="things-to-remember-tldr" class="level3">
 <h3 class="anchored" data-anchor-id="things-to-remember-tldr">Things To Remember (tl;dr)</h3>
 <p>Do your weekly writing due <strong>Saturday</strong>. Begin working on Lab 1 as it is due <del>Monday</del> Tuesday (as the syllabus states, if Monday is a holiday, it is due the next non-holiday date: Tuesday September 3rd. The regular date will always be Monday).</p>
-<p>Keys from the <a href="../..\syllabus/">syllabus</a>:</p>
+<p>Keys from the <a href="../../syllabus/">syllabus</a>:</p>
 <ul>
 <li>E-mail isn’t the ideal solution for technical problems
 <ul>
@@ -862,7 +862,7 @@ New phone who dis?
 <p>Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced <code>R</code> skills. Ideally, this is a refresher. However, we are aware that your preparation in previously courses varies greatly from student to student. Moreover, we want you to be aware that the usefulness of some of these early building blocks may not be immediately obvious. Later in the class you will appreciate having these skills. Mastery will be rewarded both in this class and (of course) in life.</p>
 <section id="the-pre-basics" class="level3">
 <h3 class="anchored" data-anchor-id="the-pre-basics">The Pre-Basics</h3>
-<p>We’ve now covered a short bit of material. The remainder of this first lecture will be covering setting up <code>R</code> and describing some common errors. For this, we’ll head over to <a href="../..\resource/">resources</a> to install R, RStudio, and <code>tinytex</code>.</p>
+<p>We’ve now covered a short bit of material. The remainder of this first lecture will be covering setting up <code>R</code> and describing some common errors. For this, we’ll head over to <a href="../../resource/">resources</a> to install R, RStudio, and <code>tinytex</code>.</p>
 <p>If you leave class without a working installation of these pieces of software, then you are likely to run into trouble in completing your first assignments.</p>
 
 
@@ -960,8 +960,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1077,7 +1075,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

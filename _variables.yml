@@ -3,32 +3,32 @@
 
 version: 1.0
 
-semester: "Fall 2024"
+semester: "Spring 2025"
 
 
 meeting:
-  time: "Tu/Th 1:20 - 2:40pm"
-  location: "NatSci 116"
+  time: "Tu/Th 1:00 - 2:20pm"
+  location: "NatSci 204"
   
 names:
-  instructor: "Prof. K"
-  instructorfull: "Justin Kirkpatrick"
-  TA: "TA Zach Henley"
-  instructorother: "Prof. Bushong"
+  instructor: "Prof. Bushong"
+  instructorfull: "Ben Bushong"
+  TA: "TA Sierra Smith"
+  instructorother: "Prof. Kirkpatrick"
 
 officehours: 
-  instructor: "Thursdays 2:45 (after class) till 4:00pm"
-  instructorzoom: "[zoom](https://msu.zoom.us/j/92054231037?pwd=OiRKvESN4M8ZbvjVbV5J9hLye9AA7G.1)"
-  instructoroffice: "Old Botany 105 (off W. Circle Ave)"
-  TA: "Fridays 9:30-11am"
-  TAzoom: "[zoomlink](https://msu.zoom.us/j/94642979973)"
+  instructor: "Tuesday and Thursday 4:00-5:00 PM"
+  instructorzoom: "[Zoom, (Passcode: GODUCKS)](https://msu.zoom.us/j/2711311082)"
+  instructoroffice: "Marshall-Adams Hall #25E"
+  TA: "Fridays 9:30-11AM"
+  TAzoom: "[zoomlink](https://msu.zoom.us/j/92287215690)"
 
 email:
-  instructor: "[jkirk@msu.edu](mailto:jkirk@msu.edu)"  
-  TA: "[henleyza@msu.edu](mailto: henleyza@msu.edu)"
+  instructor: "[bbushong@msu.edu](mailto:bbushong@msu.edu)"  
+  TA: "[smithsi6@msu.edu](mailto: smithsi6@msu.edu)"
   
 url:
-  instructor: "www.justinkirkpatrick.com"
+  instructor: "www.benbushong.com"
   bitly: "[bit.ly/EC242](https://bit.ly/EC242)"
   
 slack:
@@ -39,8 +39,8 @@ slack:
 
 
 aboutme:
-  instructor: "I am an environmental economist working primarily on household energy consumption and quantifying the environmental benefits of renewables and increased energy efficiency. I have taught versions of this course at MSU for around five years, and have worked extensively with R for around 15 years. I received my PhD in environmental economics from Duke in 2019, and did my Undergrad at UC Davis."
-  # instructor: "In brief, I am a behavioral economist whose research examines how cognitive biases and erroneous social beliefs influence decision-making and our interactions with others. In my research, I utilize a mix of theoretical modeling and experimental studies. These approaches guide the work in the Spartan Psychology and Economics Advanced Research (SPEAR) lab, which I formed in 2023. My teaching emphasizes how psychological factors shape economic choices (EC404; EC895) and the importance of rigorous empirical methods (EC242)."
+  # instructor: "I am an environmental economist working primarily on household energy consumption and quantifying the environmental benefits of renewables and increased energy efficiency. I have taught versions of this course at MSU for around five years, and have worked extensively with R for around 15 years. I received my PhD in environmental economics from Duke in 2019, and did my Undergrad at UC Davis."
+  instructor: "In brief, I am a behavioral economist whose research examines how cognitive biases and erroneous social beliefs influence decision-making and our interactions with others. In my research, I utilize a mix of theoretical modeling and experimental studies. These approaches guide the work in the Spartan Psychology and Economics Advanced Research (SPEAR) lab, which I formed in 2023. My teaching emphasizes how psychological factors shape economic choices (EC404; EC895) and the importance of rigorous empirical methods (EC242)."
 contactpolicy:
   instructor: "For individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
   
@@ -50,24 +50,23 @@ blurbs:
   writingtemplate: '[{{< fa file-arrow-down title="Download Weekly Writing Template">}} Weekly writing template](/templates/EC242_Weekly_Writing_Template.Rmd)'
   
 duedates:
-  lab1:  "~~Monday, September 2nd~~Tuesday, September 3rd, 11:59pm"
-  lab2:  "Monday, September 9th, 11:59pm"
-  lab3:  "Monday, September 16th, 11:59pm"
-  lab4:  "Monday, September 23rd, 11:59pm"
-  lab5:  "Monday, September 30th, 11:59pm"
-  lab6:  "Monday, October 7th, 11:59pm"
-  project1: "Saturday October 12th, 11:59pm"
-  lab7:  "Monday, October 14th, 11:59pm"
-  lab8:  "~~Monday, October 21st~~ Tuesday, Oct 22nd, 11:59pm"
-  lab9:  "Monday, October 28th, 11:59pm"
-  lab10: "Monday, November 4th, 11:59pm"   # I usually allow longer for this one - Mon Nov 11
-  lab11: "Monday, November 11th, 11:59pm"  # does not exist - bias vs variance
-  project2: "Saturday November 16, 11:59pm"
-  lab12: "Monday, November 18th, 11:59pm"
-  lab13: "Monday, November 25th, 11:59pm"
-  lab14: "Monday, December 2nd, 11:59pm"
-  lab15: "Monday, December 9th, 11:59pm"
-  finalproject: "Thursday December 12th, 11:59pm"
+  lab1:  "Monday, January 20th"
+  lab2:  "Monday, January 27th"
+  lab3:  "Monday, February 3rd"
+  lab4:  "Monday, February 10th"
+  lab5:  "Monday, February 17th"
+  lab6:  "Monday, February 24th"
+  project1: "Saturday, March 1st, 11:59PM"
+  lab7:  "Monday, March 10th"
+  lab8:  "Monday, March 17th"
+  lab9:  "Monday, March 24th"
+  lab10: "Monday, March 31st"   # I usually allow longer for this one - Mon Nov 11
+  lab11: "Monday, April 7th"  # does not exist - bias vs variance
+  project2: "Saturday, April 12th, 11:59PM"
+  lab12: "Monday, April 14th"
+  lab13: "Monday, April 21st"
+  lab14: "Monday, April 28th"
+  finalproject: "Thursday, May 1st, 11:59PM"
   
   
   

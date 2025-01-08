@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -69,10 +69,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-da49dbfa638164ddd339dd66fa6de3b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -404,7 +404,7 @@ Due Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This assignment is due on <del>Monday, September 2nd</del>Tuesday, September 3rd, 11:59pm.</p>
+<p>This assignment is due on Monday, January 20th.</p>
 </div>
 </div>
 <p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative.</p>
@@ -419,10 +419,10 @@ Note:
 </div>
 <div class="callout-body-container callout-body">
 <p>As you read through this assignment, practice with each of the examples (copy-paste them into an empty R script and run them). At the bottom of this page you will find the questions that comprise the assignment. These questions apply and expand on the topics and R functions in the assignment.</p>
-<p>Download the <a href="..\templates/EC242_Lab_Assignment_Template.Rmd"><i class="fa-solid fa-file-arrow-down" title="Download Assignment Template" aria-label="file-arrow-down"></i> Lab assignment template</a>. Please save the template into a labs folder in the EC242 folder on your local hard drive. If you don’t have a nice file structure setup for the course, please do so now. <em>It will save you headaches in the future</em>.</p>
+<p>Download the <a href="../templates/EC242_Lab_Assignment_Template.Rmd"><i class="fa-solid fa-file-arrow-down" title="Download Assignment Template" aria-label="file-arrow-down"></i> Lab assignment template</a>. Please save the template into a labs folder in the EC242 folder on your local hard drive. If you don’t have a nice file structure setup for the course, please do so now. <em>It will save you headaches in the future</em>.</p>
 </div>
 </div>
-<p>If you have not yet done so, you’ll need to install both R and RStudio. See the <a href="..\resource/install/">Installing page of our course resources</a> for instructions.</p>
+<p>If you have not yet done so, you’ll need to install both R and RStudio. See the <a href="../resource/install/">Installing page of our course resources</a> for instructions.</p>
 <section id="if-you-totally-forgot-how-to-use-r" class="level2">
 <h2 class="anchored" data-anchor-id="if-you-totally-forgot-how-to-use-r">If you totally forgot how to use <code>R</code></h2>
 <p>I have created a video walkthrough for the basics of using R for another course, but it is useful here. You can <a href="https://mediaspace.msu.edu/media/R+Part+2a/1_kmszjw36">see part A here (labeled “Part 2a”) here <i class="fas fa-film"></i></a>] and <a href="https://mediaspace.msu.edu/media/R+Part+2b/1_c0vf0i63">part B here (labeled “Part 2b”) <i class="fas fa-film"></i></a>. You should already be at this level of familiarity with R, but if you need a review, this is a good place to start.</p>
@@ -430,7 +430,7 @@ Note:
 <section id="programming-basics" class="level1">
 <h1>Programming basics</h1>
 <p>We teach <code>R</code> because it greatly facilitates data analysis, the main topic of this book. By coding in R, we can efficiently perform exploratory data analysis, build data analysis pipelines, and prepare data visualization to communicate results. However, <code>R</code> is not just a data analysis environment but a programming language. Advanced <code>R</code> programmers can develop complex packages and even improve <code>R</code> itself, but we do not cover advanced programming in this book. Nonetheless, in this section, we introduce three key programming concepts: conditional expressions, for-loops, and functions. These are not just key building blocks for advanced programming, but are sometimes useful during data analysis. We also note that there are several functions that are widely used to program in <code>R</code> but that we will not cover in this book. These include <code>split</code>, <code>cut</code>, <code>do.call</code>, and <code>Reduce</code>, as well as the <strong>data.table</strong> package. These are worth learning if you plan to become an expert <code>R</code> programmer.</p>
-<p>You will need to have read through the material in Week 1 already, including both the <a href="..\content/Week_01/01a.html">Principles</a> and <a href="..\content/Week_01/01b.html">Applications</a>.</p>
+<p>You will need to have read through the material in Week 1 already, including both the <a href="../content/Week_01/01a.html">Principles</a> and <a href="../content/Week_01/01b.html">Applications</a>.</p>
 <section id="conditionals" class="level2">
 <h2 class="anchored" data-anchor-id="conditionals">Conditional expressions</h2>
 <p>Conditional expressions are one of the basic features of programming. They are used for what is called <em>flow control</em>. The most common conditional expression is the if-else statement. In R, we can actually perform quite a bit of data analysis without conditionals. However, they do come up occasionally, and you will need them once you start writing your own functions and packages.</p>
@@ -782,7 +782,7 @@ lines(n, n*(n+1)/2)
 </section>
 <section id="doing-your-lab." class="level1">
 <h1>Doing your lab….</h1>
-<p>This is your first weekly lab assignment. Each lab assignment will need to be done in Rmarkdown using <a href="..\templates/EC242_Lab_Assignment_Template.Rmd"><i class="fa-solid fa-file-arrow-down" title="Download Assignment Template" aria-label="file-arrow-down"></i> Lab assignment template</a>, just right-click and Save As…<strong>Start a new folder on your drive for this course, and inside that a new folder for lab assignments, and inside that a new folder for Lab No.&nbsp;0</strong>. Rmarkdown will place some intermediate files in that folder, so leaving .Rmd files on your desktop will make things messy, fast.</p>
+<p>This is your first weekly lab assignment. Each lab assignment will need to be done in Rmarkdown using <a href="../templates/EC242_Lab_Assignment_Template.Rmd"><i class="fa-solid fa-file-arrow-down" title="Download Assignment Template" aria-label="file-arrow-down"></i> Lab assignment template</a>, just right-click and Save As…<strong>Start a new folder on your drive for this course, and inside that a new folder for lab assignments, and inside that a new folder for Lab No.&nbsp;0</strong>. Rmarkdown will place some intermediate files in that folder, so leaving .Rmd files on your desktop will make things messy, fast.</p>
 <p>Once you’ve saved the file, open it up in Rstudio.</p>
 <ul>
 <li><p>Change the title to “Lab 1”</p></li>
@@ -804,7 +804,7 @@ lines(n, n*(n+1)/2)
 <li><p>Next, copy question #2 to a new header using <code>##</code>.</p></li>
 <li><p>Keep going until done. Render one last .pdf, proofread it, and turn it in on D2L!</p></li>
 </ul>
-<p>For more on using R Markdown, see the <a href="..\resource/rmarkdown.html">R Markdown page of our course resources</a>. You can also learn about the general Markdown language <a href="..\resource/markdown/">on our Markdown page of our course resources</a></p>
+<p>For more on using R Markdown, see the <a href="../resource/rmarkdown.html">R Markdown page of our course resources</a>. You can also learn about the general Markdown language <a href="../resource/markdown/">on our Markdown page of our course resources</a></p>
 </section>
 <section id="exercises" class="level1">
 <h1>EXERCISES</h1>
@@ -946,8 +946,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1063,7 +1061,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
