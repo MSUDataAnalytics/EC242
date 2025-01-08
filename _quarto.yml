@@ -64,7 +64,7 @@ website:
   announcement:
     icon: info-circle
     dismissable: true
-    content: "I have allowed a 2nd dropped lab as of 12-3-2024"
+    content: "Welcome to Spring Semester 2025."
     type: primary
     position: below-navbar
   search: 
