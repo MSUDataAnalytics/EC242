@@ -146,7 +146,7 @@ format:
       - litera
       - yetiADD.scss
     css: styles.css
-  #  mainfont: "Fira Sans Condensed"
+    mainfont: "Fira Sans Condensed"
     toc: true
     code-copy: true
     code-overflow: wrap
