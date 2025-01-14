@@ -31,16 +31,13 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 
 
 
-
-
-
 # Before we get started....
 
 
 ::: {.callout-note}
 ## New phone who dis?
 
-For one participation point, please email me [jkirk@msu.edu](mailto:jkirk@msu.edu) with the subject *[EC242] Who Dis*. In the message, tell me:
+For one participation point, please email me [bbushong@msu.edu](mailto:bbushong@msu.edu) with the subject *[EC242] Who Dis*. In the message, tell me:
 
 - Name (with pronunciation guide)
 
@@ -48,9 +45,9 @@ For one participation point, please email me [jkirk@msu.edu](mailto:jkirk@msu.ed
 
 - Desired graduation year and semester
 
-- Interest in this course on a 10-point scale (1: not at all interested; 10: helllllll yeah)
+- Interest in this course on a 10-point scale (1: not at all interested; 10: hell yeah)
 
-- Biggest social question (e.g. "What drives food deserts?")
+- Most interesting social question in your mind (e.g. "What drives food deserts?")
 
 :::
 
@@ -58,9 +55,9 @@ This will count for one of your participation points.
 
 
 
-### Please please please please please ask questions during class.
+### Please ask questions during class.
 
-- Most ideas will be new.
+- Many ideas will be new.
 
 - Sometimes (often?) the material itself will be confusing or interesting---or both!
 
@@ -69,10 +66,9 @@ This will count for one of your participation points.
 I encourage measured feedback and thoughtful responses to questions. If I call on you and you don't know immediately, don't freak out. If you don't know, it's totally okay to say you don't know.
 
 
-
 ### Things To Remember (tl;dr)
 
-Do your weekly writing due **Saturday**. Begin working on Lab 1 as it is due ~~Monday~~ Tuesday (as the syllabus states, if Monday is a holiday, it is due the next non-holiday date: Tuesday September 3rd. The regular date will always be Monday).
+Do your weekly writing due **Saturday**. Begin working on Lab 1 as it is due Monday.
 
 Keys from the [syllabus](/syllabus/):
 
@@ -83,15 +79,6 @@ Keys from the [syllabus](/syllabus/):
 - Notify me immediately if you need accommodations because of RCPD or religious convictions; If you approach me at the last minute, I may not be able to help.
 
 Despite my hard-assness in these introductory notes: I'm here to help and I am not in the business of giving bad grades for no reason.
-
-
-### One quick plug:
-
-For econ majors or people interested in quantitative social sciences in general (which is this whole class):
-
-```{r, echo=F}
-knitr::include_graphics(here('images','Econ-social-event-flyer-2024.png'), error=F)
-```
 
 
 # What is "Data Analytics"?
