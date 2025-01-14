@@ -1,6 +1,8 @@
 ---
-title: "Text as Data"
-
+title: "Geospatial with R"
+output:
+  blogdown::html_page:
+    toc: true
 ---
 
 ## Required Reading
@@ -9,1561 +11,614 @@ title: "Text as Data"
 
 ### Guiding Questions
 
-- What are some common issues with string data? 
-- What are the key ways to wrangle strings?
-- What are _regular expressions_ and why are they magic 
+- What are the building blocks of geospatial data?
+- How do we handle uniquely geospatial properties like distance or spatial correlation?
 
 
-# String processing
+# Geospatial in R
+
+We will need a handful of new packages for our introduction to geospatial analysis in R. The primary package we will interact with is the `sf` package. `sf` stands for "simple features." It has become the standard for geospatial work in R, and relies on the `rgeos` and `rgdal` libraries (which are themselves `R` compilations of the `geos` and `gdal` libraries). Documentation of sf [can be found here](https://r-spatial.github.io/sf/). 
+
+We will also use the `mapview` package, as well as the `tmaptools` package. Plus, we'll use `tigris` to get state boundaries and `tidycensus` to pull down census maps. Install those, and any of the many dependencies that they also install. 
 
 
-```{r, echo=FALSE, include=F}
-library(knitr)
-library(here)
-```
-
-One of the most common data wrangling challenges involves extracting numeric data contained in character strings and converting them into the numeric representations required to make plots, compute summaries, or fit models in R. Also common is processing unorganized text into meaningful variable names or categorical variables. Many of the string processing challenges a data scientist faces are unique and often unexpected. It is therefore quite ambitious to write a comprehensive section on this topic. Here we use a series of case studies that help us demonstrate how string processing is a necessary step for many data wrangling challenges. Specifically, we describe the process of converting the not yet shown original _raw_ data from which we extracted the `murders`, `heights`, and `research_funding_rates` example into the data frames we have studied in this book.
-
-By going over these case studies, we will cover some of the most common tasks in string processing including
-extracting numbers from strings,
-removing unwanted characters from text,
-finding and replacing characters,
-extracting specific parts of strings,
-converting free form text to more uniform formats, and
-splitting strings into multiple values.
-
-
-Base R includes functions to perform all these tasks. However, they don't follow a unifying convention, which makes them a bit hard to memorize and use. The __stringr__ package basically repackages this functionality, but uses a more consistent approach of naming functions and ordering their arguments. For example, in __stringr__, all the string processing functions start with `str_`. This means that if you type `str_` and hit tab, R will auto-complete and show all the available functions. As a result, we don't necessarily have to memorize all the function names. Another advantage is that in the functions in this package the string being processed is always the first argument, which means we can more easily use the pipe. Therefore, we will start by describing how to use the functions in the  __stringr__ package.
-
-Most of the examples will come from the second case study which deals with self-reported heights by students and most of the chapter is dedicated to learning regular expressions (regex), and functions in the __stringr__ package.
-
-
-## The stringr package
-
-```{r, message=FALSE, warning=FALSE, error = F}
+```{r, echo=TRUE, message = F, warning = F}
+library(sf)
+library(mapview)
+library(tigris)
+library(tidycensus)
 library(tidyverse)
-library(stringr)
-```
-In general, string processing tasks can be divided into **detecting**, **locating**, **extracting**, or **replacing** patterns in strings. We will see several examples. The table below includes the functions available to you in the __stringr__ package. We split them by task. We also include the R-base equivalent when available.
-
-All these functions take a character vector as first argument. Also, for each function, operations are vectorized: the operation gets applied to each string in the vector.
-
-Finally, note that in this table we mention _groups_. These will be explained later on.
-
- | stringr     | Task     | Description                              | R-base |
-|--------------- |----------|--------------------------------------|-------------|
-| `str_detect` | Detect | Is the pattern in the string? | `grepl` |
-| `str_which` | Detect | Returns the index of entries that contain the pattern. |  `grep` |
-| `str_subset` | Detect | Returns the subset of strings that contain the pattern. | `grep` with `value = TRUE` |
-| `str_locate` | Locate | Returns positions of first occurrence of pattern in a string.| `regexpr` |
-|  `str_locate_all` | Locate | Returns position of all occurrences of pattern in a string. |`gregexpr` |
-| `str_view` | Locate | Show the first part of the string that matches pattern. | |
- | `str_view_all` | Locate | Show me all the parts of the string that match the pattern. |
-| `str_extract` | Extract | Extract the first part of the string that matches the pattern. | |
-`str_extract_all` | Extract | Extract all parts of the string that match the pattern. |  |
- | `str_match` | Extract | Extract first part of the string that matches the groups and the patterns defined by the groups.| |
-| `str_match_all` | Extract | Extract all parts of the string that matches the groups and the patterns defined by the groups. | |
-| `str_sub` | Extract | Extract a substring. | `substring` |
-| `str_split` | Extract | Split a string into a list with parts separated by pattern. | `strsplit`|
-| `str_split_fixed` | Extract | Split a string into a matrix with parts separated by pattern. | `strsplit` with `fixed = TRUE`|
-| `str_count` | Describe | Count number of times a pattern appears in a string.  |   |
-| `str_length`| Describe | Number of character in string.  | `nchar` |
-| `str_replace` | Replace | Replace first part of a string matching a pattern with another.  | |
-| `str_replace_all`| Replace | Replace all parts of a string matching a pattern with another.  | `gsub` |
- | `str_to_upper` | Replace | Change all characters to upper case. | `toupper` |
-| `str_to_lower` | Replace | Change all characters to lower case. | `tolower` |
-| `str_to_title` | Replace | Change first character to upper and rest to lower. | |
- | `str_replace_na`| Replace | Replace all `NA`s to a new value. | |
-| `str_trim` | Replace | Remove white space from start and end of string. | |
-| `str_c`| Manipulate | Join multiple strings.  | `paste0` |
- | `str_conv` | Manipulate | Change the encoding of the string.| |
- | `str_sort` | Manipulate | Sort the vector in alphabetical order.| `sort` |
- | `str_order`| Manipulate | Index needed to order the vector in alphabetical order. | `order` |
-| `str_trunc` | Manipulate | Truncate a string to a fixed size. | |
-| `str_pad`| Manipulate | Add white space to string to make it a fixed size.  | |
-| `str_dup`| Manipulate | Repeat a string.  | `rep` then `paste` |
- | `str_wrap` | Manipulate | Wrap things into formatted paragraphs. | |
-| `str_interp` | Manipulate | String interpolation. |  `sprintf` |
-
-
-## Case study 1: US murders data
-
-
-In this section we introduce some of the more simple string processing challenges with the following datasets as an example:
-
-```{r,message=FALSE, warning=FALSE}
-library(rvest)
-url <- paste0("https://en.wikipedia.org/w/index.php?title=",
-              "Gun_violence_in_the_United_States_by_state",
-              "&direction=prev&oldid=810166167")
-murders_raw <- read_html(url) %>%
-  html_node("table") %>%
-  html_table() %>%
-  setNames(c("state", "population", "total", "murder_rate"))
-
-head(murders_raw)
-```
-
-The code above shows the first step in constructing the dataset
-
-```{r, warning=F, message=F, error=F}
-library(dslabs)
-data(murders)
-```
-
-from the raw data, which was extracted from a Wikipedia page. 
-
-In general, string processing involves a string and a pattern. In R, we usually store strings in a character vector such as `murders$population`. The first three strings in this vector defined by the population variable are:
-
-```{r}
-murders_raw$population[1:3]
-```
-
-The usual coercion does not work here:
-
-```{r}
-as.numeric(murders_raw$population[1:3])
-```
-
-This is because of the commas `,`. The string processing we want to do here is remove the **pattern**, `,`, from the **strings** in `murders_raw$population` and then coerce to numbers.
-We can use the `str_detect` function to see that two of the three columns have commas in the entries:
-
-```{r}
-commas <- function(x) any(str_detect(x, ","))
-murders_raw %>% summarize_all(commas)
-```
-
-We can then use the `str_replace_all` function to remove them:
-
-```{r}
-test_1 <- str_replace_all(murders_raw$population, ",", "")
-test_1 <- as.numeric(test_1)
-```
-
-The `stringr` function `str_replace_all` replaces all of the first argument's instances of `,` (the second argument) with `''` (the third argument). The first input for the function is the character vector on which you'd like to operate.
-
-We can then use `mutate_all` to apply this operation to each column, since it won't affect the columns without commas. You may notice the use of `mutate_all` and `summarize_all` here. These are versions of `mutate` and `summarize` that apply a given *function* to every column in the data. Above, the function we apply to every column is the `commas` function. Note that in using `summarize_all` we pipe the data in, but we *do not list the columns* we wish to create via `summarize`. To apply `as.numeric` to each column in `murders_raw`, we'd use: `murders_raw %>% mutate_all(str_replace_all, ',', '') %>% mutate_at(2:3, as.numeric)`. 
-
-**Note, the `str_replace_all` function is NOT an analog to `mutate_all` that applies to each column in the data!**
-
-It turns out that this operation is so common that `readr` includes the function `parse_number` specifically meant to remove non-numeric characters before coercing:
-
-```{r}
-test_2 <- parse_number(murders_raw$population)
-identical(test_1, test_2)
-```
-
-So we can obtain our desired table using:
-
-```{r}
-murders_new <- murders_raw %>% mutate_at(2:3, parse_number)
-head(murders_new)
-```
-
-This case is relatively simple compared to the string processing challenges that we typically face in data science. The next example is a rather complex one and it provides several challenges that will permit us to learn many string processing techniques.
-
-## Case study 2: self-reported heights
-
-The __dslabs__ package includes the raw data from which the heights dataset was obtained. You can load it like this:
-
-```{r, message = FALSE, warning= FALSE, error = FALSE}
-data(reported_heights)
-```
-
-These heights were obtained using a web form in which students were asked to enter their heights. They could enter anything, but the instructions asked for _height in inches_, a number. We compiled `r prettyNum(nrow(reported_heights), big.mark=",")` submissions, but unfortunately the column vector with the reported heights had several non-numeric entries and as a result became a character vector:
-
-```{r}
-class(reported_heights$height)
-```
-
-If we try to parse it into numbers, we get a warning:
-
-```{r}
-x <- as.numeric(reported_heights$height)
-```
-
-Although most values appear to be height in inches as requested:
-
-```{r}
-head(x)
-```
-
-we do end up with many `NA`s:
-
-```{r}
-sum(is.na(x))
-```
-
-We can see some of the entries that are not successfully converted by using `filter` to keep only the entries resulting in `NA`s:
-
-```{r, warning=FALSE}
-reported_heights %>%
-  dplyr::mutate(new_height = as.numeric(height)) %>%
-  dplyr::filter(is.na(new_height)) %>%
-  head(n=10)
-```
-
-We immediately see what is happening. Some of the students did not report their heights in inches as requested. We could discard these data and continue. However, many of the entries follow patterns that, in principle, we can easily convert to inches. For example, in the output above, we see various cases that use the format `x'y''` with `x` and `y` representing feet and inches, respectively. Each one of these cases can be read and converted to inches by a human, for example `5'4''` is `5*12 + 4 = 64`. So we could fix all the problematic entries _by hand_. However, humans are prone to making mistakes, so an automated approach is preferable. Also, because we plan on continuing to collect data, it will be convenient to write code that automatically does this.
-
-A first step in this type of task is to survey the problematic entries and try to define specific patterns followed by a large groups of entries. The larger these groups, the more entries we can fix with a single programmatic approach. We want to find patterns that can be accurately described with a rule, such as "a digit, followed by a feet symbol, followed by one or two digits, followed by an inches symbol".
-
-To look for such patterns, it helps to remove the entries that are consistent with being in inches and to view only the problematic entries. We thus write a function to automatically do this. We keep entries that either result in `NA`s when applying `as.numeric` or are outside a range of plausible heights. We permit a range that covers about 99.9999% of the adult population. We also use `suppressWarnings` to avoid the warning message we know `as.numeric` will gives us.
-
-```{r, echo=FALSE, eval=FALSE}
-alpha <- 1 / 10^6
-qnorm(1 - alpha / 2, 69.1, 2.9)
-qnorm(alpha / 2, 63.7, 2.7)
-```
-
-```{r}
-not_inches <- function(x, smallest = 50, tallest = 84){
-  inches <- suppressWarnings(as.numeric(x))
-  ind <- is.na(inches) | inches < smallest | inches > tallest
-  ind
-}
-```
-
-We apply this function and find the number of problematic entries:
-```{r}
-problems <- reported_heights %>%
-  dplyr::filter(not_inches(height)) %>%
-  pull(height)
-length(problems)
-```
-
- 
-We can now view all the cases by simply printing them. We don't do that here because there are `r length(problems)` problems, but after surveying them carefully, we see that three patterns can be used to define three large groups within these exceptions.
-
-1\. A pattern of the form `x'y` or `x' y''` or `x'y"` with `x` and `y` representing feet and inches, respectively. Here are ten examples:
-
-```{r, echo=FALSE}
-pattern <- "^\\d\\s*'\\s*\\d{1,2}\\.*\\d*'*\"*$"
-str_subset(problems, pattern) %>% head(n=10) %>% cat()
-```
-
-2\. A pattern of the form `x.y` or `x,y` with `x` feet and `y` inches. Here are ten examples:
-
-```{r, echo=FALSE}
-pattern <- "^[4-6]\\s*[\\.|,]\\s*([0-9]|10|11)$"
-str_subset(problems, pattern) %>% head(n=10) %>% cat()
-```
-
-
-3\. Entries that were reported in centimeters rather than inches. Here are ten examples:
-
-```{r, echo=FALSE}
-ind <- which(between(suppressWarnings(as.numeric(problems))/2.54, 54, 81) )
-ind <- ind[!is.na(ind)]
-problems[ind] %>% head(n=10) %>% cat
+library(tmaptools)
 ```
 
-Once we see these large groups following specific patterns, we can develop a plan of attack. Remember that there is rarely just one way to perform these tasks. Here we pick one that helps us teach several useful techniques. But surely there is a more efficient way of performing the task.
 
-**Plan of attack**: we will convert entries fitting the first two patterns into a standardized one. We will then leverage the standardization to extract the feet and inches and convert to inches. We will then define a procedure for identifying entries that are in centimeters and convert them to inches. After applying these steps, we will then check again to see what entries were not fixed and see if we can tweak our approach to be more comprehensive.
+## Vector vs. Raster
+There are two ways of storing 2-D mapped spatial data, *raster* and *vector*. A *vector* representation of a 2-D shape is best described as an irregular polygon with points defining vertices. A square plotted in cartesian coordinates is a vector representation. Conversely, a *raster* image is a grid of cells where each cell is defined as "in" or "out" of the square. Most computer graphics like JPEG and TIFF are raster graphics and each pixel has an assigned color. To make a raster image of a blue square, we'd make a big grid of pixels, and then color some blue based on their location. To make a blue square in vector form, we'd record *just the location of the corners* and add instructions to color inside the polygon formed by those corners blue.
 
-At the end, we hope to have a script that makes web-based data collection methods robust to the most common user mistakes.
-
-To achieve our goal, we will use a technique that enables us to accurately detect patterns and extract the parts we want:  _regular expressions_ (regex). But first, we quickly describe how to _escape_ the function of certain characters so that they can be included in strings.
-
-
-## How to _escape_ when defining strings
-
-To define strings in R, we can use either double quotes:
-
-```{r}
-s <- "Hello!"
-```
-
-or single quotes:
-
-```{r}
-s <- 'Hello!'
-```
-
-Make sure you choose the correct single quote since using the back quote will give you an error:
-
-```{r, eval=FALSE}
-s <- `Hello`
-```
-```
-Error: object 'Hello' not found
-```
-
-Now, what happens if the string we want to define includes double quotes? For example, if we want to write 10 inches like this `10"`?
-In this case you can't use:
-
-```{r, eval=FALSE}
-s <- "10""
+```{r, out.width = '50%', echo = F}
+knitr::include_graphics('https://vector-conversions.com/images/vector_vs_raster.jpg')
 ```
 
-because this is just the string `10` followed by a double quote. If you type this into R, you get an error because you have an _unclosed_ double quote. To avoid this, we can use the single quotes:
-
-```{r}
-s <- '10"'
-```
-
-If we print out `s` we see that the double quotes are _escaped_ with the backslash `\`.
-```{r}
-s
-```
+### Vectors are scalable. Rasters are not
+Rasters are great for detail, like pixels in a picture, but they do not scale up very well. Vectors are great for things that do need to scale up. They are also smaller and easier to work with when they aren't trying to replicate photo-realistic images.  Vectors can handle curves by recording the properties of the curve (e.g. bezier curves), while rasters have to approximate curves along the grid of cells, so if you want a smooth curve, you need lots of cells.
 
-In fact, escaping with the backslash provides a way to define the string while still using the double quotes to define strings:
+Geospatial work is almost always done in vectors because (1) it is easier to store data as vectors, and (2) it is easier to manipulate, project, intersect, or connect vector points, lines, and polygons.
 
-```{r}
-s <- "10\""
-```
+We are going to work entirely with vectors today.
 
-In R, the function `cat` lets us see what the string actually looks like:
 
-```{r}
-cat(s)
-```
+# Vectors: points, lines, and polygons
+Most everything we would want to map can be represented as a point, a line, or a polygon. Points could be the location of power plants in the US, or the location of COVID cases, or the location of major intersections. Lines could be the location of train tracks, the shortest distance between someone's house and the nearest restaurants, or a major road. Polygons could be county boundaries, landowner's lot lines, or bodies of water.
 
-Now, what if we want our string to be 5 feet written like this `5'`? In this case, we can use the double quotes:
+We can start by making some points, then turning them into a polygon. We'll just use arbitrary coordinates for now, but will move into GPS latitude-longitude coordinates shortly. We'll use `st_multipoint` to create our points object. It takes a numeric matrix only.
 
-```{r}
-s <- "5'"
-cat(s)
-```
+```{r, echo = TRUE}
+myPoints = tribble(~X, ~Y,
+                   0, 0,
+                   0, 4,
+                   1, 4,
+                   1, 1,
+                   .5, 0,
+                   0, 0)
 
-So we've learned how to write 5 feet and 10 inches separately, but what if we want to write them together to represent _5 feet and 10 inches_ like this `5'10"`? In this case, neither the single nor double quotes will work. This:
+myPoints = st_multipoint(as.matrix(myPoints))
+plot(myPoints)
 
-```{r, eval=FALSE}
-s <- '5'10"'
 ```
 
-closes the string after 5 and this:
+### Making polygons
+We've begun making our first spatial object! Now, we can turn it into a polygon under one condition: the polygon has to "close" in order for R to know which side is the inside. In `myPoints`, the *last* point is identical to the *first* point, so R will "close" it:
 
-```{r, eval=FALSE}
-s <- "5'10""
+```{r, echo = TRUE}
+plot(st_polygon(list(myPoints)), col = 'darkgreen')
 ```
-closes the string after 10. Keep in mind that if we type one of the above code snippets into R, it will get stuck waiting for you to close the open quote and you will have to exit the execution with the _esc_ button.
 
-In this situation, we need to escape the function of the quotes with the backslash `\`. You can escape either character like this:
 
-```{r}
-s <- '5\'10"'
-cat(s)
-```
-
-or like this:
+That's just one polylgon. Let's add another one. When we created the polygon, we put the points object, `myPoints`, into a list. If we have a list of, say, two points objects, then we'll get two polygons:
 
 ```{r}
-s <- "5'10\""
-cat(s)
-```
-
-Escaping characters is something we often have to use when processing strings. 
-
-## Regular expressions
+myPoints2 = tribble(~X, ~Y,
+                    1,1,
+                    2,1,
+                    2,2,
+                    1,2,
+                    1,1)
+                    
+myPoints2 = st_multipoint(as.matrix(myPoints2))
 
-A regular expression (regex) is a way to describe specific patterns of characters of text. They can be used to determine if a given string matches the pattern. A set of rules has been defined to do this efficiently and precisely and here we show some examples. We can learn more about these rules by reading a detailed tutorials^[https://www.regular-expressions.info/tutorial.html] ^[http://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions]. This RStudio cheat sheet^[https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf] is also very useful.
-
-
-The patterns supplied to the __stringr__ functions can be a regex rather than a standard string. We will learn how this works through a series of examples.
-
-Throughout this section you will see that we create strings to test out our regex. To do this, we define patterns that we know should match and also patterns that we know should not. We will call them `yes` and `no`, respectively. This permits us to check for the two types of errors: failing to match and incorrectly matching.
-
-
-### Strings are a regex
-
-Technically any string is a regex, perhaps the simplest example is a single character. So the comma `,` used in the next code example is a simple example of searching with regex.
-
-```{r, eval=FALSE}
-pattern <- ","
-str_detect(murders_raw$total, pattern)
+myPolygons = st_polygon(list(myPoints, myPoints2))
+plot(myPolygons, col = 'lightblue')
 ```
 
-We suppress the output which is logical vector telling us which entries have commas.
 
-Above, we noted that an entry included a `cm`. This is also a simple example of a regex. We can show all the entries that used `cm` like this:
+Now we can see two polygons. Looking at the `str`ucture of the polygons:
 
 ```{r}
-str_subset(reported_heights$height, "cm")
+str(myPolygons)
 ```
 
-### Special characters
+Notice that one of the classes is `sfg`. This is a `sf` package-defined spatial object. 
 
-Now let's consider a slightly more complicated example. Which of the following strings contain the pattern `cm` or `inches`?
+### Getting points on a plot
+One little-known trick in R is super helpful in spatial work. If you `plot(myPolygons)` in your own R-studio console (so it appears in your "Plots" pane, not knit into your document), you can use `click(n)` to interactively get $n$ spatial points in the coordinate system of your plot. 
 
+```{r, echo = T, eval = F}
+myClicks = click(n = 3)
+myClicks = rbind(myClicks, myClicks[1,])  # copy the first point to the last point to "close"
+myNewPolygon = st_polygon(list(st_multipoint(myClicks)))
+plot(myPolygons, col = 'lightblue')
+plot(myNewPolygon, col = 'green', add=T)
 
-```{r}
-yes <- c("180 cm", "70 inches")
-no <- c("180", "70''")
-s <- c(yes, no)
 ```
-
 
-```{r}
-str_detect(s, "cm") | str_detect(s, "inches")
-```
 
-However, we don't need to do this. The main feature that distinguishes the regex _language_ from plain strings is that we can use special characters. These are characters with a meaning. We start by introducing `|` which means _or_.  So if we want to know if either `cm` or `inches` appears in the strings, we can use the regex `cm|inches`:
+```{r, echo = F, eval = T}
+myClicks = as.matrix(data.frame(x = c(.37, 1.06, 1.31),
+                                y = c(2.71, .47, 2.66)))
+                     
+myClicks = rbind(myClicks, myClicks[1,])  # copy the first point to the last point to "close"
+myNewPolygon = st_polygon(list(st_multipoint(myClicks)))
+plot(myPolygons, col = 'lightblue')
+plot(myNewPolygon, col = 'green', add=T)
 
-```{r}
-str_detect(s, "cm|inches")
 ```
 
-and obtain the correct answer.
+### Making lines
 
-Another special character that will be useful for identifying feet and inches values is `\d` which means any digit: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. The backslash is used to distinguish it from the character `d`. In R, we have to _escape_ the backslash `\` so we actually have to use `\\d` to represent digits. Here is an example:
+We could also create a line with our points. I'll leave off the one point we added to "close" the polygon. Note that the line is colored blue, not the (uncompleted) polygon.
 
 ```{r}
-yes <- c("5", "6", "5'10", "5 feet", "4'11")
-no <- c("", ".", "Five", "six")
-s <- c(yes, no)
-pattern <- "\\d"
-str_detect(s, pattern)
-```
-
-We take this opportunity to introduce the `str_view` function, which is helpful for troubleshooting as it shows us the first match for each string:
-
-```{r, eval=FALSE}
-str_view(s, pattern)
-```
-
-
-```{r, echo=F}
-include_graphics(here('images','str_view-1.png'))
-```
-
-
-and `str_view_all` shows us all the matches, so `3'2` has two matches and `5'10` has three.
+myLine = st_linestring(myPoints[1:4,])
+plot(myLine, col = 'blue')
 
-```{r, eval=FALSE}
-str_view_all(s, pattern)
 ```
-
-```{r, echo=F}
-include_graphics(here('images','str_view-2.png'))
-```
-
-There are many other special characters. We will learn some others below, but you can see most or all of them in the cheat sheet^[https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf] mentioned earlier.
 
+# Reading spatial data
+While it's fun to draw our own shapes (caution: my definition of fun $\neq$ your definition of fun), we're probably most interested in finding and using existing spatial data. Let's talk briefly about the types of spatial data out there:
 
-### Character classes
+- Shapefiles
+  - Shapefiles are not actually single files - they're usually 4-6 files with similar names and different suffixes like .dbf, .shx, etc. This is because the shapefile format kind of pre-dates our current way of thinking of file storage. The most common program for reading or making shapefiles is ESRI's ArcGIS. It is expensive, cumbersome, and some may say bloated. Our goal in this section is to be able to rescue shapefiles from the clutches of ArcGIS and open them in R
+  
+- GEOJSON
+  - JSON is a way of structuring text data (like a .csv) but with the potential for nests in the data (like our `list` object) where each nest has a different data structure. GEOJSON pairs this with **WKT** or Well-Known Text representations of coordinates and takes care of making sure that each observation in the JSON data has a corresponding polygon in WKT coordinates.
+  
+- KML
+  - Bare-bones storage of coordinates and basic data
+  
+- .RDS
+  - Okay, this is just R's native data type for storage, but it's really helpful for storing `sf` objects
+  
+- Comma separated values (.csv)
+  - Just like the CSV's we've been using, but with Latitude and Longitude columns. Only works for points (one point per .csv line), but is very commonly found. We can use `st_as_sf` to tell R which columns are the latitude and longitude.
 
-Character classes are used to define a series of characters that can be matched. We define character classes with square brackets `[]`. So, for example, if we want the pattern to match only if we have a `5` or a `6`, we use the regex `[56]`:
+We can open and use any one of these filetypes. I will cover Shapefiles and GEOJSON as the latter has become a very popular way of sharing spatial datasets.
 
-```{r, eval=FALSE}
-str_view(s, "[56]")
-```
-
-```{r, echo=F}
-include_graphics(here('images','str_view-3.png'))
-```
+### Where to find spatial data
+Spatial data is all around us! Try searching google for a topic + "spatial shapefile". One of my favorite sources for spatial data is the DHS [HIFLD Open database](https://hifld-geoplatform.hub.arcgis.com), which has lots of government datasets that are well-organized by category. Click through, choose the "open" database, and when you find something you like, click the "Download" button. If there is a GEOJSON or KML file available, **right-click** and copy the link address, or click on **full details** and scroll down to *I want to...View API Resources* and copy the GEOJSON link. Then, use that with `st_read()`. On many maps (including this one), the GeoJSON link is shown under the API drop-down. Use GeoJSON over KML as some systems have issues importing the data fields in KML. 
 
+### Loading the data
+We'll use the `sf` package's `st_read` to open spatial data. Here, I'm loading the Natural Gas Processing Plants data from the Energy section of HIFLD. I'm using the **GeoJSON** option, which `st_read()` knows how to handle:
 
-Suppose we want to match values between 4 and 7. A common way to define character classes is with ranges.  So, for example, `[0-9]` is equivalent to `\\d`. The pattern we want is therefore `[4-7]`.
-
-
 ```{r}
-yes <- as.character(4:7)
-no <- as.character(1:3)
-s <- c(yes, no)
-str_detect(s, "[4-7]")
-```
-
-However, it is important to know that in regex everything is a character; there are no numbers. So `4` is the character `4` not the number four. Notice, for example, that `[1-20]` does **not** mean 1 through 20, it means the characters 1 through 2 or the character 0. So `[1-20]` simply means the character class composed of 0, 1, and 2.
-
-Keep in mind that characters do have an order and the digits do follow the numeric order. So `0` comes before `1` which comes before `2` and so on. For the same reason, we can define lower case letters as `[a-z]`, upper case letters as `[A-Z]`, and `[a-zA-z]` as both.
-
-### Anchors
-
-What if we want a match when we have exactly 1 digit? This will be useful in our case study since feet are never more than 1 digit so a restriction will help us. One way to do this with regex is by using _anchors_, which let us define patterns that must start or end at a specific place. The two most common anchors are
-`^` and `$` which represent the beginning and end of a string, respectively. So the pattern `^\\d$` is read as "start of the string followed by one digit followed by end of string".
-
-This pattern now only detects the strings with exactly one digit:
-
-```{r, eval=FALSE}
-pattern <- "^\\d$"
-yes <- c("1", "5", "9")
-no <- c("12", "123", " 1", "a4", "b")
-s <- c(yes, no)
-str_view_all(s, pattern)
-```
-
-```{r, echo=FALSE}
-pattern <- "^\\d$"
-yes <- c("1", "5", "9")
-no <- c("12", "123", " 1", "a4", "b")
-s <- c(yes, no)
-```
-
-```{r, echo=F}
-include_graphics(here('images','str_view-4.png'))
-```
-
-
-
-The ` 1` does not match because it does not start with the digit but rather with a space, which is actually not easy to see.
-
-### Quantifiers
-
-For the inches part, we can have one or two digits. This can be specified in regex with _quantifiers_. This is done by following the pattern with curly brackets containing the number of times the previous entry can be repeated. We use an example to illustrate. The pattern for one or two digits is:
-
-```{r, eval=FALSE}
-pattern <- "^\\d{1,2}$"
-yes <- c("1", "5", "9", "12")
-no <- c("123", "a4", "b")
-str_view(c(yes, no), pattern)
-```
+gasplants = st_read('https://services7.arcgis.com/FGr1D95XCGALKXqM/arcgis/rest/services/NaturalGas_ProcessingPlants_US_EIA/FeatureServer/23/query?outFields=*&where=1%3D1&f=geojson') %>%
+  dplyr::select(name = Plant_Name)
 
-
-```{r, echo=F}
-include_graphics(here('images','str_view-5.png'))
-```
-
-
-In this case, `123` does **not** match, but `12` does. So  to look for our feet and inches pattern, we can add the symbols for feet `'` and inches `"` after the digits.
-
-
-With what we have learned, we can now construct an example for the pattern `x'y\"` with `x` feet and `y` inches.
-
-```{r}
-pattern <- "^[4-7]'\\d{1,2}\"$"
+head(gasplants)
 ```
-
 
-The pattern is now getting complex, but you can look at it carefully and break it down:
+The `sf` data type holds both the data (which here is just the name of the plant) *and* the "geometry", which are the points. It's tidy data - one row is one observation of one plant, and each row has a set of coordinates telling us where to find the plant.
 
-- `^` = start of the string
-- `[4-7]` = one digit, either 4,5,6 or 7
-- `'` = feet symbol
-- `\\d{1,2}` = one or two digits
-- `\"` = inches symbol
-- `$` = end of the string
+We can use ggplot with `geom_sf()` to plot these points. They're just scattered across the country and we don't automatically get a background map, but here are the points 
 
-Let's test it out:
-
 ```{r}
-yes <- c("5'7\"", "6'2\"",  "5'12\"")
-no <- c("6,2\"", "6.2\"","I am 5'11\"", "3'2\"", "64")
-str_detect(yes, pattern)
-str_detect(no, pattern)
+ggplot(gasplants) + geom_sf() + theme_minimal()
 ```
 
-For now, we are permitting the inches to be 12 or larger. We will add a restriction later as the regex for this is a bit more complex than we are ready to show.
+Well, we're missing some context here -- we can kind of make out the point of Texas down there, but it's hard to tell anything about where these plants are located. Let's use `tigris` to get a map of the US, then plot it plus the points. Note we use different `data = ` in each of the `geom_sf()` calls:
 
-### White space `\s`
+```{r, message = F, warning = F, results = 'hide'}
 
-Another problem we have are spaces. For example, our pattern  does not match `5' 4"` because there is a space between `'` and `4` which our pattern does not permit. Spaces are characters and R does not ignore them:
-
-```{r}
-identical("Hi", "Hi ")
-```
+US <- tigris::states(cb = TRUE, progress_bar = FALSE)  # tigris maps
 
-In regex, `\s` represents white space. To find patterns like `5' 4`, we can change our pattern to:
+ggplot() + geom_sf(data = US, col = 'gray50') +
+  geom_sf(data = gasplants) + theme_minimal()
 
-```{r}
-pattern_2 <- "^[4-7]'\\s\\d{1,2}\"$"
-str_subset(problems, pattern_2)
 ```
-
-However, this will not match the patterns with no space. So do we need more than one regex pattern?  It turns out we can use a quantifier for this as well.
 
-### Quantifiers: `*`, `?`, `+`
 
-We want the pattern to permit spaces but not require them. Even if there are several spaces, like in this example `5'   4`, we still want it to match. There is a quantifier for exactly this purpose. In regex, the character `*` means  zero or more instances of the previous character. Here is an example:
+Getting there. The problem now is that the `tigris` data covers all US territories, which are really spread out! Let's drop down to just Michigan. We can use good old `filter` just like with regular data:
 
 ```{r}
-yes <- c("AB", "A1B", "A11B", "A111B", "A1111B")
-no <- c("A2B", "A21B")
-str_detect(yes, "A1*B")
-str_detect(no, "A1*B")
-```
+MI = tigris::states(cb = TRUE) %>% dplyr::filter(STUSPS=='MI')
 
-The above matches the first string which has zero 1s and all the strings with one or more 1. We can then improve our pattern by adding the `*` after the space character `\s`.
+ggplot() + geom_sf(data = MI, col = 'gray50') +
+  geom_sf(data = gasplants) + theme_minimal()
 
-There are two other similar quantifiers. For none or once, we can use `?`, and for one or more, we can use `+`. You can see how they differ with this example:
 
-```{r}
-data.frame(string = c("AB", "A1B", "A11B", "A111B", "A1111B"),
-           none_or_more = str_detect(yes, "A1*B"),
-           nore_or_once = str_detect(yes, "A1?B"),
-           once_or_more = str_detect(yes, "A1+B"))
 ```
-
-We will actually use all three in our reported heights example, but we will see these in a later section.
 
-### Not
+Well, now we have a different problem. We want to have only the `gasplants` that are `over` the state of Michigan. That requires a **spatial join**. Luckily, our `tidyverse` syntax **works pretty seamlessly on `sf` objects**. First, we have to take care of a little issue with spatial data. The **projection**
 
-To specify patterns that we do **not** want to detect, we can use the `^` symbol but only __inside__ square brackets. Remember that outside the square bracket `^` means the start of the string. So, for example, if we want to detect digits that are preceded by anything except a letter we can do the following:
+### Projections, briefly
 
-```{r}
-pattern <- "[^a-zA-Z]\\d"
-yes <- c(".3", "+2", "-0","*4")
-no <- c("A3", "B2", "C0", "E4")
-str_detect(yes, pattern)
-str_detect(no, pattern)
-```
-
-Another way to generate a pattern that searches for _everything except_ is to use the upper case of the special character. For example `\\D` means anything other than a digit, `\\S` means anything except a space, and so on.
+The *projection* for spatial data is the translation from a 3-D object (e.g. the globe) to a 2-D space (a map, or the cartesian x-y coordinates of our screen). This is no simple matter! There are entire PhD programs dedicated to forming and processing projections and datum (which refer to the shape of the globe, which is not actually round). It can all be a nightmare. Worst of all, projections determine the definition of your coordinates, so you may be at -81 latitude, +30 longitude, but in another projection, you might be 1245349m above some reference point, and -2452849m to the left of that point. Projections define the distance along the X and Y axis, the scale of the coordinates, and a lot of other stuff about your 2-D polygons.
 
-### Groups
+Luckily, over the last few years, very smart people have been working on regularizing "projections". Now, we really need to know three things:
 
-_Groups_ are a powerful aspect of regex that permits the extraction of values. Groups are defined using parentheses. They don't affect the pattern matching per se. Instead, it permits tools to identify specific parts of the pattern so we can extract them.
+1. The *projection* of your data's coordinates when you read it in
+2. The *projection* you want your data to be in when you map it
+3. The *projection* of other spatial data you may want to combine.
 
-We want to change heights written like `5.6` to `5'6`.
+#### Importing projected data
+GEOJSON, shapefiles, and KML files usually come with embedded projections stored as **EPSG** numbers like '4326' (incidentally, '4326' is the usual projection for GPS coordinates). Thus, the first one is usually already taken care of. If your data doesnt have a PROJ4 or EPSG number but the coordinates are all between -180 and +180, it's likely in EPSG=4326. If none of those, then the data creator should have *metadata* stating the proejction. It might take some googling and some trial and error.
 
-To avoid changing patterns such as `70.2`, we will require that the first digit be between 4 and 7 `[4-7]` and that the second be none or more digits `\\d*`.
-Let's start by defining a simple pattern that matches this:
-
-```{r}
-pattern_without_groups <- "^[4-7],\\d*$"
-```
+For mapping, you might need to *transform* your data between projections (or "reproject" it, same thing). We use `st_transform` for this. We only need to give `R` the EPSG (Geodetic Parameter Dataset) of the projection you want to end up in. As long as it's already in a known projection, `R` can re-project it. The projection is refered to by the Coordinate Reference System (CRS). `st_crs` will tell us the projection (EPSG number and a lot more) of any spatial object. If they do not match, then `R` will give an error or, worse, plot them on totally different scales - sometimes you end up with points from the US landing in the middle of the Indian Ocean! In fact, look back at our map of gas plants and the US. 
 
-We want to extract the digits so we can then form the new version using a period. These are our two groups, so we encapsulate them with parentheses:
 
 ```{r}
-pattern_with_groups <-  "^([4-7]),(\\d*)$"
+st_crs(gasplants)
+st_crs(MI)
 ```
 
-We encapsulate the part of the pattern that matches the parts we want to keep for later use. Adding groups does not affect the detection, since it only signals that we want to save what is captured by the groups. Note that both patterns return the same result when using `str_detect`:
+`gasplants` from HIFLD is in EPSG: 4326, the map of MI is in EPSG: 4269. We can use `st_transform` on the `gasplants` data, which will reproject the points (and won't change the data at all). The data won't be any different, and the points won't look too much different
 
 ```{r}
-yes <- c("5,9", "5,11", "6,", "6,1")
-no <- c("5'9", ",", "2,8", "6.1.1")
-s <- c(yes, no)
-str_detect(s, pattern_without_groups)
-str_detect(s, pattern_with_groups)
-```
+gasplants = gasplants %>%
+  st_transform(crs=4269)
 
-Once we define groups, we can use the function `str_match` to extract the values these groups define:
-
-```{r}
-str_match(s, pattern_with_groups)
+ggplot(gasplants) + geom_sf() + theme_minimal()
 ```
 
-Notice that the second and third columns contain feet and inches, respectively. The first column is the part of the string matching the pattern. If no match occurred, we see an `NA`.
+But in a bit, when we spatially join, we'll avoid an error.
 
-Now we can understand the difference between the functions `str_extract` and `str_match`:  `str_extract` extracts only strings that match a pattern, not the values defined by groups:
 
-```{r}
-str_extract(s, pattern_with_groups)
-```
+#### Importing unprojected data
+Sometimes, we have data only in .csv format, but with X and Y coordinates (e.g. Longitude and Latitude). To import this data, we do the following:
 
+- Read in from .csv, .xls, etc.
+- Determine the CRS of the data (usually 4326 for gps coordinates)
+- Set the spatial coordinates and CRS
 
-## Search and replace with regex
 
-Earlier we defined the object `problems` containing the strings that do not appear to be in inches.  We can see that not too many of our problematic strings match the pattern:
+We know how to do the first, and the 2nd and 3rd are done in one step. We'll make a data.frame of city names and use the `tmaptools` package's `geocode_OSM` to get the latitudes and longitudes of the city centers. This function uses open-source Open Street Maps instead of the google API (which is used by `ggmap`). This way, we don't need an API key.
 
 ```{r}
-pattern <- "^[4-7]'\\d{1,2}\"$"
-sum(str_detect(problems, pattern))
-```
 
-To see why this is, we show some examples that expose why we don't have more matches:
+ourCities = geocode_OSM(c('Detroit','Lansing','Grand Rapids','Kalamazoo','Traverse City','Marquette')) %>%
+  select(City = query, lat = lat, lon = lon)
 
-```{r, eval=FALSE}
-problems[c(2, 10, 11, 12, 15)] %>% str_view(pattern)
+head(ourCities)
 ```
 
-```{r, echo = F}
-knitr::include_graphics(here('images','str_view-6.png'))
-# ![](./img/str_view-6.png)
-```
-
-
+Since these are GPS-type coordinates, we are going to assume the CRS is EPSG=4326. Longitude is the "x" axis, and latitude is the "y" axis.
 
-An initial problem we see immediately is that some students wrote out the words "feet" and "inches". We can see the entries that did this with the `str_subset` function:
-
 ```{r}
-str_subset(problems, "inches")
+ourCities.spatial = st_as_sf(ourCities, coords = c('lon','lat'), crs = 4326)
+head(ourCities.spatial)
 ```
 
-We also see that some entries used two single quotes `''` instead of a double quote `"`.
+Now we have the point geometries! We can map this:
 
 ```{r}
-str_subset(problems, "''")
+ggplot() +
+  geom_sf(data = MI, fill = 'gray90') +
+  geom_sf(data = ourCities.spatial, col = 'blue') +
+  theme_minimal()
 ```
 
-To correct this, we can replace the different ways of representing inches and feet with a uniform symbol. We will use `'` for feet, whereas for inches we will simply not use a symbol since some entries were of the form `x'y`. Now, if we no longer use the inches symbol, we have to change our pattern accordingly:
-
-```{r}
-pattern <- "^[4-7]'\\d{1,2}$"
-```
+#### Mis-projected data
 
-If we do this replacement before the matching, we get many more matches:
+Let's see a *bad* example that assumes the wrong projection when importing `ourCities.spatial`:
 
 ```{r}
-problems %>%
-  str_replace("feet|ft|foot", "'") %>% # replace feet, ft, foot with '
-  str_replace("inches|in|''|\"", "") %>% # remove all inches symbols
-  str_detect(pattern) %>%
-  sum()
+ourCities.spatial.bad = st_as_sf(ourCities, coords = c('lon','lat'), crs = 4000)
+ggplot() +
+  geom_sf(data = MI, fill = 'gray90') +
+  geom_sf(data = ourCities.spatial.bad, col = 'blue') +
+  theme_minimal()
 ```
-
-However, we still have many cases to go.
 
-Note that in the code above, we leveraged the __stringr__ consistency and used the pipe.
+**Ope!** That sure doesn't look right. The wrong projection can derail a project. Luckily, most shapefiles we find in the wild have the projection (CRS) attached. Now you know what a bad one looks like. Back to our correctly-projected data.
 
-For now, we improve our pattern by adding `\\s*` in front of and after the feet symbol `'` to permit space between the feet symbol and the numbers. Now we match a few more entries:
-
-```{r}
-pattern <- "^[4-7]\\s*'\\s*\\d{1,2}$"
-problems %>%
-  str_replace("feet|ft|foot", "'") %>% # replace feet, ft, foot with '
-  str_replace("inches|in|''|\"", "") %>% # remove all inches symbols
-  str_detect(pattern) %>%
-  sum
-```
 
-We might be tempted to avoid doing this by removing all the spaces with `str_replace_all`. However, when doing such an operation we need to make sure that it does not have unintended effects. In our reported heights examples, this will be a problem because some entries are of the form `x y` with space separating the feet from the inches. If we remove all spaces, we will incorrectly turn `x y` into `xy` which implies that a `6 1` would become `61` inches instead of `73` inches.
 
+## Spatial merges
+Combining spatial data is the strength of geospatial analysis. We have our map of MI, and we have out points. Let's "merge" the points to the map, meaning let's connect the elements in our map (the state of MI) to the elements in our points (gas plants). This is a point-to-polygon merge.
 
-The second large type of problematic entries were of the form `x.y`, `x,y` and `x y`. We want to change all these to our common format `x'y`. But we can't just do a search and replace because we would change values such as `70.5` into `70'5`.
-Our strategy will therefore be to search for a very specific pattern that assures us feet and inches are being provided and then, for those that match, replace appropriately.
+### Point-to-polygon merges
+We'll use `st_join` to produce an inner join, so we keep only those points that are "in" (spatially) the state of Michigan. I'm specifying `join = st_intersects` though this is the default. Note that all the points that remain in the merged `MI.gasplants` are in Michigan, and note that all the data columns from `MI` are now in `gasplants`. We'll use a county map of MI here so we will have the *county* data for each county containing a gas plant.
 
-### Search and replace using groups
+```{r, warning = F, message = F, result = 'hide'}
 
-Another powerful aspect of groups is that you can refer to the extracted values in a regex when searching and replacing.
+MI.counties = counties(state = 'MI', cb = TRUE, progress_bar = FALSE)
 
-The regex special character for the `i`-th group is `\\i`. So `\\1` is the value extracted from the first group, `\\2` the value from the second and so on. As a simple example, note that the following code will replace a comma with period, but only if it is between two digits:
+MI.gasplants = gasplants %>%
+  st_transform(st_crs(MI.counties)) %>%
+  st_join(MI.counties, left = FALSE,
+          join = st_intersects)
 
-```{r}
-pattern_with_groups <-  "^([4-7]),(\\d*)$"
-yes <- c("5,9", "5,11", "6,", "6,1")
-no <- c("5'9", ",", "2,8", "6.1.1")
-s <- c(yes, no)
-str_replace(s, pattern_with_groups, "\\1'\\2")
+head(MI.gasplants)
 ```
 
-We can use this to convert cases in our reported heights.
 
-We are now ready to define a pattern that helps us convert all the `x.y`, `x,y` and `x y` to our preferred format. We need to adapt `pattern_with_groups` to be a bit more flexible and capture all the cases.
+Now, we can plot the counties map with the gasplants over it. We can even use `aes(...)` to `fill` the counties:
 
 ```{r}
-pattern_with_groups <-"^([4-7])\\s*[,\\.\\s+]\\s*(\\d*)$"
+ggplot() + 
+  geom_sf(data = MI.counties, aes(fill = NAME), show.legend = F) +  
+  geom_sf(data = MI.gasplants) + 
+  theme_minimal()  
 ```
 
-Let's break this one down:
+Huh. Most gas plants in Michigan are to the north of here. Interesting.
 
-  - `^` = start of the string
-  - `[4-7]` = one digit, either 4, 5, 6, or 7
-  - `\\s*` = none or more white space
-  - `[,\\.\\s+]` = feet symbol is either `,`, `.` or at least one space
-  - `\\s*` = none or more white space
-  - `\\d*` = none or more digits
-  - `$` = end of the string
+### Mapview
+Sometimes, we want to be able to zoom in and out. `ggplot` is static, so that won't work too well. Thanks to the `leaflet` engine, the `mapview` packages is stellar for exploration of spatial data. You can specify `zcol = Name` if you want to color by the `Name` field. I can't embed this in the website, but you can run this at home. It will appear in the "Viewer" pane, not in the "Plots" pane. Unlike the static image here, you will be able to zoom and pan.
 
-We can see that it appears to be working:
-```{r}
-str_subset(problems, pattern_with_groups) %>% head()
 ```
-
-and will be able to perform the search and replace:
-
-```{r}
-str_subset(problems, pattern_with_groups) %>%
-  str_replace(pattern_with_groups, "\\1'\\2") %>% head
+mapview(MI.gasplants)
 ```
-
-Again, we will deal with the inches-larger-than-twelve challenge later.
 
-## Testing and improving
-
-Developing the right regex on the first try is often difficult. Trial and error is a common approach to finding the regex pattern that satisfies all desired conditions. In the previous sections, we have developed a powerful string processing technique that can help us catch many of the problematic entries. Here we will test our approach, search for further problems, and tweak our approach for possible improvements. Let's write a function that captures all the entries that can't be converted into numbers remembering that some are in centimeters (we will deal with those later):
-
-```{r}
-not_inches_or_cm <- function(x, smallest = 50, tallest = 84){
-  inches <- suppressWarnings(as.numeric(x))
-  ind <- !is.na(inches) &
-    ((inches >= smallest & inches <= tallest) |
-       (inches/2.54 >= smallest & inches/2.54 <= tallest))
-  !ind
-}
-
-problems <- reported_heights %>%
-  dplyr::filter(not_inches_or_cm(height)) %>%
-  pull(height)
-length(problems)
+```{r, echo = F, warning=F, message = F}
+knitr::include_graphics(here('images','MIgas.png'))
 ```
 
-Let's see what proportion of these fit our pattern after the processing steps we developed above:
-
-```{r}
-converted <- problems %>%
-  str_replace("feet|foot|ft", "'") %>% # convert feet symbols to '
-  str_replace("inches|in|''|\"", "") %>%  # remove inches symbols
-  str_replace("^([4-7])\\s*[,\\.\\s+]\\s*(\\d*)$", "\\1'\\2")# change format
+In an actual mapview window (not this static image here), clicking on the points or polygons will bring up a pop-up of the data for that row. Mapview is very useful for *exploring* your spatial data. It is **not** useful for presenting your data. Please, never use `mapview` as an output from a markdown code chunk. Use it for exploring, then use `geom_sf()` to present your analysis.
 
-pattern <- "^[4-7]\\s*'\\s*\\d{1,2}$"
-index <- str_detect(converted, pattern)
-mean(index)
+While Mapview has many features that you will likely find interesting, one of the more useful features is that you can set the display color, which helps for data exploration. 
 ```
-
-Note how we leveraged the pipe, one of the advantages of using __stringr__. This last piece of code shows that we have matched well over half of the strings. Let's examine the remaining cases:
-
-```{r}
-converted[!index]
+mapview(MI.counties, zcol = 'NAME')
 ```
-
-Four clear patterns arise:
-
-1. Many students measuring exactly 5 or 6 feet did not enter any inches, for example `6'`, and our pattern requires that inches be included.
-2. Some students measuring exactly 5 or 6 feet entered just that number.
-3. Some of the inches were entered with decimal points. For example `5'7.5''`. Our pattern only looks for two digits.
-4. Some entries have spaces at the end, for example `5 ' 9 `.
-
-Although not as common, we also see the following problems:
 
-5. Some entries are in meters and some of these use European decimals: `1.6`, `1,70`.
-6. Two students added `cm`.
-7. A student spelled out the numbers: `Five foot eight inches`.
+This will set each county in Michigan to a different color (using the `viridis` colors). Another very useful feature of `mapview` is that you can layer plots with `+`. Again, I'm including a static image. Using this command in Rstudio will open an interactive map:
 
-It is not necessarily clear that it is worth writing code to handle these last three cases since they might be rare enough. However, some of them provide us with an opportunity to learn a few more regex techniques, so we will build a fix.
-
-For case 1, if we add a `'0` after the first digit, for example, convert all `6` to `6'0`, then our previously defined pattern will match. This can be done using groups:
-
-```{r}
-yes <- c("5", "6", "5")
-no <- c("5'", "5''", "5'4")
-s <- c(yes, no)
-str_replace(s, "^([4-7])$", "\\1'0")
 ```
-
-The pattern says it has to start (`^`) with a digit between 4 and 7 and end there (`$`). The parenthesis defines the group that we pass as `\\1` to generate the replacement regex string.
-
-We can adapt this code slightly to handle the case 2 as well, which covers the entry `5'`. Note `5'` is left untouched. This is because the extra `'` makes the pattern not match since we have to end with a 5 or 6. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add `'{0,1}` after the `'` to do this. However, we can use the none or once special character `?`. As we saw above, this is different from `*` which is none or more. We now see that the fourth case is also converted:
-
-```{r}
-str_replace(s, "^([56])'?$", "\\1'0")
+mapview(MI.gasplants) + mapview(MI.counties, zcol = 'NAME')
 ```
-
-Here we only permit 5 and 6, but not 4 and 7. This is because 5 and 6 feet tall is quite common, so we assume those that typed 5 or 6 really meant `60` or `72` inches. However, `4` and `7` feet tall are so rare that, although we accept `84` as a valid entry, we assume `7` was entered in error.
-
-We can use quantifiers to deal with **case 3**. These entries are not matched because the inches include decimals and our pattern does not permit this. We need to allow the second group to include decimals not just digits. This means we must permit zero or one period `.` then zero or more digits. So we will be using both `?` and `*`.
-Also remember that, for this particular case, the period needs to be escaped since it is a special character (it means any character except line break). Here is a simple example of how we can use `*`.
 
-So we can adapt our pattern, currently `^[4-7]\\s*'\\s*\\d{1,2}$` to permit a decimal at the end:
-
-```{r}
-pattern <- "^[4-7]\\s*'\\s*(\\d+\\.?\\d*)$"
+```{r, echo = F, warning=F, message = F}
+knitr::include_graphics(here('images','mapview_ex2.png'))
 ```
-
 
-Case 4, meters using commas, we can approach similarly to how we converted the `x.y` to `x'y`. A difference is that we require that the first digit be 1 or 2:
 
-```{r}
-yes <- c("1,7", "1, 8", "2, " )
-no <- c("5,8", "5,3,2", "1.7")
-s <- c(yes, no)
-str_replace(s, "^([12])\\s*,\\s*(\\d*)$", "\\1\\.\\2")
-```
-
-We will later check if the entries are meters using their numeric values. We will come back to the case study after introducing two widely used functions in string processing that will come in handy when developing our final solution for the self-reported heights.
+### Polygon-to-polygon merges
+The gas plants and state merge, above, was very simple because points are always either within or not within a polygon. Worst that can happen is some of your points are not over any polygon at all (resulting in `NA` values). But what if you're merging polygons to polygons?
 
+First, let's load some (overlapping) polygons. We can load up all of our states again (dropping the territories). We'll also use a map of watersheds (which cross state boundaries). This is the HUC-4 map of the Rockies from the [US Geological Survey](https://hub.arcgis.com/datasets/7f8632f3e3114623b4f5c8f97d935dca_1?geometry=-157.095%2C32.305%2C-73.379%2C44.324). The HUC-4 is a definition of a watershed where the area of the HUC-4 is the area drained by a major tributary:
 
-## Trimming
+```{r, message =F, warning=F}
+US = states(cb=TRUE) %>%
+  dplyr::filter(!STUSPS %in% c('PR','GU','VI','MP','AS','AK','HI'))
 
-In general, spaces at the start or end of the string are uninformative.
-These can be particularly deceptive because sometimes they can be hard to see:
+HUC4 = st_read('https://opendata.arcgis.com/datasets/7f8632f3e3114623b4f5c8f97d935dca_1.kml') %>%
+  st_transform(st_crs(US)) %>%
+  dplyr::mutate(randomData = rpois(n(), 20))
 
-```{r}
-s <- "Hi "
-cat(s)
-identical(s, "Hi")
-```
+ggplot() + 
+  geom_sf(data = US, col = 'gray50') +
+  geom_sf(data = HUC4, aes(fill = Name), show.legend = FALSE) + 
+  theme_minimal()
 
-This is a general enough problem that there is a function dedicated to removing them:
- `str_trim`.
 
-```{r}
-str_trim("5 ' 9 ")
 ```
 
+These watersheds clearly overlap state boundaries. So what happens if we merge them? `sf` will create a new obsveration (row) for every HUC-4 / State combination
 
-## Changing lettercase
+```{r, message = F, warning = F}
+poly.merge = HUC4 %>%
+  st_join(US, left = TRUE)
 
-Notice that regex is case sensitive. Often we want to match a word regardless of case. One approach to doing this is to first change everything to lower case and then proceeding ignoring case. As an example, note that one of the entries writes out numbers as words `Five foot eight inches`. Although not efficient, we could add 13 extra `str_replace` calls to convert `zero` to `0`, `one` to `1`, and so on. To avoid having to write two separate operations for `Zero` and `zero`, `One` and `one`, etc., we can use the `str_to_lower` function to make all works lower case first:
-
-```{r}
-s <- c("Five feet eight inches")
-str_to_lower(s)
+head(poly.merge)
 ```
-
-Other related functions are `str_to_upper` and `str_to_title`. These are especially useful when you're trying to merge two datasets -- you'll often see state names in various capitalization forms. 
-
-We are now ready to define a procedure that converts all the problematic cases to inches.
-
-## Case study 2: self-reported heights (continued)
-
-We now put all of what we have learned together into a function that takes a string vector and tries to convert as many strings as possible to one format. We write a function that puts together what we have done above.
 
-```{r}
-convert_format <- function(s){
-  s %>%
-    str_replace("feet|foot|ft", "'") %>%
-    str_replace_all("inches|in|''|\"|cm|and", "") %>%
-    str_replace("^([4-7])\\s*[,\\.\\s+]\\s*(\\d*)$", "\\1'\\2") %>%
-    str_replace("^([56])'?$", "\\1'0") %>%
-    str_replace("^([12])\\s*,\\s*(\\d*)$", "\\1\\.\\2") %>%
-    str_trim()
-}
-```
-
-We can also write a function that converts words to numbers:
-
-```{r, warning=FALSE, message=FALSE}
-library(english)
-words_to_numbers <- function(s){
-  s <- str_to_lower(s)
-  for(i in 0:11)
-    s <- str_replace_all(s, words(i), as.character(i))
-  s
-}
-```
-
-Note that we can perform the above operation more efficiently with the function `recode`.
-Now we can see which problematic entries remain:
+Now, every HUC-4 like "Lower Colorado" has multiple observations, one for each STUSPS that it touches. When we plot it, though, each of those observations are still attached to the same HUC-4 polygon. Technically, R is plotting the same HUC multiple times (once for each state) on top of each other, so we don't see them. This is the equivalent of merging your data in a way that duplicates observations.
 
-```{r}
-converted <- problems %>% words_to_numbers() %>% convert_format()
-remaining_problems <- converted[not_inches_or_cm(converted)]
-pattern <- "^[4-7]\\s*'\\s*\\d+\\.?\\d*$"
-index <- str_detect(remaining_problems, pattern)
-remaining_problems[!index]
+```{r, message = F, warning=F}
+ggplot(poly.merge) + geom_sf() + 
+  theme_minimal()
 ```
-
-apart from the cases reported as meters, which we will fix below, they all seem to be cases that are impossible to fix.
 
-### The `extract` function
-
-The `extract` function is a useful __tidyverse__ function for string processing that we will use in our final solution, so we introduce it here. In a previous section, we constructed a regex that lets us identify which elements of a character vector match the feet and inches pattern. However, we want to do more. We want to extract and save the feet and number values so that we can convert them to inches when appropriate.
-
-If we have a simpler case like this:
-```{r}
-s <- c("5'10", "6'1")
-tab <- data.frame(x = s)
-```
+We have another option in our join - we can ask `st_join` to keep just the `largest`:
 
-In an earlier Content section we learned about the `separate` function, which can be used to achieve our current goal:
+```{r, message = F, warning = F}
+poly.merge.largest = HUC4 %>%
+  st_join(US, left = TRUE, largest = TRUE)
 
-```{r}
-tab %>% separate(x, c("feet", "inches"), sep = "'")
+head(poly.merge.largest)
 ```
-
-The `extract` function from the __tidyr__ package lets us use regex groups to extract the desired values. Here is the equivalent to the code above using `separate` but using `extract`:
+Now, there is only *one* observation per HUC-4, and it corresponds to the state that has the most overlap area-wise. For Lower Colorado, Arizona has the most overlap. There are lots of things besides `st_intersect` we can use to call two things "joined". `?st_join` tells you about them. For instance, we can use `join = st_covers` and we will only get a merge when HUC-4 completely covers the state.
 
-```{r}
-library(tidyr)
-tab %>% tidyr::extract(x, c("feet", "inches"), regex = "(\\d)'(\\d{1,2})")
+```{r, message = F, warning = F}
+HUC4 %>%
+  st_join(US, left = TRUE, join = st_covers) %>%
+  head()
 ```
 
-So why do we even need the new function `extract`? We have seen how small changes can throw off exact pattern matching. Groups in regex give us more flexibility. For example, if we define:
+None of the HUC-4's completely cover a state, so we get `NA` for all the state data.
 
-```{r}
-s <- c("5'10", "6'1\"","5'8inches")
-tab <- data.frame(x = s)
-```
+The other thing we can do is ask `R` to create separate polygons - one for every HUC-4 / state combination. That isn't a merge, but it plays a similar role. Note this uses `st_intersection`:
 
-and we only want the numbers, `separate` fails:
+```{r, message = F, warning = F}
+poly.int = HUC4 %>%
+  st_intersection(US) %>%
+  arrange(Name)
 
-```{r}
-tab %>% separate(x, c("feet","inches"), sep = "'", fill = "right")
+head(poly.int)
 ```
 
-However, we can use `extract`. The regex here is a bit more complicated since we have to permit `'` with spaces and `feet`. We also do not want the `"` included in the value, so we do not include that in the group:
+Now, we have a unique polygon for every combination of HUC-4 and State (with the US):
 
 ```{r}
-tab %>% tidyr::extract(x, c("feet", "inches"), regex = "(\\d)'(\\d{1,2})")
-```
-
-
-### Putting it all together
-
-We are now ready to put it all together and wrangle our reported heights data to try to recover as many heights as possible. The code is complex, but we will break it down into parts.
-
-We start by cleaning up the `height` column so that the heights are closer to a feet'inches format. We added an original heights column so we can compare before and after.
-
-Now we are ready to wrangle our reported heights dataset:
-
-```{r, warning=FALSE, message=FALSE}
-pattern <- "^([4-7])\\s*'\\s*(\\d+\\.?\\d*)$"
-
-smallest <- 50
-tallest <- 84
-new_heights <- reported_heights %>%
-  dplyr::mutate(original = height,
-         height = words_to_numbers(height) %>% convert_format()) %>%
-  tidyr::extract(height, c("feet", "inches"), regex = pattern, remove = FALSE) %>%
-  dplyr::mutate_at(c("height", "feet", "inches"), as.numeric) %>%
-  dplyr::mutate(guess = 12 * feet + inches) %>%
-  dplyr::mutate(height = case_when(
-    is.na(height) ~ as.numeric(NA),
-    between(height, smallest, tallest) ~ height,  #inches
-    between(height/2.54, smallest, tallest) ~ height/2.54, #cm
-    between(height*100/2.54, smallest, tallest) ~ height*100/2.54, #meters
-    TRUE ~ as.numeric(NA))) %>%
-  dplyr::mutate(height = ifelse(is.na(height) &
-                           inches < 12 & between(guess, smallest, tallest),
-                         guess, height)) %>%
-  dplyr::select(-guess)
-```
-
-We can check all the entries we converted by typing:
-
-```{r, eval=FALSE}
-new_heights %>%
-  dplyr::filter(not_inches(original)) %>%
-  dplyr::select(original, height) %>%
-  arrange(height) %>%
-  View()
+ggplot() + 
+  geom_sf(data = US, fill = 'gray50') +
+  geom_sf(data = poly.int, aes(fill = STUSPS), show.legend = FALSE) +
+  theme_minimal()
 ```
 
+Here, I've set the fill to the state, but you can see that the HUC-4's have boundaries at the state line.
 
-A final observation is that if we look at the shortest students in our course:
+### Summarizing 
+Our `summarize` function let us collapse by groups and calculate interseting things like average (over a group or region). The neat part is that *it works on spatial data as well*. Let's look at the data again:
 
 ```{r}
-new_heights %>% arrange(height) %>% head(n=7)
+head(poly.int %>% 
+       dplyr::select(Name, randomData, STUSPS) %>%
+       arrange(STUSPS))
 ```
 
-We see heights of 53, 54, and 55. In the originals, we also have 51 and 52. These short heights are rare and it is likely that the students actually meant `5'1`, `5'2`, `5'3`, `5'4`, and `5'5`. Because we are not completely sure, we will leave them as reported. The object `new_heights` contains our final solution for this case study.
+So AZ has two HUC-4's in it - Lower Colorado and Lower Coloardo - Lake Mead (you can see them above). Summarize on geospatial data works just like regular data - we can `group_by(STUSPS)`, and we can `summarize()` any of the data. I threw some random data into `HUC-4` so we can summarize that. 
 
-## String splitting
+But how do we combine data specific to each HUC-4 in AZ? We could:
 
-Another very common data wrangling operation is string splitting. To illustrate how this comes up, we start with an illustrative example. Suppose we did not have the function `read_csv` or `read.csv` available to us. We instead have to read a csv file using the base R function `readLines` like this:
+- Just take the average of all of the `randomData` values within the state.
 
-```{r}
-filename <- system.file("extdata/murders.csv", package = "dslabs")
-lines <- readLines(filename)
-```
-
-This function reads-in the data line-by-line to create a vector of strings. In this case, one string for each row in the spreadsheet. The first six lines are:
-
-```{r}
-lines %>% head()
-```
+- Take a weighted average of `randomData` where the *area* is the weight
 
-We want to extract the values that are separated by a comma for each string in the vector. The command `str_split` does exactly this:
+- Take some other function (min, max, etc.) of `randomData`.
 
-```{r}
-x <- str_split(lines, ",")
-x %>% head(2)
-```
-
-Note that the first entry has the column names, so we can separate that out:
+We can implement any of these using `sf`. Let's do the second since it nests the first. First, we'll add the area of the State x HUC-4 using `st_area`, which gives a `units` object. We can turn that into a numeric:
 
-```{r}
-col_names <- x[[1]]
-x <- x[-1]
-```
+```{r, message = F, warning = F}
+poly.int.summary = poly.int %>%
+  dplyr::mutate(State.HUC.area = as.numeric(st_area(.))) %>%
+  group_by(STUSPS) %>%
+  dplyr::summarize(mean.randomData = weighted.mean(randomData, w = State.HUC.area))
 
-To convert our list into a data frame, we can use a shortcut provided by the `map` functions in the __purrr__ package. The map function applies the same function to each element in a list. So if we want to extract the first entry of each element in `x`, we can write:
+head(poly.int.summary)
 
-```{r}
-library(purrr)
-map(x, function(y) y[1]) %>% head(2)
 ```
 
-However, because this is such a common task, __purrr__ provides a shortcut. If the second argument receives an integer instead of a function, it assumes we want that entry. So the code above can be written more efficiently like this:
+`sf` with the `tidyverse` makes it really easy to apply spatial versions of `summarize` and `mutate`. Very useful.
 
-```{r, eval=FALSE}
-map(x, 1)
-```
+If we had wanted to just take the average (ignoring area), we'd just leave out the `w = State.HUC.area` or just used `mean`. If we had wanted to take, say, the minimum, we would use `min(randomData)` instead of `weighted.mean`. We can use whatever function we want in `summarize`, just as we did with non-spatial data.
 
-To force `map` to return a character vector instead of a list, we can use `map_chr`. Similarly, `map_int` returns integers. So to create our data frame, we can use:
-
-```{r}
-dat <- tibble(map_chr(x, 1),
-              map_chr(x, 2),
-              map_chr(x, 3),
-              map_chr(x, 4),
-              map_chr(x, 5)) %>%
-  mutate_all(parse_guess) %>%
-  setNames(col_names)
-dat %>% head
-```
 
-If you learn more about the __purrr__ package, you will learn that you perform the above with the following, more efficient, code:
+## Cropping vs. merging
+Sometimes, we wish to only crop to a region rather than merging. `sf` has the `st_crop` function to do this. Let's crop our `HUC-4` data to just the **bounding box** of the state of Nevada
 
-```{r}
-dat <- x %>%
-  transpose() %>%
-  map( ~ parse_guess(unlist(.))) %>%
-  setNames(col_names) %>%
-  as_tibble()
-```
+```{r, echo=T, warning = F, message = F}
 
+HUC4.nv = HUC4 %>%
+  st_crop(US %>% dplyr::filter(STUSPS=='NV'))
 
-It turns out that we can avoid all the work shown above after the call to `str_split`. Specifically, if we know that the data we are extracting can be represented as a table, we can use the argument `simplify=TRUE` and `str_split` returns a matrix instead of a list:
+ggplot(HUC4.nv) + geom_sf(aes(fill = Name), show.legend = F) +
+  geom_sf(data = US %>% dplyr::filter(STUSPS=='NV'),  fill = NA, col = 'gray20', lwd = 3 ) +
+  theme_minimal()
 
-```{r}
-x <- str_split(lines, ",", simplify = TRUE)
-col_names <- x[1,]
-x <- x[-1,]
-colnames(x) <- col_names
-x %>% as_tibble() %>%
-  mutate_all(parse_guess) %>%
-  head(5)
 ```
-
-## Case study 3: extracting tables from a PDF
-
-One of the datasets provided in __dslabs__ shows scientific funding rates by gender in the Netherlands:
 
-```{r}
-library(dslabs)
-data("research_funding_rates")
-research_funding_rates %>%
-  dplyr::select("discipline", "success_rates_men", "success_rates_women")
-```
 
+If we wanted to actually crop to the state of Nevada (`st_crop` only uses the bounding box of Nevada), we'd use `st_intersection` but do the intersection with just the state of Nevada:
 
-The data comes from a paper published in the Proceedings of the National Academy of Science (PNAS)^[http://www.pnas.org/content/112/40/12349.abstract], a widely read scientific journal. However, the data is not provided in a spreadsheet; it is in a table in a PDF document. Here is a screenshot of the table:
+```{r, echo=T, warning = F, message = F}
+HUC4.nv = HUC4 %>%
+  st_intersection(US %>% dplyr::filter(STUSPS=='NV'))
 
-```{r, echo=F}
-knitr::include_graphics(here('images','pnas-table-s1.png'))
+ggplot(HUC4.nv) + geom_sf(aes(fill = Name), show.legend = F) +
+  geom_sf(data = US %>% dplyr::filter(STUSPS=='NV'),  fill = NA, col = 'gray20', lwd = 3 ) +
+  theme_minimal()
 ```
-
-(Source: Romy van der Lee and Naomi Ellemers, PNAS 2015 112 (40) 12349-12353^[http://www.pnas.org/content/112/40/12349].)
 
-We could extract the numbers by hand, but this could lead to human error. Instead, we can try to wrangle the data using R. We start by downloading the pdf document, then importing into R:
+Note that the data for each HUC-4 remains unchanged. If there were something in that data (like "population" or "area") that is specific to the entire polygon representing the HUC, then cropping the HUC outside of Nevada may lead to misleading data. The moral of the story is: be careful and thoughtful!
 
-```{r, eval=FALSE}
-library("pdftools")
-temp_file <- tempfile()
-url <- paste0("https://www.pnas.org/content/suppl/2015/09/16/",
-              "1510159112.DCSupplemental/pnas.201510159SI.pdf")
-download.file(url, temp_file)
-txt <- pdf_text(temp_file)
-file.remove(temp_file)
-```
+### Bounding boxes
 
-If we examine the object text, we notice that it is a character vector with an entry for each page. So we keep the page we want:
+This introduces a useful concept: the *bounding box*. The bounding box is defined by the closest 4 points that form a box that perfectly encloses the object (even when the object is not a rectangle). The extent of the above plot is the bounding box for Nevada.
 
-```{r, eval=FALSE}
-raw_data_research_funding_rates <- txt[2]
+```{r, echo=T}
+Nevada.bbox = st_bbox(US %>% dplyr::filter(STUSPS=='NV'))
+Nevada.bbox
 ```
+The bounding box can be used to frame a "window" in a `ggplot` using `geom_sf()`. That is, sometimes, we want to *plot* just a subsection of a map, but we still want the data to be the whole map. Here's an example using the HOLC Redlining Maps, which were created in the 1930's and were used to segregate US housing up until the 1970's. They are available at the [University of Richmond's *Mapping Inequality* site](https://dsl.richmond.edu/panorama/redlining). We can load Lansing and Detroit using the code below:
 
-The steps above can actually be skipped  because we include this raw data in the __dslabs__ package as well:
-
 ```{r}
-data("raw_data_research_funding_rates")
-```
+lansing = st_read('https://dsl.richmond.edu/panorama/redlining/static/citiesData/MILansing19XX/geojson.json')
 
-Examining the object `raw_data_research_funding_rates`
-we see that it is a long string and each line on the page, including the table rows, are separated by the symbol for newline: `\n`. We therefore can create a list with the lines of the text as elements as follows:
+detroit = st_read('https://dsl.richmond.edu/panorama/redlining/static/citiesData/MIDetroit1939/geojson.json')
 
-```{r}
-tab <- str_split(raw_data_research_funding_rates, "\n")
-```
 
-Because we start off with just one element in the string, we end up with a list with just one entry.
+mi.redlining = bind_rows(lansing, detroit) %>%
+  st_transform(st_crs(MI))
 
-```{r}
-tab <- tab[[1]]
+ggplot(mi.redlining) +
+  geom_sf(aes(fill = grade, col = grade)) + 
+  geom_sf(data = MI, fill = NA, col = 'gray50') +
+  scale_fill_manual(values = c('A' = 'darkgreen', 'B' = 'blue', 'C' = 'yellow', 'D' = 'red'),
+                    aesthetics = c('color','fill')) +
+  theme_minimal()
 ```
 
-By examining `tab` we see that the information for the column names is the third and fourth entries:
+We can tell that our polygons have plotted, but since we have the whole state of Michigan, they're almost unreadable. We need to set our window over the lower part of the lower peninsula. We'll use `coord_sf` to do this, but first we need to define a window. Since windows are almost always rectangular, we can use the `st_bbox(mi.redlining)`, but we have to pull out the xlim (xmin, xmax) and ylim (ymin, ymax):
 
 ```{r}
-the_names_1 <- tab[3]
-the_names_2 <- tab[4]
+ggplot(mi.redlining) +
+  geom_sf(aes(fill = grade, col = grade)) + 
+  geom_sf(data = MI, fill = NA, col = 'gray50') +
+  scale_fill_manual(values = c('A' = 'green', 'B' = 'blue', 'C' = 'yellow', 'D' = 'red'),
+                    aesthetics = c('color','fill')) +
+  theme_minimal() +
+  coord_sf(xlim = st_bbox(mi.redlining)[c(1, 3)],
+           ylim = st_bbox(mi.redlining)[c(2, 4)])
 ```
 
-The first of these rows looks like this:
-
-```{r, echo=FALSE}
-cat(substr(the_names_1, 1, options()$width))
-cat(substr(the_names_1, options()$width, nchar(the_names_1)))
-```
-
-We want to create one vector with one name for each column. Using some of the functions we have just learned, we do this. Let's start with `the_names_1`, shown above. We want to remove the leading space and anything following the comma. We use regex for the latter. Then we can obtain the elements by splitting strings separated by space.  We want to split only when there are 2 or more spaces to avoid splitting `Success rates`. So we use the regex `\\s{2,}`
-
-```{r}
-the_names_1 <- the_names_1 %>%
-  str_trim() %>%
-  str_replace_all(",\\s.", "") %>%
-  str_split("\\s{2,}", simplify = TRUE)
-the_names_1
-```
 
+## Distance matrices
+One of the most common spatial statistics we'd use in data analytics is the *distance* matrix. If we have a set of points and we think that we can explain some data about those points (unemployment, ag production, murders per capita) based on the distance to some explanatory source (gas plants, superfund site, etc.), then we might want to include *distance to gas plants* in our model as a predictor. Frequently, we'll use inverse distance, $\frac{1}{d}$, so that closer things can have more of an impact. To do this, we need a distance matrix.
 
-Now we will look at `the_names_2`:
-```{r, echo=FALSE}
-cat(substr(the_names_2, 1, options()$width))
-cat(substr(the_names_2, options()$width, nchar(the_names_2)))
-```
+Let's combine our `gasplants` and our `ourCities` to get the distance from each of our cities to the nearest gas plant. Maybe we have city-level data on student achievements and we want to see if gas plants lower student achievement. While we would need a lot more information to make this model, we can look at what we have for now.
 
-Here we want to trim the leading space and then split by space as we did for the first line:
+We will use `st_distance`, which will generate a special type of object that contains the distance information. `MI.gasplants` has `r NROW(MI.gasplants)` observations, and ourCities has `r NROW(ourCities)`, so for each row in `ourCities` we will get `r NROW(MI.gasplants)` distances, one to each gasplant. This forms a *distance matrix* where each row is an object in `ourCities` and each column is an object in `MI.gasplants`. We are going to take only a few `MI.gasplants` so we can easily view the results:
 
 ```{r}
-the_names_2 <- the_names_2 %>%
-  str_trim() %>%
-  str_split("\\s+", simplify = TRUE)
-the_names_2
-```
-
-We can then join these to generate one name for each column:
+ourCities.spatial = ourCities.spatial %>% 
+  st_transform(st_crs(MI.gasplants))
 
+MI.gasplants.small = MI.gasplants[1:4,]
 
-```{r}
-tmp_names <- str_c(rep(the_names_1, each = 3), the_names_2[-1], sep = "_")
-the_names <- c(the_names_2[1], tmp_names) %>%
-  str_to_lower() %>%
-  str_replace_all("\\s", "_")
-the_names
+ourDistance = st_distance(x = ourCities.spatial, y = MI.gasplants.small)
+ourDistance
 ```
+We get a `units` matrix, which has extra properties that allow us to convert the units. The units will be in whatever the CRS of the objects is in - `st_crs(ourCities.spatial)` tells us the units are meters.
 
-Now we are ready to get the actual data. By examining the `tab` object, we notice that the information is in lines 6 through 14. We can use `str_split` again to achieve our goal:
+What if we wanted to find the closest gas plant to each city? That is akin to looking at each row, and finding the column that is the smallest, right? We will use `apply`, and we will note that the order of the columns is the same as the order in `MI.gasplants.small`, so we can use `MI.gasplants.small$name` to tell us the name of the closest gas plant. We will `apply` over each row (`MAR=1`) and use the `which.min` function, which returns the *index* number of the maximum column.
 
 ```{r}
-new_research_funding_rates <- tab[6:14] %>%
-  str_trim %>%
-  str_split("\\s{2,}", simplify = TRUE) %>%
-  data.frame(stringsAsFactors = FALSE) %>%
-  setNames(the_names) %>%
-  mutate_at(-1, parse_number)
-new_research_funding_rates %>% as_tibble()
+max.index = apply(ourDistance, MAR = 1, which.min)
 ```
 
-We can see that the objects are identical:
+We can combine this index with the `MI.gasplants.small` object to get the names of the closest gas plant for each of the cities. We'll make a nice, neat tibble with the city name (in the order from ourCities.spatial), the closest gas plant name, and the distance to that plant:
 
 ```{r}
-identical(research_funding_rates, new_research_funding_rates)
+tibble(City = ourCities.spatial$City,
+       Closest.gasplant = MI.gasplants.small$name[max.index],
+       Distance.to.closest = ourDistance[cbind(1:length(max.index), max.index)])
+  
 ```
-
-## Recoding
-
-Another common operation involving strings is recoding the names of categorical variables. Let's say you have really long names for your levels and you will be displaying them in plots, you might want to use shorter versions of these names. For example, in character vectors with country names, you might want to change "United States of America" to "USA" and "United Kingdom" to UK, and so on. We can do this with `case_when`, although the __tidyverse__ offers an option that is specifically designed for this task: the `recode` function.
 
-Here is an example that shows how to rename countries with long names:
+But wait, what is going on in the last line of code there? Well, recall our distance matrix and `max.index`:
 
-
 ```{r}
-library(dslabs)
-data("gapminder")
+ourDistance
+#
+max.index
 ```
 
-Suppose we want to show life expectancy time series by country for the Caribbean:
+we want to select from our distance matrix the 1st row, 3rd column; the 2nd row, 3rd column; 3rd row, 1st column; 4th row, 3rd column; 5th row, 4th column; and 6th row, 4th column. This means the row index and column index are not ranges, but are paired. Using `cbind(1:6, max.index)` makes them paired entries, and we can select specific row x column combinations that way.
 
-```{r caribbean}
-gapminder %>%
-  dplyr::filter(region == "Caribbean") %>%
-  ggplot(aes(year, life_expectancy, color = country)) +
-  geom_line()
-```
+### st_nearest_feature
+As is common in R, there is a function that will get the closest points between to spatial objects. `st_nearest_points` takes two geometries, and returns  the neaarest point in `y` for every point in `x`, which is what we did with the MI gas plants.
 
-The plot is what we want, but much of the space is wasted to accommodate some of the long country names.
-<!--
 ```{r}
-gapminder %>%
-  dplyr::filter(region == "Caribbean") %>%
-  dplyr::filter(str_length(country) >= 12) %>%
-  distinct(country)
-```
--->
-We have four countries with names longer than 12 characters. These names appear once for each year in the Gapminder dataset. Once we pick nicknames, we need to change them all consistently. The `recode` function can be used to do this:
-
-
-```{r caribbean-with-nicknames}
-gapminder %>% dplyr::filter(region=="Caribbean") %>%
-  mutate(country = recode(country,
-                          `Antigua and Barbuda` = "Barbuda",
-                          `Dominican Republic` = "DR",
-                          `St. Vincent and the Grenadines` = "St. Vincent",
-                          `Trinidad and Tobago` = "Trinidad")) %>%
-  ggplot(aes(year, life_expectancy, color = country)) +
-  geom_line()
-```
-
-There are other similar functions in other R packages, such as `recode_factor` and `fct_recoder` in the __forcats__ package.
-
-
-::: {.callout-note}
-
-## TRY IT
-
-1. Complete all lessons and exercises in the [https://regexone.com/](https://regexone.com/) online interactive tutorial.
-
-2. In the `extdata` directory of the __dslabs__ package, you will find a PDF file containing daily mortality data for Puerto Rico from Jan 1, 2015 to May 31, 2018. You can find the file like this: 
-
-```{r, eval=FALSE}
-fn <- system.file("extdata", "RD-Mortality-Report_2015-18-180531.pdf",
-                  package="dslabs")
-```
-
-Find and open the file or open it directly from RStudio. On a Mac, you can type:
-
-```{r, eval = FALSE}
-system2("open", args = fn)
-```
-
-and on Windows, you can type:
-
-```{r, eval = FALSE}
-system("cmd.exe", input = paste("start", fn))
-```
-
-Which of the following best describes this file:
-
-a. It is a table. Extracting the data will be easy.
-b. It is a report written in prose.  Extracting the data will be impossible.
-c. It is a report combining graphs and tables. Extracting the data seems possible.
-d. It shows graphs of the data. Extracting the data will be difficult.
-
-
-3. We are going to create a tidy dataset with each row representing one observation. The variables in this dataset will be year, month, day, and deaths.
-Start by installing and loading the __pdftools__ package:
-
-
-```{r, eval= FALSE}
-install.packages("pdftools")
-library(pdftools)
+st_nearest_feature(x = ourCities.spatial, y = MI.gasplants.small)
 ```
-
-Now read-in `fn` using the `pdf_text` function and store the results in an object called `txt`. Which of the following best describes what you see in `txt`?
-
-a. A table with the mortality data.
-b. A character string of length 12. Each entry represents the text in each page. The mortality data is in there somewhere.
-c. A character string with one entry containing all the information in the PDF file.
-d. An html document.
-
-
-4. Extract the ninth page of the PDF file from the object `txt`, then use the `str_split` from the __stringr__ package so that you have each line in a different entry. Call this string vector `s`. Then look at the result and choose the one that best describes what you see.
+This is exactly our `max.index` and can be used on the `y` object, `MI.gasplants.small`, to pull the names, subset, get distances etc.
 
-a. It is an empty string.
-b. I can see the figure shown in page 1.
-c. It is a tidy table.
-d. I can see the table! But there is a bunch of other stuff we need to get rid of.
+`st_nearest_feature` also works for points and polygons, or polygons and polygons, where it returns the index of the polygon that contains the nearest point to the features in `x`. Let's find the nearest Great Lake for each of our cities using a [KML shapefile of the Great Lakes from WI DNR](https://hub.arcgis.com/datasets/wi-dnr::great-lakes?geometry=-127.301%2C37.038%2C-43.585%2C48.298) Note that the GeoJSON link is under "API" on this site. We run into a complex geometry problem, and add `st_make_valid()` to fix it: 
 
-
-
-5. What kind of object is `s` and how many entries does it have?
-
-
-6. We see that the output is a list with one component. Redefine `s` to be the first entry of the list. What kind of object is `s` and how many entries does it have?
-
-
-7. When inspecting the string we obtained above, we see a common problem: white space before and after the other characters. Trimming is a common first step in string processing. These extra spaces will eventually make splitting the strings hard so we start by removing them. We learned about the command `str_trim` that removes spaces at the start or end of the strings. Use this function to trim `s`.
-
-
-8. We want to extract the numbers from the strings stored in `s`. However, there are many non-numeric characters that will get in the way. We can remove these, but before doing this we want to preserve the string with the column header, which includes the month abbreviation.
-Use the `str_which` function to find the rows with a header. Save these results to `header_index`. Hint: find the first string that matches the pattern `2015` using the `str_which` function.
-
-
-9. Now we are going to define two objects: `month` will store the month and `header` will store the column names. Identify which row contains the header of the table. Save the content of the row into an object called `header`, then use `str_split` to help define the two objects we need. Hints: the separator here is one or more spaces. Also, consider using the `simplify` argument.
-
-
-10. Notice that towards the end of the page you see a _totals_ row followed by rows with other summary statistics. Create an object called `tail_index` with the index of the _totals_ entry.
-
-
-11. Because our PDF page includes graphs with numbers, some of our rows have just one number (from the y-axis of the plot). Use the `str_count` function to create an object `n` with the number of numbers in each each row. Hint: you can write a regex for number like this `\\d+`.
-
-
-12. We are now ready to remove entries from rows that we know we don't need. The entry `header_index` and everything before it should be removed. Entries for which `n` is 1 should also be removed, and the entry `tail_index` and everything that comes after it should be removed as well.
-
-
-13. Now we are ready to remove all the non-numeric entries. Do this using regex and the `str_remove_all` function. Hint: remember that in regex, using the upper case version of a special character usually means the opposite. So `\\D` means "not a digit". Remember you also want to keep spaces.
-
-
-14. To convert the strings into a table, use the `str_split_fixed` function. Convert `s` into a data matrix with just the day and death count data. Hints: note that the separator is one or more spaces. Make the argument `n` a value that limits the number of columns to the values in the 4 columns and the last column captures all the extra stuff. Then keep only the first four columns. 
-
-
-15. Now you are almost ready to finish. Add column names to the matrix, including one called `day`. Also, add a column with the month. Call the resulting object `dat`. Finally, make sure the day is an integer not a character. Hint: use only the first five columns.
-
-
-16. Now finish it up by tidying `tab` with the gather function.
-
-
-17. Make a plot of deaths versus day with color to denote year. Exclude 2018 since we do not have data for the entire year.
-
-
-18. Now that we have wrangled this data step-by-step, put it all together in one R chunk, using the pipe as much as possible. Hint: first define the indexes, then write one line of code that does all the string processing.
-
-
-19. Advanced: let's return to the MLB Payroll example from the web scraping section. Use what you have learned in the web scraping and string processing chapters to extract the payroll for the New York Yankees, Boston Red Sox, and Oakland A's and plot them as a function of time.
-
-:::
-
-# Web scraping
-
-**Note: we've literally never made it this far in lecture, so consider this to be "bonus" material.**
-
-The data we need to answer a question is not always in a spreadsheet ready for us to read. For example, the US murders dataset we used in the R Basics chapter originally comes from this Wikipedia page:
-
 ```{r}
-url <- paste0("https://en.wikipedia.org/w/index.php?title=",
-              "Gun_violence_in_the_United_States_by_state",
-              "&direction=prev&oldid=810166167")
-```
+GL = st_read('https://opendata.arcgis.com/datasets/a8bb79fc10e64eee8c3a9db97cc5dc80_4.geojson') %>%
+  st_transform(st_crs(ourCities.spatial)) %>% st_make_valid()
 
-You can see the data table when you visit the webpage:
-
-
-```{r, echo=F}
-include_graphics(here('images','murders-data-wiki-page.png'))
+closest.GL.index = st_nearest_feature(x = ourCities.spatial, y = GL)
+ourCities %>% dplyr::mutate(Closest.GreatLake = GL$FEAT_NAME[closest.GL.index])
 ```
-
 
-(Web page courtesy of Wikipedia^[https://en.wikipedia.org/w/index.php?title=Gun_violence_in_the_United_States_by_state&direction=prev&oldid=810166167]. CC-BY-SA-3.0 license^[https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License]. Screenshot of part of the page.)
 
-Unfortunately, there is no link to a data file. To make the data frame that is loaded when we type `data(murders)`, we had to do some _web scraping_.
+## Other resources
+- Claudia Engel's "[Using Spatial Data with R](https://cengel.github.io/R-spatial/)" is a very useful resource. It covers `sf` and an older geospatial library called `sp` that has similar functionality but was not tidyverse-friendly. 
 
-_Web scraping_, or _web harvesting_, is the term we use to describe the process of extracting data from a website. The reason we can do this is because the information used by a browser to render webpages is received as a text file from a server. The text is code written in hyper text markup language (HTML). Every browser has a way to show the html source code for a page, each one different. On Chrome, you can use Control-U on a PC and command+alt+U on a Mac. You will see something like this:
-
-
-```{r, echo=F}
-knitr::include_graphics(here('images','html-code.png'))
-```
+- The [Rstudio Spatial Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/sf.pdf).
 
-## HTML
+  - There are [lots of useful RStudio cheat sheets, actually.](https://www.rstudio.com/resources/cheatsheets/)
 
-Because this code is accessible, we can download the HTML file, import it into R, and then write programs to extract the information we need from the page. However, once we look at HTML code, this might seem like a daunting task. But we will show you some convenient tools to facilitate the process. To get an idea of how it works, here are a few lines of code from the Wikipedia page that provides the US murders data:
+- If you want to remove the Great Lakes from your map, here's how you do it
 
+  - First, retrieve the geojson file of the great lakes. Only WI DNR seems to have a public shapefile of the Great Lakes (an informal complaint has been registered with MI-EGLE, grrrr) which you can download as a [geojson from here](https://data-wi-dnr.opendata.arcgis.com/datasets/great-lakes/explore) -- see the little cloud download button, and select geojson. This one doesn't have a link to take it directly, so download the file to your local drive, keep it with your .RMD file, and load it direction from your local path.
+  
+  - Second, use the code below as an example. You may have a different shapefile you want to clip to the Great Lakes -- put it in place of `MI` below. Note that we use a spatial version of the `difference` function, which gives us "everything in the first that isn't in the second". 
+  
 ```
-<table class="wikitable sortable">
-<tr>
-<th>State</th>
-<th><a href="/wiki/List_of_U.S._states_and_territories_by_population"
-title="List of U.S. states and territories by population">Population</a><br />
-<small>(total inhabitants)</small><br />
-<small>(2015)</small> <sup id="cite_ref-1" class="reference">
-<a href="#cite_note-1">[1]</a></sup></th>
-<th>Murders and Nonnegligent
-<p>Manslaughter<br />
-<small>(total deaths)</small><br />
-<small>(2015)</small> <sup id="cite_ref-2" class="reference">
-<a href="#cite_note-2">[2]</a></sup></p>
-</th>
-<th>Murder and Nonnegligent
-<p>Manslaughter Rate<br />
-<small>(per 100,000 inhabitants)</small><br />
-<small>(2015)</small></p>
-</th>
-</tr>
-<tr>
-<td><a href="/wiki/Alabama" title="Alabama">Alabama</a></td>
-<td>4,853,875</td>
-<td>348</td>
-<td>7.2</td>
-</tr>
-<tr>
-<td><a href="/wiki/Alaska" title="Alaska">Alaska</a></td>
-<td>737,709</td>
-<td>59</td>
-<td>8.0</td>
-</tr>
-<tr>
-```
-
-You can actually see the data, except data values are surrounded by html code such as `<td>`. We can also see a pattern of how it is stored. If you know HTML, you can write programs that leverage knowledge of these patterns to extract what we want. We also take advantage of a language widely used to make webpages look "pretty" called Cascading Style Sheets (CSS). 
-
-Although we provide tools that make it possible to scrape data without knowing HTML, as a data scientist it is quite useful to learn some HTML and CSS. Not only does this improve your scraping skills, but it might come in handy if you are creating a webpage to showcase your work. There are plenty of online courses and tutorials for learning these. Two examples are Codeacademy^[https://www.codecademy.com/learn/learn-html] and W3schools^[https://www.w3schools.com/].
-
-## The rvest package
-
-The __tidyverse__ provides a web harvesting package called __rvest__. The first step using this package is to import the webpage into R. The package makes this quite simple:
-
-```{r, message=FALSE, warning=FALSE}
+library(sf)
 library(tidyverse)
-library(rvest)
-h <- read_html(url)
+library(tigris)
+
+
+MI = counties(state = 'MI', year = 2019) # your map here
+GreatLakes = st_read('/PUT YOUR LOCAL FILEPATH TO THE GEOJSON HERE.geojson') %>%  # put your local filepath in here
+  st_transform(st_crs(MI)) %>%  # need them to be in the same projection
+  st_make_valid() %>%  # this fixes an issue with the shapefile after projection
+  st_union()  # we will put all the lakes together as we don't care which lake is being used to erase county/district boundaries
+
+
+MIx = st_difference(MI, GreatLakes)  # spatial version of the difference function
 ```
 
+or, try the `erase_water()` function from `tigris`. This erases any body of water, no matter how small, so on a whole state, it can take a **long** time. The `area_threshold` argument (0 to 1) tells R how detailed you want the erasure to be. A threshold of .999 will remove Great Lakes and big lakes, but leave most inland lakes and won't take as long.
 
-Note that the entire Murders in the US Wikipedia webpage is now contained in `h`. The class of this object is:
+```{r, echo=T}
+MI = counties(state = 'MI', progress_bar = FALSE) %>%
+erase_water(area_threshold = .999)
 
-```{r}
-class(h)
+ggplot(MI) + geom_sf()
 ```
-
-The __rvest__ package is actually more general; it handles XML documents. XML is a general markup language (that's what the ML stands for) that can be used to represent any kind of data. HTML is a specific type of XML specifically developed for representing webpages. Here we focus on HTML documents.
-
-Now, how do we extract the table from the object `h`? If we print `h`, we don't really see much:
-
-```{r}
-h
-```
-
-We can see all the code that defines the downloaded webpage using the `html_text` function like this:
-
-```{r, eval=FALSE}
-html_text(h)
-```
-
-We don't show the output here because it includes thousands of characters, but if we look at it, we can see the data we are after are stored in an HTML table: you can see this in this line of the HTML code above `<table class="wikitable sortable">`. The different parts of an HTML document, often defined with a message in between  `<` and `>`  are referred to as _nodes_. The __rvest__ package includes functions to extract nodes of an HTML document: `html_nodes` extracts all nodes of different types and `html_node` extracts the first one. To extract the tables from the html code we use:
-
-
-```{r}
-tab <- h %>% html_nodes("table")
-```
-
-Now, instead of the entire webpage, we just have the html code for the tables in the page:
-
-```{r}
-tab
-```
-
-The table we are interested is the first one:
-
-```{r}
-tab[[1]]
-```
-
-
-This is clearly not a tidy dataset, not even a data frame. In the code above, you can definitely see a pattern and writing code to extract just the data is very doable. In fact, __rvest__ includes a function just for converting HTML tables into data frames:
-
-
-```{r}
-tab <- tab[[1]] %>% html_table
-class(tab)
-```
-
-We are now much closer to having a usable data table:
-
-```{r}
-tab <- tab %>% setNames(c("state", "population", "total", "murder_rate"))
-head(tab)
-```
-
-We still have some wrangling to do. For example, we need to remove the commas and turn characters into numbers. Before continuing with this, we will learn a more general approach to extracting information from web sites.
-
-
-## CSS selectors
-The default look of a webpage made with the most basic HTML is quite unattractive. The aesthetically pleasing pages we see today are made using CSS to define the look and style of webpages. The fact that all pages for a company have the same style usually results from their use of the same CSS file to define the style. The general way these CSS files work is by defining how each of the elements of a webpage will look. The title, headings, itemized lists, tables, and links, for example, each receive their own style including font, color, size, and distance from the margin. CSS does this by leveraging patterns used to define these elements, referred to as _selectors_. An example of such a pattern, which we used above, is `table`, but there are many, many more.
-
-If we want to grab data from a webpage and we happen to know a selector that is unique to the part of the page containing this data, we can use the `html_nodes` function. However, knowing which selector can be quite complicated.
-In fact, the complexity of webpages has been increasing as they become more sophisticated. For some of the more advanced ones, it seems almost impossible to find the nodes that define a particular piece of data. However, selector gadgets actually make this possible.
-
-SelectorGadget^[http://selectorgadget.com/] is piece of software that allows you to interactively determine what CSS selector you need to extract specific components from the webpage. If you plan on scraping data other than tables from html pages, we highly recommend you install it. A Chrome extension is available which permits you to turn on the gadget and then, as you click through the page, it highlights parts and shows you the selector you need to extract these parts. There are various demos of how to do this including __rvest__ author Hadley Wickham's
-vignette^[https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html] and other tutorials based on the vignette^[https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/] ^[https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/].
-
-## JSON
-
-Sharing data on the internet has become more and more common. Unfortunately, providers use different formats, which makes it harder for data scientists to wrangle data into R. Yet there are some standards that are also becoming more common. Currently, a format that is widely being adopted is the JavaScript Object Notation or JSON. Because this format is very general, it is nothing like a spreadsheet. This JSON file looks more like the code you use to define a list. Here is an example of information stored in a JSON format:
-
-```{r, echo=FALSE}
-library(jsonlite)
-example <- data.frame(name= c("Miguel", "Sofia", "Aya", "Cheng"), student_id = 1:4, exam_1 = c(85, 94, 87, 90), exam_2 = c(86, 93, 88, 91))
-json <- toJSON(example, pretty = TRUE)
-json
-```
-
-The file above actually represents a data frame. To read it, we can use the function `fromJSON` from the __jsonlite__ package. Note that JSON files are often made available via the internet. Several organizations provide a JSON API or a web service that you can connect directly to and obtain data. Here is an example:
-
-```{r, eval=FALSE}
-library(jsonlite)
-res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
-
-citi_bike <- fromJSON("http://citibikenyc.com/stations/json")
-```
-
-This downloads a list. The first argument tells you when you downloaded it:
-
-```{r,eval=FALSE}
-citi_bike$executionTime
-```
-
-and the second is a data table:
-
-```{r,eval=FALSE}
-citi_bike$stationBeanList %>% as_tibble()
-```
-
-
-You can learn much more by examining tutorials and help files from the __jsonlite__ package. This package is intended for relatively simple tasks such as converting data into tables. For more flexibility, we recommend `rjson`.
-
 
