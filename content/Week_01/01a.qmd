@@ -51,7 +51,7 @@ For one participation point, please email me [bbushong@msu.edu](mailto:bbushong@
 
 :::
 
-This will count for one of your participation points.
+This will count for three of your participation points.
 
 
 
@@ -116,7 +116,7 @@ Some "data analytics" topics we will cover:
 - Linear regression: *il classico*.
 - LASSO
 - Models of classification or discrete choice.
-- Analysis of ``wide'' data.
+- Analysis of "wide" data.
 - Decision trees and other non-linear models.
 - Visualization (both analytics and communication)
 
@@ -135,7 +135,7 @@ That's learning. And since you might have measurement error, or you might not be
 
 Now, suppose you are a researcher and you want to teach a computer to recognize images of a tree.
 
-Note: this is an ``easy" problem. If you show pictures to a 3-year-old, that child will probably be able to tell you if there is a tree in the picture.
+Note: this is an "easy" problem. If you show pictures to a 3-year-old, that child will probably be able to tell you if there is a tree in the picture.
 
 Computer scientists spent about 20 years on this problem because they thought about the problem like nerds and tried to write down a series of rules.
 
@@ -157,17 +157,6 @@ from "A Call for a Moratorium on Prison Building" (1976)
 | --- | --- | --- |
 High construction | $\uparrow$~56\% | $\uparrow$~167\%
 Low construction | $\uparrow$~4\% | $\uparrow$~145\%
-
-**So what does the "Social Science" in "Social Science Data Analytics" do?**
-- People do not obey the laws of physics
-- People's preferences and feelings do not obey a strict logic
-  - You may prefer a burger for dinner today, but you might want spaghetti tomorrow
-- People interact with people to form outcomes we care about
-  - Demand, supply, and price
-  - Thus **EC**242
-  - But also, forming institutions (PoliSci), social movements and norms (sociology), spatial patterns (hello, Geo folks), interactions with natural resources (coupled human-natural systems), etc.
-  
-In a way, Social Science Data Analytics is a lot messier, complicated, and rewarding relative to just "data analytics".
 
 
 ### The Pros and Cons of Correlation
@@ -197,6 +186,17 @@ Cons:
 
 4. $X \rightarrow Y$; $Y \rightarrow X$
   X causes Y and Y causes X (simultaneous equations)
+
+**So what does the "Social Science" in "Social Science Data Analytics" do?**
+- People do not obey the laws of physics
+- People's preferences and feelings do not obey a strict logic
+  - You may prefer a burger for dinner today, but you might want spaghetti tomorrow
+- People interact with people to form outcomes we care about
+  - Demand, supply, and price (economics)
+  - Thus **EC**242
+  - But also, forming institutions (political science), social movements and norms (sociology), spatial patterns (geography), interactions with natural resources (agriculture, food, and resource economics), etc.
+  
+In a way, Social Science Data Analytics is a lot messier, complicated, and rewarding relative to just "data analytics".
 
 
 #### Uniting Social Science and Computer Science
@@ -229,7 +229,6 @@ From a computer science perspective, it only matters that you get that improveme
 
 
 
-
 ### More Recent Examples of Prediction
 
 - Identify the risk factors for prostate cancer.
@@ -257,7 +256,6 @@ There is much overlap; however, a few points of distinction:
   - But the distinction has become more and more blurred, and there is a great deal of "cross-fertilization".
 
 **Obviously true:** machine learning has the upper hand in marketing.
-
 
 
 ## Case study 1: Global Renewable Energy Production
