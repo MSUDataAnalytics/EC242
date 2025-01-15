@@ -17,19 +17,19 @@ This assignment is due on {{< meta duedate >}}.
 ::: {.callout-tip}
 ## Note:
 
-As you read through this assignment, practice with each of the examples (copy-paste them into an empty R script and run them). At the bottom of this page you will find the questions that comprise the assignment. These questions apply and expand on the topics and R functions in the assignment.
+As you read through this assignment, practice with each of the examples (copy-paste them into an empty `R` script and run them). At the bottom of this page you will find the questions that comprise the assignment. These questions apply and expand on the topics and R functions in the assignment.
 
 Download the {{< var blurbs.labtemplate >}}. Please save the template into a labs folder in the EC242 folder on your local hard drive. If you don't have a nice file structure setup for the course, please do so now. *It will save you headaches in the future*.
 :::
 
 
 
-If you have not yet done so, you'll need to install both R and RStudio. See the [Installing page of our course resources](/resource/install/) for instructions.
+If you have not yet done so, you'll need to install both `R` and RStudio. See the [Installing page of our course resources](/resource/install/) for instructions.
 
 
 ## If you totally forgot how to use `R`
 
-I have created a video walkthrough for the basics of using R for another course, but it is useful here. You can [see part A here (labeled "Part 2a") here <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2a/1_kmszjw36)] and [part B here (labeled "Part 2b")  <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2b/1_c0vf0i63). You should already be at this level of familiarity with R, but if you need a review, this is a good place to start.
+Prof. Kirkpatrick (who teaches this course in Fall semesters) has created a video walkthrough for the basics of using `R` for another course. You may find it useful here. You can [see part A here (labeled "Part 2a") here <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2a/1_kmszjw36)] and [part B here (labeled "Part 2b")  <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2b/1_c0vf0i63). You should already be at this level of familiarity with `R`, but if you need a review, this is a good place to start.
 
 
 
