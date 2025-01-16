@@ -1,0 +1,91 @@
+---
+title: "Illustrating Classification"
+type: docs
+weight: 1
+editor_options:
+  chunk_output_type: console
+---
+
+::: {.callout-note}
+
+Today's example will build on material from the Principles lecture (earlier this week).
+
+:::
+
+
+
+## Predicting Defaults
+
+Today, we will continue to use the `ISLR` data on defaults:
+
+```{r}
+library(ISLR)
+library(tibble)
+Default = ISLR::Default
+```
+
+::: {.callout-note}
+In our first breakout:
+
+1. Clean the data so that the `default` column is a binary indicator for default
+
+2. Build a logistic model to predict `default` using any combination of variables and interactions in the data. For now, just use your best judgement for choosing the variables and interactions.
+
+3. Use a Bayes Classifier cutoff of .50 to generate your classifier output. Do you need to alter the cutoff?
+
+:::
+
+
+Back in class, let's look at how we did. What variables were most useful in explaining `default`? 
+
+
+::: {.callout-note}
+In our second breakout, we will create a ROC curve manually. To do this
+
+1. Take your model from the first breakout, and using a loop (or `sapply`), step through a large number of possible cutoffs for classification ranging from 0 to 1.
+
+2. For each cutoff, generate a confusion matrix with *accuracy*, *sensitivity* and *specificity*.
+
+3. Combine the cutoff with the *sensitivity* and *specificity* results and make a ROC plot. Use `ggplot` for your plot and map the color aesthetic to the cutoff value.
+
+4. Calculate the AUC (the *area under the curve*). This is a little tricky but can be done with your data.
+:::
+
+
+
+```{r, eval=F, include=F, echo=F}
+
+Default = Default %>%
+  dplyr::mutate(defaultNum = ifelse(default=="Yes", 1, 0))
+
+
+mod1 = glm(defaultNum ~ .^3 + poly(balance, 3), Default %>% dplyr::select(-default), family = 'binomial')
+
+ pred = ifelse(predict(mod1, type = 'response')>.5, "Yes", "No")
+ conf = confusionMatrix(table(predicted = pp, actual = Default$default), positive = 'Yes')
+ 
+  data.frame(Accuracy = cc$overall['Accuracy'],
+         Sensitivity = cc$byClass['Sensitivity'],
+         Specificity = cc$byClass['Specificity'])
+
+
+cs = seq(from=.0001, to = .978, length = 1000)
+
+results = lapply(cs, function(cutoff){
+  print(cutoff)
+  pred = ifelse(predict(mod1, type = 'response')>cutoff, "Yes", "No")
+  conf = confusionMatrix(table(predicted = pred, actual = Default$default), positive = 'Yes')
+  
+  tibble(Accuracy =    conf$overall['Accuracy'],
+         Sensitivity = conf$byClass['Sensitivity'],
+         Specificity = conf$byClass['Specificity'])
+})
+
+results_compiled = bind_rows(results)
+
+ggplot(results_compiled, aes(x = Sensitivity, y = Specificity)) + geom_line() +
+  scale_x_reverse()
+
+sum(results_compiled$Specificity*(1/NROW(results_compiled)))
+
+```

@@ -1,0 +1,20 @@
+---
+title: "Nonparametric Regression"
+linktitle: "8: Shrinkage with LASSO and Ridge"
+read_date: "2023-10-24"
+output:
+  blogdown::html_page:
+    toc: true
+menu:
+  example:
+    parent: Examples
+    weight: 1
+type: docs
+weight: 1
+editor_options:
+  chunk_output_type: console
+---
+
+# Not used
+
+LASSO fell on Fall Break week, so Content 08 was used as the Thursday (example) material and Tuesday (Content) was fall break.
