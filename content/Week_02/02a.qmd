@@ -1,7 +1,7 @@
 ---
 title: "Introduction to the tidyverse"
 linktitle: "2: The Tidyverse"
-read_date: "2024-01-16"
+read_date: "2025-01-21"
 lastmod: "`r Sys.Date()`"
 menu:
   content:
@@ -21,15 +21,7 @@ output:
 - Optional: The "Tidy Your Data" tutorial on [Rstudio Cloud Primers](https://rstudio.cloud/learn/primers)
 
 
-## Some Reminders:
-
-### Econ Club
-For econ majors or people interested in quantitative social sciences in general (which is this whole class):
-
-```{r, echo=F}
-knitr::include_graphics(here('images','Econ-social-event-flyer-2024.png'), error=F)
-```
-
+## Some Reminders
 
 ### Your labs
 - Start labs early!
