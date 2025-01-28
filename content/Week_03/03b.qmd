@@ -1,7 +1,7 @@
 ---
 title: "ggplot2: Everything you ever wanted to know"
 linktitle: "3: Visualization II"
-read_date: "2024-01-25"
+read_date: "2025-01-30"
 lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
@@ -15,10 +15,6 @@ weight: 1
 editor_options:
   chunk_output_type: console
 ---
-
-# Front matter: Finishing color palettes
-On Tuesday, I let us go early as I thought a part of our material was missing. It was not. Let's jump to the end of Tuesday and talk about setting color palettes briefly.
-
 
 # Visualizing data distributions {#distributions} 
 
@@ -36,7 +32,6 @@ We will be working with two types of variables: categorical and numeric. Each ca
 When each entry in a vector comes from one of a small number of groups, we refer to the data as _categorical data_. Two simple examples are sex (male or female) and regions (Northeast, South, North Central, West). Some categorical data can be ordered even if they are not numbers per se, such as spiciness (mild, medium, hot). In statistics textbooks, ordered categorical data are referred to as _ordinal_ data. In psychology, a number of different terms are used for this same idea.
 
 Examples of numerical data are population sizes, murder rates, and heights. Some numerical data can be treated as ordered categorical. We can further divide numerical data into continuous and discrete. Continuous variables are those that can take any value, such as heights, if measured with enough precision. For example, a pair of twins may be 68.12 and 68.11 inches, respectively. Counts, such as population sizes, are discrete because they have to be integers---that's how we count.^[Keep in mind that discrete numeric data can be considered ordinal. Although this is technically true, we usually reserve the term ordinal data for variables belonging to a small number of different groups, with each group having many members. In contrast, when we have many groups with few cases in each group, we typically refer to them as discrete numerical variables. So, for example, the number of packs of cigarettes a person smokes a day, rounded to the closest pack, would be considered ordinal, while the actual number of cigarettes would be considered a numerical variable. But, indeed, there are examples that can be considered both numerical and ordinal when it comes to visualizing data.]
-
 
 
 ## Case study: describing student heights
