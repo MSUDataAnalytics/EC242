@@ -1,7 +1,7 @@
 ---
 title: "Visualizations"
 linktitle: "4: Visualization III"
-read_date: "2024-02-01"
+read_date: "2025-02-06"
 draft: false
 lastmod: "`r Sys.Date()`"
 output:
@@ -25,29 +25,9 @@ library(emo)
 ```
 
 
-# Group Projects
-This class has three group projects - Project 1, Project 2, and the Final Project - that comprise a significant portion of your grade. 
+# Groups and Projects 
 
-This week, we will form groups for these projects. You will work with the same group for each of the projects. The details will be posted soon, but the general idea is that you are given some data and asked to use your visualization and analytical skills to illustrate important patterns in the data. The final project will be on a topic of your group's choice, while the first two will use data given as part of the assignment.
-
-Groups may be 2 or 3 people, no more and no less. You are free to form your own group and anyone who does not form one will be assigned to one. With that in mind, **let's form our groups**.
-
-If you have a group of 2-3 individuals willing to work together for these three projects, do the following **before this coming Sunday night at 11:59 pm**:
-
-  1. Think of a group name
-  2. Have *one* person in the group email our TA, Zach, at {{< var email.TA >}} with the following:
-  
-  - The subject should be [EC242 Group Formation]
-
-  - The email should CC *all* of the group members (so you know when you've been added to a group)
-
-  - The email should list the names (as they appear in D2L) of each of the group members
-
-  - The email should include the group name
-
-If you would prefer to be assigned to a group, you don't have to do anything. Once our TA has the voluntary groups set, they will assign groups to the rest of the class and email each group with instructions.
-
-
+Spring 2025 groups will be announced on D2L shortly.
 
 
 # Data visualization in practice {#gapminder}
