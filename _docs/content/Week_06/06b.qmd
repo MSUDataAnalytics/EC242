@@ -8,6 +8,10 @@ output:
 ---
 
 
+## Sharing Screen 
+
+As we've discussed, we'll be using the share screen feature to discuss folks' output. Please see link on screen. 
+
 ## Preliminaries
 
 For this example, we're going to use historical weather data from [Dark Sky](https://darksky.net/forecast/33.7546,-84.39/us12/en) about wind speed and temperature trends for downtown Atlanta ([specifically `33.754557, -84.390009`](https://www.google.com/maps/place/33°45'16.4"N+84°23'24.0"W/@33.754557,-84.3921977,17z/)) in 2019. We downloaded this data using Dark Sky's (about-to-be-retired-because-they-were-bought-by-Apple) API using the [ **darksky** package](https://github.com/hrbrmstr/darksky).

@@ -850,30 +850,6 @@
       ],
       "Hash": "4aa52573ccedf7dc635a0eb471944a36"
     },
-    "emo": {
-      "Package": "emo",
-      "Version": "0.0.0.9000",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "emo",
-      "RemoteUsername": "hadley",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "3f03b11491ce3d6fc5601e210927eff73bf8e350",
-      "Requirements": [
-        "R",
-        "assertthat",
-        "crayon",
-        "glue",
-        "lubridate",
-        "magrittr",
-        "purrr",
-        "rlang",
-        "stringr",
-        "utils"
-      ],
-      "Hash": "10f2391a926b0087a671ed9965ea30a3"
-    },
     "english": {
       "Package": "english",
       "Version": "1.2-6",

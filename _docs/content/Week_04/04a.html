@@ -760,15 +760,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>scales<span class="sc">::</span><span class="fu">label_comma</span>(numbers.vector, <span class="at">big.mark =</span> <span class="st">','</span>, <span class="at">decimal.mark =</span> <span class="st">'.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>function (x) 
-{
-    number(x, accuracy = accuracy, scale = scale, prefix = prefix, 
-        suffix = suffix, big.mark = big.mark, decimal.mark = decimal.mark, 
-        style_positive = style_positive, style_negative = style_negative, 
-        scale_cut = scale_cut, trim = trim, ...)
-}
-&lt;bytecode: 0x000001f413c03668&gt;
-&lt;environment: 0x000001f413c02750&gt;</code></pre>
+<pre><code>function(x) {
+    number(
+      x,
+      accuracy = accuracy,
+      scale = scale,
+      prefix = prefix,
+      suffix = suffix,
+      big.mark = big.mark,
+      decimal.mark = decimal.mark,
+      style_positive = style_positive,
+      style_negative = style_negative,
+      scale_cut = scale_cut,
+      trim = trim,
+      ...
+    )
+  }
+&lt;bytecode: 0x140cd9580&gt;
+&lt;environment: 0x140ce4e80&gt;</code></pre>
 </div>
 </div>
 <p>Wha? That looks like the output…is a function?</p>
@@ -853,11 +862,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 6 × 8
   symbol date        open  high   low close     volume adjusted
   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 AAPL   2009-01-02  3.07  3.25  3.04  3.24  746015200     2.74
+1 AAPL   2009-01-02  3.07  3.25  3.04  3.24  746015200     2.73
 2 AAPL   2009-01-05  3.33  3.43  3.31  3.38 1181608400     2.85
-3 AAPL   2009-01-06  3.43  3.47  3.30  3.32 1289310400     2.81
+3 AAPL   2009-01-06  3.43  3.47  3.30  3.32 1289310400     2.80
 4 AAPL   2009-01-07  3.28  3.30  3.22  3.25  753048800     2.74
-5 AAPL   2009-01-08  3.23  3.33  3.22  3.31  673500800     2.80
+5 AAPL   2009-01-08  3.23  3.33  3.22  3.31  673500800     2.79
 6 AAPL   2009-01-09  3.33  3.34  3.22  3.23  546845600     2.73</code></pre>
 </div>
 </div>

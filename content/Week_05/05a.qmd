@@ -1,6 +1,6 @@
 ---
 title: "Data Wrangling"
-type: docs
+lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
     toc: true
