@@ -3,44 +3,44 @@
 
 version: 1.0
 
-semester: "Spring 2025"
+semester: "Fall 2025"
 
 
 meeting:
   time: "Tu/Th 1:00 - 2:20pm"
-  location: "NatSci 204"
+  location: "NatSci 116"
   
 names:
-  instructor: "Prof. Bushong"
-  instructorfull: "Ben Bushong"
-  TA: "TA Sierra Smith"
-  instructorother: "Prof. Kirkpatrick"
+  instructor: "Prof. Kirkpatrick"
+  instructorfull: "Justin Kirkpatrick"
+  TA: "TA Zach Henley"
+  instructorother: "Prof. Bushong"
 
 officehours: 
-  instructor: "Tuesday and Thursday 4:00-5:00 PM"
-  instructorzoom: "[Zoom, (Passcode: GODUCKS)](https://msu.zoom.us/j/2711311082)"
-  instructoroffice: "Marshall-Adams Hall #25E"
-  TA: "Fridays 9:30-11AM"
-  TAzoom: "[zoomlink](https://msu.zoom.us/j/92287215690)"
+  instructor: "Tuesday and Thursday 2:20-3:20 PM"
+  instructorzoom: "[Zoom, (Passcode: GOGREEN)](https://msu.zoom.us/j/92054231037?pwd=OiRKvESN4M8ZbvjVbV5J9hLye9AA7G.1)"
+  instructoroffice: "Old Botany 105"
+  TA: "TBA "
+  TAzoom: "[TBA](https://msu.zoom.us/j/92287215690)"
 
 email:
-  instructor: "[bbushong@msu.edu](mailto:bbushong@msu.edu)"  
-  TA: "[smithsi6@msu.edu](mailto: smithsi6@msu.edu)"
+  instructor: "[jkirk@msu.edu](mailto:jkirk@msu.edu)"  
+  TA: "[henleyza@msu.edu](mailto: henleyza@msu.edu)"
   
 url:
-  instructor: "www.benbushong.com"
-  bitly: "[bit.ly/EC242](https://bit.ly/EC242b)"
+  instructor: "www.justinkirkpatrick.com"
+  bitly: "[bit.ly/EC242](https://bit.ly/EC242)"
   
 slack:
   link: "[Slack](https://ec242.slack.com)"
   linkclean: "https://ec242.slack.com"
-  invite: "[Join EC242 Slack](https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ)"
+  invite: "[Coming Soon]()"
   # https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ Fall 2024 invite
 
 
 aboutme:
-  # instructor: "I am an environmental economist working primarily on household energy consumption and quantifying the environmental benefits of renewables and increased energy efficiency. I have taught versions of this course at MSU for around five years, and have worked extensively with R for around 15 years. I received my PhD in environmental economics from Duke in 2019, and did my Undergrad at UC Davis."
-  instructor: "In brief, I am a behavioral economist whose research examines how cognitive biases and erroneous social beliefs influence decision-making and our interactions with others. In my research, I utilize a mix of theoretical modeling and experimental studies. These approaches guide the work in the Spartan Psychology and Economics Advanced Research (SPEAR) lab, which I formed in 2023. My teaching emphasizes how psychological factors shape economic choices (EC404; EC895) and the importance of rigorous empirical methods (EC242)."
+  instructor: "I am an environmental economist working primarily on household energy consumption and quantifying the environmental benefits of renewables and increased energy efficiency. I have taught versions of this course at MSU for around five years, and have worked extensively with R for around 15 years. I received my PhD in environmental economics from Duke in 2019, and did my Undergrad at UC Davis."
+  #instructor: "In brief, I am a behavioral economist whose research examines how cognitive biases and erroneous social beliefs influence decision-making and our interactions with others. In my research, I utilize a mix of theoretical modeling and experimental studies. These approaches guide the work in the Spartan Psychology and Economics Advanced Research (SPEAR) lab, which I formed in 2023. My teaching emphasizes how psychological factors shape economic choices (EC404; EC895) and the importance of rigorous empirical methods (EC242)."
 contactpolicy:
   instructor: "For individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
   
