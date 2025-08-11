@@ -1,6 +1,5 @@
 ---
-title: "Bias-Variance Tradeoff"
-type: docs
+title: "Nonparametric Regression"
 output:
   blogdown::html_page:
     toc: true
@@ -9,38 +8,28 @@ output:
 ## Required Reading
 
 - This page.
-- <i class="fas fa-book"></i> [Chapter 2](https://trevorhastie.github.io/ISLR/ISLR%20Seventh%20Printing.pdf) in *Introduction to Statistical Learning with Applications in R*.
-- <i class="fas fa-book"></i> [Chapter 8](https://trevorhastie.github.io/ISLR/ISLR%20Seventh%20Printing.pdf) (briefly) in *Introduction to Statistical Learning with Applications in R*.
 
-### Guiding Questions
+### Guiding Ideas
 
-- What is the relationship between **bias**, **variance**, and **mean squared error?**
-- What is the relationship between **model flexibility** and training error?
-- What is the relationship between **model flexibility** and validation (or test) error?
-- What is a random forest?
+- How to use **k-nearest neighbors** for regression through the use of the `knnreg()` function from the `caret` package
+- How to use **decision trees** for regression through the use of the `rpart()` function from the `rpart` package.
+- How "making predictions" can be thought of as **estimating the regression function**, that is, the conditional mean of the response given values of the features.
+- The difference between **parametric** and **nonparametric** methods.
+- The difference between **model parameters** and **tuning parameters** methods.
+- How these nonparametric methods deal with **categorical variables** and **interactions**.
+- What is **model flexibility**?
+- What is **overfitting** and how do we avoid it?
 
-# The Bias–Variance Tradeoff
+# Nonparametric Regression
 
-```{r include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.align = "center", cache = TRUE, autodep = TRUE, warning = FALSE, error = FALSE)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", cache = TRUE, autodep = TRUE, warning=FALSE, error = FALSE)
 ```
 
-This lecture will begin to dig into some theoretical details of estimating regression functions, in particular how the **bias-variance tradeoff** helps explain the relationship between **model flexibility** and the errors a model makes.
-
-Don't freak out if this seems mathematically overwhelming. We'll walk through relatively slowly. It's not super important to follow the nitty-gritty details; but the broad takeaways are quite important.
+In the next weeks, we will continue to explore models for making **predictions**, but now we will introduce **nonparametric models** that will contrast the **parametric models** that we have used previously.
 
 
-## Illustration of Bias vs. Variance
-Bias is about how close you are on average to the correct answer. Variance is about how scattered your estimates would be if you repeated your experiment with new data. 
-
-```{r, echo = F, fig.cap = 'Image from MachineLearningPlus.com'}
-knitr::include_graphics('https://www.machinelearningplus.com/wp-content/uploads/2020/10/output_31_0.png')
-```
-
-We care about these things because we usually only have our one dataset (when we're not creating simulated data, that is), but need to know something about how bias and variance tend to look when we change our model complexity.
-
-
-## R Setup and Source
+## R Setup
 
 ```{r packages, warning = FALSE, message = FALSE}
 library(tibble)     # data frame printing
@@ -49,728 +38,57 @@ library(dplyr)      # data manipulation
 library(caret)      # fitting knn
 library(rpart)      # fitting trees
 library(rpart.plot) # plotting trees
-```
 
-## The Regression Setup
-
-Consider the general regression setup where we are given a random pair $(X, Y) \in \mathbb{R}^p \times \mathbb{R}$. We would like to "predict" $Y$ with some function of $X$, say, $f(X)$.
-
-To clarify what we mean by "predict," we specify that we would like $f(X)$ to be "close" to $Y$. To further clarify what we mean by "close," we define the **squared error loss** of estimating $Y$ using $f(X)$.
-
-$$
-L(Y, f(X)) \triangleq (Y - f(X)) ^ 2
-$$
-
-Now we can clarify the goal of regression, which is to minimize the above loss, on average. We call this the **risk** of estimating $Y$ using $f(X)$.
-
-$$
-R(Y, f(X)) \triangleq \mathbb{E}[L(Y, f(X))] = \mathbb{E}_{X, Y}[(Y - f(X)) ^ 2]
-$$
-
-Before attempting to minimize the risk, we first re-write the risk after conditioning on $X$.
-
-$$
-\mathbb{E}_{X, Y} \left[ (Y - f(X)) ^ 2 \right] = \mathbb{E}_{X} \mathbb{E}_{Y \mid X} \left[ ( Y - f(X) ) ^ 2 \mid X = x \right]
-$$
-
-Minimizing the right-hand side is much easier, as it simply amounts to minimizing the inner expectation with respect to $Y \mid X$, essentially minimizing the risk pointwise, for each $x$.
-
-It turns out, that the risk is minimized by setting $f(x)$ to be equal the conditional mean of $Y$ given $X$,
-
-$$
-f(x) = \mathbb{E}(Y \mid X = x)
-$$
-
-which we call the **regression function**.^[Note that in this section, we will refer to $f(x)$ as the regression function instead of $\mu(x)$ for unimportant and arbitrary reasons.]
-
-Note that the choice of squared error loss is somewhat arbitrary. Suppose instead we chose absolute error loss.
-
-$$
-L(Y, f(X)) \triangleq | Y - f(X) |
-$$
-
-The risk would then be minimized setting $f(x)$ equal to the conditional median.
-
-$$
-f(x) = \text{median}(Y \mid X = x)
-$$
-
-Despite this possibility, our preference will still be for squared error loss. The reasons for this are numerous, including: historical, ease of optimization, and protecting against large deviations.
-
-Now, given data $\mathcal{D} = (x_i, y_i) \in \mathbb{R}^p \times \mathbb{R}$, our goal becomes finding some $\hat{f}$ that is a good estimate of the regression function $f$. We'll see that this amounts to minimizing what we call the reducible error.
-
-## Reducible and Irreducible Error
-
-Suppose that we obtain some $\hat{f}$, how well does it estimate $f$? We define the **expected prediction error** of predicting $Y$ using $\hat{f}(X)$. A good $\hat{f}$ will have a low expected prediction error.
-
-$$
-\text{EPE}\left(Y, \hat{f}(X)\right) \triangleq \mathbb{E}_{X, Y, \mathcal{D}} \left[  \left( Y - \hat{f}(X) \right)^2 \right]
-$$
-
-This expectation is over $X$, $Y$, and also $\mathcal{D}$. The estimate $\hat{f}$ is actually random depending on the data, $\mathcal{D}$, used to estimate $\hat{f}$. We could actually write $\hat{f}(X, \mathcal{D})$ to make this dependence explicit, but our notation will become cumbersome enough as it is.
-
-Like before, we'll condition on $X$. This results in the expected prediction error of predicting $Y$ using $\hat{f}(X)$ when $X = x$.
-
-$$
-\text{EPE}\left(Y, \hat{f}(x)\right) =
-\mathbb{E}_{Y \mid X, \mathcal{D}} \left[  \left(Y - \hat{f}(X) \right)^2 \mid X = x \right] =
-\underbrace{\mathbb{E}_{\mathcal{D}} \left[  \left(f(x) - \hat{f}(x) \right)^2 \right]}_\textrm{reducible error} +
-\underbrace{\mathbb{V}_{Y \mid X} \left[ Y \mid X = x \right]}_\textrm{irreducible error}
-$$
-
-A number of things to note here:
-
-- The expected prediction error is for a random $Y$ given a fixed $x$ and a random $\hat{f}$. As such, the expectation is over $Y \mid X$ and $\mathcal{D}$. Our estimated function $\hat{f}$ is random depending on the data, $\mathcal{D}$, which is used to perform the estimation.
-- The expected prediction error of predicting $Y$ using $\hat{f}(X)$ when $X = x$ has been decomposed into two errors:
-    - The **reducible error**, which is the expected squared error loss of estimation $f(x)$ using $\hat{f}(x)$ at a fixed point $x$. The only thing that is random here is $\mathcal{D}$, the data used to obtain $\hat{f}$. (Both $f$ and $x$ are fixed.) We'll often call this reducible error the **mean squared error** of estimating $f(x)$ using $\hat{f}$ at a fixed point $x$.
-    $$ \text{MSE}\left(f(x), \hat{f}(x)\right) \triangleq \mathbb{E}_{\mathcal{D}} \left[  \left(f(x) - \hat{f}(x) \right)^2 \right]$$
-    - The **irreducible error**. This is simply the variance of $Y$ given that $X = x$, essentially noise that we do not want to learn. This is also called the **Bayes error**.
-
-As the name suggests, the reducible error is the error that we have some control over. But how do we control this error?
-
-## Bias-Variance Decomposition
-
-After decomposing the expected prediction error into reducible and irreducible error, we can further decompose the reducible error.
-
-Recall the definition of the **bias** of an estimator.
-
-$$
-\text{bias}(\hat{\theta}) \triangleq \mathbb{E}\left[\hat{\theta}\right] - \theta
-$$
-
-Also recall the definition of the **variance** of an estimator.
-
-$$
-\mathbb{V}(\hat{\theta}) = \text{var}(\hat{\theta}) \triangleq \mathbb{E}\left [ ( \hat{\theta} -\mathbb{E}\left[\hat{\theta}\right] )^2 \right]
-$$
-
-Using this, we further decompose the reducible error (mean squared error) into bias squared and variance.
-
-$$
-\text{MSE}\left(f(x), \hat{f}(x)\right) =
-\mathbb{E}_{\mathcal{D}} \left[  \left(f(x) - \hat{f}(x) \right)^2 \right] =
-\underbrace{\left(f(x) - \mathbb{E} \left[ \hat{f}(x) \right]  \right)^2}_{\text{bias}^2 \left(\hat{f}(x) \right)} +
-\underbrace{\mathbb{E} \left[ \left( \hat{f}(x) - \mathbb{E} \left[ \hat{f}(x) \right] \right)^2 \right]}_{\text{var} \left(\hat{f}(x) \right)}
-$$
-
-This is actually a common fact in estimation theory, but we have stated it here specifically for estimation of some regression function $f$ using $\hat{f}$ at some point $x$.
-
-$$
-\text{MSE}\left(f(x), \hat{f}(x)\right) = \text{bias}^2 \left(\hat{f}(x) \right) + \text{var} \left(\hat{f}(x) \right)
-$$
-
-In a perfect world, we would be able to find some $\hat{f}$ which is **unbiased**, that is $\text{bias}\left(\hat{f}(x) \right) = 0$, which also has low variance. In practice, this isn't always possible.
-
-It turns out, there is a **bias-variance tradeoff**. That is, often, the more bias in our estimation, the lesser the variance. Similarly, less variance is often accompanied by more bias. <span style="color: red;">Flexible models tend to be unbiased, but highly variable. Simple models are often extremely biased, but have low variance.</span>
-
-In the context of regression, models are biased when:
-
-- Parametric: The form of the model [does not incorporate all the necessary variables](https://en.wikipedia.org/wiki/Omitted-variable_bias), or the form of the relationship is too simple. For example, a parametric model assumes a linear relationship, but the true relationship is quadratic.
-- Non-parametric: The model provides too much smoothing.
-
-In the context of regression, models are variable when:
-
-- Parametric: The form of the model incorporates too many variables, or the form of the relationship is too flexible. For example, a parametric model assumes a cubic relationship, but the true relationship is linear.
-- Non-parametric: The model does not provide enough smoothing. It is very, "wiggly." [Recall our KNN model example from Content 08](https://ssc442kirkpatrick.netlify.app/content/08-content/#k-nearest-neighbors-1)
-
-So for us, to select a model that appropriately balances the tradeoff between bias and variance, and thus minimizes the reducible error, we need to select a model of the appropriate flexibility for the data.
-
-Recall that when fitting models, we've seen that train RMSE decreases as model flexibility is increasing. (Technically it is non-increasing.) For validation RMSE, we expect to see a U-shaped curve. Importantly, validation RMSE decreases, until a certain flexibility, then begins to increase.
-
-```{r, fig.height = 6, fig.width = 10, echo = FALSE, eval = FALSE}
-x = seq(0, 100, by = 0.001)
-f = function(x) {
-  ((x - 50) / 50) ^ 2 + 2
-}
-g = function(x) {
-  1 - ((x - 50) / 50)
-}
-
-par(mgp = c(1.5, 1.5, 0))
-plot(x, g(x), ylim = c(0, 3), type = "l", lwd = 2,
-     ylab = "Error", xlab = expression(Low %<-% flexibility %->% High),
-     main = "Error versus Model flexibility", col = "darkorange",
-     axes = FALSE)
-grid()
-axis(1, labels = FALSE)
-axis(2, labels = FALSE)
-box()
-curve(f, lty = 6, col = "dodgerblue", lwd = 3, add = TRUE)
-legend("bottomleft", c("(Expected) Test", "Train"), lty = c(6, 1), lwd = 3,
-       col = c("dodgerblue", "darkorange"))
-```
-
-Now we can understand why this is happening. The expected test RMSE is essentially the expected prediction error, which we now known decomposes into (squared) bias, variance, and the irreducible Bayes error. The following plots show three examples of this.
-
-```{r, fig.height = 4, fig.width = 12, echo = FALSE}
-x = seq(0.01, 0.99, length.out = 1000)
-
-par(mfrow = c(1, 3))
-par(mgp = c(1.5, 1.5, 0))
-
-b = 0.05 / x
-v = 5 * x ^ 2 + 0.5
-bayes = 4
-epe = b + v + bayes
-
-plot(x, b, type = "l", ylim = c(0, 10), col = "dodgerblue", lwd = 2, lty = 3,
-     xlab = "Model flexibility", ylab = "Error", axes = FALSE,
-     main = "More Dominant Variance")
-axis(1, labels = FALSE)
-axis(2, labels = FALSE)
-grid()
-box()
-lines(x, v, col = "darkorange", lwd = 2, lty = 4)
-lines(x, epe, col = "black", lwd = 2)
-abline(h = bayes, lty = 2, lwd = 2, col = "darkgrey")
-abline(v = x[which.min(epe)], col = "grey", lty = 3, lwd = 2)
-
-b = 0.05 / x
-v = 5 * x ^ 4 + 0.5
-bayes = 4
-epe = b + v + bayes
-
-plot(x, b, type = "l", ylim = c(0, 10), col = "dodgerblue", lwd = 2, lty = 3,
-     xlab = "Model flexibility", ylab = "Error", axes = FALSE,
-     main = "Somewhat Neutral")
-axis(1, labels = FALSE)
-axis(2, labels = FALSE)
-grid()
-box()
-lines(x, v, col = "darkorange", lwd = 2, lty = 4)
-lines(x, epe, col = "black", lwd = 2)
-abline(h = bayes, lty = 2, lwd = 2, col = "darkgrey")
-abline(v = x[which.min(epe)], col = "grey", lty = 3, lwd = 2)
-
-b = 6 - 6 * x ^ (1 / 4)
-v = 5 * x ^ 6 + 0.5
-bayes = 4
-epe = b + v + bayes
-
-plot(x, b, type = "l", ylim = c(0, 10), col = "dodgerblue", lwd = 2, lty = 3,
-     xlab = "Model flexibility", ylab = "Error", axes = FALSE,
-     main = "More Dominant Bias")
-axis(1, labels = FALSE)
-axis(2, labels = FALSE)
-grid()
-box()
-lines(x, v, col = "darkorange", lwd = 2, lty = 4)
-lines(x, epe, col = "black", lwd = 2)
-abline(h = bayes, lty = 2, lwd = 2, col = "darkgrey")
-abline(v = x[which.min(epe)], col = "grey", lty = 3, lwd = 2)
-legend("topright", c("Squared Bias", "Variance", "Bayes", "EPE"), lty = c(3, 4, 2, 1),
-       col = c("dodgerblue", "darkorange", "darkgrey", "black"), lwd = 2)
-```
-
-The three plots show three examples of the bias-variance tradeoff. In the left panel, the variance influences the expected prediction error more than the bias. In the right panel, the opposite is true. The middle panel is somewhat neutral. In all cases, the difference between the Bayes error (the horizontal dashed grey line) and the expected prediction error (the solid black curve) is exactly the mean squared error, which is the sum of the squared bias (blue curve) and variance (orange curve). The vertical line indicates the flexibility that minimizes the prediction error.
-
-To summarize, if we assume that irreducible error can be written as
-
-$$
-\mathbb{V}[Y \mid X = x] = \sigma ^ 2
-$$
-
-then we can write the full decomposition of the expected prediction error of predicting $Y$ using $\hat{f}$ when $X = x$ as
-
-$$
-\text{EPE}\left(Y, \hat{f}(x)\right) =
-\underbrace{\text{bias}^2\left(\hat{f}(x)\right) + \text{var}\left(\hat{f}(x)\right)}_\textrm{reducible error} + \sigma^2.
-$$
-
-As model flexibility increases, bias decreases, while variance increases. By understanding the tradeoff between bias and variance, we can manipulate model flexibility to find a model that will predict well on unseen observations.
-
-```{r error-vs-flex, fig.height = 6, fig.width = 10, echo = FALSE}
-x = seq(0, 100, by = 0.001)
-f = function(x) {
-  ((x - 50) / 50) ^ 2 + 2
-}
-g = function(x) {
-  1 - ((x - 50) / 50)
-}
-
-par(mgp = c(1.5, 1.5, 0))
-plot(x, g(x), ylim = c(0, 3), type = "l", lwd = 2,
-     ylab = "Error", xlab = "",
-     main = "Error versus Model Flexibility", col = "darkorange",
-     axes = FALSE)
-grid()
-axis(1, labels = FALSE)
-axis(2, labels = FALSE)
-box()
-ylabels = list(bquote("Low" %<-% "Flexibility" %->% "High"),
-               bquote("High" %<-% "Bias" %->% "Low"),
-               bquote("Low" %<-% "Variance" %->% "High"))
-mtext(do.call(expression, ylabels), side = 1, line = 2:4)
-curve(f, lty = 6, col = "dodgerblue", lwd = 3, add = TRUE)
-legend("bottomleft", c("Validation", "Train"), lty = c(6, 1), lwd = 3,
-       col = c("dodgerblue", "darkorange"))
-```
-
-Tying this all together, the above image shows how we "expect" training and validation error to behavior in relation to model flexibility.^[Someday, someone will tell you this is a lie. They aren't wrong. In modern deep learning, there is a concept called [Deep Double Descent](https://openai.com/blog/deep-double-descent/). See also @belkin2018reconciling.] In practice, we won't always see such a nice "curve" in the validation error, but we expect to see the general trends.
-
-## Using Simulation to Estimate Bias and Variance
-
-We will illustrate these decompositions, most importantly the bias-variance tradeoff, through simulation. Suppose we would like to train a model to learn the true regression function function $f(x) = x^2$.
-
-```{r}
-f = function(x) {
-  x ^ 2
-}
-```
-
-More specifically, we'd like to predict an observation, $Y$, given that $X = x$ by using $\hat{f}(x)$ where
-
-$$
-\mathbb{E}[Y \mid X = x] = f(x) = x^2
-$$
-
-and
-
-$$
-\mathbb{V}[Y \mid X = x] = \sigma ^ 2.
-$$
-
-Alternatively, we could write this as
-
-$$
-Y = f(X) + \epsilon
-$$
-
-where $\mathbb{E}[\epsilon] = 0$ and $\mathbb{V}[\epsilon] = \sigma ^ 2$. In this formulation, we call $f(X)$ the **signal** and $\epsilon$ the **noise**.
-
-To carry out a concrete simulation example, we need to fully specify the data generating process. We do so with the following `R` code.
-
-```{r}
-gen_sim_data = function(f, sample_size = 100) {
-  x = runif(n = sample_size, min = 0, max = 1)
-  y = rnorm(n = sample_size, mean = f(x), sd = 0.3)
-  tibble(x, y)
-}
-```
-
-Also note that if you prefer to think of this situation using the $Y = f(X) + \epsilon$ formulation, the following code represents the same data generating process.
-
-```{r, eval = FALSE}
-gen_sim_data = function(f, sample_size = 100) {
-  x = runif(n = sample_size, min = 0, max = 1)
-  eps = rnorm(n = sample_size, mean = 0, sd = 0.3)
-  y = f(x) + eps
-  tibble(x, y)
-}
-```
-
-To completely specify the data generating process, we have made more model assumptions than simply $\mathbb{E}[Y \mid X = x] = x^2$ and $\mathbb{V}[Y \mid X = x] = \sigma ^ 2$. In particular,
-
-- The $x_i$ in $\mathcal{D}$ are sampled from a uniform distribution over $[0, 1]$.
-- The $x_i$ and $\epsilon$ are independent.
-- The $y_i$ in $\mathcal{D}$ are sampled from the conditional normal distribution.
-
-$$
-Y \mid X \sim N(f(x), \sigma^2)
-$$
-
-Using this setup, we will generate datasets, $\mathcal{D}$, with a sample size $n = 100$ and fit four models.
-
-$$
-\begin{aligned}
-\texttt{predict(fit0, x)} &= \hat{f}_0(x) = \hat{\beta}_0\\
-\texttt{predict(fit1, x)} &= \hat{f}_1(x) = \hat{\beta}_0 + \hat{\beta}_1 x \\
-\texttt{predict(fit2, x)} &= \hat{f}_2(x) = \hat{\beta}_0 + \hat{\beta}_1 x + \hat{\beta}_2 x^2 \\
-\texttt{predict(fit9, x)} &= \hat{f}_9(x) = \hat{\beta}_0 + \hat{\beta}_1 x + \hat{\beta}_2 x^2 + \ldots + \hat{\beta}_9 x^9
-\end{aligned}
-$$
-
-To get a sense of the data and these four models, we generate one simulated dataset, and fit the four models.
-
-```{r}
-set.seed(1)
-sim_data = gen_sim_data(f)
-```
-
-```{r}
-fit_0 = lm(y ~ 1,                   data = sim_data)
-fit_1 = lm(y ~ poly(x, degree = 1), data = sim_data)
-fit_2 = lm(y ~ poly(x, degree = 2), data = sim_data)
-fit_9 = lm(y ~ poly(x, degree = 9), data = sim_data)
-```
-
-Note that technically we're being lazy and using orthogonal polynomials, but the fitted values are the same, so this makes no difference for our purposes. These could be KNN, or decision trees just the same - the principle still applies.
-
-Plotting these four trained models, we see that the zero predictor model does very poorly. The first degree model is reasonable, but we can see that the second degree model fits much better. The ninth degree model seem rather wild.
-
-```{r, fig.height = 6, fig.width = 9, echo = FALSE}
-set.seed(42)
-plot(y ~ x, data = sim_data, col = "grey", pch = 20,
-     main = "Four Polynomial Models fit to a Simulated Dataset")
-grid()
-grid = seq(from = 0, to = 2, by = 0.01)
-lines(grid, f(grid), col = "black", lwd = 3)
-lines(grid, predict(fit_0, newdata = data.frame(x = grid)), col = "dodgerblue",  lwd = 2, lty = 2)
-lines(grid, predict(fit_1, newdata = data.frame(x = grid)), col = "firebrick",   lwd = 2, lty = 3)
-lines(grid, predict(fit_2, newdata = data.frame(x = grid)), col = "springgreen", lwd = 2, lty = 4)
-lines(grid, predict(fit_9, newdata = data.frame(x = grid)), col = "darkorange",  lwd = 2, lty = 5)
-
-legend("topleft",
-       c("y ~ 1", "y ~ poly(x, 1)", "y ~ poly(x, 2)",  "y ~ poly(x, 9)", "truth"),
-       col = c("dodgerblue", "firebrick", "springgreen", "darkorange", "black"), lty = c(2, 3, 4, 5, 1), lwd = 2)
-```
-
-The following three plots were created using three additional simulated datasets. The zero predictor and ninth degree polynomial were fit to each.
-
-```{r, fig.height = 4, fig.width = 12, echo = FALSE}
-par(mfrow = c(1, 3))
-
-# if you're reading this code
-# it's BAD! don't use it. (or clean it up)
-# also, note to self: clean up this code!!!
-
-set.seed(430)
-sim_data_1 = gen_sim_data(f)
-sim_data_2 = gen_sim_data(f)
-sim_data_3 = gen_sim_data(f)
-fit_0_1 = lm(y ~ 1, data = sim_data_1)
-fit_0_2 = lm(y ~ 1, data = sim_data_2)
-fit_0_3 = lm(y ~ 1, data = sim_data_3)
-fit_9_1 = lm(y ~ poly(x, degree = 9), data = sim_data_1)
-fit_9_2 = lm(y ~ poly(x, degree = 9), data = sim_data_2)
-fit_9_3 = lm(y ~ poly(x, degree = 9), data = sim_data_3)
-
-plot(y ~ x, data = sim_data_1, col = "grey", pch = 20, main = "Simulated Dataset 1")
-grid()
-grid = seq(from = 0, to = 2, by = 0.01)
-lines(grid, predict(fit_0_1, newdata = data.frame(x = grid)), col = "dodgerblue", lwd = 2, lty = 2)
-lines(grid, predict(fit_9_1, newdata = data.frame(x = grid)), col = "darkorange", lwd = 2, lty = 5)
-legend("topleft", c("y ~ 1", "y ~ poly(x, 9)"), col = c("dodgerblue", "darkorange"), lty = c(2, 5), lwd = 2)
-
-plot(y ~ x, data = sim_data_2, col = "grey", pch = 20, main = "Simulated Dataset 2")
-grid()
-grid = seq(from = 0, to = 2, by = 0.01)
-lines(grid, predict(fit_0_2, newdata = data.frame(x = grid)), col = "dodgerblue", lwd = 2, lty = 2)
-lines(grid, predict(fit_9_2, newdata = data.frame(x = grid)), col = "darkorange", lwd = 2, lty = 5)
-legend("topleft", c("y ~ 1", "y ~ poly(x, 9)"), col = c("dodgerblue", "darkorange"), lty = c(2, 5), lwd = 2)
-
-plot(y ~ x, data = sim_data_3, col = "grey", pch = 20, main = "Simulated Dataset 3")
-grid()
-grid = seq(from = 0, to = 2, by = 0.01)
-lines(grid, predict(fit_0_3, newdata = data.frame(x = grid)), col = "dodgerblue", lwd = 2, lty = 2)
-lines(grid, predict(fit_9_3, newdata = data.frame(x = grid)), col = "darkorange", lwd = 2, lty = 5)
-legend("topleft", c("y ~ 1", "y ~ poly(x, 9)"), col = c("dodgerblue", "darkorange"), lty = c(2, 5), lwd = 2)
-```
-
-This plot should make clear the difference between the bias and variance of these two models. The zero predictor model is clearly wrong, that is, biased, but nearly the same for each of the datasets, since it has very low variance.
-
-While the ninth degree model doesn't appear to be correct for any of these three simulations, we'll see that on average it is, and thus is performing unbiased estimation. These plots do however clearly illustrate that the ninth degree polynomial is extremely variable. Each dataset results in a very different fitted model. Correct on average isn't the only goal we're after, since in practice, we'll only have a single dataset. This is why we'd also like our models to exhibit low variance.
-
-We could have also fit $k$-nearest neighbors models to these three datasets.
-
-```{r, fig.height = 4, fig.width = 12, echo = FALSE}
-par(mfrow = c(1, 3))
-
-# if you're reading this code
-# it's BAD! don't use it. (or clean it up)
-# also, note to self: clean up this code!!!
-
-grid = seq(from = 0, to = 2, by = 0.01)
-
-set.seed(430)
-sim_data_1 = gen_sim_data(f)
-sim_data_2 = gen_sim_data(f)
-sim_data_3 = gen_sim_data(f)
-fit_0_1 = predict(caret::knnreg(y ~ x, data = sim_data_1, k = 5), data.frame(x = grid))
-fit_0_2 = predict(caret::knnreg(y ~ x, data = sim_data_2, k = 5), data.frame(x = grid))
-fit_0_3 = predict(caret::knnreg(y ~ x, data = sim_data_3, k = 5), data.frame(x = grid))
-fit_9_1 = predict(caret::knnreg(y ~ x, data = sim_data_1, k = 100), data.frame(x = grid))
-fit_9_2 = predict(caret::knnreg(y ~ x, data = sim_data_2, k = 100), data.frame(x = grid))
-fit_9_3 = predict(caret::knnreg(y ~ x, data = sim_data_3, k = 100), data.frame(x = grid))
-
-plot(y ~ x, data = sim_data_1, col = "grey", pch = 20, main = "Simulated Dataset 1")
-grid()
-lines(grid, fit_0_1, col = "dodgerblue", lwd = 1, lty = 1)
-lines(grid, fit_9_1, col = "darkorange", lwd = 2, lty = 2)
-legend("topleft", c("k = 5", "k = 100"), col = c("dodgerblue", "darkorange"), lty = c(1, 2), lwd = 2)
-
-plot(y ~ x, data = sim_data_2, col = "grey", pch = 20, main = "Simulated Dataset 2")
-grid()
-lines(grid, fit_0_2, col = "dodgerblue", lwd = 1, lty = 1)
-lines(grid, fit_9_2, col = "darkorange", lwd = 2, lty = 2)
-legend("topleft", c("k = 5", "k = 100"), col = c("dodgerblue", "darkorange"), lty = c(1, 2), lwd = 2)
-
-plot(y ~ x, data = sim_data_3, col = "grey", pch = 20, main = "Simulated Dataset 3")
-grid()
-lines(grid, fit_0_3, col = "dodgerblue", lwd = 1, lty = 1)
-lines(grid, fit_9_3, col = "darkorange", lwd = 2, lty = 2)
-legend("topleft", c("k = 5", "k = 100"), col = c("dodgerblue", "darkorange"), lty = c(1, 2), lwd = 2)
-```
-
-Here we see that when $k = 100$ we have a biased model with very low variance.^[It's actually the same as the 0 predictor linear model. Can you see why?] When $k = 5$, we again have a highly variable model.
-
-These two sets of plots reinforce our intuition about the bias-variance tradeoff. Flexible models (ninth degree polynomial and $k$ = 5) are highly variable, and often unbiased. Simple models (zero predictor linear model and $k = 100$) are very biased, but have extremely low variance.
-
-We will now complete a simulation study to understand the relationship between the bias, variance, and mean squared error for the estimates of $f(x)$ given by these four models at the point $x = 0.90$. We use simulation to complete this task, as performing the analytical calculations would prove to be rather tedious and difficult.
-
-```{r}
-set.seed(1)
-n_sims = 250
-n_models = 4
-x = data.frame(x = 0.90) # fixed point at which we make predictions
-predictions = matrix(0, nrow = n_sims, ncol = n_models)
-```
-
-```{r}
-for (sim in 1:n_sims) {
-
-  # simulate new, random, training data
-  # this is the only random portion of the bias, var, and mse calculations
-  # this allows us to calculate the expectation over D
-  sim_data = gen_sim_data(f)
-
-  # fit models
-  fit_0 = lm(y ~ 1,                   data = sim_data)
-  fit_1 = lm(y ~ poly(x, degree = 1), data = sim_data)
-  fit_2 = lm(y ~ poly(x, degree = 2), data = sim_data)
-  fit_9 = lm(y ~ poly(x, degree = 9), data = sim_data)
-
-  # get predictions
-  predictions[sim, 1] = predict(fit_0, x)
-  predictions[sim, 2] = predict(fit_1, x)
-  predictions[sim, 3] = predict(fit_2, x)
-  predictions[sim, 4] = predict(fit_9, x)
-}
-```
-
-```{r, echo = FALSE, eval = FALSE}
-# alternative simulation strategy
-sim_pred_from_lm_at_point = function(x) {
-
-  # x value to predict at
-  # coerce to data frame for predict() function
-  x = data.frame(x = x)
-
-  # simulate new training data
-  # expectation over D
-  sim_data = gen_sim_data(f)
-
-  # fit models
-  fit_0 = lm(y ~ 1,                   data = sim_data)
-  fit_1 = lm(y ~ poly(x, degree = 1), data = sim_data)
-  fit_2 = lm(y ~ poly(x, degree = 2), data = sim_data)
-  fit_9 = lm(y ~ poly(x, degree = 9), data = sim_data)
-
-  # get prediction at point for each model
-  c(predict(fit_0, x),
-    predict(fit_1, x),
-    predict(fit_2, x),
-    predict(fit_9, x))
-
-}
-
-set.seed(1)
-predictions = replicate(n = 250, sim_pred_from_lm_at_point(x = 0.90))
+library(knitr)      # creating tables
+library(kableExtra) # styling tables
 ```
 
 
+## Mathematical Setup
 
-```{r, fig.height = 6, fig.width = 9, echo = FALSE}
-predictions = (predictions)
-colnames(predictions) = c("0", "1", "2", "9")
-predictions = as.data.frame(predictions)
-
-tall_predictions = tidyr::gather(predictions, factor_key = TRUE)
-boxplot(value ~ key, data = tall_predictions, border = "darkgrey", xlab = "Polynomial Degree", ylab = "Predictions",
-        main = "Simulated Predictions for Polynomial Models")
-grid()
-stripchart(value ~ key, data = tall_predictions, add = TRUE, vertical = TRUE, method = "jitter", jitter = 0.15, pch = 1, col = c("dodgerblue", "firebrick", "springgreen", "darkorange"))
-abline(h = f(x = 0.90), lwd = 2)
-```
-
-The above plot shows the predictions for each of the `r n_sims` simulations of each of the four models of different polynomial degrees. The truth, $f(x = 0.90) = (0.9)^2 = 0.81$, is given by the solid black horizontal line.
-
-Two things are immediately clear:
-
-- As flexibility *increases*, **bias decreases**. The mean of a model's predictions is closer to the truth.
-- As flexibility *increases*, **variance increases**. The variance about the mean of a model's predictions increases.
-
-The goal of this simulation study is to show that the following holds true for each of the four models.
+Let's return to the setup we defined in the previous lectures. Consider a random variable $Y$ which represents a **response** variable, and $p$ **feature** variables $\boldsymbol{X} = (X_1, X_2, \ldots, X_p)$. We assume that the response variable $Y$ is some function of the features, plus some random noise.
 
 $$
-\text{MSE}\left(f(0.90), \hat{f}_k(0.90)\right) =
-\underbrace{\left(\mathbb{E} \left[ \hat{f}_k(0.90) \right] - f(0.90) \right)^2}_{\text{bias}^2 \left(\hat{f}_k(0.90) \right)} +
-\underbrace{\mathbb{E} \left[ \left( \hat{f}_k(0.90) - \mathbb{E} \left[ \hat{f}_k(0.90) \right] \right)^2 \right]}_{\text{var} \left(\hat{f}_k(0.90) \right)}
+Y = f(\boldsymbol{X}) + \epsilon
 $$
 
-We'll use the empirical results of our simulations to estimate these quantities. (Yes, we're using estimation to justify facts about estimation.) Note that we've actually used a rather small number of simulations. In practice we should use more, but for the sake of computation time, we've performed just enough simulations to obtain the desired results. (Since we're estimating estimation, the bigger the sample size, the better.)
-
-To estimate the mean squared error of our predictions, we'll use
+Our goal is to find some $f$ such that $f(\boldsymbol{X})$ is close to $Y$. More specifically we want to minimize the risk under squared error loss.
 
 $$
-\widehat{\text{MSE}}\left(f(0.90), \hat{f}_k(0.90)\right) = \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}} \left(f(0.90) - \hat{f}_k^{[i]}(0.90) \right)^2
+\mathbb{E}_{\boldsymbol{X}, Y} \left[ (Y - f(\boldsymbol{X})) ^ 2 \right] = \mathbb{E}_{\boldsymbol{X}} \mathbb{E}_{Y \mid \boldsymbol{X}} \left[ ( Y - f(\boldsymbol{X}) ) ^ 2 \mid \boldsymbol{X} = \boldsymbol{x} \right]
 $$
 
-where $\hat{f}_k^{[i]}(0.90)$ is the estimate of $f(0.90)$ using the $i$-th from the polynomial degree $k$ model.
-
-We also write an accompanying `R` function.
-
-```{r}
-get_mse = function(truth, estimate) {
-  mean((estimate - truth) ^ 2)
-}
-```
-
-Similarly, for the bias of our predictions we use,
+We saw previously (see the slides from last two content days) that this risk is minimized by the **conditional mean** of $Y$ given $\boldsymbol{X}$,
 
 $$
-\widehat{\text{bias}} \left(\hat{f}(0.90) \right)  = \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}} \left(\hat{f}_k^{[i]}(0.90) \right) - f(0.90)
+\mu(\boldsymbol{x}) \triangleq \mathbb{E}[Y \mid \boldsymbol{X} = \boldsymbol{x}]
 $$
 
-And again, we write an accompanying `R` function.
+which we call the **regression function**.
 
-```{r}
-get_bias = function(estimate, truth) {
-  mean(estimate) - truth
-}
-```
-
-Lastly, for the variance of our predictions we have
+Our goal then is to **estimate** this **regression function**. Let's use an example where we know the true probability model:
 
 $$
-\widehat{\text{var}} \left(\hat{f}(0.90) \right) = \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}} \left(\hat{f}_k^{[i]}(0.90) - \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}}\hat{f}_k^{[i]}(0.90) \right)^2
+Y = 1 - 2x - 3x ^ 2 + 5x ^ 3 + \epsilon
 $$
 
-While there is already `R` function for variance, the following is more appropriate in this situation.
+where $\epsilon \sim \text{N}(0, \sigma^2)$.
 
-```{r}
-get_var = function(estimate) {
-  mean((estimate - mean(estimate)) ^ 2)
-}
-```
-
-To quickly obtain these results for each of the four models, we utilize the `apply()` function.
-
-```{r}
-bias = apply(predictions, MAR = 2, get_bias, truth = f(x = 0.90))
-variance = apply(predictions, MAR = 2, get_var)
-mse = apply(predictions, MAR = 2, get_mse, truth = f(x = 0.90))
-```
-
-We summarize these results in the following table.
-
-```{r, echo = FALSE, asis = TRUE}
-results = data.frame(
-  poly_degree = c(0, 1, 2, 9),
-  round(mse, 5),
-  round(bias ^ 2, 5),
-  round(variance, 5)
-)
-colnames(results) = c("Degree", "Mean Squared Error", "Bias Squared", "Variance")
-rownames(results) = NULL
-knitr::kable(results, booktabs = TRUE, escape = TRUE, align = "c")
-```
-
-A number of things to notice here:
-
-- We use squared bias in this table. Since bias can be positive or negative, squared bias is more useful for observing the trend as flexibility increases.
-- The squared bias trend which we see here is **decreasing** as flexibility increases, which we expect to see in general.
-- The exact opposite is true of variance. As model flexibility increases, variance **increases**.
-- The mean squared error, which is a function of the bias and variance, decreases, then increases. This is a result of the bias-variance tradeoff. We can decrease bias, by increasing variance. Or, we can decrease variance by increasing bias. By striking the correct balance, we can find a good mean squared error!
-
-We can check for these trends with the `diff()` function in `R`.
-
-```{r}
-all(diff(bias ^ 2) < 0)
-all(diff(variance) > 0)
-diff(mse) < 0
-```
-
-The models with polynomial degrees 2 and 9 are both essentially unbiased. We see some bias here as a result of using simulation. If we increased the number of simulations, we would see both biases go down. Since they are both unbiased, the model with degree 2 outperforms the model with degree 9 due to its smaller variance.
-
-Models with degree 0 and 1 are biased because they assume the wrong form of the regression function. While the degree 9 model does this as well, it does include all the necessary polynomial degrees.
+Recall that this implies that the regression function is
 
 $$
-\hat{f}_9(x) = \hat{\beta}_0 + \hat{\beta}_1 x + \hat{\beta}_2 x^2 + \ldots + \hat{\beta}_9 x^9
+\mu(x) = \mathbb{E}[Y \mid \boldsymbol{X} = \boldsymbol{x}] = 1 - 2x - 3x ^ 2 + 5x ^ 3
 $$
 
-Then, since least squares estimation is unbiased, importantly,
+Let's also pretend that we do not actually know this information, but instead have some data, $(x_i, y_i)$ for $i = 1, 2, \ldots, n$.
 
-$$
-\mathbb{E}\left[\hat{\beta}_d\right] = \beta_d = 0
-$$
-
-for $d = 3, 4, \ldots 9$, we have
-
-$$
-\mathbb{E}\left[\hat{f}_9(x)\right] = \beta_0 + \beta_1 x + \beta_2 x^2
-$$
-
-Now we can finally verify the bias-variance decomposition.
-
-```{r}
-bias ^ 2 + variance == mse
-```
-
-But wait, this says it isn't true, except for the degree 9 model? It turns out, this is simply a computational issue. If we allow for some very small error tolerance, we see that the bias-variance decomposition is indeed true for predictions from these for models.
-
-```{r}
-all.equal(bias ^ 2 + variance, mse)
-```
-
-See `?all.equal()` for details.
-
-
-
-# Random Forests
-
-The decision trees (or "regression trees") from last week were an intuitive (hopefully) way of partitioning out the predictor variable space into prediction areas. By "partitioning", I mean chopping up the predictor space in a way that explains the data best, then using the resulting regions as the prediction for any value of the predictors. From ISLR Chapter 8:
-
-
-![Source:ISLR](11b_insertimage_1.png)
-
-
-We can change the two tuning parameters - `cp` and `minsplit` to make the partition more or less detailed (have more or fewer terminal nodes), and there are actually other parameters we can play with in regression trees, though we won't address those here. If we tune those parameters by cross-validation, then we can generate a pretty good predictor with our chosen tree. But...we can still do better.
-
-Regression trees still have quite a bit of variance, and we'd love to reduce that variance. One way of doing this is by constructing a **random forest**. As the name indicates, a random forest is a whole bunch of trees put together. But how do we combine multiple trees? And how do we make multiple trees if we have one dataset that leads to one optimal tree?
-
-### Multiple trees by *bootstrap*
-The "bootstrap" is a statistical term that means, essentially, randomly resampling. We can "bootstrap" our existing (training) data by randomly drawing observations from the data. Usually, if we have $n$ observations, we'll draw $n$ observations *with replacement*, which gives us a slightly different dataset: some observations will not be in the bootstrapped sample, and some will be represented 2+ times. All of the bootstrapped samples follow the *same* distribution of the predictors, but are different realizations. It's like getting more random samples for free!
-
-So let's say you draw sample $b=1$ from the $n$ observations. It is also of size $n$, but is different from the original sample. Then, you draw sample number $b=2$, all the way to, say, $B = 250$. Now you have 250 different samples of data, and each one will generate a *different* regression tree, even using the same tuning parameter values.
-
-### Combining multiple trees
-
-We need a way of generating a RMSE for any given tuning parameter value, but now we have $B$ different trees. We can take our test data and put it into each of the $B$ trees and get a predicted value, right? And when the tree is different, then the prediction will be different. If we take the *average* over all $B$ predictions, we'll get a prediction that has less variance, even when each tree has variance $\sigma$, because variance of the mean scales to $\frac{\sigma}{\sqrt{n}}$. 
-
-So the rmse is:
-
-$$RMSE = \frac{1}{N} \sum_{i=1}^N \left(\frac{1}{B} \sum_{b=1}^B (\hat{f}_{b}(x_i) - y_i)^2\right)$$
-
-While it takes a bit longer to estimate this (especially when $B$ is large), you get much more stable results that often predict better on an evaluation hold-out sample.
-
-### OK, technically that's "bagging"
-
-Random Forest has one other wrinkle -- when choosing amongst the candidate predictors for each split, the Random Forest method will choose from a randomly selected subset of the predictors. The reasoning for this given in ISLR is intuitive: if there is one predictor that predicts quite well for the sample, it will always be selected and little emphasis will be on predictors aside from this one. By randomly leaving it out, some trees are forced to fit without that predictor, so they won't all look the same. When you don't take the subset, you are *bagging*. When you do take a subset, you are estimating a *random forest*
-
-
-You won't need to use this on your Project 2, it's purely for your own info. Random forests are common out in the world, and are useful to know especially since you already know the fundamental element of it -- the tree.
-
-
-# More examples of bias, variance, and model flexibility
-
-If we have time, we can dive back into a little more about model flexibility, bias, and variance....
-
-## Model Flexibility
-
-Let's return to the simulated dataset we used occaisionally in the linear regression content. Recall there was a single feature $x$ with the following properties:
-
-```{r}
-# define regression function
+```{r, echo = FALSE}
 cubic_mean = function(x) {
   1 - 2 * x - 3 * x ^ 2 + 5 * x ^ 3
 }
 ```
 
-We then generated some data around this function with some added noise:
-
-```{r}
-# define full data generating process
+```{r, echo = FALSE}
 gen_slr_data = function(sample_size = 100, mu) {
   x = runif(n = sample_size, min = -1, max = 1)
   y = mu(x) + rnorm(n = sample_size)
@@ -778,207 +96,588 @@ gen_slr_data = function(sample_size = 100, mu) {
 }
 ```
 
-After defining the data generating process, we generate and split the data.
-
-```{r}
-# simulate entire dataset
-set.seed(3)
-sim_slr_data = gen_slr_data(sample_size = 100, mu = cubic_mean)
-
-# test-train split
-slr_trn_idx = sample(nrow(sim_slr_data), size = 0.8 * nrow(sim_slr_data))
-slr_trn = sim_slr_data[slr_trn_idx, ]
-slr_tst = sim_slr_data[-slr_trn_idx, ]
-
-# estimation-validation split
-slr_est_idx = sample(nrow(slr_trn), size = 0.8 * nrow(slr_trn))
-slr_est = slr_trn[slr_est_idx, ]
-slr_val = slr_trn[-slr_est_idx, ]
-
-# check data
-head(slr_trn, n = 10)
+```{r, echo = FALSE}
+set.seed(1)
+sim_slr_data = gen_slr_data(sample_size = 30, mu = cubic_mean)
 ```
 
-For validating models, we will use RMSE.
+We simulate enough data to make the "pattern" clear-ish to recognize.
+
+```{r, fig.height = 6, fig.width = 6, echo = FALSE}
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "Simulated Data")
+grid()
+```
+
+When we use a linear model, we first need to make an **assumption** about the form of the regression function.
+
+For example, we could assume that
+
+$$
+\mu(x) = \mathbb{E}[Y \mid \boldsymbol{X} = \boldsymbol{x}] = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3
+$$
+
+which is fit in R using the `lm()` function
 
 ```{r}
-# helper function for calculating RMSE
+lm(y ~ x + I(x ^ 2) + I(x ^ 3), data = sim_slr_data)
+```
+
+Notice that what is returned are (maximum likelihood or least squares) estimates of the unknown $\beta$ coefficients. That is, the "learning" that takes place with a linear models is "learning" the values of the coefficients.
+
+For this reason, we call linear regression models **parametric** models. They have unknown **model parameters**, in this case the $\beta$ coefficients that must be learned from the data. The form of the regression function is assumed.
+
+What if we don't want to make an assumption about the form of the regression function? While in this case, you might look at the plot and arrive at a reasonable guess of assuming a third order polynomial, what if it isn't so clear? What if you have 100 features? Making strong assumptions might not work well.
+
+Enter **nonparametric** models. We will consider two examples: **k-nearest neighbors** and **decision trees**.
+
+## k-Nearest Neighbors
+
+We'll start with **k-nearest neighbors** which is possibly a more intuitive procedure than linear models.^[We chose to start with linear regression because most students the social sciences should already be familiar with the basic notion.]
+
+If our goal is to estimate the mean function,
+
+$$
+\mu(x) = \mathbb{E}[Y \mid \boldsymbol{X} = \boldsymbol{x}]
+$$
+
+the most natural approach would be to use
+
+$$
+\text{average}(\{ y_i : x_i = x \}).
+$$
+
+That is, to estimate the conditional mean at $x$, average the $y_i$ values for each data point where $x_i = x$.
+
+While this sounds nice, it has an obvious flaw. For most values of $x$ there will not be any $x_i$ in the data where $x_i = x$!
+
+So what's the next best thing? Pick values of $x_i$ that are "close" to $x$.
+
+$$
+\text{average}( \{ y_i : x_i \text{ equal to (or very close to) x} \} ).
+$$
+
+This is the main idea behind many nonparametric approaches. The details often just amount to very specifically defining what "close" means.
+
+In the case of k-nearest neighbors we use
+
+$$
+\hat{\mu}_k(x) = \frac{1}{k} \sum_{ \{i \ : \ x_i \in \mathcal{N}_k(x, \mathcal{D}) \} } y_i
+$$
+
+as our estimate of the regression function at $x$. While this looks complicated, it is actually very simple. Here, we are using an average of the $y_i$ values of for the $k$ nearest neighbors to $x$.
+
+The $k$ "nearest" neighbors are the $k$ data points $(x_i, y_i)$ that have $x_i$ values that are nearest to $x$. We can define "nearest" using any distance we like, but unless otherwise noted, we are referring to euclidean distance.^[The usual distance when you hear distance. That is, unless you drive a [taxicab](https://en.wikipedia.org/wiki/Taxicab_geometry).] We are using the notation $\{i \ : \ x_i \in \mathcal{N}_k(x, \mathcal{D}) \}$ to define the $k$ observations that have $x_i$ values that are nearest to the value $x$ in a dataset $\mathcal{D}$, in other words, the $k$ nearest neighbors.
+
+```{r, echo = FALSE}
+plot_knn = function(k = 5, x, main = "main") {
+  distances = dist(c(x, sim_slr_data$x))[1:30]
+  nn = order(distances)[1:k]
+  plot(sim_slr_data, pch = 20, col = "grey", cex = 2, main = main)
+  grid()
+  points(sim_slr_data$x[nn],
+         sim_slr_data$y[nn],
+         col = "green", cex = 1.8, lwd = 2)
+  points(x = x, y = mean(sim_slr_data$y[nn]), pch = 4, lwd = 3)
+}
+```
+
+The plots below begin to illustrate this idea.
+
+```{r, fig.height = 3, fig.width = 9, echo = FALSE}
+par(mfrow = c(1, 3))
+plot_knn(k = 3, x = -0.5, main = "k = 3, x = -0.5")
+plot_knn(k = 5, x = 0, main = "k = 5, x = 0")
+plot_knn(k = 9, x = 0.75, main = "k = 9, x = 0.75")
+```
+
+- In the left plot, to estimate the mean of $Y$ at $x = -0.5$ we use the three nearest neighbors, which are highlighted with green. Our estimate is the average of the $y_i$ values of these three points indicated by the black x.
+- In the middle plot, to estimate the mean of $Y$ at $x = 0$ we use the five nearest neighbors, which are highlighted with green. Our estimate is the average of the $y_i$ values of these five points indicated by the black x.
+- In the right plot, to estimate the mean of $Y$ at $x = 0.75$ we use the nine nearest neighbors, which are highlighted with green. Our estimate is the average of the $y_i$ values of these nine points indicated by the black x.
+
+You might begin to notice a bit of an issue here. We have to do a new calculation each time we want to estimate the regression function at a different value of $x$! For this reason, k-nearest neighbors is often said to be "fast to train" and "slow to predict." Training, is instant. You just memorize the data! Prediction involves finding the distance between the $x$ considered and all $x_i$ in the data!^[For this reason, KNN is often not used in practice, but it is very useful learning tool.]
+
+So, how then, do we choose the value of the **tuning** parameter $k$? We _**validate**_!
+
+First, let's take a look at what happens with this data if we consider three different values of $k$.
+
+```{r, echo = FALSE}
+knn_slr_25 = knnreg(y ~ x, data = sim_slr_data, k = 25, use.all = TRUE)
+knn_slr_05 = knnreg(y ~ x, data = sim_slr_data, k = 5, use.all = TRUE)
+knn_slr_01 = knnreg(y ~ x, data = sim_slr_data, k = 1, use.all = TRUE)
+```
+
+```{r, fig.height = 4, fig.width = 12, echo = FALSE}
+par(mfrow = c(1, 3))
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "k = 25")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(knn_slr_25, tibble(x = x)),
+      col = "firebrick", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "k = 5")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(knn_slr_05, tibble(x = x)),
+      col = "dodgerblue", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "k = 1")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(knn_slr_01, tibble(x = x)),
+      col = "limegreen", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+```
+
+For each plot, the black dashed curve is the true mean function.
+
+- In the left plot we use $k = 25$. The red "curve" is the estimate of the mean function for each $x$ shown in the plot.
+- In the left plot we use $k = 5$. The blue "curve" is the estimate of the mean function for each $x$ shown in the plot.
+- In the left plot we use $k = 1$. The green "curve" is the estimate of the mean function for each $x$ shown in the plot.
+
+Some things to notice here:
+
+- The left plot with $k = 25$ is performing poorly. The estimated "curve" does not "move" enough. This is an example of an **inflexible** model.
+- The right plot with $k = 1$ might not perform too well. The estimated "curve" seems to "move" too much. (Notice, that it goes through each point. We've fit to the noise.) This is an example of a **flexible** model.
+
+While the middle plot with $k = 5$ is not "perfect" it seems to roughly capture the "motion" of the true regression function. We can begin to see that if we generated new data, this estimated regression function would perform better than the other two.
+
+But remember, in practice, we won't know the true regression function, so we will need to determine how our model performs using only the available data!
+
+This $k$, the number of neighbors, is an example of a **tuning parameter**. Instead of being learned from the data, like model parameters such as the $\beta$ coefficients in linear regression, a tuning parameter tells us *how* to learn from data. It is user-specified. To determine the value of $k$ that should be used, many models are fit to the estimation data, then evaluated on the validation. Using the information from the validation data, a value of $k$ is chosen. (More on this in a bit.)
+
+- **Model parameters** are "learned" using the same data that was used to fit the model.
+- **Tuning parameters** are "chosen" using data not used to fit the model.
+
+This tuning parameter $k$ also defines the **flexibility** of the model and plays a similar role as **complexity**, or the number of parameters, did in our linear regressions. In KNN, a small value of $k$ is a flexible model, while a large value of $k$ is inflexible.^[Many texts use the term complex instead of flexible. We feel this is confusing as complex is often associated with difficult. KNN with $k = 1$ is actually a very simple model to understand, but it is very flexible as defined here.]
+
+Before moving to an example of tuning a KNN model, we will first introduce decision trees.
+
+## Decision Trees
+
+**Decision trees** are similar to k-nearest neighbors but instead of looking for neighbors, decision trees create neighborhoods. We won't explore the full details of trees, but just start to understand the basic concepts, as well as learn to fit them in R.
+
+Neighborhoods are created via recursive binary partitions. In simpler terms, pick a feature and a possible cutoff value. Data that have a value less than the cutoff for the selected feature are in one neighborhood (the left) and data that have a value greater than the cutoff are in another (the right). Within these two neighborhoods, repeat this procedure until a stopping rule is satisfied. To make a prediction, check which neighborhood a new piece of data would belong to and predict the average of the $y_i$ values of data in that neighborhood.
+
+With the data above, which has a single feature $x$, consider three possible cutoffs: -0.5, 0.0, and 0.75.
+
+```{r, echo = FALSE}
+plot_tree_split = function(cut = 0, main = "main") {
+  plot(sim_slr_data, pch = 20, col = "grey", cex = 2, main = main)
+  grid()
+  abline(v = cut, col = "black", lwd = 2)
+  left_pred = mean(sim_slr_data$y[sim_slr_data$x < cut])
+  right_pred = mean(sim_slr_data$y[sim_slr_data$x > cut])
+  segments(x0 = -2, y0 = left_pred, x1 = cut, y1 = left_pred, col = "limegreen", lwd = 2)
+  segments(x0 = cut, y0 = right_pred, x1 = 2, y1 = right_pred, col = "firebrick", lwd = 2)
+}
+```
+
+```{r, fig.height = 3, fig.width = 9, echo = FALSE}
+par(mfrow = c(1, 3))
+plot_tree_split(cut = -0.5, main = "cut @ x = -0.5")
+plot_tree_split(cut = 0, main = "cut @ x = 0.0")
+plot_tree_split(cut = 0.75, main = "cut @ x = 0.75")
+```
+
+For each plot, the black vertical line defines the neighborhoods. The green horizontal lines are the average of the $y_i$ values for the points in the left neighborhood. The red horizontal lines are the average of the $y_i$ values for the points in the right neighborhood.
+
+What makes a cutoff good? Large differences in the average $y_i$ between the two neighborhoods. More formally we want to find a cutoff value that minimizes
+
+$$
+\sum_{i \in N_L} \left( y_i - \hat{\mu}_{N_L} \right) ^ 2 + \sum_{i \in N_R} \left(y_i - \hat{\mu}_{N_R} \right) ^ 2
+$$
+
+where
+
+- $N_L$ are the data in the left neighborhood, that is $x < c$
+- $N_R$ are the data in the right neighborhood, that is $x > c$
+- $\hat{\mu}_{N_L}$ is the mean of the $y_i$ for data in the left neighborhood
+- $\hat{\mu}_{N_R}$ is the mean of the $y_i$ for data in the right neighborhood
+
+This quantity is the sum of two sum of squared errors, one for the left neighborhood, and one for the right neighborhood.
+
+```{r, echo = FALSE}
+calc_split_sse = function(cut = 0) {
+  l_pred = mean(sim_slr_data$y[sim_slr_data$x < cut])
+  r_pred = mean(sim_slr_data$y[sim_slr_data$x > cut])
+
+  l_mse = round(sum((sim_slr_data$y[sim_slr_data$x < cut] - l_pred) ^ 2), 2)
+  r_mse = round(sum((sim_slr_data$y[sim_slr_data$x > cut] - r_pred) ^ 2), 2)
+  t_mse = round(l_mse + r_mse, 2)
+  c("Total SSE" = t_mse, "Left SSE" = l_mse, "Right SSE" = r_mse)
+}
+```
+
+```{r, echo = FALSE}
+cbind(
+  "Cutoff" = c(-0.5, 0.0, 0.75),
+  rbind(
+    calc_split_sse(cut = -0.5),
+    calc_split_sse(cut = 0),
+    calc_split_sse(cut = 0.75)
+  )
+) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+The table above summarizes the results of the three potential splits. We see that (of the splits considered, which are not exhaustive^[To exhaust all possible splits of a variable, we would need to consider the midpoint between each of the order statistics of the variable. To exhaust all possible splits, we would need to do this for each of the feature variables.]) the split based on a cutoff of $x = -0.50$ creates the best partitioning of the space.
+
+Now let's consider building a full tree.
+
+```{r, echo = FALSE}
+tree_slr = rpart(y ~ x, data = sim_slr_data)
+```
+
+```{r, echo = FALSE}
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(tree_slr, tibble(x = x)),
+      col = "darkorange", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+```
+
+In the plot above, the true regression function is the dashed black curve, and the solid orange curve is the estimated regression function using a decision tree. We see that there are two splits, which we can visualize as a tree.
+
+```{r, echo = FALSE}
+rpart.plot::rpart.plot(tree_slr)
+```
+
+The above "tree"^[It's really an upside tree isn't it?] shows the splits that were made. It informs us of the variable used, the cutoff value, and some summary of the resulting neighborhood. In "tree" terminology the resulting neighborhoods are "terminal nodes" of the tree. In contrast, "internal nodes" are neighborhoods that are created, but then further split.
+
+The "root node" is the neighborhood contains all observations, before any splitting, and can be seen at the top of the image above. We see that this node represents 100% of the data. The other number, 0.21, is the mean of the response variable, in this case, $y_i$.
+
+Looking at a terminal node, for example the bottom left node, we see that 23% of the data is in this node. The average value of the $y_i$ in this node is -1, which can be seen in the plot above.
+
+We also see that the first split is based on the $x$ variable, and a cutoff of $x = -0.52$. Note that because there is only one variable here, all splits are based on $x$, but in the future, we will have multiple features that can be split and neighborhoods will no longer be one-dimensional. However, this is hard to plot.
+
+Let's build a bigger, more flexible tree.
+
+```{r, echo = FALSE}
+tree_slr = rpart(y ~ x, data = sim_slr_data, cp = 0, minsplit = 5)
+```
+
+```{r, echo = FALSE}
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(tree_slr, tibble(x = x)),
+      col = "darkorange", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+```
+
+```{r, echo = FALSE}
+rpart.plot::rpart.plot(tree_slr)
+```
+
+There are two tuning parameters at play here which we will call by their names in R which we will see soon:
+
+- `cp` or the "complexity parameter" as it is called.^[Flexibility parameter would be a better name.] This parameter determines which splits are accepted. A split must improve the performance of the tree by more than `cp` in order to be used. When we get to R, we will see that the default value is 0.1.
+- `minsplit`, the minimum number of observations in a node (neighborhood) in order to consider splitting within a neighborhood.
+
+There are actually many more possible tuning parameters for trees, possibly differing depending on who wrote the code you're using. We will limit discussion to these two.^[The `rpart` function in R would allow us to use others, but we will always just leave their values as the default values.] Note that they effect each other, and they effect other parameters which we are not discussing. The main takeaway should be how they effect model flexibility.
+
+First let's look at what happens for a fixed `minsplit` by variable `cp`.
+
+```{r, echo = FALSE}
+tree_slr_cp_10 = rpart(y ~ x, data = sim_slr_data, cp = 0.10, minsplit = 2)
+tree_slr_cp_05 = rpart(y ~ x, data = sim_slr_data, cp = 0.05, minsplit = 2)
+tree_slr_cp_00 = rpart(y ~ x, data = sim_slr_data, cp = 0.00, minsplit = 2)
+```
+
+```{r, fig.height = 4, fig.width = 12, echo = FALSE}
+par(mfrow = c(1, 3))
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "cp = 0.10, minsplit = 2")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(tree_slr_cp_10, tibble(x = x)),
+      col = "firebrick", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "cp = 0.05, minsplit = 2")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(tree_slr_cp_05, tibble(x = x)),
+      col = "dodgerblue", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "cp = 0.00, minsplit = 2")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(tree_slr_cp_00, tibble(x = x)),
+      col = "limegreen", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+```
+
+We see that as `cp` *decreases*, model flexibility **increases**. We see more splits, because the increase in performance needed to accept a split is smaller as `cp` is reduced.
+
+Now the reverse, fix `cp` and vary `minsplit`.
+
+```{r, echo = FALSE}
+tree_slr_ms_25 = rpart(y ~ x, data = sim_slr_data, cp = 0.01, minsplit = 25)
+tree_slr_ms_10 = rpart(y ~ x, data = sim_slr_data, cp = 0.01, minsplit = 10)
+tree_slr_ms_02 = rpart(y ~ x, data = sim_slr_data, cp = 0.01, minsplit = 02)
+```
+
+```{r, fig.height = 4, fig.width = 12, echo = FALSE}
+par(mfrow = c(1, 3))
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "cp = 0.01, minsplit = 25")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(tree_slr_ms_25, tibble(x = x)),
+      col = "firebrick", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "cp = 0.01, minsplit = 10")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(tree_slr_ms_10, tibble(x = x)),
+      col = "dodgerblue", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+
+plot(sim_slr_data, pch = 20, col = "grey", cex = 2,
+     main = "cp = 0.01, minsplit = 2")
+curve(cubic_mean(x), add = TRUE, lwd = 2, lty = 2)
+curve(predict(tree_slr_ms_02, tibble(x = x)),
+      col = "limegreen", lwd = 2, lty = 1, add = TRUE, n = 10000)
+grid()
+```
+
+We see that as `minsplit` *decreases*, model flexibility **increases**. By allowing splits of neighborhoods with fewer observations, we obtain more splits, which results in a more flexible model.
+
+## Example: Credit Card Data
+
+### Example KNN: Credit Card Data
+
+```{r}
+# load data, coerce to tibble
+crdt = as_tibble(ISLR::Credit)
+```
+
+Again, we are using the `Credit` data form the `ISLR` package. Note: **this is not real data.** It has been simulated.
+
+```{r}
+# data prep
+crdt = crdt %>%
+  select(-ID) %>%
+  select(-Rating, everything())
+```
+
+We remove the `ID` variable as it should have no predictive power. We also move the `Rating` variable to the last column with a clever `dplyr` trick. This is in no way necessary, but is useful in creating some plots.
+
+```{r}
+# test-train split
+set.seed(1) 
+crdt_trn_idx = sample(nrow(crdt), size = 0.8 * nrow(crdt))
+crdt_trn = crdt[crdt_trn_idx, ]
+crdt_tst = crdt[-crdt_trn_idx, ]
+```
+
+```{r, include = FALSE, eval = FALSE}
+# estimation-validation split
+crdt_est_idx = sample(nrow(crdt_trn), size = 0.8 * nrow(crdt_trn))
+crdt_est = crdt_trn[crdt_est_idx, ]
+crdt_val = crdt_trn[-crdt_est_idx, ]
+```
+
+After train-test (with 80% of the data) and estimation-validation splitting the data, we look at the train data.
+
+```{r}
+# check data
+head(crdt_trn, n = 10)
+```
+
+In this simulated data, we would like to predict the `Rating` variable. For now, let's try to use only demographic information as predictors.^[There is a question of whether or not we *should* use these variables. For example, should men and women be given different ratings when all other variables are the same? Using the `Gender` variable allows for this to happen. Also, you might think, just don't use the `Gender` variable. Unfortunately, it's not that easy. There is an increasingly popular field of study centered around these ideas called [machine learning **fairness**](https://en.wikipedia.org/wiki/Fairness_(machine_learning)).] In particular, let's focus on `Age` (numeric), `Gender` (categorical), and `Student` (categorical).
+
+Let's fit KNN models with these features, and various values of $k$. To do so, we use the `knnreg()` function from the `caret` package.^[There are many other KNN functions in `R`. However, the operation and syntax of `knnreg()` better matches other functions we use in this course.] Use `?knnreg` for documentation and details.
+
+```{r}
+crdt_knn_01 = knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 1)
+crdt_knn_10 = knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 10)
+crdt_knn_25 = knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 25)
+crdt_knn_100= knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 75)
+```
+
+Here, we fit three models to the estimation data. We supply the variables that will be used as features as we would with `lm()`. We also specify how many neighbors to consider via the `k` argument.
+
+But wait a second, what is the distance from non-student to student? From male to female? In other words, how does KNN handle categorical variables? It doesn't! Like `lm()` it creates dummy variables under the hood.
+
+**Note:** To this point, and until we specify otherwise, we will always coerce categorical variables to be factor variables in R. We will then let modeling functions such as `lm()` or `knnreg()` deal with the creation of dummy variables internally.
+
+```{r}
+head(crdt_knn_10$learn$X)
+```
+
+Once these dummy variables have been created, we have a numeric $X$ matrix, which makes distance calculations easy.^[Wait. Doesn't this sort of create an arbitrary distance between the categories? Why $0$ and $1$ and not $-42$ and $51$? Good question. This hints at the notion of pre-processing. We're going to hold off on this for now, but, often when performing k-nearest neighbors, you should try scaling all of the features to have mean $0$ and variance $1$.] For example, the distance between the 3rd and 4th observation here is `r round(dist(head(crdt_knn_10$learn$X))[10], 3)`.
+
+```{r}
+dist(head(crdt_knn_10$learn$X))
+```
+
+```{r}
+sqrt(sum((crdt_knn_10$learn$X[3, ] - crdt_knn_10$learn$X[4, ]) ^ 2))
+```
+
+What about interactions? Basically, you'd have to create them the same way as you do for linear models. We only mention this to contrast with trees in a bit.
+
+OK, so of these three models, which one performs best? (Where for now, "best" is obtaining the lowest validation RMSE.)
+
+First, note that we return to the `predict()` function as we did with `lm()`.
+
+```{r}
+predict(crdt_knn_10, crdt_tst[1:5, ])
+```
+
+This uses the 10-NN (10 nearest neighbors) model to make predictions (estimate the regression function) given the first five observations of the validation data. **Note:** We did not name the second argument to `predict()`. Again, you've been warned.
+
+Now that we know how to use the `predict()` function, let's calculate the validation RMSE for each of these models.
+
+```{r}
+knn_mod_list = list(
+  crdt_knn_01 = knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 1),
+  crdt_knn_10 = knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 10),
+  crdt_knn_25 = knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 25),
+  crdt_knn_100= knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 75)
+)
+```
+
+```{r}
+knn_tst_pred = lapply(knn_mod_list, predict, crdt_tst)
+```
+
+```{r}
 calc_rmse = function(actual, predicted) {
   sqrt(mean((actual - predicted) ^ 2))
 }
 ```
 
-Let's check how linear, k-nearest neighbors, and decision tree models fit to this data make errors, while paying attention to their flexibility.
-
-```{r error-vs-flex, fig.height = 6, fig.width = 10, echo = FALSE}
+```{r}
+sapply(knn_tst_pred, calc_rmse, crdt_tst$Rating)
 ```
 
-This picture is an idealized version of what we expect to see, but we'll illustrate the sorts of validate "curves" that we might see in practice.
+So, of these three values of $k$, the model with $k = 25$ achieves the lowest validation (test) RMSE.
 
-Note that in the following three sub-sections, a significant portion of the code is suppressed for visual clarity. See the source document for full details.
+This process, fitting a number of models with different values of the *tuning parameter*, in this case $k$, and then finding the "best" tuning parameter value based on performance on the validation (test) data is called **tuning**. In practice, we would likely consider more values of $k$, but this should illustrate the point.
 
-### Linear Models
+In the next lectures, we will discuss the details of model flexibility and model tuning, and how these concepts are tied together. However, even though we will present some theory behind this relationship, in practice, **you must tune and validate your models**. There is no theory that will inform you ahead of tuning and validation which model will be the best. By teaching you *how* to fit KNN models in R and how to calculate validation RMSE, you already have all a set of tools you can use to find a good model.
 
-First up, linear models. We will fit polynomial models with degree from one to nine, and then validate.
+Tuning isn't necessarily something we've never done before -- in our linear regression section, we fit our model using more and more variables (and transformations of those variables), which allowed more *flexibility* but, as we saw, resulted in over-fitting. The same principle applies to KNN when we allow $k$ to decrease towards 1.
+
+
+### Example Decision Tree: Credit Card Data 
+
+Let's turn to decision trees which we will fit with the `rpart()` function from the `rpart` package. Use `?rpart` and `?rpart.control` for documentation and details. In particular, `?rpart.control` will detail the many tuning parameters of this implementation of decision tree models in R.
+
 
 ```{r}
-# fit polynomial models
-poly_mod_est_list = list(
-  poly_mod_1_est = lm(y ~ poly(x, degree = 1), data = slr_est),
-  poly_mod_2_est = lm(y ~ poly(x, degree = 2), data = slr_est),
-  poly_mod_3_est = lm(y ~ poly(x, degree = 3), data = slr_est),
-  poly_mod_4_est = lm(y ~ poly(x, degree = 4), data = slr_est),
-  poly_mod_5_est = lm(y ~ poly(x, degree = 5), data = slr_est),
-  poly_mod_6_est = lm(y ~ poly(x, degree = 6), data = slr_est),
-  poly_mod_7_est = lm(y ~ poly(x, degree = 7), data = slr_est),
-  poly_mod_8_est = lm(y ~ poly(x, degree = 8), data = slr_est),
-  poly_mod_9_est = lm(y ~ poly(x, degree = 9), data = slr_est)
+set.seed(5)
+crdt_trn_idx = sample(nrow(crdt), size = 0.8 * nrow(crdt))
+crdt_trn = crdt[crdt_trn_idx, ]
+crdt_tst = crdt[-crdt_trn_idx, ]
+```
+
+We'll start by using default tuning parameters for `minsplit`, but I'm going to use a `cp` that gets us something interesting.
+
+```{r}
+crdt_tree = rpart(Rating ~ Age + Gender + Student, data = crdt_trn, cp = .0095)
+```
+
+```{r}
+crdt_tree
+```
+
+Above we see the resulting tree printed, however, this is difficult to read. Instead, we use the `rpart.plot()` function from the `rpart.plot` package to better visualize the tree.
+
+```{r}
+rpart.plot(crdt_tree)
+```
+
+At each split, the variable used to split is listed together with a condition. If the condition is true for a data point, send it to the left neighborhood. Although the `Gender` available for creating splits, we only see splits based on `Age` and `Student`. This hints at the relative importance of these variables for prediction. More on this much later.
+
+Categorical variables are split based on potential categories! This is *excellent*. This means that trees naturally handle categorical features without needing to convert to numeric under the hood. We see a split that puts students into one neighborhood, and non-students into another.
+
+Notice that the splits happen in order. So for example, the third terminal node (with an average rating of 316) is based on splits of:
+
+- `Age < 83`
+- `Age > 36`
+- `Age > 70`
+- `Age > 78`
+- `Gender = Male`
+
+In other words, individuals in this terminal node are students who are between the ages of 78 and 83. (Only 3% of the data is represented here.) This is basically an interaction between `Age` and `Student` without any need to directly specify it! What a great feature of trees.
+
+To recap:
+
+- Trees do not make assumptions about the form of the regression function.
+- Trees automatically handle categorical features.
+- Trees naturally incorporate interaction.
+
+Now let's fit another tree that is more flexible by relaxing some tuning parameters. Recall that by default, `cp = 0.1` and `minsplit = 20`.
+
+```{r}
+crdt_tree_big = rpart(Rating ~ Age + Gender + Student, data = crdt_trn,
+                      cp = 0.0, minsplit = 20)
+```
+
+```{r}
+rpart.plot(crdt_tree_big)
+```
+
+To make the tree even bigger, we could reduce `minsplit`, but in practice we mostly consider the `cp` parameter. Since `minsplit` has been kept the same, but `cp` was reduced, we see the same splits as the smaller tree, but many additional splits.
+
+Now let's fit a bunch of trees, with different values of `cp`, for tuning.
+
+```{r}
+tree_mod_list = list(
+  crdt_tree_0000 = rpart(Rating ~ Age + Gender + Student, data = crdt_trn, cp = 0.000),
+  crdt_tree_0001 = rpart(Rating ~ Age + Gender + Student, data = crdt_trn, cp = 0.001),
+  crdt_tree_0010 = rpart(Rating ~ Age + Gender + Student, data = crdt_trn, cp = 0.010),
+  crdt_tree_0100 = rpart(Rating ~ Age + Gender + Student, data = crdt_trn, cp = 0.100)
 )
 ```
 
-```{r, echo = FALSE}
-# make predictions on the estimation data with each model
-poly_mod_est_pred = lapply(poly_mod_est_list, predict, slr_est)
-# make predictions on the validation data with each model
-poly_mod_val_pred = lapply(poly_mod_est_list, predict, slr_val)
-
-# calculate train RMSE
-poly_est_rmse = sapply(poly_mod_est_pred, calc_rmse, actual = slr_est$y)
-# calculate validation RMSE
-poly_val_rmse = sapply(poly_mod_val_pred, calc_rmse, actual = slr_val$y)
+```{r}
+tree_val_pred = lapply(tree_mod_list, predict, crdt_tst)
 ```
 
-The plot below visualizes the results.
+```{r}
+sapply(tree_val_pred, calc_rmse, crdt_tst$Rating)
+```
 
-```{r, echo = FALSE}
-plot(1:9, poly_est_rmse, type = "b", pch = 20, lty = 2,
-     ylim = range(c(poly_est_rmse, poly_val_rmse)) + c(-0.1, 0.1),
-     xlab = "Polynomial Degree",
-     ylab = "RMSE",
-     main = "Train and Validation Error vs Polynomial Degree")
-lines(1:9, poly_val_rmse, type = "b", col = "dodgerblue", pch = 20)
-grid()
-legend("topright",
-  legend = c("Train", "Validation"),
-  col = c("black", "dodgerblue"),
-  lty = 2:1,
-  pch = 20
+Here we see the model, with `cp = 0.010`, performs best.
+
+Note that by only using these three features, we are severely limiting our models performance. Let's quickly assess using all available predictors.
+
+```{r}
+crdt_tree_all = rpart(Rating ~ ., data = crdt_trn)
+```
+
+```{r}
+rpart.plot(crdt_tree_all)
+```
+
+Notice that this model **only** splits based on `Limit` despite using all features. This should be a big hint about which variables are useful for prediction.
+
+```{r}
+calc_rmse(
+  actual = crdt_tst$Rating,
+  predicted = predict(crdt_tree_all, crdt_tst)
 )
 ```
 
-What do we see here? As the polynomial degree *increases*:
+This model performs much better. You should try something similar with the KNN models above. Also, consider comparing this result to results from last lectures using linear models.
 
-- The training error *decreases*.
-- The validation error *decreases*, then *increases*.
-
-This more of less matches the idealized version above, but the validation "curve" is much more jagged. This is something that we can expect in practice.
-
-We have previously noted that training error isn't particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we known that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.^[In practice, if you already know how your model's flexibility works, by checking that the training error goes down as you increase flexibility, you can check that you have done your coding and model training correctly.]
-
-### k-Nearest Neighbors
-
-Next up, k-nearest neighbors. We will consider values for $k$ that are odd and between $1$ and $45$ inclusive.
+Notice that we've been using that trusty `predict()` function here again.
 
 ```{r}
-# helper function for fitting knn models
-fit_knn_mod = function(neighbors) {
-  knnreg(y ~ x, data = slr_est, k = neighbors)
-}
+predict(crdt_tree_all, crdt_tst[1:5, ])
 ```
 
-```{r}
-# define values of tuning parameter k to evaluate
-k_to_try = seq(from = 1, to = 45, by = 2)
-
-# fit knn models
-knn_mod_est_list = lapply(k_to_try, fit_knn_mod)
-```
-
-```{r, echo = FALSE}
-# make predictions on the estimation data with each model
-knn_mod_est_pred = lapply(knn_mod_est_list, predict, slr_est)
-# make predictions on the validation data with each model
-knn_mod_val_pred = lapply(knn_mod_est_list, predict, slr_val)
-
-# calculate train RMSE
-knn_est_rmse = sapply(knn_mod_est_pred, calc_rmse, actual = slr_est$y)
-# calculate validation RMSE
-knn_val_rmse = sapply(knn_mod_val_pred, calc_rmse, actual = slr_val$y)
-```
-
-The plot below visualizes the results.
-
-```{r, echo = FALSE}
-plot(k_to_try, knn_est_rmse, type = "b", pch = 20, lty = 2,
-     ylim = range(c(knn_est_rmse, knn_val_rmse)) + c(-0.1, 0.1),
-     xlab = "k (Number of Neighbors)",
-     ylab = "RMSE",
-     main = "Train and Validation Error vs Number of Neighbors")
-lines(k_to_try, knn_val_rmse, type = "b", col = "dodgerblue", pch = 20)
-grid()
-legend("bottomright",
-  legend = c("Train", "Validation"),
-  col = c("black", "dodgerblue"),
-  lty = 2:1,
-  pch = 20
-)
-```
-
-Here we see the "opposite" of the usual plot. Why? Because with k-nearest neighbors, a small value of $k$ generates a flexible model compared to larger values of $k$. So visually, this plot is flipped. That is we see that as $k$ *increases*:
-
-- The training error *increases*.
-- The validation error *decreases*, then *increases*.
-
-Important to note here: the pattern above only holds "in general," that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selection the data for the validate set.
-
-### Decision Trees
-
-Lastly, we evaluate some decision tree models. We choose some arbitrary values of `cp` to evaluate, while holding `minsplit` constant at `5`. There are arbitrary choices that produce a plot that is useful for discussion.
-
-```{r}
-# helper function for fitting decision tree models
-tree_knn_mod = function(flex) {
-  rpart(y ~ x, data = slr_est, cp = flex, minsplit = 5)
-}
-```
-
-```{r}
-# define values of tuning parameter cp to evaluate
-cp_to_try = c(0.5, 0.3, 0.1, 0.05, 0.01, 0.001, 0.0001)
-
-# fit decision tree models
-tree_mod_est_list = lapply(cp_to_try, tree_knn_mod)
-```
-
-```{r, echo = FALSE}
-# make predictions on the estimation data with each model
-tree_mod_est_pred = lapply(tree_mod_est_list, predict, slr_est)
-# make predictions on the validation data with each model
-tree_mod_val_pred = lapply(tree_mod_est_list, predict, slr_val)
-
-# calculate train RMSE
-tree_est_rmse = sapply(tree_mod_est_pred, calc_rmse, actual = slr_est$y)
-# calculate validation RMSE
-tree_val_rmse = sapply(tree_mod_val_pred, calc_rmse, actual = slr_val$y)
-```
-
-The plot below visualizes the results.
-
-```{r, echo = FALSE}
-plot(log(cp_to_try), tree_est_rmse, type = "b", pch = 20, lty = 2,
-     ylim = range(c(tree_est_rmse, tree_val_rmse)) + c(-0.1, 0.1),
-     xlab = "log cp (Log of Complexity Parameter)",
-     ylab = "RMSE",
-     main = "Train and Validation Error vs Complexity Parameter")
-lines(log(cp_to_try), tree_val_rmse, type = "b", col = "dodgerblue", pch = 20)
-grid()
-legend("bottomright",
-  legend = c("Train", "Validation"),
-  col = c("black", "dodgerblue"),
-  lty = 2:1,
-  pch = 20
-)
-```
-
-Based on this plot, how is `cp` related to model flexibility?^[As `cp` increases, model flexibility decreases.]
-
+What does this code do? It estimates the mean `Rating` given the feature information (the "x" values) from the first five observations from the validation data using a decision tree model with default tuning parameters. Hopefully a theme is emerging.

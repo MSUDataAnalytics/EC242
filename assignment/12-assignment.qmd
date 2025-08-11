@@ -1,10 +1,7 @@
 ---
-title: "12: Applied Logistic Regression - Classification"
+title: "12: LASSO"
 duedate: "{{< var duedates.lab12 >}}"
 ---
-
-<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
-
 
 
 ::: {.callout-warning}
@@ -15,64 +12,104 @@ This assignment is due on **{{< meta duedate >}}**
 {{< var blurbs.homeworkdue >}}
 
 
+## Oh no. Really? Ames again?
 
+Yes, Ames again. Let's predict some `SalePrice`s!
 
-## Backstory and Set Up
-You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They've given you a dataset on defaults (encoded as the variable `y`, and not the column *default*). You're going to try to predict this.
-
-This is some new data. The snippet below loads it.
 
 ```{r}
 
-bank <- read.table("https://ec242.netlify.app/data/bank.csv",
-                 header = TRUE,
-                 sep = ",")
+Ames <- read.table('https://raw.githubusercontent.com/ajkirkpatrick/FS20/postS21_rev/classdata/ames.csv', 
+                   header = TRUE,
+                   sep = ',') %>%
+  dplyr::select(-Id)
 ```
 
-There's not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).
+
+```{r, include=F, eval=F}
+library(caret); library(glmnet)
+
+
+Amesuse = Ames %>% 
+  dplyr::select(-FireplaceQu, -PoolQC, -Fence, -MiscFeature, -Alley,
+                -Utilities) %>%
+  na.omit()
+
+
+  lambdas = 10^seq(from =4, to = -2, length = 100)
+
+  myform = SalePrice ~ LandContour + BldgType*HouseStyle*YearBuilt + YearBuilt*YearRemodAdd + LotArea*Street + FullBath*WoodDeckSF
+  # myform = SalePrice ~ .
+  
+  x = model.matrix(myform, data = Amesuse) 
+  
+ net_cv = cv.glmnet(
+  x = x,
+  y = Amesuse$SalePrice,
+  alpha = 1,
+  standardize = T,
+  lambda = lambdas,
+  # New: How we make decisions and number of folds
+  type.measure = "mse",
+  nfolds = 5
+)
+#   
+# net_cv = train(
+#   # The formula
+#   SalePrice ~ .,
+#   # The dataset
+#   data = Amesuse,
+#   # The 'glmnet' package does ridge and lasso
+#   method = "glmnet",
+#   metric = 'RMSE',
+#   # 5-fold cross validation
+#   trControl = trainControl("cv", number = 10),
+#   # The parameters of 'glmnet'
+#   tuneGrid = expand.grid(alpha = 1, lambda = lambdas)
+# )
+
+  
+
+res = data.frame(lambda =  net_cv$lambda,
+                 mse = sqrt(net_cv$cvm))
+
+ggplot(res, aes(x = lambda, y = mse)) + 
+  geom_path()
+
+
+
+```
+
+### Data cleaning
+Repeat the data cleaning exercise from last week's lab. The point is to make sure that every observation is non-`NA` and all predictor variables have more than one value. Use `skimr::skim` on `Ames` to find predictors with only one value or are missing many values. Take them out, and use `na.omit` to ensure there are no `NA` values left. Check to make sure you still have at least 800 or so observations!
+
+### Predicive model
+For the assignment below, we'll use `glmnet::cv.glmnet` to estimate a LASSO model. Note that you're asked to state 16 predictors and 5 interactions. You can go beyond this. **Unlike our linear model building, complexity in LASSO is not controlled by writing out a bunch of formulas with more terms. It's in the lambda parameter.** So we write one formula and let lambda vary.
 
 ::: {.callout-note}
+## Exercise 1 of 1
 
-__EXERCISE 1__
+1. Clean your data as described above.
 
-0. Encode the outcome we're trying to predict (`y`, and not `default`) as a binary.
+2. Choose up to **16** predictor variables and clean your data so that no `NA` values are left
 
-1. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability.
+3. Choose at least 5 interactions between your predictor variables and print out the formula you'll use to predict `SalePrice`.
 
-2. Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).
+4. In your code, use `set.seed(24224)` so that your results will always be the same. Why do we need to set seed? When we (well, `glmnet::cvglmnet`) makes the Train and Test sample(s), it'll select them randomly. If you don't set seed, every time you run it, you'll get slightly different answers!
 
-3. Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. **Briefly discuss your findings.** How does the error rate, sensitivity, and specificity change as the number of predictors increases? 
+5. Using `glmnet::cv.glmnet` to estimate a LASSO model (see lecture notes this week) that predicts `SalePrice` given the observed data and using your formula. Slide 33 shows cross-validation using both `alpha` and `lambda` -- a LASSO model holds `alpha` fixed at `alpha = 1`. We'll search using `lambda` as our tuning parameter. Call the resulting object `net_cv`.
 
-A few hints:
+- To do this, you'll have to make a matrix to give to `cv.glmnet` in the `x` argument because it doesn't take a formula. You can use `model.matrix()` to create the matrix. Use that matrix as your `x`. It will not add the `SalePrice` variable to the `x` matrix -- you just have to give it `SalePrice` as the `y` variable.
 
-- If you are not getting a 2x2 confusion matrix, you might need to adjust your cutoff probability.
-- It might be the case that your model perfectly predicts the outcome variable when the setup cutoff probability is too high.
-- You need to make sure your predictions take the same possible values as the `actual` data (which, remember, you had to convert to a binary 0/1 variable)
+6. The resulting object will be a `glmnet` object. You can see the optimal lambda just by printing the object `print(net_cv)` and looking at the min value for Lambda. **Make sure the optimal (RMSE-minimizing) value of lambda is not the largest or smallest value of lambda you gave it**. If it is, then extend the range of lambdas until you get an interior solution. Following the instructions from our lecture note's **TRY IT**, extract the lambdas and their respective RMSE values into a data.frame and make a plot similar to the RMSE plot from lecture.
+
+7. Answer the following question: What is the optimal `lambda` based on the plot/data? Do you see a minimum point in the plot?
+
+8. Extracting the non-zero coefficients is a little tricky, but let's do it. We'll use the `coef` function to extract the coefficients. The `coef` function, when used on a `glmnet` object, takes the argument `s` which is the `lambda` value for which you'd like to extract coefficients. Our `s` value should be the best value of lambda, which we can extract from `net_cv$lambda.min`. Put those together: `coef(net_cv, s = net_cv$lambda.min)`. **This may be kinda long, that's OK**.
+
 
 :::
 
 
 
-```{r, echo=F, eval = F, include = F}
-library(caret)
-bank = bank %>%
-  dplyr::mutate(y = case_when(y == 'yes' ~ 'yes',
-                              balance>5000 ~ sample(c('yes','no'), size = sum(balance>500), prob = c(.75,.25))))
 
-bank_sample = sample(NROW(bank), size = trunc(.80*NROW(bank)))
-
-bank$y=ifelse(bank$y=='yes',1,0)
-bank_train = bank[bank_sample,]
-bank_test = bank[-bank_sample,]
-
-m1 = glm(y ~ ., bank_train, family = 'binomial')
-m2 = glm(y ~. + .^2, bank_train, family = 'binomial')
-m3 = glm(y ~ . + .^2 + age, bank_train, family = 'binomial')
-m4 = glm(y ~. + .^2 + age*marital + education, bank_train, family = 'binomial')
-
-confusionMatrix(table(predicted = ifelse(predict(m2, type = "response") > 0.5, "Yes", "No"),
-                      actual = ifelse(bank_train$y==1, "Yes", "No")),
-                      positive = "Yes")
-
-
-```

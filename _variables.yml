@@ -20,8 +20,8 @@ officehours:
   instructor: "Tuesday and Thursday 2:20-3:20 PM"
   instructorzoom: "[Zoom, (Passcode: GOGREEN)](https://msu.zoom.us/j/92054231037?pwd=OiRKvESN4M8ZbvjVbV5J9hLye9AA7G.1)"
   instructoroffice: "Old Botany 105"
-  TA: "TBA "
-  TAzoom: "[TBA](https://msu.zoom.us/j/92287215690)"
+  TA: "Friday 9:30-11:30 AM"
+  TAzoom: "[Old Botany B3 and via Zoom, (Passcode:EC242)](https://msu.zoom.us/j/95051017076)"
 
 email:
   instructor: "[jkirk@msu.edu](mailto:jkirk@msu.edu)"  
@@ -45,28 +45,29 @@ contactpolicy:
   instructor: "For individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
   
 blurbs:
-  homeworkdue: "All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative."
+  homeworkdue: "All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does."
   labtemplate: '[{{< fa file-arrow-down title="Download Assignment Template">}} Lab assignment template](/templates/EC242_Lab_Assignment_Template.Rmd)'
   writingtemplate: '[{{< fa file-arrow-down title="Download Weekly Writing Template">}} Weekly writing template](/templates/EC242_Weekly_Writing_Template.Rmd)'
   
 duedates:
-  lab1:  "Monday, January 20th"
-  lab2:  "Monday, January 27th"
-  lab3:  "Monday, February 3rd"
-  lab4:  "Monday, February 10th"
-  lab5:  "Monday, February 17th"
-  lab6:  "Monday, February 24th"
-  project1: "Saturday, March 1st, 11:59PM"
-  lab7:  "Monday, March 10th"
-  lab8:  "Monday, March 17th"
-  lab9:  "Monday, March 24th"
-  lab10: "Monday, March 31st"   # I usually allow longer for this one - Mon Nov 11
-  lab11: "Monday, April 7th"  # does not exist - bias vs variance
+  lab1:  "Monday, September 1st"
+  lab2:  "Monday, September 8th"
+  lab3:  "Monday, September 15th"
+  lab4:  "Monday, September 22nd"
+  lab5:  "Monday, September 29th"
+  lab6:  "Monday, October 6th"
+  project1: "Saturday, October 11th, 11:59PM"
+  lab7:  "Monday, October 13th"
+  lab8:  "Monday, October 27th"  # extra time due to fall break / proj 2
+  lab9:  "No Lab 9"
+  lab10: "Monday, November 3rd"   # I usually allow longer for this one - Mon Nov 11
+  lab11: "Monday, November 10th"  
   project2: "Saturday, April 12th, 11:59PM"
-  lab12: "Monday, April 14th"
-  lab13: "Monday, April 21st"
-  lab14: "Monday, April 28th"
-  finalproject: "Thursday, May 1st, 11:59PM"
+  lab12: "Monday, November 17th"
+  lab13: "Monday, Nobvember 24th"
+  lab14: "Monday, December 1st"
+  lab15: "Monday, December 8th"
+  finalproject: "Wednesday, December 10th, 11:59PM"
   
   
   
