@@ -182,11 +182,12 @@ I will automatically drop your two lowest weekly writings and your one lowest la
 ```{r assignments-grades, include=FALSE}
 assignments <- tribble(
   ~Points,  ~Assignment,
-  25      , "Class Participation",
-  12 * 8 , "Weekly Writings (14-2 x 8 ea), drop two lowest",
-  13 * 15 , "Labs (14-1 x 15 ea), drop one lowest",
-  50      , "Mini project 1",
-  50      , "Mini project 2",
+  30      , "Class Participation",
+  12 * 6 , "Weekly Writings (14-2 x 6 ea), drop two lowest",
+  13 * 12 , "Labs (14-1 x 12 ea), drop one lowest",
+  50      , "Project 1",
+  40      , "Project 2",
+  50      , "Project 3",
   135     , "Final project"
 ) %>%
   mutate(Percent = Points / sum(Points),
@@ -282,7 +283,17 @@ Violation of [MSU's Spartan Code of Honor](http://asmsu.msu.edu/home/initiatives
 ### Generative AI
 Generative AI is both a computing resource and potential avenue for cheating in violation of the Spartan Code of Honor (see Academic Integrity, below). For this course, some use of generative AI is permitted or forbidden as follows:
 
--	For the purposes of learning `R` coding, data cleaning and processing, visualization, and other coding applications of R, you are fully permitted to use ChatGPT or other generative AI models provided you indicate such a use at the top of your problem set, and include a comment `#Used Generative AI` in your code. When “stuck” on coding, I have always encouraged students to use Stack Overflow to find similar problems and then translate the found solutions into the problem at hand. It is one of the most important skills in coding. Generative AI facilitates this process, and thus is a tool. Since `R` itself is a tool to help you learn and apply the material, I view using generative AI for help in specific coding tasks as a suitable use. You must, in all cases, understand what your code is doing, and be able to justify its use. If you cannot tell me, on review, what a line of code is used for, then you have not used generative AI properly.
+For the purposes of learning `R` coding, data cleaning and processing, visualization, and other coding applications of R, you are fully permitted to use ChatGPT or other generative AI models **provided you do the following**:
+
+1. Indicate such a use at the top of your problem set, 
+
+2. Include a comment `#Used Generative AI` in each code chunk. When “stuck” on coding.
+
+3. Add a comment after **each line** describing briefly the purpose of that line in a manner that clearly illustrates your understanding of that line of code. For every line of code. 
+
+Use of generative AI without all three of the preceding requirements constitutes a serious violation of the MSU Spartan Code of Honor and an Academic Dishonesty Report *will* be filed.
+
+I have always encouraged students to use Stack Overflow to find similar problems and then translate the found solutions into the problem at hand. It is one of the most important skills in coding. Generative AI facilitates this process, and thus is a tool. Since `R` itself is a tool to help you learn and apply the material, I view using generative AI for help in specific coding tasks as a suitable use. You must, in all cases, understand what your code is doing, and be able to justify its use. If you cannot tell me, on review, what a line of code is used for, then you have not used generative AI properly.
 
 
 
