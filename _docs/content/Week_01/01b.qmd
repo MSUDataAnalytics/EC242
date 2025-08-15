@@ -12,7 +12,7 @@ library(tidyverse)
 ```
 
 
-# Frontmatter (Spring 2025)
+# Frontmatter ({{< var semester >}})
 I like to use this spot to publish course announcements. Not so much for y'all, but more so I remember. If you see any announcements that don't say "{{< var semester >}}" there's a good chance it's leftover from earlier course offerings. That's a reasonable indicator that you have jumped ahead... or... I forgot to edit something. 
 
 ### Participation extra credit

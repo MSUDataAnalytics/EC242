@@ -37,7 +37,7 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 ::: {.callout-note}
 ## New phone who dis?
 
-For one participation point, please email me [bbushong@msu.edu](mailto:bbushong@msu.edu) with the subject *[EC242] Who Dis*. In the message, tell me:
+For one participation point, please email me {{< var email.instructor >}} with the subject *[EC242] Who Dis*. In the message, tell me:
 
 - Name (with pronunciation guide)
 
@@ -51,7 +51,7 @@ For one participation point, please email me [bbushong@msu.edu](mailto:bbushong@
 
 :::
 
-This will count for three of your participation points.
+This will count for one of your participation points.
 
 
 
