@@ -17,7 +17,7 @@ names:
   instructorother: "Prof. Bushong"
 
 officehours: 
-  instructor: "Tuesday and Thursday 2:20-3:20 PM"
+  instructor: "Thursday 2:20-3:30 PM and Sunday nights via Slack"
   instructorzoom: "[Zoom, (Passcode: GOGREEN)](https://msu.zoom.us/j/92054231037?pwd=OiRKvESN4M8ZbvjVbV5J9hLye9AA7G.1)"
   instructoroffice: "Old Botany 105"
   TA: "Friday 9:30-11:30 AM"
@@ -34,7 +34,7 @@ url:
 slack:
   link: "[Slack](https://ec242.slack.com)"
   linkclean: "https://ec242.slack.com"
-  invite: "[Coming Soon]()"
+  invite: "[Join by Week 2 here](https://join.slack.com/t/ec242/shared_invite/zt-3bgwmkcrq-KmOtx~15mhfFla~_QpJRow)"
   # https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ Fall 2024 invite
 
 
@@ -62,10 +62,11 @@ duedates:
   lab9:  "No Lab 9"
   lab10: "Monday, November 3rd"   # I usually allow longer for this one - Mon Nov 11
   lab11: "Monday, November 10th"  
-  project2: "Saturday, April 12th, 11:59PM"
+  project2: "TBAh, 11:59PM"
   lab12: "Monday, November 17th"
   lab13: "Monday, Nobvember 24th"
   lab14: "Monday, December 1st"
+  project3: "TBA, 11:59PM"
   lab15: "Monday, December 8th"
   finalproject: "Wednesday, December 10th, 11:59PM"
   
