@@ -42,13 +42,14 @@ The TA will grade these mini-exercises using a very simple system:
 
 - ✔+: (*9.2 points (115%) in gradebook*) Work shows phenomenal thought and engagement with the course content. We will not assign these often.
 - ✔: (*8 points (100%) in gradebook*) Work is thoughtful, well-written, and shows engagement with the course content. This is the expected level of performance.
-- ✔−: (*4 points (50%) in gradebook*) Work is hastily composed, too short, and/or only cursorily engages with the course content. This grade signals that you need to improve next time. I will hopefully not assign these often.
+- ✔−: (*4 points (50%) in gradebook*) Work is hastily composed, too short, poorly formatted without headers, and/or only cursorily engages with the course content. This grade signals that you need to improve next time. I will hopefully not assign these often.
+- 0: (*0 points (0%) in gradebook*) Work is wholly uninformed by the prompt and/or written to the wrong prompt, or is not rendered using latex in Rmarkdown (e.g. html or word docs that are saved as pdf's).
 
 (There is an implicit 0 above for work that is not turned in by Saturday at 11:59pm). Notice that this is essentially a pass/fail or completion-based system. We're not grading your writing ability; we're not counting the exact number of words you're writing; and we're not looking for encyclopedic citations of every single reading to prove that you did indeed read everything. We are looking for thoughtful engagement. Read the material, engage with the work and you'll get a ✓.
 
 ### Weekly Writing Template
 
-You will turn these reflections in via D2L. You will write them using `R Markdown` and this template {{< var blurbs.writingtemplate >}}. You must `knit` your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc. 
+You will turn these reflections in via D2L. You will write them using `R Markdown` and this template {{< var blurbs.writingtemplate >}}. You must `knit` your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc. All work must be rendered using latex to PDF. Do **not** use word or html docs saved as a PDF. 
 
 
 
@@ -61,9 +62,10 @@ Please do not do labs more than one week ahead of time. **I am updating the assi
 
 For example, to practice working with **ggplot2** and making data-based graphics, you will complete a brief set of exercises over a few class sessions. These exercises will have 1–3 short tasks that are directly related to the topic for the week. You need to show that you made a good faith effort to work each question. There will also be a final question which requires significantly more thought and work. This will be where you get to show some creativity and stretch your abilities. Overall, labs will be graded the same check system:
 
-- ✔+: (*17.5 points (115%) in gradebook*) Exercises are complete. Every task was attempted and answered, and most answers are correct. Knitted document is clean and easy to follow. Work on the final problem shows creativity or is otherwise exceptional. We will not assign these often.
-- ✔: (*15 points (100%) in gradebook*) Exercises are complete and most answers are correct. This is the expected level of performance.
-- ✔−: (*7.5 points (50%) in gradebook*) Exercises are less than 70% complete and/or most answers are incorrect. This indicates that you need to improve next time. We will hopefully not assign these often.
+- ✔+: (*17.5 points (115%) in gradebook*) Exercises are complete. Every task was attempted and answered, and all answers are correct in detail. Knitted document is clean and easy to follow. Work on the final problem shows creativity or is otherwise exceptional. We will not assign these often.
+- ✔: (*15 points (100%) in gradebook*) Exercises are complete and most answers are correct. Document is correctly formatted with few minor formatting errors. This is the expected level of performance.
+- ✔−: (*7.5 points (50%) in gradebook*) Exercises are less than 70% complete and/or most answers are incorrect. Document is poorly formatted without appropriately rendered headers. This indicates that you need to improve next time. We will hopefully not assign these often.
+- 0: (*0 points (0%) in gradebook*) Exercises are less than 50% complete, are grossly incorrect, or clearly do not follow the questions. Knitted document is not rendered via latex to PDF.
 
 There is an implicit 0 for any assignment not turned in on time. If you have only partial work, then turn that in for partial credit. As noted in the syllabus, we are not grading your coding ability. We are not checking each line of code to make sure it produces some exact final figure, and we do not expect perfection. Also note that a ✓ does not require 100% success. You will sometimes get stuck with weird errors that you can't solve, or the demands of pandemic living might occasionally become overwhelming. We are looking for good faith effort. Try hard, engage with the task, and you'll get a ✓.
 

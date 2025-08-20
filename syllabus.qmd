@@ -14,7 +14,7 @@ library(tibble)
 library(pander)
 ```
 
-
+<!-- Note for Ben: I bumped up participation so it's now 6% of the grade (30 points, 5 points each for the first 6, then 1 point each (1/5th of a percent each) for additional up to 5 more points).  -->
 
 
 ## What is This Course?
@@ -109,15 +109,13 @@ Some gentle requests regarding office hours and on contacting me. First, my offi
 - TA Office Hours Zoom link: {{< var officehours.TAzoom >}}
 
 ### Slack
-We will use Slack as a forum for asking questions about the course, including course policies and, primarily, help questions with `R`. Students are encouraged to help answer each others' questions, and to use the forum as a first-step for seeking help. Myself and the TA will monitor slack and answer questions regularly. You must join our Slack channel with this link: {{< var slack.invite >}} by the end of Week 2 -- it counts for 1 point of participation. Once you have joined, bookmark our {{< var slack.link >}}.
+We will use Slack as a forum for asking questions about the course, including course policies and, primarily, help questions with `R`. Students are encouraged to help answer each others' questions, and to use the forum as a first-step for seeking help. Myself and the TA will monitor slack and answer questions regularly. You must join our Slack channel with this link: {{< var slack.invite >}} by the end of Week 2 -- it counts for 1 point of participation and is mandatory. Once you have joined, bookmark our {{< var slack.link >}}.
 
 One of the biggest advantages of using Slack is that you can take screenshots and paste them directly into your post (using *screenshot* on mac or *snipping tool* on Windows, set it to capture to your "clipboard").
 
 ::: {.callout-tip title="My DM's are closed"}
 Please ask your question in one of the coursewide channels so that our TA can answer when I am unavailable. You will receive a faster reply that way.
 :::
-
-Joining Slack counts towards course participation. I highly recommend you join.
 
 
 
@@ -166,19 +164,6 @@ Searching for help with `R` on Google can sometimes be tricky because the progra
 
 ## Evaluations and Grades
 
-Your grade in this course will be based on attendance/participation, labs, weekly writings, and a final project.
-
-The general breakdown will be approximately 55% for labs, participation, and weekly writings, and 45% for projects (see below for specific details). The primary focus of the course is a final project; this requires two "mini-projects" to ensure you're making satisfactory progress. Assignment of numeric grades will follow the standard, where ties (e.g., 91.5%) are rounded to favor the student. Evaluations (read: grades) are designed not to deter anyone from taking this course who might otherwise be interested, but will be taken seriously.
-
-Weekly writings are intended to be an easy way to get some points. Labs will be short homework assignments that require you to do something practical using `R`. You must have access to computing resources and the ability to program basic statistical analyses. If you are unprepared to implement basic statistical coding, please take (or retake) PLS202. I highly encourage seeking coding advice from those who instruct computer science courses – it’s their job and they are better at it than I am. I’ll try to provide a good service, but I'm really not an expert in computer science.
-
-More in-depth descriptions for all the assignments are on the [assignments page](/assignment/). As the course progresses, the assignments themselves will be posted within that page.
-
-### Dropping your lowest scores {#sec-dropone}
-I will automatically drop your two lowest weekly writings and your one lowest lab assignment score. This allowance absorbs any personal issues, travel problems, computing issues, or non-excused medical issues that may preclude you from completing your assignment on time. If you request an extension or exemption, I will politely point you here.
-
-### Grade Rubric
-
 ```{r assignments-grades, include=FALSE}
 assignments <- tribble(
   ~Points,  ~Assignment,
@@ -195,12 +180,27 @@ assignments <- tribble(
 
 grading <- tribble(
   ~Grade, ~Range,  ~Grade1, ~Range1,
-  "4.0",  "92-100%", "2.0",  "72-76%",
-  "3.5", "87-91%",  "1.5", "67-72%",
-  "3.0", "82-87%",  "1.0", "62-67%",
-  "2.5",  "77-81%",  "0.0",  "bad-66%",
+  "4.0",  "94-100%", "2.0",  "72-76%",
+  "3.5", "88-93%",  "1.5", "66-71%",
+  "3.0", "83-87%",  "1.0", "58-65%",
+  "2.5",  "77-82%", "0.0",  "<58%",
 )
+
+labsParticipationWriting = sum(assignments %>% dplyr::filter(grepl(Assignment, pattern = 'Participation|Writings|Labs')) %>% pull(Points))/sum(assignments$Points)
+everythingElse = 1-labsParticipationWriting
 ```
+Your grade in this course will be based on attendance/participation, labs, weekly writings, and a final project.
+
+The general breakdown will be approximately `r scales::percent(labsParticipationWriting)` for labs, participation, and weekly writings, and `r scales::percent(everythingElse)` for projects (see below for specific details). The primary focus of the course is a final project; this requires "mini-projects" to ensure you're making satisfactory progress. Assignment of numeric grades will follow the standard, where ties (e.g., 91.5%) are rounded to the nearest whole number. Evaluations (read: grades) are designed not to deter anyone from taking this course who might otherwise be interested, but will be taken seriously.
+
+Weekly writings are intended to be an easy way to get some points. Labs will be short homework assignments that require you to do something practical using `R`. You must have access to computing resources and the ability to program basic statistical analyses. If you are unprepared to implement basic statistical coding, please take (or retake) PLS202. I highly encourage seeking coding advice from those who instruct computer science courses – it’s their job and they are better at it than I am. I’ll try to provide a good service, but I'm really not an expert in computer science.
+
+More in-depth descriptions for all the assignments are on the [assignments page](/assignment/). As the course progresses, the assignments themselves will be posted within that page.
+
+### Dropping your lowest scores {#sec-dropone}
+I will automatically drop your two lowest weekly writings and your one lowest lab assignment score. This allowance absorbs any personal issues, travel problems, computing issues, or non-excused medical issues that may preclude you from completing your assignment on time. If you request an extension or exemption, I will politely point you here.
+
+### Grade Rubric
 
 <div class="centered-table">
 
@@ -246,6 +246,9 @@ Grading: **come to class.**
 
 ...of course, failing to turn in assignments or skirting effort on the projects can lead to a grade dramatically **lower** than just a 2.0.
 
+### Rounding
+
+All grade ranges are applied after rounding off to the nearest integer. Please do not ask for special rounding favors. There are many ways to gain extra points in this class via participation. Place your efforts there.
 
 ### Grading Appeals
 
@@ -255,9 +258,9 @@ All grades are considered final. Any request for a re-grade beyond simple point-
 
 <!-- Participation can take many forms in an online synchronous course. Most preferred is active participation during class using the Zoom chat and hand-raising with camera and mic on. However, I know that myriad reasons may preclude you from this participation. The bare minimum can best be described as “showing your presence and having some engagement” – questions typed in chat and questions posed after class count towards participation. To encourage some form of participation, I will often pose questions to the class. I am not above bribery - your response to these extra credit questions will earn extra credit points, up to 5, for participation. Thus, you can easily pad your score by (1) meeting the minimum participation requirements such that I know you are present, and (2) earning extra credit by responding (through chat or mic, with or without video) to in-class extra credit prompts. I will clearly state which questions are extra credit. Wrong answers get the same credit as right answers. We are here to learn. If you knew everything already, you wouldn’t be in the class. -->
 
-Participation can take many forms. Most preferred is active participation during class -- asking clarifying questions or responding to lecture questions. In the latter half of the semester, we will work in groups in class on small coding exercises and will share results at the end. Sharing your group's results and code will always count towards participation. Finally, I will often ~~bribe~~ give extra credit points for answering specific questions in class, which I will clearly state as extra credit. Wrong answers get the same credit as right answers. We are here to learn . If you knew everything already, you wouldn't be in the class.
+Participation can take many forms. Most preferred is active participation during class. I will consistently ~~bribe~~ give participation credit points for answering specific questions in class, which I will clearly state as being for-credit. Wrong answers get the same credit as right answers. We are here to learn. If you knew everything already, you wouldn't be in the class. In the latter half of the semester, we will work in groups in class on small coding exercises and will share results at the end. Sharing your group's results and code will also count towards participation.
 
-We are a sizable class, so participation points will be awarded using EC slips which you will be able to turn into me (with your name on it) at the end of class. That way, I don't slow down the class trying to write down everyone's names.
+We are a sizable class, so participation points will be awarded using EC slips which you will be able to turn into me (with your name on it) at the end of class. That way, I don't slow down the class trying to write down everyone's names. Each of the slips is worth one percentage point of your grade in participation (e.g. if participation is 6% of your grade, you need to earn 6 to get full participation credit). If you go beyond that (and I hope you do), each slip is worth 1/5th of the credit, with a cap of 5 percentage points of extra credit.
 
 
 ### Success in this Course
