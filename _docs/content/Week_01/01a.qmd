@@ -18,7 +18,7 @@ In class today, we'll talk about the course, review the syllabus, and check your
 But first...who likes ice cream? [RSVP Here](https://bit.ly/4mHSsil)
 
 ```{r, echo=F, out.width='80%'}
-knitr::include_graphics(here('images','2025_IceCream.png'))
+knitr::include_graphics(here('images','Slide1.png'))
 ```
 
 [RSVP Here](https://bit.ly/4mHSsjl)
