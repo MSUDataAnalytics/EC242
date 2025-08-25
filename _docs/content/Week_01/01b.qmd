@@ -11,6 +11,8 @@ library(tidyverse)
 # readr::write_csv(gapminder::gapminder, here::here("data", "gapminder.csv"))
 ```
 
+<!-- Fall 2025: We had some really bad saving workspace recs, and we didn't really hit on the importance of "code flow" in RMD, so I added some discussion on that, and removed a rec that you save your workspace (yikes!) -->
+
 
 # Frontmatter ({{< var semester >}})
 I like to use this spot to publish course announcements. Not so much for y'all, but more so I remember. If you see any announcements that don't say "{{< var semester >}}" there's a good chance it's leftover from earlier course offerings. That's a reasonable indicator that you have jumped ahead... or... I forgot to edit something. 
@@ -70,7 +72,9 @@ In class, you'll likely want to copy bits of code into a blank document and, at 
 ### Rmarkdown
 Rmarkdown lets us combine the processing and output from R code with text and headers written in plain english, which lets us *do something* in code and then *show it and discuss it* in one place.
 
-An .Rmd (Rmarkdown document) like your [lab and weekly writing templates](/assignment/) has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, "code chunks" that are processed by R. And third, markdown text that is processed as normal text (via markdown langugage). You do work in code chunks, the output is included in the document, and you discuss the results in-line. Make sure you read [using Rmarkdown](/resource/rmarkdown.html) and [using markdown](/resource/markdown.html) before you do your first weekly reading.
+An .Rmd (Rmarkdown document) like your [lab and weekly writing templates](/assignment/) has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, "code chunks" that are processed by R. And third, markdown text that is processed as normal text (via markdown langugage). You do work in code chunks, the output is included in the document, and you discuss the results in-line. When you render your document using the "knit" button, R will construct the final PDF output by running code chunks in order, and merging their output with your text. Make sure you read [using Rmarkdown](/resource/rmarkdown.html) and [using markdown](/resource/markdown.html) before you do your first weekly reading.
+
+The header on the code chunk tells Rstudio what language to use to run the chunk (`r`), and can take some settings for displaying output. The one you want to know now is `echo=T`. When this is `TRUE` (the document's default), then knitting will include a copy of your code along with the output. Don't change this to `FALSE` or I can't see your work when grading.
 
 ![A code chunk in a .Rmd](01b_insertimage_2.png)
 
@@ -78,13 +82,15 @@ Your R code goes here in these "chunks". In the upper right, you'll see a green 
 
 This is very useful when you are iterating through steps to develop your code. Running a code chunk will show you the output from that code chunk, which is what will drop into your .Rmd file when you knit it. Note that you can also highlight code and use CTRL+ENTER (or CMD+ENTER for macs) to run code. 
 
-The header on the code chunk tells Rstudio what language to use to run the chunk (`r`), and can take some settings for displaying output. The one you want to know now is `echo=T`. When this is `TRUE` (the document's default), then knitting will include a copy of your code along with the output. Don't change this to `FALSE` or I can't see your work when grading.
+**Code Flow**: Your script needs to contain all the steps you have taken to complete the assignment (or create your group project, etc.). For each assignment, you will have a single script that can run "from the top" and generate your results. You will be primarily working with an Rmarkdown file, so all your R progress, from loading packages and data to the final plot or output, will be in code chunks with your written answers in between.
+
+It is important to get a grasp on this paradigm -- all code chunks are processed in order (a "flow"), and early code chunks influence later code chunks. All work has to be in the code, and it has to be in sequential order -- if you refer to an object in the 3rd code chunk from the 2nd chunk, you'll get an error, even though your local environment may have that object in it. When you "knit" your script, it runs from a fresh, clean, empty state, and your environment is not accessible to it. Any work you do directly into the console will not apply when you run your code from the top. You can work in the console, but it's absolutely **vital** that you then copy your work to a code chunk. This will be a source of frustration while you get used to the paradigm of **code flow**.
+
 
 ### `install.packages()`
-You should never, ever have `install.packages()` in your recorded code (in your "code" file if using an R script, or in your code chunks in a .Rmd). If it's in your .Rmd file, when you "knit", it'll try to install the packages and will get very confused. I saw a lot of `install.packages()` in code, so make sure to take them out.
+R uses packages to add functionality. Much of R is really based on additional functionality (with "Base R" being a fairly stripped-down set of functions). As such, we'll need to install some packages. We'll state which packages are needed at the top of every unit and assignment. You need only install a package *once* on your computer, and (counter-intuitive to our discussion on code flow), you should never, ever have `install.packages()` in your recorded code (in your "code" file if using an R script, or in your code chunks in a .Rmd). If it's in your .Rmd file, when you "knit", it'll try to install the packages and will get very confused and throw an error. To install a package, you type (directly in the console) `install.packages('packageName')`. 
 
-To use a package, you include (in your .Rmd) `library(packageName)`. That goes in your code, usually first thing.
-
+To **use** a package, you include (in your .Rmd, usually in the first code chunk) `library(packageName)`. 
 
 Now, on to the use of `R`
 
@@ -309,9 +315,6 @@ Please do not save your workspace this way because, as you start working on diff
 
 ### Motivating scripts
 
-Instead of saving your workspace, you save the *work process* in your script. That is, your script contains all the steps you have taken to complete the assignment. For each lab assignment or group project, you will have a single script that can run "from the top" and generate your results. You will be primarily working with an Rmarkdown file, so all your R progress, from loading packages and data to the final plot or output, will be in code chunks with your written answers in between.
-
-It is important to get a grasp on this paradigm -- all code chunks are processed in order (a "flow"), and early code chunks influence later code chunks. All work has to be in the code, and it has to be in sequential order -- if you refer to an object in the 3rd code chunk from the 2nd, you'll get an error (even though your local environment may have that object in it). When you "knit" your script, it runs from a fresh, clean, empty state.
 
 Let's take a simple approach to this. To solve another equation such as $3x^2 + 2x -1$, we can copy and paste the code above and then redefine the variables and recompute the solution:
   
