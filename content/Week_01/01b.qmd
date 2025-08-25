@@ -11,6 +11,8 @@ library(tidyverse)
 # readr::write_csv(gapminder::gapminder, here::here("data", "gapminder.csv"))
 ```
 
+<!-- Fall 2025: We had some really bad saving workspace recs, and we didn't really hit on the importance of "code flow" in RMD, so I added some discussion on that, and removed a rec that you save your workspace (yikes!) -->
+
 
 # Frontmatter ({{< var semester >}})
 I like to use this spot to publish course announcements. Not so much for y'all, but more so I remember. If you see any announcements that don't say "{{< var semester >}}" there's a good chance it's leftover from earlier course offerings. That's a reasonable indicator that you have jumped ahead... or... I forgot to edit something. 
@@ -302,15 +304,18 @@ For more advice, we highly recommend studying (Hadley Wickham's style guide)[htt
 
 ### Saving your workspace
 
-Values remain in the workspace until you end your session or erase them with the function `rm`. But workspaces also can be saved for later use. In fact, when you quit R, the program asks you if you want to save your workspace. If you do save it, the next time you start R, the program will restore the workspace.
+Values remain in the workspace until you end your session or erase them with the function `rm`. But workspaces also can be saved for later use. In fact, when you quit R, the program asks you if you want to save your workspace. 
 
-We actually recommend against saving the workspace this way because, as you start working on different projects, it will become harder to keep track of what is saved. Instead, we recommend you assign the workspace a specific name. You can do this by using the function `save` or `save.image`. To load, use the function `load`. When saving a workspace, we recommend the suffix `rda` or `RData`. In RStudio, you can also do this by navigating to the _Session_ tab and choosing _Save Workspace as_. You can later load it using the _Load Workspace_ options in the same tab.
-You can read the help pages on  `save`, `save.image`, and  `load` to learn more.
+Please do not save your workspace this way because, as you start working on different projects, it will become harder to keep track of what is saved. You won't remember how you got to the point you're at, and you won't be able to replicate it. So please do not save your workspace.
 
 
 ### Motivating scripts
 
-To solve another equation such as $3x^2 + 2x -1$, we can copy and paste the code above and then redefine the variables and recompute the solution:
+Instead of saving your workspace, you save the *work process* in your script. That is, your script contains all the steps you have taken to complete the assignment. For each lab assignment or group project, you will have a single script that can run "from the top" and generate your results. You will be primarily working with an Rmarkdown file, so all your R progress, from loading packages and data to the final plot or output, will be in code chunks with your written answers in between.
+
+It is important to get a grasp on this paradigm -- all code chunks are processed in order (a "flow"), and early code chunks influence later code chunks. All work has to be in the code, and it has to be in sequential order -- if you refer to an object in the 3rd code chunk from the 2nd, you'll get an error (even though your local environment may have that object in it). When you "knit" your script, it runs from a fresh, clean, empty state.
+
+Let's take a simple approach to this. To solve another equation such as $3x^2 + 2x -1$, we can copy and paste the code above and then redefine the variables and recompute the solution:
   
 ```{r, eval=FALSE}
 a <- 3
@@ -320,15 +325,17 @@ c <- -1
 (-b - sqrt(b^2 - 4*a*c)) / (2*a)
 ```
 
-By creating and saving a script with the code above, we would not need to retype everything each time and, instead, simply change the variable names. Try writing the script above into an editor and notice how easy it is to change the variables and receive an answer.
+By creating a script with the code above, we would not need to retype everything each time (or in subsequent chunks) and, instead, simply change the variable names. Try writing the script above into an editor and notice how easy it is to change the variables and receive an answer.
 
 The answer you get from the 4th and 5th lines will depend on the values of `a`, `b`, and `c`. **If** you were to type new numbers directly into your console: `c = 5.33` then re-run the last two lines, you will get a different answer. Your R "environment" is affected by what is run from a script **and** by what you type in the console. It is good (and necessary) practice to write all your code in a script (or in your Rmarkdown document), and run from the script. Always. Periodically running a script fresh from the start (clearing everything out of the environment first) is a good idea as well. 
+
+
 
 ::: {.callout-note}
 
 ## Try it!
   
-  1. What is the sum of the first 100 positive integers? The formula for the sum of integers $1$ through $n$ is $n(n+1)/2$. Define $n=100$ and then use `R` to compute the sum of $1$ through $100$ using the formula. What is the sum?
+  1. Let's think about how the order of code (within or between code chunks) is important: What is the sum of the first 100 positive integers? The formula for the sum of integers $1$ through $n$ is $n(n+1)/2$. Define $n=100$ and then use `R` to compute the sum of $1$ through $100$ using the formula. What is the sum?
   
   2. Now use the same formula to compute the sum of the integers from 1 through 1,000.
 
