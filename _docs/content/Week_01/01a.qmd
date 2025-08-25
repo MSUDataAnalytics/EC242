@@ -15,7 +15,7 @@ library(tidyverse)
 # Welcome to EC242
 In class today, we'll talk about the course, review the syllabus, and check your installation of R, RStudio, and `tinytex` to ensure you're good to go on assignments.
 
-But first...who likes ice cream? [RSVP Here](https://bit.ly/4mHSsil)
+But first...who likes ice cream?
 
 ```{r, echo=F, out.width='80%'}
 knitr::include_graphics(here('images','Slide1.png'))
