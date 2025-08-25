@@ -12,6 +12,16 @@ library(tidyverse)
 <!-- had to delete ggflags  -->
 
 
+# Welcome to EC242
+In class today, we'll talk about the course, review the syllabus, and check your installation of R, RStudio, and `tinytex` to ensure you're good to go on assignments.
+
+But first...who likes ice cream? [RSVP Here](https://bit.ly/4mHSsil)
+
+```{r, echo=F, out.width='80%'}
+knitr::include_graphics(here('images','2025_IceCream.png'))
+```
+
+[RSVP Here](https://bit.ly/4mHSsjl)
 
 # Readings  
 
@@ -25,8 +35,8 @@ Your readings will be assigned each week in this area. For this initial week, pl
 
 For future lectures, the guiding questions will be more pointed and at a higher level to help steer your thinking. Here, we want to ensure you remember some basics and accordingly the questions are straightforward.
 
+- What is this course about?
 - How does this course work?
-- Do you remember anything about `R`?
 - Do you have a working `R` installation on your computer, along with Rstudio and `tinytex`?
 
 
@@ -37,7 +47,7 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 ::: {.callout-note}
 ## New phone who dis?
 
-For one participation point, please email me {{< var email.instructor >}} with the subject *[EC242] Who Dis*. In the message, tell me:
+For one participation point, please email me {{< var email.instructor >}} with the subject *[EC242] Who Dis* (use exactly this subject!). In the message, tell me:
 
 - Name (with pronunciation guide)
 
@@ -53,32 +63,6 @@ For one participation point, please email me {{< var email.instructor >}} with t
 
 This will count for one of your participation points.
 
-
-
-### Please ask questions during class.
-
-- Many ideas will be new.
-
-- Sometimes (often?) the material itself will be confusing or interesting---or both!
-
-- **Note:** If I find that attendance is terrible, I may have to start incorporating attendance into participation.
-
-I encourage measured feedback and thoughtful responses to questions. If I call on you and you don't know immediately, don't freak out. If you don't know, it's totally okay to say you don't know.
-
-
-### Things To Remember (tl;dr)
-
-Do your weekly writing due **Saturday**. Begin working on Lab 1 as it is due Monday.
-
-Keys from the [syllabus](/syllabus/):
-
-- E-mail isn't the ideal solution for technical problems
-  - If you do send an email, please start it with `[EC242]` and the subject.
-- No appointments necessary for regularly scheduled office hours; or by appointment and via Slack
-- TA office hours are great as well. Our TA has experience in this course.
-- Notify me immediately if you need accommodations because of RCPD or religious convictions; If you approach me at the last minute, I may not be able to help.
-
-Despite my hard-assness in these introductory notes: I'm here to help and I am not in the business of giving bad grades for no reason.
 
 
 # What is "Data Analytics"?
@@ -289,6 +273,8 @@ dat %>%
 ```
 You might want to look into the underlying data (in this case, fabricated) and think about what to do next. In this sense, you have *learned from data*. The data provides directions for exploration and clues as to potential explanations.
 
+
+
 ##  Case study 2: US homicides by firearm
 
 Imagine you live in Europe (if only!) and are offered a job in a US company with many locations in every state. It is a great job, but headlines such as **US Gun Homicide Rate Higher Than Other Developed Countries**^[http://abcnews.go.com/blogs/headlines/2012/12/us-gun-ownership-homicide-rate-higher-than-other-developed-countries/] have you worried. Fox News runs a scary looking graphic, and charts like the one below only add to you anxiety:
@@ -359,16 +345,16 @@ fifty_states <- map_data("state")
 data(murders)
 murders %>% mutate(murder_rate = total/population*10^5,
                   state = tolower(state),
-                  colors= factor(ceiling(pmin(murder_rate, 9)))) %>%
+                  colors= factor(ceiling(pmin(murder_rate, 6)))) %>%
   ggplot(aes(map_id = state)) +
   geom_map(aes(fill = colors), color = "black", map = fifty_states) +
   expand_limits(x = fifty_states$long, y = fifty_states$lat) +
   coord_map() +
   scale_x_continuous(breaks = NULL) +
   scale_y_continuous(breaks = NULL) +
-  labs(x = "", y = "") +
+  labs(x = "", y = "", fill = 'Murders\nPer 100k') +
   theme(panel.background = element_blank()) +
-  scale_fill_brewer(guide='none') +
+  scale_fill_brewer(labels = c('<1','1-2','2-3','3-4','4-5','6+')) +
   theme_minimal()
 rm(fifty_states)
 ```
@@ -380,13 +366,48 @@ California, for example, has a larger population than Canada, and 20 US states h
 # tweet_screenshot(tweet_url("realdonaldtrump", "1267246821597941764"))
 ```
 
-This is a relatively simple and straightforward problem in social science: you have options of where to live, and want to determine the safety of the various states. Your "research" is clearly policy-relevant: you will eventually have to live somewhere. In this course, we will begin to tackle the problem by examining data related to gun homicides in the US during 2010 using `R` as a motivating example along the way.
+This is a relatively simple and straightforward problem in social science: you have options of where to live, and want to determine the safety of the various states. Your "research" is clearly policy-relevant: you will eventually have to live somewhere. In this course, we will begin to tackle the problem by examining data related to gun homicides in the US using `R` as a motivating example along the way.
 
 Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced `R` skills. Ideally, this is a refresher. However, we are aware that your preparation in previously courses varies greatly from student to student. Moreover, we want you to be aware that the usefulness of some of these early building blocks may not be immediately obvious. Later in the class you will appreciate having these skills. Mastery will be rewarded both in this class and (of course) in life.
 
 
-### The Pre-Basics
+## Now, some class business
+
+
+### Please ask questions during class.
+
+- Many ideas will be new.
+
+- Sometimes (often?) the material itself will be confusing or interesting---or both!
+
+- **Note:** If I find that attendance is terrible, I may have to start incorporating attendance into participation.
+
+I encourage measured feedback and thoughtful responses to questions. If I call on you and you don't know immediately, don't freak out. If you don't know, it's totally okay to say you don't know.
+
+
+
+
+### Let's review the [syllabus](/syllabus/)
+
+
+
+### Things To Remember (tl;dr)
+
+Do your weekly writing due **Saturday**. Begin working on Lab 1 as it is due Monday.
+
+Keys from the [syllabus](/syllabus/):
+
+- E-mail isn't the ideal solution for technical problems
+  - If you do send an email, please start it with `[EC242]` and the subject.
+- No appointments necessary for regularly scheduled office hours; or by appointment and via Slack
+- TA office hours are great as well. Our TA has experience in this course.
+- Notify me immediately if you need accommodations because of RCPD or religious convictions; If you approach me at the last minute, I may not be able to help.
+
+Despite my hard-assness in these introductory notes: I'm here to help and I am not in the business of giving bad grades for no reason.
+
+
+### And finally, the Pre-Basics
 
 We've now covered a short bit of material. The remainder of this first lecture will be covering setting up `R` and describing some common errors. For this, we'll head over to [resources](/resource/) to install R, RStudio, and `tinytex`. 
 
-If you leave class without a working installation of these pieces of software, then you are likely to run into trouble in completing your first assignments.
+*If you leave class without a working installation of these pieces of software, then you are likely to run into trouble in completing your first assignments.* It will also be very evident that you shirked the one required thing (ok, second required thing after "Who Dis...") we had to do today. So let's install R.

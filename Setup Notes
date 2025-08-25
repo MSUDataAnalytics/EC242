@@ -107,6 +107,28 @@ Use the _quarto render section to set what to render (and what not to render). U
 
 
 
+## Copying Files from OneDrive
+Justin got annoyed at needing to move images from my work MacBook to my desktop D: drive containing the EC242 project, so I made the following function and saved it in my .Rprofile:
+
+                
+                copyFromOneDrive<-function(){
+                  fromOneDrive = "C:\\Users\\jkirk\\OneDrive - Michigan State University\\Teaching\\OneDrive_to_EC242_Portal"
+                  toD = 'D:\\Courses\\EC242\\Images'
+                  allFilesInOneDrive = list.files(fromOneDrive, full.names = T)
+                  allFilesInD = list.files(toD, full.names=T)
+                  
+                  filesToCopy = allFilesInOneDrive[!basename(allFilesInOneDrive) %in% basename(allFilesInD)]
+                  print('Copying the following files')
+                  print(filesToCopy)
+                  
+                  for(ff in filesToCopy){
+                    file.copy(ff, file.path(toD, basename(ff)), overwrite = TRUE )
+                  }
+                }
+If you want to use it, change fromOneDrive to your one drive. I don't know if the .Rprofile is part of the github.                
+                
+
+
 
 
 #### STILL TO DO
