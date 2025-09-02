@@ -310,6 +310,7 @@ window.Quarto = {
 </header>
 
 
+<!-- # post-F25, I updated the exercises to have tryi-it callout boxes as in Assignment 2 -->
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -610,6 +611,7 @@ which we can confirm with a table:
 
 
 
+
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -635,7 +637,9 @@ head(data.frame(s_n = s_n, formula = n*(n+1)/2))
 
 
 
+
 We can also overlay the two results by using the function `lines` to draw a line over the previously plotted points:
+
 
 
 
@@ -651,6 +655,7 @@ lines(n, n*(n+1)/2)
 ![](01-assignment_files/figure-html/s_n-v-n-1.png){width=672}
 :::
 :::
+
 
 
 
@@ -703,7 +708,7 @@ lines(n, n*(n+1)/2)
 <ul>
 <li><p>Change the title to “Lab 1”</p></li>
 <li><p>Put your name on it</p></li>
-<li><p>Leave the date alone. That little <code>"14 January, 2025"</code> will ask R to return the date (with M-D-Y formatting), which Rmarkdown will put in as if you had typed in the actual date. <strong>Note - if your system time is rendered in unicode characters (which may be the case in some languages), you will get an error</strong>. If this happens, you’ll have to manually change the date in the header along with your name.</p></li>
+<li><p>Leave the date alone. That little <code>"02 September, 2025"</code> will ask R to return the date (with M-D-Y formatting), which Rmarkdown will put in as if you had typed in the actual date. <strong>Note - if your system time is rendered in unicode characters (which may be the case in some languages), you will get an error</strong>. If this happens, you’ll have to manually change the date in the header along with your name.</p></li>
 <li><p>When you type <code>## 1. Text of...</code>, Markdown will recognize “1. Text of” as a header and will <em>automatically</em> make it big, but only if you (i) start at the beginning of a line, and (ii) put a space after the last <code>#</code>. Check your work to make sure your headings are rendered right.</p>
 <ul>
 <li>Please copy the number and text of the question you are answering here.</li>
@@ -724,6 +729,16 @@ lines(n, n*(n+1)/2)
 </section>
 <section id="exercises" class="level1">
 <h1>EXERCISES</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+All exercises (1 to 11)
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ol type="1">
 <li><p>In your first code chunk, load the package library <code>tidyverse</code>, which you will need for Question 8. Always load all your package libraries at the top, in the first code chunk!</p></li>
 <li><p>What will this conditional expression return and why?</p></li>
@@ -769,6 +784,8 @@ lines(n, n*(n+1)/2)
 <li><p>Create a data.frame holding <span class="math inline">\(n\)</span> and <span class="math inline">\(S_n\)</span>. Plot <span class="math inline">\(S_n\)</span> versus <span class="math inline">\(n\)</span>. Use points defined by <span class="math inline">\(n=1,\dots,25\)</span>.</p></li>
 <li><p>Confirm that the equivalent formula for this sum is <span class="math inline">\(S_n= n(n+1)(2n+1)/6\)</span>. To do so, compare whether <code>compute_s_n</code> gives the same result for the vector <code>s_n</code> as the equivalent formula for the sum.</p></li>
 </ol>
+</div>
+</div>
 
 
 </section>

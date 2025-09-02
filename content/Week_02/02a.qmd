@@ -23,6 +23,13 @@ output:
 
 ## Some Reminders
 
+```{r, echo=F, out.width='80%'}
+knitr::include_graphics(here('images','Slide1.png'))
+```
+
+[RSVP Here](https://bit.ly/4mHSsjl)
+
+
 ### Your labs
 - Start labs early!
   - They are not trivial.
@@ -50,17 +57,6 @@ We will often do some shared coding results -- you'll be asked to execute some c
 I have set up a Zoom room with a short link: {{< var url.bitly >}}.
 
 We'll use that link/zoom room all semester to share screen (since this room doesn't have a screen sharing protocol).
-
-For instance, last week we ran into the following try-it:
-
-::: {.callout-note}
-### TRY IT
-
-1. What is the sum of the first 100 positive integers? The formula for the sum of integers $1$ through $n$ is $n(n+1)/2$. Define $n=100$ and then use `R` to compute the sum of $1$ through $100$ using the formula. What is the sum?
-  
-:::
-
-I didn't read my own notes closesly and thought we needed `seq(...)` or the shortcut `1:100` to do this, but we actually don't because we are given the equation $n(n+1)/2$. So, let's try out our first **TRY-IT** and ask everyone to calculate the sum of the numbers 1 to 100 ($n=100$) using both the formula above, and the `seq(...)` function to sum up the numbers 1 to 100.
 
 
 
