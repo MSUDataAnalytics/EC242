@@ -10,6 +10,13 @@ output:
     toc: true
 ---
 
+<!-- Notes after F25: -->
+
+<!-- - Reveal the code on the re-order example towards the end. (DONE) -->
+<!-- - The "align comparable things" notion is spread out all over the end. Focus the purpose of faceting, THEN introduce the alignment concept. -->
+
+
+
 
 ### Readings
  
@@ -427,7 +434,7 @@ murders %>% mutate(murder_rate = total / population * 100000) %>%
 
 The `reorder` function lets us reorder groups as well. Earlier we saw an example related to income distributions across regions. Here are the two versions plotted against each other:
 
-```{r reorder-boxplot-example, out.width="100%", echo=FALSE}
+```{r reorder-boxplot-example, out.width="100%", echo=TRUE}
 past_year <- 1970
 p1 <- gapminder %>%
   mutate(dollars_per_day = gdp/population/365) %>%
@@ -451,7 +458,7 @@ p2 <- gapminder %>%
 grid.arrange(p1, p2, nrow=1)
 ```
 
-The first orders the regions alphabetically, while the second orders them by the group's median.
+The first orders the regions alphabetically, while the second orders them by the group's median (the line on the boxplot is at the median). Note that `median` is an R function that does exactly what you think it'll do: returns the median of a vector of numbers. `mean` works too as this is an R function. You can make your own function and use it as the `FUN` argument, too, it just has to be able to operate with only one argument, the vector of data.
 
 
 
@@ -569,12 +576,12 @@ p2
 
 We still have `count` on the y-axis, so we didn't switch to density (though it would look the same). Instead, we rescaled the y-axis, which gives us a different perspective but still contains the count information.
 
-If we want the more compact summary provided by boxplots, we then align them horizontally since, by default, boxplots move up and down with changes in height. Following our _show the data_ principle, we then overlay all the data points:
+If we want the more compact summary provided by boxplots, we then align them horizontally since, by default, boxplots move up and down with changes in reported height. Following our _show the data_ principle, we then overlay all the data points:
 
 ```{r boxplot-with-points-with-jitter, echo=TRUE}
 p3=heights %>%
   ggplot(aes(sex, height)) +
-  geom_boxplot(coef=3) +
+  geom_boxplot(coef=3) + # length of whiskers
   geom_jitter(width = 0.1, alpha = 0.2) +
   ylab("Height in inches")
 
