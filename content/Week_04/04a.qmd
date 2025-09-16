@@ -1,7 +1,6 @@
 ---
 title: "Visualizations in Practice"
 linktitle: "4: Visualization II"
-read_date: "2025-02-04"
 menu:
   content:
     parent: Course content
@@ -212,6 +211,24 @@ p + geom_point(aes(color = region), size = 3) +
 ```
 
 We don't need the decimals on the y-axis labels, it's just there for illustration.
+
+### Axis tick label orientation
+
+While the `label_comma` kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the `theme()` call since it adjusts the layout or styling of the plot. Here, I've put in a bunch of breaks at 1 million to 40 million, and then asked `ggplot` to rotate and adjust the x-axis tick labels. `hjust` and `vjust` move the orientation of the output. `angle` changes the orientation.
+
+```{r, echo=TRUE}
+p + geom_point(aes(color = region), size = 3) +
+  geom_text(nudge_x = .05) +
+  scale_x_log10(breaks = c(1,2,3,4,5,10,15,20,25,30, 40)*1000000, labels= scales::label_comma()) +
+  scale_y_log10(breaks = c(0,50, 100, 721, 1000,1500), 
+                     labels = scales::label_comma(accuracy=1),
+                     minor_breaks = NULL) +
+  labs(x = 'Population', y = 'Total murders', color = 'US Region') + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+```
+
+Note that rotating the axis text unfortunately doesn't allow the labeler to add more breaks by default (leaving `breaks = ...` empty wouldn't add more breaks to the x axis). Also, `?element_text` will let you see the other things you can change (color, font family)
+
 
 
 

@@ -1,7 +1,6 @@
 ---
 title: "Visualizations"
 linktitle: "4: Visualization III"
-read_date: "2025-02-06"
 draft: false
 lastmod: "`r Sys.Date()`"
 output:
