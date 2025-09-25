@@ -310,6 +310,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 06</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_06/06a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability and Statistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_06/06b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing Uncertainty</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 07</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_07/07a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foundations of Linear Regression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_07/07b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Regression</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 08</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_08/08a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear Regression II</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_08/08b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear Regression: Interpreting Coefficients</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -352,6 +421,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<!-- after-F25: the try-its at the end didn't really work. Need to make it clear that the regions can be used to collapse the data further. Probably need a hint to start by calculating the polling"error". DONE -->
 <section id="readings" class="level2">
 <h2 class="anchored" data-anchor-id="readings">Readings</h2>
 <ul>
@@ -560,8 +630,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         style_positive = style_positive, style_negative = style_negative, 
         scale_cut = scale_cut, trim = trim, ...)
 }
-&lt;bytecode: 0x000001a83db14c88&gt;
-&lt;environment: 0x000001a83db01e68&gt;</code></pre>
+&lt;bytecode: 0x000001c2e23c6208&gt;
+&lt;environment: 0x000001c2e23c7530&gt;</code></pre>
 </div>
 </div>
 <p>Wha? That looks like the output…is a function?</p>
@@ -900,12 +970,14 @@ Try it!
 <span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Merging with electoral votes data</span></span>
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(electoral_votes, avg_polls, <span class="at">by =</span> <span class="st">"state"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Then, we need to generate a variable that represents the discrepancy between results (<code>Obama</code> and <code>McCain</code>) and the polling average (<code>Obama_avg</code>). Use <code>mutate()</code> to do so.</p>
+<p>Finally, we want something to cut the data – below, we have some definitions for region. Use those (perhaps with <code>case_when()</code>?) to load in the state-to-region mapping.</p>
 <ol start="3" type="1">
 <li>Complete Your Analysis</li>
 </ol>
 <p>You are tasked with two things:</p>
-<p>A: Explore and visualize the discrepancies between polls and actual results using <code>combined_data</code></p>
-<p>B: Visualize the relationship between the actual results and the poll results <em>over time</em> for the following state: <code>c('MI','WI','IA','FL','NC','GA')</code>. <em>Does this relationship change over time?</em> Or, put another way, <em>were early polls or later polls more accurate</em>?</p>
+<p>A: Explore and visualize the discrepancies between polls and actual results using <code>combined_data</code>. How do you want to go about representing the data? How many observations do you have per state? What about per region?</p>
+<p>B: Visualize the relationship between the actual results and the poll results <em>over time</em> for the following state: <code>c('MI','WI','IA','FL','NC','GA')</code>. <em>Does this relationship change over time?</em> Or, put another way, <em>were early polls or later polls more accurate</em>? To do this, you’ll need to merge the final <code>Obama</code> and <code>McCain</code> results from <code>electoral_votes</code> into the original <code>polling_data</code>. Both contain <code>state</code> coluns!</p>
 <p>You might find these code bits to be useful (hint: use them with <code>case_when</code>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the regions</span></span>

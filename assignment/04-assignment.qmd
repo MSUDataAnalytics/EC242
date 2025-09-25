@@ -98,3 +98,4 @@ And to pull the curtain back and show how much googling is involved in data visu
 5. We followed the examples in the `blscrapeR` package and downloaded data for every state.
 
 Another day in the life of doing modern data science. This is an example of something you will be able to do by the end of this class. we had no idea people had written `R` packages to access BLS data, but there are (at least) 3 packages out there. After a few minutes of tinkering, we got it working and it is relatively straightforward.
+

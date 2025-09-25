@@ -11,7 +11,7 @@ output:
     toc: true
 ---
 
-
+<!-- after-F25: the try-its at the end didn't really work. Need to make it clear that the regions can be used to collapse the data further. Probably need a hint to start by calculating the polling"error". DONE -->
 
 ## Readings
  
@@ -434,13 +434,18 @@ avg_polls <- polling_data %>%
 combined_data <- merge(electoral_votes, avg_polls, by = "state")
 ```
 
+Then, we need to generate a variable that represents the discrepancy between results (`Obama` and `McCain`) and the polling average (`Obama_avg`). Use `mutate()` to do so.
+
+Finally, we want something to cut the data -- below, we have some definitions for region. Use those (perhaps with `case_when()`?) to load in the state-to-region mapping.
+
+
 3. Complete Your Analysis 
 
 You are tasked with two things:
 
-A: Explore and visualize the discrepancies between polls and actual results using `combined_data`
+A: Explore and visualize the discrepancies between polls and actual results using `combined_data`. How do you want to go about representing the data? How many observations do you have per state? What about per region?
 
-B: Visualize the relationship between the actual results and the poll results *over time* for the following state: `c('MI','WI','IA','FL','NC','GA')`. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*?
+B: Visualize the relationship between the actual results and the poll results *over time* for the following state: `c('MI','WI','IA','FL','NC','GA')`. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*? To do this, you'll need to merge the final `Obama` and `McCain` results from `electoral_votes` into the original `polling_data`. Both contain `state` coluns!
 
 You might find these code bits to be useful (hint: use them with `case_when`):
 

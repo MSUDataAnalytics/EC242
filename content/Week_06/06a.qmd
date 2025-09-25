@@ -1,7 +1,6 @@
 ---
 title: "Probability and Statistics"
 linktitle: "Uncertainty"
-read_date: "2025-09-30"
 menu:
   content:
     parent: Course content
