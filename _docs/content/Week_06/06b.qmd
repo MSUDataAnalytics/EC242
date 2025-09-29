@@ -552,10 +552,10 @@ We want to predict the proportion of blue beads in the urn. Let's call this quan
 In statistical textbooks, the beads in the urn are called the _population_. The proportion of blue beads in the population $p$  is called a _parameter_. The 25 beads we see in the previous plot are called a _sample_. The task of statistical inference is to predict the parameter $p$ using the observed data in the sample.
 
 
-::: {.callout-info}
+:::{.callout-info}
 ## This is a different approach
 
-Above, we knew what was in the run (probability distribution) and calculated things from that. Now, we're in a world where we don't know what's in the urn, but we can take samples. The two will meet in the middle -- we can caluclate sample versions of things, and see what we can infer about population values.
+Above, we knew what was in the urn (the probability distribution) and calculated things from that. Now, we're in a world where we don't know what's in the urn, but we can take samples. The two will meet in the middle -- we can caluclate sample versions of things, and see what we can infer about population values.
 
 Here we go!
 :::
