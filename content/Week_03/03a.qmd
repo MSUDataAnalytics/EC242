@@ -13,6 +13,8 @@ output:
 <!-- Notes after F25: -->
 
 <!-- - Reveal the code on the re-order example towards the end. (DONE) -->
+<!-- Removed a dead link to bconnelly.net blog on colorblind friendly colors. (DONE) -->
+
 <!-- - The "align comparable things" notion is spread out all over the end. Focus the purpose of faceting, THEN introduce the alignment concept. -->
 
 
@@ -724,7 +726,6 @@ knitr::include_graphics(here('images','Colorblind_example.png'))
 ```
 
 
-There are several resources that can help you select colors, for example this one:  [http://bconnelly.net/2013/10/creating-colorblind-friendly-figures/](http://bconnelly.net/2013/10/creating-colorblind-friendly-figures/).
 
 
 ::: {.callout-info}

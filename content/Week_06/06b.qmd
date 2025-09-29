@@ -20,6 +20,13 @@ filter = dplyr::filter
 ```
 
 
+<!-- Notes from Fall 2025: -->
+
+<!-- 1: This would be where we change the problem set to do the prisoner's loop. -->
+
+<!-- 2: I took out Part III, the extra visualizations. I want those to be in Group Project 2. I used knitr::knit_exit() to stop there. -->
+
+
 
 <!-- ### In-Class Exercise -->
 
@@ -163,9 +170,15 @@ s <- sqrt(sum((x - m)^2) / length(x))
 
 A random variable $X$ has a distribution **function**. To define this, we do not need a list of numbers. It is a theoretical concept. In this case, we define the distribution as the $F(a)$ that answers the question: what is the probability that $X$ is less than or equal to $a$? There is no list of numbers.
 
-However, if $X$ is defined by drawing from an urn with numbers in it, then there is a list: the list of numbers inside the urn. In this case, the distribution of that list is the probability distribution of $X$ and the average and standard deviation of that list are the expected value and standard error of the random variable.
+However, if $X$ is defined by drawing from an urn with numbers or colors in it, then there is a list: the list of numbers or colors inside the urn. In this case, the distribution of that list is the probability distribution of $X$ and the average and standard deviation of that list are the expected value and standard error of the random variable.
 
-Another way to think about it that does not involve an urn is to run a Monte Carlo simulation and generate a very large list of outcomes of $X$. These outcomes are a list of numbers. The distribution of this list will be a very good approximation of the probability distribution of $X$. The longer the list, the better the approximation. The average and standard deviation of this list will approximate the expected value and standard error of the random variable.
+Another way to think about it that does not involve an urn is to run a Monte Carlo simulation and generate a very large list of outcomes of $X$. These outcomes are a list of numbers. The distribution of this list will be a very good approximation of the probability distribution of $X$. The longer the list, the better the approximation. But it will always be an approximation - the actual contents of the underlying distribution function may not be knowable. Still, the average and standard deviation of this list will approximate the expected value and standard error of the random variable.
+
+::: {.callout-info}
+
+Often, we'd like to know about the probability distribution (the distribution function), but we only have a sample. This is the fundamental challenge of statistical inference: what can we learn about the true distribution function using only a sample? If we can't learn the distribution function itself, can we at least reject a hypothetical statement about the distribution function?
+
+:::
 
 ## Notation for random variables
 
@@ -185,7 +198,7 @@ to denote the expected value of the random variable $X$.
 
 A random variable will vary around its expected value in a way that if you take the average of many, many draws, the average of the draws will approximate the expected value, getting closer and closer the more draws you take.
 
-Theoretical statistics provides techniques that facilitate the calculation of expected values in different circumstances. For example, a useful formula tells us that the *expected value of a random variable defined by one draw is the average of the numbers in the urn*. In the urn used to model betting on red in roulette, we have 20 one dollars and 18 negative one dollars. The expected value is thus:
+Theoretical statistics provides techniques that facilitate the calculation of expected values in different circumstances. For example, a useful formula tells us that the *expected value of a random variable defined by one draw is the average of the numbers in the urn* (which is the probability distribution of the random variable). In the urn used to model betting on red in roulette, we have 20 one dollars and 18 negative one dollars. The expected value is thus:
 
 $$
 \mbox{E}[X] = (20 + -18)/38
@@ -199,7 +212,9 @@ x <- sample(c(-1,1), B, replace = TRUE, prob=c(9/19, 10/19))
 mean(x)
 ```
 
-In general, if the urn has two possible outcomes, say $a$ and $b$, with proportions $p$ and $1-p$ respectively, the average is:
+Note that if we didn't know the probability distribution but had the urn, we could create the sample $x$. 
+
+In general, if the urn has two possible outcomes, say $a$ and $b$, with proportions $p$ and $1-p$ respectively, and you know $p$ from the probability distribution, the average is:
 
 $$\mbox{E}[X] = pa + (1-p)b$$
 
@@ -290,17 +305,20 @@ n <- length(x)
 s-sd(x)*sqrt((n-1) / n)
 ```
 
-For all the theory discussed here, you need to compute the actual standard deviation as defined:
+For all the theory applications discussed here, you need to compute the actual standard deviation as defined:
 
 ```{r, eval = FALSE}
 sqrt(mean((x-m)^2))
 ```
 
-So be careful when using the `sd` function in R. However, keep in mind that throughout the book we sometimes use the `sd` function when we really want the actual SD. This is because when the list size is big, these two are practically equivalent since $\sqrt{(N-1)/N} \approx 1$.
+So be careful when using the `sd` function in R. However, keep in mind that throughout these notes we sometimes use the `sd` function when we really want the actual SD. This is because when the list size is big, these two are practically equivalent since $\sqrt{(N-1)/N} \approx 1$. That `sd()` calculates sample SD not population SD by default will be useful in the near future.
+
 
 ## Central Limit Theorem
 
-The Central Limit Theorem (CLT) tells us that when the number of draws, also called the _sample size_, is large, the probability distribution of the **sum** of the independent draws is approximately normal. Because sampling models are used for so many data generation processes, the CLT is considered one of the most important mathematical insights in history.
+We really want to know the probability that a casino will lose money. We know the probability distribution of roulette which let us calculate the expected value and the standard deviation of a random variable that consists of 1,000 people playing roulette, but we don't know the distribution of the sum of those random variables.
+
+The Central Limit Theorem (CLT) tells us that when the number of plays (or "draws"), also called the _sample size_, is large, the probability distribution of the **sum** of the independent draws is approximately normal. Because sampling models are used for so many data generation processes, the CLT is considered one of the most important mathematical insights in history.
 
 Previously, we discussed that if we know that the distribution of a list of numbers is approximated by the normal distribution, all we need to describe the list are the average and standard deviation. We also know that the same applies to probability distributions. If a random variable has a probability distribution that is approximated with the normal distribution, then all we need to describe the probability distribution are the average and standard deviation, referred to as the expected value and standard error.
 
@@ -316,7 +334,8 @@ roulette_winnings <- function(n){
 S <- replicate(B, roulette_winnings(n))
 ```
 
-The Central Limit Theorem (CLT) tells us that the sum $S$ is approximated by a normal distribution.
+The Central Limit Theorem (CLT) tells us that the sum $S$ is approximated by a normal distribution. Amazing!
+
 Using the formulas above, we know that the expected value and standard error are:
 
 ```{r}
@@ -331,7 +350,7 @@ mean(S)
 sd(S)
 ```
 
-Using the CLT, we can skip the Monte Carlo simulation and instead compute the probability of the casino losing money using this approximation:
+Using the CLT, we can skip the Monte Carlo simulation and instead compute the probability of the casino losing money using this approximation, which is only possible because the CLT tells us we can use the normal `pnorm()`:
 
 ```{r}
 mu <- n * (20-18)/38
@@ -532,6 +551,15 @@ We want to predict the proportion of blue beads in the urn. Let's call this quan
 
 In statistical textbooks, the beads in the urn are called the _population_. The proportion of blue beads in the population $p$  is called a _parameter_. The 25 beads we see in the previous plot are called a _sample_. The task of statistical inference is to predict the parameter $p$ using the observed data in the sample.
 
+
+::: {.callout-info}
+## This is a different approach
+
+Above, we knew what was in the run (probability distribution) and calculated things from that. Now, we're in a world where we don't know what's in the urn, but we can take samples. The two will meet in the middle -- we can caluclate sample versions of things, and see what we can infer about population values.
+
+Here we go!
+:::
+
 Can we do this with the 25 observations above? It is certainly informative. For example, given that we see 13 red and 12 blue beads, it is unlikely that $p$ > .9 or $p$ < .1. But are we ready to predict with certainty that there are more red beads than blue in the jar?
 
 We want to construct an estimate of $p$ using only the information we observe. An estimate should be thought of as a summary of the observed data that we think is informative about the parameter of interest. It seems intuitive to think that the proportion of blue beads in the sample $0.48$ must be at least related to the actual proportion $p$. But do we simply predict $p$ to be 0.48? First, remember that the sample proportion is a random variable. If we run the command `take_poll(25)` four times, we get a different answer each time, since the sample proportion is a random variable.
@@ -604,8 +632,6 @@ or 1.5 percentage points. So even with large polls, for close elections, $\bar{X
 
 ::: {.callout-info}
 ## Central Limit Theorem {#clt}
-
-If we didn't cover this earlier this week, let's talk about it here:
 
 The Central Limit Theorem (CLT) tells us that the distribution function for a sum of draws is approximately normal. You also may recall that dividing a normally distributed random variable by a constant is also a normally distributed variable. This implies that the distribution of $\bar{X}$ is approximately normal.
 
@@ -771,239 +797,5 @@ qplot(p, SE, geom = "line")
 ```
 
 One reason is that running such a poll is very expensive. Another possibly more important reason is that theory has its limitations. Polling is much more complicated than picking beads from an urn. Some people might lie to pollsters and others might not have phones. But perhaps the most important way an actual poll differs from an urn model is that we actually don't know for sure who is in our population and who is not. How do we know who is going to vote? Are we reaching all possible voters? Hence, even if our margin of error is very small, it might not be exactly right that our expected value is $p$. We call this bias. Historically, we observe that polls are indeed biased, although not by that much. The typical bias appears to be about 1-2%. This makes election forecasting a bit more interesting and we will talk about how to model this in our Assignment for this week.
-
-
-
-
-# Part 3: (Supplemental) Additional Visualization Techniques that We Won't Have Time For In Class
-
-For this second part of the example, we're going to use historical weather data from [Dark Sky](https://darksky.net/forecast/33.7546,-84.39/us12/en) about wind speed and temperature trends for downtown Atlanta ([specifically `33.754557, -84.390009`](https://www.google.com/maps/place/33°45'16.4"N+84°23'24.0"W/@33.754557,-84.3921977,17z/)) in 2019. We downloaded this data using Dark Sky's (about-to-be-retired-because-they-were-bought-by-Apple) API using the [ **darksky** package](https://github.com/hrbrmstr/darksky).
-
-If you want to follow along with this example, you can download the data below (you'll likely need to right click and choose "Save Link As…"):
-
-- [<i class="fas fa-file-csv"></i> `atl-weather-2019.csv`](/data/atl-weather-2019.csv)
-
-
-## Code
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.width = 6, fig.height = 3.6, fig.align = "center")
-set.seed(1234)
-```
-
-### Load and clean data
-
-First, we load the libraries we'll be using:
-
-```{r load-libraries, message=FALSE, warning=FALSE}
-library(tidyverse)
-library(lubridate)
-library(ggridges)
-library(gghalves)
-```
-
-Then we load the data with `read_csv()`. Here we assume that the CSV file lives in a subfolder in my project named `data`. Naturally, you'll need to point this to wherever you stashed the data.
-
-```{r load-data-fake, eval=FALSE}
-weather_atl_raw <- read_csv("data/atl-weather-2019.csv")
-```
-
-```{r load-data-real, include=FALSE, message=FALSE}
-weather_atl_raw <- read_csv(here("data", "atl-weather-2019.csv"))
-```
-
-We'll add a couple columns that we can use for faceting and filling using the `month()` and `wday()` functions from **lubridate** for extracting parts of the date:
-
-```{r clean-data}
-weather_atl <- weather_atl_raw %>%
-  mutate(Month = month(time, label = TRUE, abbr = FALSE),
-         Day = wday(time, label = TRUE, abbr = FALSE))
-```
-
-Now we're ready to go!
-
-### Histograms
-
-We can first make a histogram of wind speed. We'll use a bin width of 1 and color the edges of the bars white:
-
-```{r basic-histogram}
-ggplot(weather_atl, aes(x = windSpeed)) +
-  geom_histogram(binwidth = 1, color = "white")
-```
-
-This is fine enough, but we can improve it by forcing the buckets/bins to start at whole numbers instead of containing ranges like 2.5–3.5. We'll use the `boundary` argument for that. We also add `scale_x_continuous()` to add our own x-axis breaks instead of having things like 2.5, 5, and 7.5:
-
-```{r basic-histogram-better}
-ggplot(weather_atl, aes(x = windSpeed)) +
-  geom_histogram(binwidth = 1, color = "white", boundary = 1) +
-  scale_x_continuous(breaks = seq(0, 12, by = 1))
-```
-
-We can show the distribution of wind speed by month if we map the `Month` column we made onto the fill aesthetic:
-
-```{r histogram-by-month}
-ggplot(weather_atl, aes(x = windSpeed, fill = Month)) +
-  geom_histogram(binwidth = 1, color = "white", boundary = 1) +
-  scale_x_continuous(breaks = seq(0, 12, by = 1))
-```
-
-This is colorful, but it's impossible to actually interpret. Instead of only filling, we'll also facet by month to see separate graphs for each month. We can turn off the fill legend because it's now redundant.
-
-```{r histogram-by-month-facet, fig.width=8, fig.height=4.8}
-ggplot(weather_atl, aes(x = windSpeed, fill = Month)) +
-  geom_histogram(binwidth = 1, color = "white", boundary = 1) +
-  scale_x_continuous(breaks = seq(0, 12, by = 1)) +
-  guides(fill = FALSE) +
-  facet_wrap(vars(Month))
-```
-
-Neat! January, March, and April appear to have the most variation in windy days, with a few wind-less days and a few very-windy days, while August was very wind-less.
-
-### Density plots beyond `geom_density`
-
-Or we can stack the density plots behind each other with [**ggridges**](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html). For that to work, we also need to map `Month` to the y-axis. We can reverse the y-axis so that January is at the top if we use the `fct_rev()` function:
-
-```{r ggridges-basic, message=FALSE}
-ggplot(weather_atl, aes(x = windSpeed, y = fct_rev(Month), fill = Month)) +
-  geom_density_ridges() +
-  guides(fill = FALSE)
-```
-
-We can add some extra information to `geom_density_ridges()` with some other arguments like `quantile_lines`. We can use the `quantiles` argument to tell the plow how many parts to be cut into. Since we just want to show the median, we'll set that to 2 so each density plot is divided in half:
-
-```{r ggridges-quantile, message=FALSE}
-ggplot(weather_atl, aes(x = windSpeed, y = fct_rev(Month), fill = Month)) +
-  geom_density_ridges(quantile_lines = TRUE, quantiles = 2) +
-  guides(fill = FALSE)
-```
-
-Now that we have good working code, we can easily substitute in other variables by changing the x mapping:
-
-```{r ggridges-quantile-temp, message=FALSE}
-ggplot(weather_atl, aes(x = temperatureHigh, y = fct_rev(Month), fill = Month)) +
-  geom_density_ridges(quantile_lines = TRUE, quantiles = 2) +
-  guides(fill = FALSE)
-```
-
-We can get extra fancy if we fill by temperature instead of filling by month. To get this to work, we need to use `geom_density_ridges_gradient()`, and we need to change the `fill` mapping to the strange looking `..x..`, which is a weird ggplot trick that tells it to use the variable we mapped to the x-axis. For whatever reason, `fill = temperatureHigh` doesn't work:
-
-```{r ggridges-gradient-temp, message=FALSE}
-ggplot(weather_atl, aes(x = temperatureHigh, y = fct_rev(Month), fill = ..x..)) +
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 2) +
-  scale_fill_viridis_c(option = "plasma") +
-  labs(x = "High temperature", y = NULL, color = "Temp")
-```
-
-And finally, we can get *extra* fancy and show the distributions for both the high and low temperatures each month. To make this work, we need to manipulate the data a little. Right now there are two columns for high and low temperature: `temperatureLow` and `temperatureHigh`. To be able to map temperature to the x-axis and high vs. low to another aesthetic (like `linetype`), we need a column with the temperature and a column with an indicator variable for whether it is high or low. This data needs to be tidied (since right now we have a variable (high/low) encoded in the column name). We can tidy this data using `pivot_longer()` from **tidyr**, which was already loaded with `library(tidyverse)`. In the RStudio primers, you did this same thing with `gather()`—`pivot_longer()` is the newer version of `gather()`:
-
-```{r tidy-weather}
-weather_atl_long <- weather_atl %>%
-  pivot_longer(cols = c(temperatureLow, temperatureHigh),
-               names_to = "temp_type",
-               values_to = "temp") %>%
-  # Clean up the new temp_type column so that "temperatureHigh" becomes "High", etc.
-  mutate(temp_type = recode(temp_type,
-                            temperatureHigh = "High",
-                            temperatureLow = "Low")) %>%
-  # This is optional—just select a handful of columns
-  select(time, temp_type, temp, Month)
-
-# Show the first few rows
-head(weather_atl_long)
-```
-
-Now we have a column for the temperature (`temp`) and a column indicating if it is high or low (`temp_type`). The dataset is also twice as long (730 rows) because each day has two rows (high and low). Let's plot it and map high/low to the `linetype` aesthetic to show high/low in the border of the plots:
-
-```{r ggridges-gradient-temp-high-low, message=FALSE}
-ggplot(weather_atl_long, aes(x = temp, y = fct_rev(Month),
-                             fill = ..x.., linetype = temp_type)) +
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 2) +
-  scale_fill_viridis_c(option = "plasma") +
-  labs(x = "High temperature", y = NULL, color = "Temp")
-```
-
-We can see much wider temperature disparities during the summer, with large gaps between high and low, and relatively equal high/low temperatures during the winter.
-
-
-### Box, violin, and rain cloud plots
-
-Finally, we can look at the distribution of variables with box plots, violin plots, and other similar graphs. First, we'll make a box plot of windspeed, filled by the `Day` variable we made indicating weekday:
-
-```{r basic-boxplot}
-ggplot(weather_atl,
-       aes(y = windSpeed, fill = Day)) +
-  geom_boxplot()
-```
-
-We can switch this to a violin plot by just changing the `geom` layer and mapping `Day` to the x-axis:
-
-```{r basic-violin}
-ggplot(weather_atl,
-       aes(y = windSpeed, x = Day, fill = Day)) +
-  geom_violin()
-```
-
-With violin plots it's typically good to overlay other geoms. We can add some jittered points for a strip plot:
-
-```{r violin-strip}
-ggplot(weather_atl,
-       aes(y = windSpeed, x = Day, fill = Day)) +
-  geom_violin() +
-  geom_point(size = 0.5, position = position_jitter(width = 0.1)) +
-  guides(fill = FALSE)
-```
-
-We can also add larger points for the daily averages. We'll use a special layer for this: `stat_summary()`. It has a slightly different syntax, since we're not actually mapping a column from the dataset. Instead, we're feeding a column from a dataset into a function (here `"mean"`) and then plotting that result:
-
-```{r violin-strip-mean}
-ggplot(weather_atl,
-       aes(y = windSpeed, x = Day, fill = Day)) +
-  geom_violin() +
-  stat_summary(geom = "point", fun = "mean", size = 5, color = "white") +
-  geom_point(size = 0.5, position = position_jitter(width = 0.1)) +
-  guides(fill = FALSE)
-```
-
-We can also show the mean and confidence interval at the same time by changing the summary function:
-
-```{r violin-strip-mean-ci}
-ggplot(weather_atl,
-       aes(y = windSpeed, x = Day, fill = Day)) +
-  geom_violin() +
-  stat_summary(geom = "pointrange", fun.data = "mean_se", size = 1, color = "white") +
-  geom_point(size = 0.5, position = position_jitter(width = 0.1)) +
-  guides(fill = FALSE)
-```
-
-Overlaying the points directly on top of the violins shows extra information, but it's also really crowded and hard to read. If we use [the **gghalves** package](https://github.com/erocoar/gghalves), we can use special halved versions of some of these geoms like so:
-
-```{r gghalves-point-boxplot}
-ggplot(weather_atl,
-       aes(x = fct_rev(Day), y = temperatureHigh)) +
-  geom_half_point(aes(color = Day), side = "l", size = 0.5) +
-  geom_half_boxplot(aes(fill = Day), side = "r") +
-  guides(color = FALSE, fill = FALSE)
-```
-
-Note the `side` argument for specifying which half of the column the geom goes. We can also use `geom_half_violin()`:
-
-```{r gghalves-point-violon}
-ggplot(weather_atl,
-       aes(x = fct_rev(Day), y = temperatureHigh)) +
-  geom_half_point(aes(color = Day), side = "l", size = 0.5) +
-  geom_half_violin(aes(fill = Day), side = "r") +
-  guides(color = FALSE, fill = FALSE)
-```
-
-If we flip the plot, we can make a [rain cloud plot](https://micahallen.org/2018/03/15/introducing-raincloud-plots/):
-```{r gghalves-rain-cloud, fig.width=8, fig.height=4.8}
-ggplot(weather_atl,
-       aes(x = fct_rev(Day), y = temperatureHigh)) +
-  geom_half_boxplot(aes(fill = Day), side = "l", width = 0.5, nudge = 0.1) +
-  geom_half_point(aes(color = Day), side = "l", size = 0.5) +
-  geom_half_violin(aes(fill = Day), side = "r") +
-  guides(color = FALSE, fill = FALSE) +
-  coord_flip()
-```
 
 
