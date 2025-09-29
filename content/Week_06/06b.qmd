@@ -552,7 +552,7 @@ We want to predict the proportion of blue beads in the urn. Let's call this quan
 In statistical textbooks, the beads in the urn are called the _population_. The proportion of blue beads in the population $p$  is called a _parameter_. The 25 beads we see in the previous plot are called a _sample_. The task of statistical inference is to predict the parameter $p$ using the observed data in the sample.
 
 
-:::{.callout-info}
+::: {.callout-tip}
 ## This is a different approach
 
 Above, we knew what was in the urn (the probability distribution) and calculated things from that. Now, we're in a world where we don't know what's in the urn, but we can take samples. The two will meet in the middle -- we can caluclate sample versions of things, and see what we can infer about population values.
@@ -630,7 +630,7 @@ sqrt(p*(1-p))/sqrt(1000)
 
 or 1.5 percentage points. So even with large polls, for close elections, $\bar{X}$ can lead us astray if we don't realize it is a random variable. Nonetheless, we can actually say more about how close we get the $p$.
 
-::: {.callout-info}
+::: {.callout-tip}
 ## Central Limit Theorem {#clt}
 
 The Central Limit Theorem (CLT) tells us that the distribution function for a sum of draws is approximately normal. You also may recall that dividing a normally distributed random variable by a constant is also a normally distributed variable. This implies that the distribution of $\bar{X}$ is approximately normal.
@@ -715,7 +715,7 @@ In summary, the CLT tells us that our poll based on a sample size of $25$ is not
 From the table above, we see that typical sample sizes range from 700 to 3500. To see how this gives us a much more practical result, notice that if we had obtained a $\bar{X}$=0.48 with a sample size of 2,000, our standard error $\hat{\mbox{SE}}(\bar{X})$ would have been `r n<-2000;se<-sqrt(0.48*(1-0.48)/n);se`. So our result is an estimate of `48`% with a margin of error of `r round(2*se*100)`%. In this case, the result is much more informative and would make us think that there are more red balls than blue. Keep in mind, however, that this is hypothetical. We did not take a poll of 2,000 since we don't want to ruin the competition.
 
 
-::: {.callout-info}
+::: {.callout-tip}
 ## A Monte Carlo simulation
 (Optional) Suppose we want to use a Monte Carlo simulation to corroborate the tools we have built using probability theory. To create the simulation, we would write code like this:
 

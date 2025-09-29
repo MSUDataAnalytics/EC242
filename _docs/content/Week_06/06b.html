@@ -436,9 +436,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#polls" id="toc-polls" class="nav-link" data-scroll-target="#polls">Polls</a></li>
   <li><a href="#populations-samples-parameters-and-estimates" id="toc-populations-samples-parameters-and-estimates" class="nav-link" data-scroll-target="#populations-samples-parameters-and-estimates">Populations, samples, parameters, and estimates</a></li>
-  <li><a href="#this-is-a-different-approach" id="toc-this-is-a-different-approach" class="nav-link" data-scroll-target="#this-is-a-different-approach">This is a different approach</a></li>
-  <li><a href="#clt" id="toc-clt" class="nav-link" data-scroll-target="#clt">Central Limit Theorem</a></li>
-  <li><a href="#a-monte-carlo-simulation" id="toc-a-monte-carlo-simulation" class="nav-link" data-scroll-target="#a-monte-carlo-simulation">A Monte Carlo simulation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -870,12 +867,20 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <h2 class="anchored" data-anchor-id="populations-samples-parameters-and-estimates">Populations, samples, parameters, and estimates</h2>
 <p>We want to predict the proportion of blue beads in the urn. Let’s call this quantity <span class="math inline">\(p\)</span>, which then tells us the proportion of red beads <span class="math inline">\(1-p\)</span>, and the spread <span class="math inline">\(p - (1-p)\)</span>, which simplifies to <span class="math inline">\(2p - 1\)</span>.</p>
 <p>In statistical textbooks, the beads in the urn are called the <em>population</em>. The proportion of blue beads in the population <span class="math inline">\(p\)</span> is called a <em>parameter</em>. The 25 beads we see in the previous plot are called a <em>sample</em>. The task of statistical inference is to predict the parameter <span class="math inline">\(p\)</span> using the observed data in the sample.</p>
-</section>
-<section id="this-is-a-different-approach" class="level2 callout-info">
-<h2 class="anchored" data-anchor-id="this-is-a-different-approach">This is a different approach</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+This is a different approach
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Above, we knew what was in the urn (the probability distribution) and calculated things from that. Now, we’re in a world where we don’t know what’s in the urn, but we can take samples. The two will meet in the middle – we can caluclate sample versions of things, and see what we can infer about population values.</p>
 <p>Here we go!</p>
-</section>
+</div>
+</div>
 <p>Can we do this with the 25 observations above? It is certainly informative. For example, given that we see 13 red and 12 blue beads, it is unlikely that <span class="math inline">\(p\)</span> &gt; .9 or <span class="math inline">\(p\)</span> &lt; .1. But are we ready to predict with certainty that there are more red beads than blue in the jar?</p>
 <p>We want to construct an estimate of <span class="math inline">\(p\)</span> using only the information we observe. An estimate should be thought of as a summary of the observed data that we think is informative about the parameter of interest. It seems intuitive to think that the proportion of blue beads in the sample <span class="math inline">\(0.48\)</span> must be at least related to the actual proportion <span class="math inline">\(p\)</span>. But do we simply predict <span class="math inline">\(p\)</span> to be 0.48? First, remember that the sample proportion is a random variable. If we run the command <code>take_poll(25)</code> four times, we get a different answer each time, since the sample proportion is a random variable.</p>
 <div class="cell">
@@ -936,9 +941,16 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 </div>
 <p>or 1.5 percentage points. So even with large polls, for close elections, <span class="math inline">\(\bar{X}\)</span> can lead us astray if we don’t realize it is a random variable. Nonetheless, we can actually say more about how close we get the <span class="math inline">\(p\)</span>.</p>
-</section>
-<section id="clt" class="level2 callout-info">
-<h2 class="anchored" data-anchor-id="clt">Central Limit Theorem</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Central Limit Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>The Central Limit Theorem (CLT) tells us that the distribution function for a sum of draws is approximately normal. You also may recall that dividing a normally distributed random variable by a constant is also a normally distributed variable. This implies that the distribution of <span class="math inline">\(\bar{X}\)</span> is approximately normal.</p>
 <p>In summary, we have that <span class="math inline">\(\bar{X}\)</span> has an approximately normal distribution with expected value <span class="math inline">\(p\)</span> and standard error <span class="math inline">\(\sqrt{p(1-p)/N}\)</span>.</p>
 <p>Now how does this help us? Suppose we want to know what is the probability that we are within 1% from <span class="math inline">\(p\)</span>. We are basically asking what is</p>
@@ -974,6 +986,8 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 </div>
 <p>Therefore, there is a small chance that we will be close. A poll of only <span class="math inline">\(N=25\)</span> people is not really very useful, at least not for a close election.</p>
+</div>
+</div>
 </section>
 <section id="margin-of-error" class="level3">
 <h3 class="anchored" data-anchor-id="margin-of-error">Margin of Error</h3>
@@ -1003,9 +1017,16 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <p>Hence, there is a 95% probability that <span class="math inline">\(\bar{X}\)</span> will be within <span class="math inline">\(1.96\times \hat{SE}(\bar{X})\)</span>, in our case within about 0.2, of <span class="math inline">\(p\)</span>. Note that 95% is somewhat of an arbitrary choice and sometimes other percentages are used, but it is the most commonly used value to define margin of error. We often round 1.96 up to 2 for simplicity of presentation.</p>
 <p>In summary, the CLT tells us that our poll based on a sample size of <span class="math inline">\(25\)</span> is not very useful. We don’t really learn much when the margin of error is this large. All we can really say is that the popular vote will not be won by a large margin. This is why pollsters tend to use larger sample sizes.</p>
 <p>From the table above, we see that typical sample sizes range from 700 to 3500. To see how this gives us a much more practical result, notice that if we had obtained a <span class="math inline">\(\bar{X}\)</span>=0.48 with a sample size of 2,000, our standard error <span class="math inline">\(\hat{\mbox{SE}}(\bar{X})\)</span> would have been 0.0111714. So our result is an estimate of <code>48</code>% with a margin of error of 2%. In this case, the result is much more informative and would make us think that there are more red balls than blue. Keep in mind, however, that this is hypothetical. We did not take a poll of 2,000 since we don’t want to ruin the competition.</p>
-</section>
-<section id="a-monte-carlo-simulation" class="level2 callout-info">
-<h2 class="anchored" data-anchor-id="a-monte-carlo-simulation">A Monte Carlo simulation</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A Monte Carlo simulation
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>(Optional) Suppose we want to use a Monte Carlo simulation to corroborate the tools we have built using probability theory. To create the simulation, we would write code like this:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
@@ -1054,6 +1075,8 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 </div>
 <p>Of course, in real life we would never be able to run such an experiment because we don’t know <span class="math inline">\(p\)</span>. But we could run it for various values of <span class="math inline">\(p\)</span> and <span class="math inline">\(N\)</span> and see that the theory does indeed work well for most values. You can easily do this by re-running the code above after changing <code>p</code> and <code>N</code>.</p>
+</div>
+</div>
 </section>
 <section id="the-spread" class="level3">
 <h3 class="anchored" data-anchor-id="the-spread">The spread</h3>
@@ -1075,6 +1098,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <p>One reason is that running such a poll is very expensive. Another possibly more important reason is that theory has its limitations. Polling is much more complicated than picking beads from an urn. Some people might lie to pollsters and others might not have phones. But perhaps the most important way an actual poll differs from an urn model is that we actually don’t know for sure who is in our population and who is not. How do we know who is going to vote? Are we reaching all possible voters? Hence, even if our margin of error is very small, it might not be exactly right that our expected value is <span class="math inline">\(p\)</span>. We call this bias. Historically, we observe that polls are indeed biased, although not by that much. The typical bias appears to be about 1-2%. This makes election forecasting a bit more interesting and we will talk about how to model this in our Assignment for this week.</p>
 
 
+</section>
 </section>
 </section>
 
