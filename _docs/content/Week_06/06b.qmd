@@ -148,15 +148,17 @@ We can visualize the distribution of $S$ by creating a histogram showing the pro
 ```{r normal-approximates-distribution, echo=FALSE}
 s <- seq(min(S), max(S), length = 100)
 normal_density <- data.frame(s = s, f=dnorm(s, mean(S), sd(S)))
-data.frame(S=S) %>% ggplot(aes(S, ..density..)) +
+
+data.frame(S=S) %>% ggplot(aes(S, after_stat(density))) +
   geom_histogram(color = "black", binwidth = 10)  +
   ylab("Probability") +
-  geom_line(data = normal_density, mapping=aes(s,f), color="blue")
+  geom_line(data = normal_density, mapping=aes(s,f), color="blue") +
+  geom_vline(xintercept = n*((10/19)*1 - (9/19)*1), color = 'gray30', linetype = 4)
 ```
 
-We see that the distribution appears to be approximately normal. A qq-plot will confirm that the normal approximation is close to a perfect approximation for this distribution. If, in fact, the distribution is normal, then all we need to define the distribution is the average and the standard deviation. Because we have the original values from which the distribution is created, we can easily compute these with `mean(S)` and `sd(S)`. The blue curve you see added to the histogram above is a normal density with this average and standard deviation.
+We see that the distribution appears to be approximately normal. A qq-plot will confirm that the normal approximation is close to a perfect approximation for this distribution. If, in fact, the distribution is normal, then all we need to define the distribution is the average and the standard deviation. Because we have the original values (9/19, 10/19) and $n=1000$ plays from which the distribution is created, we already know (or can calculate) these values. We can also easily compute the sample analogs with `mean(S)` and `sd(S)`. The blue curve you see added to the histogram above is a normal density with the sample average and standard deviation. The gray dashed line is the expected value computed from the known distribution $n \times (\frac{10}{19} \times 1 - \frac{9}{19} \times 1)$. They are very close, but are not exactly the same.
 
-This average and this standard deviation have special names. They are referred to as the _expected value_ and _standard error_ of the random variable $S$. We will say more about these in the next section where we will discuss an incredibly useful approximation provided by mathematical theory that applies generally to sums and averages of draws from any urn: the Central Limit Theorem (CLT).
+This average and this standard deviation have special names. They are referred to as the _expected value_ and _standard error_ of the random variable $S$. This refers to the underlying random variable $S$, while the sample mean and sample standard deviation are what we can always calculate. We will say more about these in the next section where we will discuss an incredibly useful approximation provided by mathematical theory that applies generally to sums and averages of draws from any urn: the Central Limit Theorem (CLT).
 
 
 ## Distributions versus probability distributions
@@ -170,7 +172,7 @@ s <- sqrt(sum((x - m)^2) / length(x))
 
 A random variable $X$ has a distribution **function**. To define this, we do not need a list of numbers. It is a theoretical concept. In this case, we define the distribution as the $F(a)$ that answers the question: what is the probability that $X$ is less than or equal to $a$? There is no list of numbers.
 
-However, if $X$ is defined by drawing from an urn with numbers or colors in it, then there is a list: the list of numbers or colors inside the urn. In this case, the distribution of that list is the probability distribution of $X$ and the average and standard deviation of that list are the expected value and standard error of the random variable.
+However, if $X$ is defined by drawing from an urn with numbers or colors in it, then there is a list: the list of numbers or colors inside the urn. In this case, the distribution of that list (of numbers or colors inside the urn) is the probability distribution of $X$ and the average and standard deviation of that list are the expected value and standard error of the random variable.
 
 Another way to think about it that does not involve an urn is to run a Monte Carlo simulation and generate a very large list of outcomes of $X$. These outcomes are a list of numbers. The distribution of this list will be a very good approximation of the probability distribution of $X$. The longer the list, the better the approximation. But it will always be an approximation - the actual contents of the underlying distribution function may not be knowable. Still, the average and standard deviation of this list will approximate the expected value and standard error of the random variable.
 
@@ -218,9 +220,15 @@ In general, if the urn has two possible outcomes, say $a$ and $b$, with proporti
 
 $$\mbox{E}[X] = pa + (1-p)b$$
 
+::: {.callout-note}
+## TRY IT
+
+What is the expectation of a random variable defined as a roll of a (fair, standard) die?
+:::
+
 To see this, notice that if there are $n$ beads in the urn, then we have $np$ $a$s and $n(1-p)$ $b$s and because the average is the sum, $n\times a \times p + n\times b \times (1-p)$, divided by the total $n$, we get that the average is $ap + b(1-p)$.
 
-Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of sum, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the *expected value of the sum of the draws* is:
+Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of the sum, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the *expected value of the sum of the draws* is $E[nX] = nE[X]$ when $n$ is a constant:
 
 $$
 \mbox{}\mbox{number of draws } \times \mbox{ average of the numbers in the urn}
@@ -230,7 +238,7 @@ So if 1,000 people play roulette, the casino expects to win, on average, about 1
 
 $$\mbox{SE}[X]$$
 
-to denote the standard error of a random variable.
+to denote the standard error of a random variable. This, like expectation, is a theoretical, population concept based on the probability distribution (e.g. "what is in the urn")
 
 **If our draws are independent**, then the *standard error of the sum* is given by the equation:
 

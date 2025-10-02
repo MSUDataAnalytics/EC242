@@ -568,8 +568,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We see that the distribution appears to be approximately normal. A qq-plot will confirm that the normal approximation is close to a perfect approximation for this distribution. If, in fact, the distribution is normal, then all we need to define the distribution is the average and the standard deviation. Because we have the original values from which the distribution is created, we can easily compute these with <code>mean(S)</code> and <code>sd(S)</code>. The blue curve you see added to the histogram above is a normal density with this average and standard deviation.</p>
-<p>This average and this standard deviation have special names. They are referred to as the <em>expected value</em> and <em>standard error</em> of the random variable <span class="math inline">\(S\)</span>. We will say more about these in the next section where we will discuss an incredibly useful approximation provided by mathematical theory that applies generally to sums and averages of draws from any urn: the Central Limit Theorem (CLT).</p>
+<p>We see that the distribution appears to be approximately normal. A qq-plot will confirm that the normal approximation is close to a perfect approximation for this distribution. If, in fact, the distribution is normal, then all we need to define the distribution is the average and the standard deviation. Because we have the original values (9/19, 10/19) and <span class="math inline">\(n=1000\)</span> plays from which the distribution is created, we already know (or can calculate) these values. We can also easily compute the sample analogs with <code>mean(S)</code> and <code>sd(S)</code>. The blue curve you see added to the histogram above is a normal density with the sample average and standard deviation. The gray dashed line is the expected value computed from the known distribution <span class="math inline">\(n \times (\frac{10}{19} \times 1 - \frac{9}{19} \times 1)\)</span>. They are very close, but are not exactly the same.</p>
+<p>This average and this standard deviation have special names. They are referred to as the <em>expected value</em> and <em>standard error</em> of the random variable <span class="math inline">\(S\)</span>. This refers to the underlying random variable <span class="math inline">\(S\)</span>, while the sample mean and sample standard deviation are what we can always calculate. We will say more about these in the next section where we will discuss an incredibly useful approximation provided by mathematical theory that applies generally to sums and averages of draws from any urn: the Central Limit Theorem (CLT).</p>
 </section>
 <section id="distributions-versus-probability-distributions" class="level2">
 <h2 class="anchored" data-anchor-id="distributions-versus-probability-distributions">Distributions versus probability distributions</h2>
@@ -579,7 +579,7 @@ window.Quarto = {
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((x <span class="sc">-</span> m)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">length</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A random variable <span class="math inline">\(X\)</span> has a distribution <strong>function</strong>. To define this, we do not need a list of numbers. It is a theoretical concept. In this case, we define the distribution as the <span class="math inline">\(F(a)\)</span> that answers the question: what is the probability that <span class="math inline">\(X\)</span> is less than or equal to <span class="math inline">\(a\)</span>? There is no list of numbers.</p>
-<p>However, if <span class="math inline">\(X\)</span> is defined by drawing from an urn with numbers or colors in it, then there is a list: the list of numbers or colors inside the urn. In this case, the distribution of that list is the probability distribution of <span class="math inline">\(X\)</span> and the average and standard deviation of that list are the expected value and standard error of the random variable.</p>
+<p>However, if <span class="math inline">\(X\)</span> is defined by drawing from an urn with numbers or colors in it, then there is a list: the list of numbers or colors inside the urn. In this case, the distribution of that list (of numbers or colors inside the urn) is the probability distribution of <span class="math inline">\(X\)</span> and the average and standard deviation of that list are the expected value and standard error of the random variable.</p>
 <p>Another way to think about it that does not involve an urn is to run a Monte Carlo simulation and generate a very large list of outcomes of <span class="math inline">\(X\)</span>. These outcomes are a list of numbers. The distribution of this list will be a very good approximation of the probability distribution of <span class="math inline">\(X\)</span>. The longer the list, the better the approximation. But it will always be an approximation - the actual contents of the underlying distribution function may not be knowable. Still, the average and standard deviation of this list will approximate the expected value and standard error of the random variable.</p>
 <div class="callout-info">
 <p>Often, we’d like to know about the probability distribution (the distribution function), but we only have a sample. This is the fundamental challenge of statistical inference: what can we learn about the true distribution function using only a sample? If we can’t learn the distribution function itself, can we at least reject a hypothetical statement about the distribution function?</p>
@@ -612,14 +612,27 @@ window.Quarto = {
 <p>Note that if we didn’t know the probability distribution but had the urn, we could create the sample <span class="math inline">\(x\)</span>.</p>
 <p>In general, if the urn has two possible outcomes, say <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, with proportions <span class="math inline">\(p\)</span> and <span class="math inline">\(1-p\)</span> respectively, and you know <span class="math inline">\(p\)</span> from the probability distribution, the average is:</p>
 <p><span class="math display">\[\mbox{E}[X] = pa + (1-p)b\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+TRY IT
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What is the expectation of a random variable defined as a roll of a (fair, standard) die?</p>
+</div>
+</div>
 <p>To see this, notice that if there are <span class="math inline">\(n\)</span> beads in the urn, then we have <span class="math inline">\(np\)</span> <span class="math inline">\(a\)</span>s and <span class="math inline">\(n(1-p)\)</span> <span class="math inline">\(b\)</span>s and because the average is the sum, <span class="math inline">\(n\times a \times p + n\times b \times (1-p)\)</span>, divided by the total <span class="math inline">\(n\)</span>, we get that the average is <span class="math inline">\(ap + b(1-p)\)</span>.</p>
-<p>Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of sum, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the <em>expected value of the sum of the draws</em> is:</p>
+<p>Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of the sum, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the <em>expected value of the sum of the draws</em> is <span class="math inline">\(E[nX] = nE[X]\)</span> when <span class="math inline">\(n\)</span> is a constant:</p>
 <p><span class="math display">\[
 \mbox{}\mbox{number of draws } \times \mbox{ average of the numbers in the urn}
 \]</span></p>
 <p>So if 1,000 people play roulette, the casino expects to win, on average, about 1,000 <span class="math inline">\(\times\)</span> $0.05 = $50. But this is an expected value. How different can one observation be from the expected value? The casino really needs to know this. What is the range of possibilities? If negative numbers are too likely, they will not install roulette wheels. Statistical theory once again answers this question. The <em>standard error</em> (SE) gives us an idea of the size of the variation around the expected value. In statistics books, it’s common to use:</p>
 <p><span class="math display">\[\mbox{SE}[X]\]</span></p>
-<p>to denote the standard error of a random variable.</p>
+<p>to denote the standard error of a random variable. This, like expectation, is a theoretical, population concept based on the probability distribution (e.g.&nbsp;“what is in the urn”)</p>
 <p><strong>If our draws are independent</strong>, then the <em>standard error of the sum</em> is given by the equation:</p>
 <p><span class="math display">\[
 \sqrt{\mbox{number of draws }} \times \mbox{ standard deviation of the numbers in the urn}
