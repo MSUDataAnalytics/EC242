@@ -12,6 +12,10 @@ output:
 ---
  
 
+<!-- Fall 2025 post-note: -->
+<!-- Did not even make it close to all the way through. We got to "Infinity in practice" and that was it, didn't even do the try-it down there. -->
+<!-- Next semester, just make sure the CDF and visualizing distributions are in the earlier bit in visualization. -->
+
 ```{r, include=F, eval=T, echo=F}
 library(data.table)
 library(tidyverse)

@@ -43,32 +43,34 @@ head(wide_data[,1:8])
 ```
 
 
-## `gather`
+## `pivot_longer`
 
-One of the most used functions in the __tidyr__ package is `gather`, which is useful for converting wide data into tidy data.
+One of the most used functions in the __tidyr__ package is `pivot_longer`, which is useful for converting wide data into tidy data.
 
 Looking at the data above, the fundamental problem is that **the column name contains data**. This is a problem indeed! And a common one.
 
-### The `gather` arguments
+### The `pivot_longer` arguments
 
 Here we want to reshape the `wide_data` dataset so that each row represents a country's yearly fertility observation, which implies we need three columns to store the year, country, and the observed value. In its current form, data from different years are in different columns with the year values stored in the column names. 
 
-As with most tidyverse functions, the `gather` function's first argument is the data frame that will be converted. Easy enough.
+As with most tidyverse functions, the `pivot_longer` function's first argument is the data frame that will be converted. Easy enough.
 
-The second and third arguments will tell `gather` the column names we want to assign to the columns containing the **current column names** and **the observed data**, respectively. In this case a good choice for these two arguments would be something like `year` and `fertility`. These are not currenly column names in the data -- they are names we want to use to *hold* data currently located in the "wide" columns. We know this is fertility data only because we deciphered it from the file name.
+The second argument specifies the columns **containing observed values**; these are the columns that will be _pivot_longered_ (note: the original name of this function was `()`). The default (if we leave out the 2nd argument) is to gather **all** columns so, in most cases, we have to specify the columns. In our example we want columns `1960`, `1961` up to `2015`. Since these are non-standard column names, we have to backtick them so R doesn't think they're to be treated as integers.
 
-The fourth argument specifies the columns **containing observed values**; these are the columns that will be _gathered_. The default (if we leave out the 4th argument) is to gather **all** columns so, in most cases, we have to specify the columns. In our example we want columns `1960`, `1961` up to `2015`. Since these are non-standard column names, we have to backtick them so R doesn't think they're to be treated as integers:
+The third and fourth arguments will tell `pivot_longer` the column names we want to assign to the columns containing the **current column names** (`names_to = `) and **the observed data** (`values_to = `), respectively. In this case a good choice for these two arguments would be something like `year` and `fertility`. These are not currenly column names in the data -- they are names we want to use to *hold* data currently located in the "wide" columns. We know this is fertility data only because we deciphered it from the file name.
 
-The code to gather the fertility data therefore looks like this:
+
+
+The code to pivot_longer the fertility data therefore looks like this:
 
 ```{r}
-new_tidy_data <- gather(wide_data, year, fertility, `1960`:`2015`)
+new_tidy_data <- pivot_longer(wide_data,  `1960`:`2015`, names_to = 'year', values_to = 'fertility')
 ```
 
 We can also use the pipe like this:
 
 ```{r}
-new_tidy_data <- wide_data %>% gather(year, fertility, `1960`:`2015`)
+new_tidy_data <- wide_data %>% pivot_longer(`1960`:`2015`, names_to = 'year', values_to = 'fertility')
 ```
 
 We can see that the data have been converted to tidy format with columns `year` and `fertility`:
@@ -77,14 +79,14 @@ We can see that the data have been converted to tidy format with columns `year` 
 head(new_tidy_data)
 ```
 
-We have the first column, which consists of "everything in the data that wasn't gathered", the next two columns are named based on the arguments we gave. The second column, named by our argument above, contains the column names of the wide data. The third column, also named by our argument above, contains the value that was in each corresponding colum x country pair. What you leave *out* of the 4th argument is important!
+We have the first column, which consists of "everything in the data that wasn't pivot_longered", the next two columns are named based on the arguments we gave. The second column, named by our argument above, contains the column names of the wide data. The third column, also named by our argument above, contains the value that was in each corresponding colum x country pair. What you leave *out* of the 4th argument is important!
 
-Note that each year resulted in two rows since we have two countries and this column was not gathered.
-A somewhat quicker way to write this code is to specify which column will **not** be gathered, rather than all the columns that will be gathered:
+Note that each year resulted in two rows since we have two countries and this column was not pivot_longered.
+A somewhat quicker way to write this code is to specify which column will **not** be pivot_longered, rather than all the columns that will be pivot_longered:
 
 ```{r}
 new_tidy_data <- wide_data %>%
-  gather(year, fertility, -country)
+  pivot_longer(-country, names_to = 'year', values_to = 'fertility')
 
 head(new_tidy_data)
 ```
@@ -105,15 +107,14 @@ class(tidy_data$year)
 class(new_tidy_data$year)
 ```
 
-The `gather` function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers. The `gather` function includes the `convert` argument for this purpose:
+The `pivot_longer` function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers::
 
 ```{r}
 new_tidy_data <- wide_data %>%
-  gather(year, fertility, -country, convert = TRUE)
+  pivot_longer(-country, names_to = 'year', values_to = 'fertility') %>%
+  mutate(year = as.integer(year))
 class(new_tidy_data$year)
 ```
-
-Note that we could have also used the `mutate` and `as.numeric`.
 
 Now that the data is tidy, we can use this relatively simple ggplot code:
 
@@ -122,12 +123,12 @@ new_tidy_data %>% ggplot(aes(year, fertility, color = country)) +
   geom_point()
 ```
 
-## `spread`
+## `pivot_wider`
 
-As we will see in later examples, it is sometimes useful for data wrangling purposes to convert tidy data into wide data. We often use this as an intermediate step in tidying up data. The `spread` function is basically the inverse of `gather`. The first argument is for the data, but since we are using the pipe, we don't show it. The second argument tells `spread` which variable will be used as the column names. The third argument specifies which variable to use to fill out the cells:
+As we will see in later examples, it is sometimes useful for data wrangling purposes to convert tidy data into wide data. We often use this as an intermediate step in tidying up data. The `pivot_wider` function is basically the inverse of `pivot_longer`. The first argument is for the data, but since we are using the pipe, we don't show it. The `names_from = ` argument tells `pivot_wider` which variable will be used as the column names. The `values_from = ` argument specifies which variable to use to fill out the cells:
 
 ```{r}
-new_wide_data <- new_tidy_data %>% spread(year, fertility)
+new_wide_data <- new_tidy_data %>% pivot_wider(names_from = year, values_from = fertility)
 dplyr::select(new_wide_data, country, `1960`:`1967`)
 ```
 
@@ -157,10 +158,10 @@ dplyr::select(raw_dat, 1:5)
 
 First, note that the data is in wide format. Second, notice that this table includes values for two variables, fertility and life expectancy, with the column name encoding which column represents which variable. Encoding information in the column names is not recommended but, unfortunately, it is quite common. We will put our wrangling skills to work to extract this information and store it in a tidy fashion.
 
-We can start the data wrangling with the `gather` function, but we should no longer use the column name `year` for the new column since it also contains the variable type. We will call it `key`, the default, for now:
+We can start the data wrangling with the `pivot_longer` function, but we should no longer use the column name `year` for the new column since it also contains the variable type. We will call it `key`, the default, for now:
 
 ```{r}
-dat <- raw_dat %>% gather(key, value, -country)
+dat <- raw_dat %>% pivot_longer(-country, names_to = 'key', values_to = 'value')
 head(dat)
 ```
 
@@ -190,12 +191,12 @@ However, if we read the `separate` help file, we find that a better approach is 
 dat %>% separate(key, into = c("year", "variable_name"), extra = "merge")
 ```
 
-This achieves the separation we wanted. However, we are not done yet. We need to create a column for each variable. As we learned, the `spread` function can do this:
+This achieves the separation we wanted. However, we are not done yet. We need to create a column for each variable. As we learned, the `pivot_wider` function can do this:
 
 ```{r}
 dat %>%
   separate(key, c("year", "variable_name"), extra = "merge") %>%
-  spread(variable_name, value)
+  pivot_wider(names_from = variable_name, values_from = value)
 ```
 
 The data is now in tidy format with one row for each observation with three variables: year, fertility, and life expectancy.
@@ -215,12 +216,11 @@ We can achieve the same final result by uniting the second and third columns, th
 dat %>%
   separate(key, c("year", "first_variable_name", "second_variable_name"), fill = "right") %>%
   unite(variable_name, first_variable_name, second_variable_name) %>%
-  spread(variable_name, value) %>%
+  pivot_wider(names_from = variable_name, values_from = value) %>%
   rename(fertility = fertility_NA)
 ```
 
 ::: {.callout-note}
-
 ## TRY IT
 
 1. Run the following command to define the `co2_wide` object using the `co2` data built in to R (see `?co2`):
@@ -231,7 +231,7 @@ co2_wide <- data.frame(matrix(co2, ncol = 12, byrow = TRUE)) %>%
   mutate(year = as.character(1959:1997))
 ```
 
-Use the gather function to wrangle this into a tidy dataset. Call the column with the CO2 measurements `co2` and call the month column `month`. Call the resulting object `co2_tidy`.
+Use the pivot_longer function to wrangle this into a tidy dataset. Call the column with the CO2 measurements `co2` and call the month column `month`. Call the resulting object `co2_tidy`.
 
 
 2. Plot CO2 versus month with a different curve for each year using this code:
@@ -247,7 +247,7 @@ class(co2_tidy$month)
 ```
 
 
-Rewrite the call to gather using an argument that assures the month column will be numeric. Then make the plot.
+Rewrite the call to pivot_longer using an argument that assures the month column will be numeric. Then make the plot.
 
 
 3. What do we learn from this plot?
@@ -265,17 +265,17 @@ load(admissions)
 dat <- admissions %>% dplyr::select(-applicants)
 ```
 
-If we think of an observation as a major, and that each observation has two variables (men admitted percentage and women admitted percentage) then this is not tidy. Use the `spread` function to wrangle into tidy shape: one row for each major.
+If we think of an observation as a major, and that each observation has two variables (men admitted percentage and women admitted percentage) then this is not tidy. Use the `pivot_wider` function to wrangle into tidy shape: one row for each major.
 
 
-5. Now we will try a more advanced wrangling challenge. We want to wrangle the admissions data so that for each major we have 4 observations: `admitted_men`, `admitted_women`, `applicants_men` and `applicants_women`.  The _trick_ we perform here is actually quite common: first gather to generate an intermediate data frame and then spread to obtain the tidy data we want. We will go step by step in this and the next two exercises.
+5. Now we will try a more advanced wrangling challenge. We want to wrangle the admissions data so that for each major we have 4 observations: `admitted_men`, `admitted_women`, `applicants_men` and `applicants_women`.  The _trick_ we perform here is actually quite common: first pivot_longer to generate an intermediate data frame and then pivot_wider to obtain the tidy data we want. We will go step by step in this and the next two exercises.
 
-Use the gather function to create a `tmp` data.frame with a column containing the type of observation `admitted` or `applicants`. Call the new columns `key` and value.
+Use the pivot_longer function to create a `tmp` data.frame with a column containing the type of observation `admitted` or `applicants`. Call the new columns `key` and value.
 
 
 6. Now you have an object `tmp` with columns `major`,  `gender`, `key` and  `value`. Note that if you combine the key and gender, we get the column names we want: `admitted_men`, `admitted_women`, `applicants_men` and `applicants_women`. Use the function `unite` to create a new column called `column_name`.
 
-7. Now use the `spread` function to generate the tidy data with four variables for each major.
+7. Now use the `pivot_wider` function to generate the tidy data with four variables for each major.
 
 8. Now use the pipe to write a line of code that turns `admissions` to the table  produced in the previous exercise.
 
@@ -582,7 +582,7 @@ We can see column names `nameFirst` and `nameLast`. Use the `left_join` function
 co2_wide <- data.frame(matrix(co2, ncol = 12, byrow = TRUE)) %>%
   setNames(1:12) %>%
   mutate(year = 1959:1997) %>%
-  gather(month, co2, -year, convert = TRUE)
+  pivot_longer(-year, names_to = 'month', values_to = 'co2')
 ```
 
 We want to see if the monthly trend is changing so we are going to remove the year effects and then plot the results. We will first compute the year averages. Use the `group_by` and `summarize` to compute the average co2 for each year. Save in an object called `yearly_avg`.

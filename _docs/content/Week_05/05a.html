@@ -379,6 +379,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 09</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_09/09b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Group Presentations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -395,8 +412,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#introduction-to-data-wrangling" id="toc-introduction-to-data-wrangling" class="nav-link" data-scroll-target="#introduction-to-data-wrangling">Introduction to data wrangling</a></li>
   <li><a href="#reshaping-data" id="toc-reshaping-data" class="nav-link" data-scroll-target="#reshaping-data">Reshaping data</a>
   <ul class="collapse">
-  <li><a href="#gather" id="toc-gather" class="nav-link" data-scroll-target="#gather"><code>gather</code></a></li>
-  <li><a href="#spread" id="toc-spread" class="nav-link" data-scroll-target="#spread"><code>spread</code></a></li>
+  <li><a href="#pivot_longer" id="toc-pivot_longer" class="nav-link" data-scroll-target="#pivot_longer"><code>pivot_longer</code></a></li>
+  <li><a href="#pivot_wider" id="toc-pivot_wider" class="nav-link" data-scroll-target="#pivot_wider"><code>pivot_wider</code></a></li>
   <li><a href="#separate" id="toc-separate" class="nav-link" data-scroll-target="#separate"><code>separate</code></a></li>
   <li><a href="#unite" id="toc-unite" class="nav-link" data-scroll-target="#unite"><code>unite</code></a></li>
   </ul></li>
@@ -478,56 +495,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2 South Korea   6.16   5.99   5.79   5.57   5.36   5.16   4.99</code></pre>
 </div>
 </div>
-<section id="gather" class="level2">
-<h2 class="anchored" data-anchor-id="gather"><code>gather</code></h2>
-<p>One of the most used functions in the <strong>tidyr</strong> package is <code>gather</code>, which is useful for converting wide data into tidy data.</p>
+<section id="pivot_longer" class="level2">
+<h2 class="anchored" data-anchor-id="pivot_longer"><code>pivot_longer</code></h2>
+<p>One of the most used functions in the <strong>tidyr</strong> package is <code>pivot_longer</code>, which is useful for converting wide data into tidy data.</p>
 <p>Looking at the data above, the fundamental problem is that <strong>the column name contains data</strong>. This is a problem indeed! And a common one.</p>
-<section id="the-gather-arguments" class="level3">
-<h3 class="anchored" data-anchor-id="the-gather-arguments">The <code>gather</code> arguments</h3>
+<section id="the-pivot_longer-arguments" class="level3">
+<h3 class="anchored" data-anchor-id="the-pivot_longer-arguments">The <code>pivot_longer</code> arguments</h3>
 <p>Here we want to reshape the <code>wide_data</code> dataset so that each row represents a country’s yearly fertility observation, which implies we need three columns to store the year, country, and the observed value. In its current form, data from different years are in different columns with the year values stored in the column names.</p>
-<p>As with most tidyverse functions, the <code>gather</code> function’s first argument is the data frame that will be converted. Easy enough.</p>
-<p>The second and third arguments will tell <code>gather</code> the column names we want to assign to the columns containing the <strong>current column names</strong> and <strong>the observed data</strong>, respectively. In this case a good choice for these two arguments would be something like <code>year</code> and <code>fertility</code>. These are not currenly column names in the data – they are names we want to use to <em>hold</em> data currently located in the “wide” columns. We know this is fertility data only because we deciphered it from the file name.</p>
-<p>The fourth argument specifies the columns <strong>containing observed values</strong>; these are the columns that will be <em>gathered</em>. The default (if we leave out the 4th argument) is to gather <strong>all</strong> columns so, in most cases, we have to specify the columns. In our example we want columns <code>1960</code>, <code>1961</code> up to <code>2015</code>. Since these are non-standard column names, we have to backtick them so R doesn’t think they’re to be treated as integers:</p>
-<p>The code to gather the fertility data therefore looks like this:</p>
+<p>As with most tidyverse functions, the <code>pivot_longer</code> function’s first argument is the data frame that will be converted. Easy enough.</p>
+<p>The second argument specifies the columns <strong>containing observed values</strong>; these are the columns that will be <em>pivot_longered</em> (note: the original name of this function was <code>()</code>). The default (if we leave out the 2nd argument) is to gather <strong>all</strong> columns so, in most cases, we have to specify the columns. In our example we want columns <code>1960</code>, <code>1961</code> up to <code>2015</code>. Since these are non-standard column names, we have to backtick them so R doesn’t think they’re to be treated as integers.</p>
+<p>The third and fourth arguments will tell <code>pivot_longer</code> the column names we want to assign to the columns containing the <strong>current column names</strong> (<code>names_to =</code>) and <strong>the observed data</strong> (<code>values_to =</code>), respectively. In this case a good choice for these two arguments would be something like <code>year</code> and <code>fertility</code>. These are not currenly column names in the data – they are names we want to use to <em>hold</em> data currently located in the “wide” columns. We know this is fertility data only because we deciphered it from the file name.</p>
+<p>The code to pivot_longer the fertility data therefore looks like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>new_tidy_data <span class="ot">&lt;-</span> <span class="fu">gather</span>(wide_data, year, fertility, <span class="st">`</span><span class="at">1960</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2015</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>new_tidy_data <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(wide_data,  <span class="st">`</span><span class="at">1960</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2015</span><span class="st">`</span>, <span class="at">names_to =</span> <span class="st">'year'</span>, <span class="at">values_to =</span> <span class="st">'fertility'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can also use the pipe like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>new_tidy_data <span class="ot">&lt;-</span> wide_data <span class="sc">%&gt;%</span> <span class="fu">gather</span>(year, fertility, <span class="st">`</span><span class="at">1960</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2015</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>new_tidy_data <span class="ot">&lt;-</span> wide_data <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="st">`</span><span class="at">1960</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2015</span><span class="st">`</span>, <span class="at">names_to =</span> <span class="st">'year'</span>, <span class="at">values_to =</span> <span class="st">'fertility'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can see that the data have been converted to tidy format with columns <code>year</code> and <code>fertility</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(new_tidy_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
-  country     year  fertility
-  &lt;chr&gt;       &lt;chr&gt;     &lt;dbl&gt;
-1 Germany     1960       2.41
-2 South Korea 1960       6.16
-3 Germany     1961       2.44
-4 South Korea 1961       5.99
-5 Germany     1962       2.47
-6 South Korea 1962       5.79</code></pre>
+  country year  fertility
+  &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
+1 Germany 1960       2.41
+2 Germany 1961       2.44
+3 Germany 1962       2.47
+4 Germany 1963       2.49
+5 Germany 1964       2.49
+6 Germany 1965       2.48</code></pre>
 </div>
 </div>
-<p>We have the first column, which consists of “everything in the data that wasn’t gathered”, the next two columns are named based on the arguments we gave. The second column, named by our argument above, contains the column names of the wide data. The third column, also named by our argument above, contains the value that was in each corresponding colum x country pair. What you leave <em>out</em> of the 4th argument is important!</p>
-<p>Note that each year resulted in two rows since we have two countries and this column was not gathered. A somewhat quicker way to write this code is to specify which column will <strong>not</strong> be gathered, rather than all the columns that will be gathered:</p>
+<p>We have the first column, which consists of “everything in the data that wasn’t pivot_longered”, the next two columns are named based on the arguments we gave. The second column, named by our argument above, contains the column names of the wide data. The third column, also named by our argument above, contains the value that was in each corresponding colum x country pair. What you leave <em>out</em> of the 4th argument is important!</p>
+<p>Note that each year resulted in two rows since we have two countries and this column was not pivot_longered. A somewhat quicker way to write this code is to specify which column will <strong>not</strong> be pivot_longered, rather than all the columns that will be pivot_longered:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>new_tidy_data <span class="ot">&lt;-</span> wide_data <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(year, fertility, <span class="sc">-</span>country)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>country, <span class="at">names_to =</span> <span class="st">'year'</span>, <span class="at">values_to =</span> <span class="st">'fertility'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(new_tidy_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
-  country     year  fertility
-  &lt;chr&gt;       &lt;chr&gt;     &lt;dbl&gt;
-1 Germany     1960       2.41
-2 South Korea 1960       6.16
-3 Germany     1961       2.44
-4 South Korea 1961       5.99
-5 Germany     1962       2.47
-6 South Korea 1962       5.79</code></pre>
+  country year  fertility
+  &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
+1 Germany 1960       2.41
+2 Germany 1961       2.44
+3 Germany 1962       2.47
+4 Germany 1963       2.49
+5 Germany 1964       2.49
+6 Germany 1965       2.48</code></pre>
 </div>
 </div>
 <p>The <code>new_tidy_data</code> object looks like the original <code>tidy_data</code> we defined this way</p>
@@ -548,16 +565,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] "character"</code></pre>
 </div>
 </div>
-<p>The <code>gather</code> function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers. The <code>gather</code> function includes the <code>convert</code> argument for this purpose:</p>
+<p>The <code>pivot_longer</code> function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers::</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>new_tidy_data <span class="ot">&lt;-</span> wide_data <span class="sc">%&gt;%</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(year, fertility, <span class="sc">-</span>country, <span class="at">convert =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(new_tidy_data<span class="sc">$</span>year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>country, <span class="at">names_to =</span> <span class="st">'year'</span>, <span class="at">values_to =</span> <span class="st">'fertility'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.integer</span>(year))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(new_tidy_data<span class="sc">$</span>year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "integer"</code></pre>
 </div>
 </div>
-<p>Note that we could have also used the <code>mutate</code> and <code>as.numeric</code>.</p>
 <p>Now that the data is tidy, we can use this relatively simple ggplot code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>new_tidy_data <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, fertility, <span class="at">color =</span> country)) <span class="sc">+</span></span>
@@ -572,11 +589,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="spread" class="level2">
-<h2 class="anchored" data-anchor-id="spread"><code>spread</code></h2>
-<p>As we will see in later examples, it is sometimes useful for data wrangling purposes to convert tidy data into wide data. We often use this as an intermediate step in tidying up data. The <code>spread</code> function is basically the inverse of <code>gather</code>. The first argument is for the data, but since we are using the pipe, we don’t show it. The second argument tells <code>spread</code> which variable will be used as the column names. The third argument specifies which variable to use to fill out the cells:</p>
+<section id="pivot_wider" class="level2">
+<h2 class="anchored" data-anchor-id="pivot_wider"><code>pivot_wider</code></h2>
+<p>As we will see in later examples, it is sometimes useful for data wrangling purposes to convert tidy data into wide data. We often use this as an intermediate step in tidying up data. The <code>pivot_wider</code> function is basically the inverse of <code>pivot_longer</code>. The first argument is for the data, but since we are using the pipe, we don’t show it. The <code>names_from =</code> argument tells <code>pivot_wider</code> which variable will be used as the column names. The <code>values_from =</code> argument specifies which variable to use to fill out the cells:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>new_wide_data <span class="ot">&lt;-</span> new_tidy_data <span class="sc">%&gt;%</span> <span class="fu">spread</span>(year, fertility)</span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>new_wide_data <span class="ot">&lt;-</span> new_tidy_data <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> fertility)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(new_wide_data, country, <span class="st">`</span><span class="at">1960</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">1967</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 9
@@ -619,28 +636,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>First, note that the data is in wide format. Second, notice that this table includes values for two variables, fertility and life expectancy, with the column name encoding which column represents which variable. Encoding information in the column names is not recommended but, unfortunately, it is quite common. We will put our wrangling skills to work to extract this information and store it in a tidy fashion.</p>
-<p>We can start the data wrangling with the <code>gather</code> function, but we should no longer use the column name <code>year</code> for the new column since it also contains the variable type. We will call it <code>key</code>, the default, for now:</p>
+<p>We can start the data wrangling with the <code>pivot_longer</code> function, but we should no longer use the column name <code>year</code> for the new column since it also contains the variable type. We will call it <code>key</code>, the default, for now:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> raw_dat <span class="sc">%&gt;%</span> <span class="fu">gather</span>(key, value, <span class="sc">-</span>country)</span>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> raw_dat <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>country, <span class="at">names_to =</span> <span class="st">'key'</span>, <span class="at">values_to =</span> <span class="st">'value'</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
-  country     key                  value
-  &lt;chr&gt;       &lt;chr&gt;                &lt;dbl&gt;
-1 Germany     1960_fertility        2.41
-2 South Korea 1960_fertility        6.16
-3 Germany     1960_life_expectancy 69.3 
-4 South Korea 1960_life_expectancy 53.0 
-5 Germany     1961_fertility        2.44
-6 South Korea 1961_fertility        5.99</code></pre>
+  country key                  value
+  &lt;chr&gt;   &lt;chr&gt;                &lt;dbl&gt;
+1 Germany 1960_fertility        2.41
+2 Germany 1960_life_expectancy 69.3 
+3 Germany 1961_fertility        2.44
+4 Germany 1961_life_expectancy 69.8 
+5 Germany 1962_fertility        2.47
+6 Germany 1962_life_expectancy 70.0 </code></pre>
 </div>
 </div>
 <p>The result is not exactly what we refer to as tidy since each observation (year-country combination) is associated with two, not one, rows. We want to have the values from the two variables, fertility and life expectancy, in two separate columns. The first challenge to achieve this is to separate the <code>key</code> column into the year and the variable type. Notice that the entries in this column separate the year from the variable name with an underscore:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>key[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "1960_fertility"       "1960_fertility"       "1960_life_expectancy"
-[4] "1960_life_expectancy" "1961_fertility"      </code></pre>
+<pre><code>[1] "1960_fertility"       "1960_life_expectancy" "1961_fertility"      
+[4] "1961_life_expectancy" "1962_fertility"      </code></pre>
 </div>
 </div>
 <p>Encoding multiple variables in a column name is such a common problem that the <strong>tidyverse</strong> package includes a function to separate these columns into two or more. Apart from the data, the <code>separate</code> function takes three arguments: the name of the column to be separated, the names to be used for the new columns, and the character that separates the variables. So, a first attempt at this is:</p>
@@ -652,18 +669,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> <span class="fu">separate</span>(key, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"first_variable_name"</span>, <span class="st">"second_variable_name"</span>), <span class="at">fill =</span> <span class="st">"right"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 224 × 5
-   country     year  first_variable_name second_variable_name value
-   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;               &lt;chr&gt;                &lt;dbl&gt;
- 1 Germany     1960  fertility           &lt;NA&gt;                  2.41
- 2 South Korea 1960  fertility           &lt;NA&gt;                  6.16
- 3 Germany     1960  life                expectancy           69.3 
- 4 South Korea 1960  life                expectancy           53.0 
- 5 Germany     1961  fertility           &lt;NA&gt;                  2.44
- 6 South Korea 1961  fertility           &lt;NA&gt;                  5.99
- 7 Germany     1961  life                expectancy           69.8 
- 8 South Korea 1961  life                expectancy           53.8 
- 9 Germany     1962  fertility           &lt;NA&gt;                  2.47
-10 South Korea 1962  fertility           &lt;NA&gt;                  5.79
+   country year  first_variable_name second_variable_name value
+   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;chr&gt;                &lt;dbl&gt;
+ 1 Germany 1960  fertility           &lt;NA&gt;                  2.41
+ 2 Germany 1960  life                expectancy           69.3 
+ 3 Germany 1961  fertility           &lt;NA&gt;                  2.44
+ 4 Germany 1961  life                expectancy           69.8 
+ 5 Germany 1962  fertility           &lt;NA&gt;                  2.47
+ 6 Germany 1962  life                expectancy           70.0 
+ 7 Germany 1963  fertility           &lt;NA&gt;                  2.49
+ 8 Germany 1963  life                expectancy           70.1 
+ 9 Germany 1964  fertility           &lt;NA&gt;                  2.49
+10 Germany 1964  life                expectancy           70.7 
 # ℹ 214 more rows</code></pre>
 </div>
 </div>
@@ -672,26 +689,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> <span class="fu">separate</span>(key, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"variable_name"</span>), <span class="at">extra =</span> <span class="st">"merge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 224 × 4
-   country     year  variable_name   value
-   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;           &lt;dbl&gt;
- 1 Germany     1960  fertility        2.41
- 2 South Korea 1960  fertility        6.16
- 3 Germany     1960  life_expectancy 69.3 
- 4 South Korea 1960  life_expectancy 53.0 
- 5 Germany     1961  fertility        2.44
- 6 South Korea 1961  fertility        5.99
- 7 Germany     1961  life_expectancy 69.8 
- 8 South Korea 1961  life_expectancy 53.8 
- 9 Germany     1962  fertility        2.47
-10 South Korea 1962  fertility        5.79
+   country year  variable_name   value
+   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;           &lt;dbl&gt;
+ 1 Germany 1960  fertility        2.41
+ 2 Germany 1960  life_expectancy 69.3 
+ 3 Germany 1961  fertility        2.44
+ 4 Germany 1961  life_expectancy 69.8 
+ 5 Germany 1962  fertility        2.47
+ 6 Germany 1962  life_expectancy 70.0 
+ 7 Germany 1963  fertility        2.49
+ 8 Germany 1963  life_expectancy 70.1 
+ 9 Germany 1964  fertility        2.49
+10 Germany 1964  life_expectancy 70.7 
 # ℹ 214 more rows</code></pre>
 </div>
 </div>
-<p>This achieves the separation we wanted. However, we are not done yet. We need to create a column for each variable. As we learned, the <code>spread</code> function can do this:</p>
+<p>This achieves the separation we wanted. However, we are not done yet. We need to create a column for each variable. As we learned, the <code>pivot_wider</code> function can do this:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(key, <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"variable_name"</span>), <span class="at">extra =</span> <span class="st">"merge"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(variable_name, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> variable_name, <span class="at">values_from =</span> value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 112 × 4
    country year  fertility life_expectancy
@@ -719,18 +736,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(key, <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"first_variable_name"</span>, <span class="st">"second_variable_name"</span>), <span class="at">fill =</span> <span class="st">"right"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 224 × 5
-   country     year  first_variable_name second_variable_name value
-   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;               &lt;chr&gt;                &lt;dbl&gt;
- 1 Germany     1960  fertility           &lt;NA&gt;                  2.41
- 2 South Korea 1960  fertility           &lt;NA&gt;                  6.16
- 3 Germany     1960  life                expectancy           69.3 
- 4 South Korea 1960  life                expectancy           53.0 
- 5 Germany     1961  fertility           &lt;NA&gt;                  2.44
- 6 South Korea 1961  fertility           &lt;NA&gt;                  5.99
- 7 Germany     1961  life                expectancy           69.8 
- 8 South Korea 1961  life                expectancy           53.8 
- 9 Germany     1962  fertility           &lt;NA&gt;                  2.47
-10 South Korea 1962  fertility           &lt;NA&gt;                  5.79
+   country year  first_variable_name second_variable_name value
+   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;chr&gt;                &lt;dbl&gt;
+ 1 Germany 1960  fertility           &lt;NA&gt;                  2.41
+ 2 Germany 1960  life                expectancy           69.3 
+ 3 Germany 1961  fertility           &lt;NA&gt;                  2.44
+ 4 Germany 1961  life                expectancy           69.8 
+ 5 Germany 1962  fertility           &lt;NA&gt;                  2.47
+ 6 Germany 1962  life                expectancy           70.0 
+ 7 Germany 1963  fertility           &lt;NA&gt;                  2.49
+ 8 Germany 1963  life                expectancy           70.1 
+ 9 Germany 1964  fertility           &lt;NA&gt;                  2.49
+10 Germany 1964  life                expectancy           70.7 
 # ℹ 214 more rows</code></pre>
 </div>
 </div>
@@ -739,7 +756,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(key, <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"first_variable_name"</span>, <span class="st">"second_variable_name"</span>), <span class="at">fill =</span> <span class="st">"right"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(variable_name, first_variable_name, second_variable_name) <span class="sc">%&gt;%</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(variable_name, value) <span class="sc">%&gt;%</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> variable_name, <span class="at">values_from =</span> value) <span class="sc">%&gt;%</span></span>
 <span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">fertility =</span> fertility_NA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 112 × 4
@@ -776,7 +793,7 @@ TRY IT
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.character</span>(<span class="dv">1959</span><span class="sc">:</span><span class="dv">1997</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Use the gather function to wrangle this into a tidy dataset. Call the column with the CO2 measurements <code>co2</code> and call the month column <code>month</code>. Call the resulting object <code>co2_tidy</code>.</p>
+<p>Use the pivot_longer function to wrangle this into a tidy dataset. Call the column with the CO2 measurements <code>co2</code> and call the month column <code>month</code>. Call the resulting object <code>co2_tidy</code>.</p>
 <ol start="2" type="1">
 <li>Plot CO2 versus month with a different curve for each year using this code:</li>
 </ol>
@@ -787,7 +804,7 @@ TRY IT
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(co2_tidy<span class="sc">$</span>month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Rewrite the call to gather using an argument that assures the month column will be numeric. Then make the plot.</p>
+<p>Rewrite the call to pivot_longer using an argument that assures the month column will be numeric. Then make the plot.</p>
 <ol start="3" type="1">
 <li>What do we learn from this plot?</li>
 </ol>
@@ -804,14 +821,14 @@ TRY IT
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(admissions)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> admissions <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>applicants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If we think of an observation as a major, and that each observation has two variables (men admitted percentage and women admitted percentage) then this is not tidy. Use the <code>spread</code> function to wrangle into tidy shape: one row for each major.</p>
+<p>If we think of an observation as a major, and that each observation has two variables (men admitted percentage and women admitted percentage) then this is not tidy. Use the <code>pivot_wider</code> function to wrangle into tidy shape: one row for each major.</p>
 <ol start="5" type="1">
-<li>Now we will try a more advanced wrangling challenge. We want to wrangle the admissions data so that for each major we have 4 observations: <code>admitted_men</code>, <code>admitted_women</code>, <code>applicants_men</code> and <code>applicants_women</code>. The <em>trick</em> we perform here is actually quite common: first gather to generate an intermediate data frame and then spread to obtain the tidy data we want. We will go step by step in this and the next two exercises.</li>
+<li>Now we will try a more advanced wrangling challenge. We want to wrangle the admissions data so that for each major we have 4 observations: <code>admitted_men</code>, <code>admitted_women</code>, <code>applicants_men</code> and <code>applicants_women</code>. The <em>trick</em> we perform here is actually quite common: first pivot_longer to generate an intermediate data frame and then pivot_wider to obtain the tidy data we want. We will go step by step in this and the next two exercises.</li>
 </ol>
-<p>Use the gather function to create a <code>tmp</code> data.frame with a column containing the type of observation <code>admitted</code> or <code>applicants</code>. Call the new columns <code>key</code> and value.</p>
+<p>Use the pivot_longer function to create a <code>tmp</code> data.frame with a column containing the type of observation <code>admitted</code> or <code>applicants</code>. Call the new columns <code>key</code> and value.</p>
 <ol start="6" type="1">
 <li><p>Now you have an object <code>tmp</code> with columns <code>major</code>, <code>gender</code>, <code>key</code> and <code>value</code>. Note that if you combine the key and gender, we get the column names we want: <code>admitted_men</code>, <code>admitted_women</code>, <code>applicants_men</code> and <code>applicants_women</code>. Use the function <code>unite</code> to create a new column called <code>column_name</code>.</p></li>
-<li><p>Now use the <code>spread</code> function to generate the tidy data with four variables for each major.</p></li>
+<li><p>Now use the <code>pivot_wider</code> function to generate the tidy data with four variables for each major.</p></li>
 <li><p>Now use the pipe to write a line of code that turns <code>admissions</code> to the table produced in the previous exercise.</p></li>
 </ol>
 </div>
@@ -1238,7 +1255,7 @@ TRY IT
 <div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>co2_wide <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(co2, <span class="at">ncol =</span> <span class="dv">12</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="dv">1959</span><span class="sc">:</span><span class="dv">1997</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(month, co2, <span class="sc">-</span>year, <span class="at">convert =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>year, <span class="at">names_to =</span> <span class="st">'month'</span>, <span class="at">values_to =</span> <span class="st">'co2'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We want to see if the monthly trend is changing so we are going to remove the year effects and then plot the results. We will first compute the year averages. Use the <code>group_by</code> and <code>summarize</code> to compute the average co2 for each year. Save in an object called <code>yearly_avg</code>.</p>
 <ol start="4" type="1">
@@ -1487,11 +1504,11 @@ TRY IT
 <div class="cell">
 <div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2025-02-18 11:14:21 EST"</code></pre>
+<pre><code>[1] "2025-10-14 16:30:01 EDT"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>(<span class="st">"GMT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2025-02-18 16:14:21 GMT"</code></pre>
+<pre><code>[1] "2025-10-14 20:30:01 GMT"</code></pre>
 </div>
 </div>
 <p>You can see all the available time zones with <code>OlsonNames()</code> function.</p>
@@ -1499,15 +1516,15 @@ TRY IT
 <div class="cell">
 <div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">hour</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 11</code></pre>
+<pre><code>[1] 16</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">minute</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 14</code></pre>
+<pre><code>[1] 30</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">second</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 21.97943</code></pre>
+<pre><code>[1] 1.287327</code></pre>
 </div>
 </div>
 <p>The package also includes a function to parse strings into times as well as parsers for time objects that include dates:</p>

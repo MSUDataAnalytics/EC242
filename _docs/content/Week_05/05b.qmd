@@ -27,7 +27,7 @@ Unfortunately, you only have the following data:
 
 - Right-click on each of the links, copy the address, and read the URL in using `read.csv` to read .csv's
 
-- You'll find you need to use most of the tools we covered on Tuesday including `gather`, `separate` and more.
+- You'll find you need to use most of the tools we covered on Tuesday including `pivot_longer`, `pivot_wider` and more.
 
 - You'll need `lubridate` and `tidyverse` loaded up.
 

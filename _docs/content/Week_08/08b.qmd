@@ -813,9 +813,8 @@ all.equal(fitted(lm(mpg ~ disp * cyl, data = autompg)),
 ```
 
 
-:::fyi
-
-__TRY IT__
+::: {.callout-note}
+## TRY IT
 
 Let's try some interaction terms using our `Ames` data from before (linked at the top of this page). For now, we'll stick to interacting square footage (`GrLivArea`) with dummy or factor variables. As usual, we're trying to predict `SalePrice`.
 

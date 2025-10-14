@@ -408,6 +408,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 09</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_09/09b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Group Presentations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -1423,8 +1440,16 @@ Coefficients:
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
-<div class="fyi">
-<p><strong>TRY IT</strong></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+TRY IT
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Let’s try some interaction terms using our <code>Ames</code> data from before (linked at the top of this page). For now, we’ll stick to interacting square footage (<code>GrLivArea</code>) with dummy or factor variables. As usual, we’re trying to predict <code>SalePrice</code>.</p>
 <p>What factor variables should we use? Here are some options:</p>
 <ol type="1">
@@ -1439,6 +1464,7 @@ Coefficients:
 <li>Be prepared to interpret the coefficients on the “baseline” coefficient on <code>GrLivArea</code>, as well as one of the coefficients on the interaction.</li>
 <li>Test the two models using <code>anova(mod1, mod2)</code> and tell us if your more flexible model is statistically better than the less flexible model.</li>
 </ol>
+</div>
 </div>
 </section>
 <section id="building-larger-models" class="level2">

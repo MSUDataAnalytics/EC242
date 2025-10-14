@@ -13,7 +13,7 @@ output:
 
 ### Supplemental Readings
 
-- <i class="fas fa-book"></i> Chapter 3 in [Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/ISLR%20Seventh%20Printing.pdf)
+- <i class="fas fa-book"></i> Chapter 3 in [Introduction to Statistical Learning](https://hastie.su.domains/ISLR2/ISLRv2_corrected_June_2023.pdf.download.html)
 
 ### Guiding Questions
 
@@ -723,7 +723,6 @@ qplot(R_hat, data = players, binwidth = 0.5, color = I("black"))
 
 
 ::: {.callout-note}
-
 ## TRY IT
 
 Since the 1980s, sabermetricians have used a summary statistic different from batting average to evaluate players. They realized walks were important and that doubles, triples, and HRs, should be weighed more than singles. As a result, they proposed the following metric:

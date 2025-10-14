@@ -408,6 +408,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">Week 09</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/Week_09/09b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Group Presentations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -420,8 +437,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#sharing-screen" id="toc-sharing-screen" class="nav-link active" data-scroll-target="#sharing-screen">Sharing Screen</a></li>
-  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a></li>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries">Preliminaries</a></li>
   <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code">Code</a></li>
   <li><a href="#simple-regression" id="toc-simple-regression" class="nav-link" data-scroll-target="#simple-regression">Simple regression</a></li>
   </ul>
@@ -449,10 +465,6 @@ window.Quarto = {
 </header>
 
 
-<section id="sharing-screen" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-screen">Sharing Screen</h2>
-<p>As we’ve discussed, we’ll be using the share screen feature to discuss folks’ output. Please see link on screen.</p>
-</section>
 <section id="preliminaries" class="level2">
 <h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
 <p>For this example, we’re going to use historical weather data from <a href="https://darksky.net/forecast/33.7546,-84.39/us12/en">Dark Sky</a> about wind speed and temperature trends for downtown Atlanta (<a href="https://www.google.com/maps/place/33°45'16.4%22N+84°23'24.0%22W/@33.754557,-84.3921977,17z/">specifically <code>33.754557, -84.390009</code></a>) in 2019. We downloaded this data using Dark Sky’s (about-to-be-retired-because-they-were-bought-by-Apple) API using the <a href="https://github.com/hrbrmstr/darksky"><strong>darksky</strong> package</a>.</p>
@@ -470,7 +482,8 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)  <span class="co"># For ggplot, dplyr, and friends</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)  <span class="co"># For combining ggplot plots</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)     <span class="co"># New one, for scatterplot matrices</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)      <span class="co"># For converting model objects to data frames</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)      <span class="co"># For converting model objects to data frames</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)    <span class="co"># Operations on factors (reordering, etc.)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we load the data with <code>read_csv()</code>. This is <code>tidyverse</code>’s CSV reader (base <code>R</code> is <code>read.csv</code>). Here we assume that the CSV file was downloaded and lives in a subfolder named <code>data</code>:</p>
 <div class="cell" data-layout-align="center">
@@ -533,7 +546,7 @@ TRY IT
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>RECS <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://www.eia.gov/consumption/residential/data/2009/csv/recs2009_public.csv'</span>, <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span>  </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">EnergyUsed =</span> TOTALBTU,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">ColdDays =</span> HDD65, <span class="at">HotDayss =</span> CDD65, <span class="at">SquareFeet =</span> TOTHSQFT, <span class="at">CarsGarage =</span> SIZEOFGARAGE, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">ColdDays =</span> HDD65, <span class="at">HotDays =</span> CDD65, <span class="at">SquareFeet =</span> TOTHSQFT, <span class="at">CarsGarage =</span> SIZEOFGARAGE, </span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">AgeOfHome =</span> YEARMADERANGE, <span class="at">TreeShade =</span> TREESHAD, <span class="at">TVSize =</span> TVSIZE1, <span class="at">HeaterAge =</span> EQUIPAGE, <span class="at">HasAC =</span> AIRCOND,</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">TempHome =</span> TEMPHOME) <span class="sc">%&gt;%</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(HeaterAge <span class="sc">!=</span> <span class="sc">-</span><span class="dv">2</span> <span class="sc">&amp;</span> TempHome <span class="sc">!=-</span><span class="dv">2</span>)  <span class="co"># these are NAs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -678,7 +691,7 @@ precipProbability              NA             NA       NA        NA             
 <p>Our estimated parameters <span class="math inline">\(\beta_0, \beta_1\)</span> define the line of best fit, or the “regression line”. That regression line is our conditional expectation function:</p>
 <p><span class="math display">\[E[HighTempScaled|HumidityScaled] = \beta_0 + \beta_1 HumidityScaled\]</span></p>
 <p>Note that we do not have an error term here – the <span class="math inline">\(E[]\)</span> doesn’t have an error term in it, only the regression function does.</p>
-<p>To do this in R, we’ll first use the formula from <a href="content/Week_06/06a.html#the-regression-line-1">Principles 06</a>:</p>
+<p>To do this in R, we’ll first use the formula from <a href="content/Week_07/07a.html#the-regression-line-1">Week 07a</a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>weather_atl_results <span class="ot">=</span> weather_atl_summer <span class="sc">%&gt;%</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mu_x =</span> <span class="fu">mean</span>(humidity_scaled),</span>
@@ -698,7 +711,7 @@ precipProbability              NA             NA       NA        NA             
 1  64.8  88.5  10.6  5.33 -0.481 -0.241   104.</code></pre>
 </div>
 </div>
-<p>Note that the formulas from <a href="content/Week_06/06a.html#the-regression-line-1">Principles 06</a> have a direct translation into the code. Also note that we used <code>summarize</code> on the data so that we get only <strong>one</strong> row of data (no more 1,000+ rows, we’ve summarized them using <code>mean</code> and <code>sd</code>).</p>
+<p>Note that the formulas from <a href="content/Week_07/07a.html#the-regression-line-1">Principles 07</a> have a direct translation into the code. Also note that we used <code>summarize</code> on the data so that we get only <strong>one</strong> row of data (no more 1,000+ rows, we’ve summarized them using <code>mean</code> and <code>sd</code>).</p>
 <section id="interpretation-of-coefficients" class="level3">
 <h3 class="anchored" data-anchor-id="interpretation-of-coefficients">Interpretation of coefficients</h3>
 <p>Our estimates of the <span class="math inline">\(\beta_0, \beta_1\)</span> are our “coefficients”. It’s important we interpret them correctly. We can interpret these coefficients like so:</p>
