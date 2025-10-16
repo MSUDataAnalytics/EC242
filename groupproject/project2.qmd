@@ -6,6 +6,7 @@ format:
     toc: true
 ---
 
+<!-- Ben: I made a google sheet of all the geometry types and am pulling a file that has the class list and group assignment from my TA on it. You might need to make a table separately -- see the code chunk at the end. -->
 
 ## Presenting Your Data (Quickly!)
 Project 2 is an in-class presentation which will occur during class on {{< var duedates.project2 >}} (following Fall Break). Each group will make and present a short data analysis using one of the data sets from your Project 1 (or a new one, I'm not keeping track). Your presentation will introduce and detail a new ggplot `geom_` or aesthetic mapping that we haven't yet covered in class. You will be limited to a total of three slides (plus a cover slide), presented in no more than three minutes.
@@ -36,7 +37,7 @@ Your presentation will have four slides.
   
   
 ### This will be short
-There are three content slides and three of you in the group. Each person can take one slide. **Do not plan on speaking for more than 30 seconds**, we have a lot of class to get through. Just as a good visual boils the message down to it's most pure form, so too should your presentation.
+There are three content slides and three of you in the group. Each person can take one slide. **Do not plan on speaking for more than 30 seconds per person**, we have a lot of class to get through. Just as a good visual boils the message down to it's most pure form, so too should your presentation.
 
 ## Grading
 Out of 40 points:
@@ -45,9 +46,40 @@ Out of 40 points:
 
 - Visual (10 points): Is the visual clean, well-formatted, and free from errors. Does it adhere to our standards for good visualization? Does it clearly communicate it's message with only basic discussion and description?
 
-- Application of new geometry/aesthetic (10 points): Did you successfully show your assigned geometry or aesthetic? Was the code clear enough for others to create something similar with minimal work?
+- Application of new geometry/aesthetic/method (10 points): Did you successfully show your assigned geometry or aesthetic? Was the code clear enough for others to create something similar with minimal work?
 
 - Presentation (10 points): Was your group organized and concise? Did you clearly cover all the discussion necessary in the allotted time?
 
-I will post the group list of assigned geometries / aesthetics here shortly. Remember, this is a 3-minute presentation that we'll run back-to-back-to-back over all the groups, so efficiency is key. The plot has to hit fast and hard!
+Remember, this is a 3-minute presentation that we'll run back-to-back-to-back over all the groups, so efficiency is key. The plot has to hit fast and hard!
+
+## Assigned Geometries / aesthetics / methods
+If you have any questions, please email me {{< var email.instructor >}}.
+
+Many examples (from which I created this list) can be found [here](https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html). You can (and should!) use outside resources to get an understanding of what your assigned geometry/aesthetic/method looks like. For some of these geometries/aesthetics/methods, I've added a link to a package or example that should help.
+
+Not every dataset will work with your geometry. You may have to use one of your other datasets to find data that will work. If your group is assigned a method, just use that method in whatever visualization best illustrates it. Email me if you have questions.
+
+
+```{r, warning = F, error = F, message = F}
+library(googlesheets4)
+
+uselist <- read_sheet('https://docs.google.com/spreadsheets/d/1Jc1SBtV4WiJ6INmRMcnRcSF75fn2OdUicP3P1T2nI9Q/edit?usp=sharing')
+
+set.seed(2025)
+
+grouplist = readxl::read_excel("C:\\Users\\jkirk\\OneDrive - Michigan State University\\Teaching\\EC242_FS25 Grading\\Group Assignment 09182025.xlsx", col_names = c('Junk1','netID','Junk2','Junk3','Gname','Fname','Lname')) %>%
+  dplyr::select(-Junk1, -Junk2, -Junk3, -netID) %>%
+  group_by(Gname) %>%
+  dplyr::mutate(Number = sample(unique(uselist$Number), 1)) %>%
+  ungroup() %>%
+  left_join(uselist, by = 'Number') %>%
+  dplyr::select(`Group Name` = Gname, `Last Name` = Lname, `geometry, aesthetic, or method name` = `geom name`, `Additional Info`) %>%
+  dplyr::mutate(`Additional Info` = ifelse(is.na(`Additional Info`), '', `Additional Info`))
+
+knitr::kable(grouplist)
+
+
+
+
+```
 

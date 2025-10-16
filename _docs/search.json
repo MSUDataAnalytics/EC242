@@ -1278,41 +1278,237 @@
     "text": "Course Calendar\n\n\n\n\n\nWeek\nDates\nProgramming Foundations\nPrinciples\nApplications\nAssignment\n\n\n\n\n1\nAug 26 & Aug 28\n(Re-)introduction to R\n\n\n\n\n\n2\nSep 2 & Seo 4\nProgramming basics, tidyverse, and visualization\n\n\n\n\n\n3\nSep 9 & Sep 11\nVisualization II\n\n\n\n\n\n4\nSep 16 & Sep 18\nVisualization III\n\n\n\n\n\n5\nSep 23 & Sep 25\nWrangling Data\n\n\n\n\n\n\n\nData Analysis Foundations\nPrinciples\nApplications\nAssignment\n\n\n6\nSep 30 & Oct 2\nUncertainty and Probability in R\n\n\n\n\n\n7\nOct 7 & Oct 9\nLinear Regression I\n\n\n\n\n\n\nSat Oct 11\nProject 1 Due\n\n\n\n\n\n8\nOct 14 & Oct 16\nLinear Regression II\n\n\n\n\n\n\n\nApplications of Data Analysis\nPrinciples\nApplications\nAssignment\n\n\n9\nOct 21& Oct 23\nIn-class Presentation of Project 2\n\n\n\n\n\n10\nOct 28 & Oct 30\nLinear Regression III\n\n\n\n\n\n11\nNov 4 & Nov 6\nNonlinear Regression\n\n\n\n\n\n12\nNov 11 & Nov 13\nFeature Selection and the Bias Variance Tradeoff\n\n\n\n\n\n13\nNov 18 & Nov 20\nClassification\n\n\n\n\n\n\nNov 22\nProject 3 Due\n\n\n\n\n\n\n\nFurther Extensions\nPrinciples\nApplications\nAssignment\n\n\n14\nNov 25&Nov 27\nText as Data\n\n\n\n\n\n15\nDec 2 & Dec 4\nGeospatial in R (Last lab)\n\n\n\n\n\n\n\nConclusions\nPrinciples\nApplications\nAssignment\n\n\n\nDec 10\nFinal Project Due"
   },
   {
-    "objectID": "content/Week_05/05b.html",
-    "href": "content/Week_05/05b.html",
-    "title": "Wrangle some Data",
+    "objectID": "content/Week_09/09b.html",
+    "href": "content/Week_09/09b.html",
+    "title": "Group Presentations",
     "section": "",
-    "text": "Exercise in Data Wrangling: WW5\nYou work for a travel booking website as a data analyst. A hotel has asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They’ve asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.\nUnfortunately, you only have the following data:\n\n booking.csv - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hoted.\n roomrates.csv - Contains the price of each room on each day\n parking.csv - Contains the corporations who negotiated free parking for employees\nParking at the hotel is $60 per night if you don’t have free parking. This hotel is in California, so everyone drives and parks when they stay.\n\n\n\n\n\n\n\nTip\n\n\n\n\nRight-click on each of the links, copy the address, and read the URL in using read.csv to read .csv’s\nYou’ll find you need to use most of the tools we covered on Tuesday including pivot_longer, pivot_wider and more.\nYou’ll need lubridate and tidyverse loaded up.\n\n\n\nYour lab wil be based on similar data (with more wrinkles to fix) so share your code with your group when you’re done.",
+    "text": "Nothing. Attendance is required.",
     "crumbs": [
       "Course Content",
-      "Week 05",
-      "Wrangle some Data"
+      "Week 09",
+      "Group Presentations"
     ]
   },
   {
-    "objectID": "assignment/05-assignment.html",
-    "href": "assignment/05-assignment.html",
-    "title": "5: Data Wrangling",
+    "objectID": "content/Week_09/09b.html#required-reading",
+    "href": "content/Week_09/09b.html#required-reading",
+    "title": "Group Presentations",
     "section": "",
-    "text": "Due Date\n\n\n\nThis assignment is due on Monday, September 29th\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.",
+    "text": "Nothing. Attendance is required.",
     "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "5: Data Wrangling"
+      "Course Content",
+      "Week 09",
+      "Group Presentations"
     ]
   },
   {
-    "objectID": "assignment/05-assignment.html#data-wrangling-continued",
-    "href": "assignment/05-assignment.html#data-wrangling-continued",
-    "title": "5: Data Wrangling",
-    "section": "Data Wrangling Continued…",
-    "text": "Data Wrangling Continued…\nYou still work for a travel booking website as a data analyst. The hotel has once again asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They’ve asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.\nYou did this already in class, but your boss now has some different data. It’s similar, and your code from before will help, but it has some new wrinkles in it to tackle. Do not use the data from this week’s Example. Here’s your new data:\n\n booking.csv - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hotel. It was pulled by an intern who doesn’t understand date-time stamps.\n roomrates.csv - Contains the price of each room on each day. The Lab 11 version of this data is from our German affiliate, so pay attention to the date format, and be careful – it’s very wide, so using head will throw a lot of data at you.\n parking.csv - Contains the corporations who negotiated free parking for employees. It has been updated.\nParking at the hotel is $60 per night if you don’t have free parking. This hotel is in California, so everyone drives and parks when they stay.\n\n\n\n\n\n\n\nEXERCISE 1\n\n\n\n\nAs you did in class, but with your new set of data, total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking\nVisualize (using ggplot) each corporation’s spending at the hotel over time and by roomtype. Make one plot with ggplot that shows this.\nVisualize (using ggplot) the room rates over time by room type. Can you pick out one factor that determines when room prices are higher than usual? Note that we know each corporation gets the same room rate as the others on the same day, so this is about room rates, not corporate spending. Make two total plots, the first showing the room rates over time by room type, and the second explaining some feature of one of the room rates (e.g. when is the double room rate high? When is it low?). Using the month(...), day(...) or wday(..., label = TRUE) functions from lubridate will help with figuring out the patterns. Try exploring just one of the room types to start. You don’t have to perfectly analyze the room rate, just find one facet of the rate that changes regularly over time.",
+    "objectID": "content/Week_09/09b.html#group-project-2-presentations",
+    "href": "content/Week_09/09b.html#group-project-2-presentations",
+    "title": "Group Presentations",
+    "section": "Group Project 2 Presentations",
+    "text": "Group Project 2 Presentations\nToday, we will have a lightining-round set of group presentations where each group will present their work for Project 2.",
+    "crumbs": [
+      "Course Content",
+      "Week 09",
+      "Group Presentations"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "\n            Social Science Data Analytics\n        ",
+    "section": "",
+    "text": "Social Science Data Analytics\n        \n        \n            EC242 - Fall 2025\n        \n        \n            Tu/Th 1:00 - 2:20pmNatSci 116Michigan State UniversityDepartment of Economics\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\n\n\nInstructor\n\n Justin Kirkpatrick\n Old Botany 105\n jkirk@msu.edu\n Slack\n\n\n\nCourse details\n\n Tu/Th 1:00 - 2:20pm\n NatSci 116\n\n\n\nContacting me\nFor individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
+  },
+  {
+    "objectID": "assignment/04-assignment.html",
+    "href": "assignment/04-assignment.html",
+    "title": "4: Visualizing Large(ish) Data",
+    "section": "",
+    "text": "Due Date\n\n\n\nThis assignment is due on Monday, September 22nd\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.",
     "crumbs": [
       "Assignments",
       "Lab Assignments",
       "Assignments",
-      "5: Data Wrangling"
+      "4: Visualizing Large(ish) Data"
+    ]
+  },
+  {
+    "objectID": "assignment/04-assignment.html#postscript-how-we-got-this-unemployment-data",
+    "href": "assignment/04-assignment.html#postscript-how-we-got-this-unemployment-data",
+    "title": "4: Visualizing Large(ish) Data",
+    "section": "Postscript: how we got this unemployment data",
+    "text": "Postscript: how we got this unemployment data\nFor the curious, here’s the code we used to download the unemployment data from the BLS.\nAnd to pull the curtain back and show how much googling is involved in data visualization (and data analysis and programming in general), here was my process for getting this data:\n\nWe thought “We want to have students show variation in something domestic over time” and then we googled “us data by state”. Nothing really came up (since it was an exceedingly vague search in the first place), but some results mentioned unemployment rates, so we figured that could be cool.\nWe googled “unemployment statistics by state over time” and found that the BLS keeps statistics on this. We clicked on the “Data Tools” link in their main navigation bar, clicked on “Unemployment”, and then clicked on the “Multi-screen data search” button for the Local Area Unemployment Statistics (LAUS).\nWe walked through the multiple screens and got excited that we’d be able to download all unemployment stats for all states for a ton of years, but then the final page had links to 51 individual Excel files, which was dumb.\nSo we went back to Google and searched for “download bls data r” and found a few different packages people have written to do this. The first one we clicked on was blscrapeR at GitHub, and it looked like it had been updated recently, so we went with it.\nWe followed the examples in the blscrapeR package and downloaded data for every state.\n\nAnother day in the life of doing modern data science. This is an example of something you will be able to do by the end of this class. we had no idea people had written R packages to access BLS data, but there are (at least) 3 packages out there. After a few minutes of tinkering, we got it working and it is relatively straightforward.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "4: Visualizing Large(ish) Data"
+    ]
+  },
+  {
+    "objectID": "resource/index.html",
+    "href": "resource/index.html",
+    "title": "Helpful resources",
+    "section": "",
+    "text": "In these reference pages, I’ve included some useful resources to help you in the course."
+  },
+  {
+    "objectID": "resource/data.html",
+    "href": "resource/data.html",
+    "title": "Data",
+    "section": "",
+    "text": "There are a ton of places to find data related to public policy and administration (as well as data on pretty much any topic you want) online:\n\nData is Plural newsletter: Jeremy Singer-Vine sends a weekly newsletter of the most interesting public datasets he’s found. You should subscribe to it. He also has an archive of all the datasets he’s highlighted.\nGoogle Dataset Search: Google indexes thousands of public datasets; search for them here.\nKaggle: Kaggle hosts machine learning competitions where people compete to create the fastest, most efficient, most predictive algorithms. A byproduct of these competitions is a host of fascinating datasets that are generally free and open to the public. See, for example, the European Soccer Database, the Salem Witchcraft Dataset or results from an Oreo flavors taste test. Note: when you are asked in an assignment or project to find data, Kaggle is not a valid source. You learn nothing about farming by getting fruit from the market. Similarly, you learn nothing about data analysis by getting pre-packaged data from Kaggle.\n360Giving: Dozens of British foundations follow a standard file format for sharing grant data and have made that data available online.\nUS City Open Data Census: More than 100 US cities have committed to sharing dozens of types of data, including data about crime, budgets, campaign finance, lobbying, transit, and zoning. This site from the Sunlight Foundation and Code for America collects this data and rates cities by how well they’re doing.\nPolitical science and economics datasets: There’s a wealth of data available for political science- and economics-related topics:\n\nFrançois Briatte’s extensive curated lists: Includes data from/about intergovernmental organizations (IGOs), nongovernmental organizations (NGOs), public opinion surveys, parliaments and legislatures, wars, human rights, elections, and municipalities.\nThomas Leeper’s list of political science datasets: Good short list of useful datasets, divided by type of data (country-level data, survey data, social media data, event data, text data, etc.).\nErik Gahner’s list of political science datasets: Huge list of useful datasets, divided by topic (governance, elections, policy, political elites, etc.)\n\nGeospatial datasets: For our geospatial unit, many entities (government agencies, etc.) post repositories of spatial data via arcgis.com, which is owned by ESRI, the company that makes the predominant commercial GIS software. The data owner decides what data to post and how to present it, but arcgis.com provides the hosting. R has excellent geospatial functionalities, so we cover (when time permits) geospatial data. It is easy to find geospatial data to import into R. Here are a few:\n\nState of Michigan Open Data Portal\nHomeland Infrastructure Foundation-Level Data (HIFLD)\nCity of East Lansing Data Viewer",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Data"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html",
+    "href": "assignment/index.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "This course is the capstone of the Data Analytics Minor in the College of Social Science. Accordingly, you should—fingers crossed—enjoy data analysis. You will get the most of out this class if you:\nAssignments consist of Weekly Writings and Lab Assignments. Each type of assignment in this class helps with one of these strategies. Weekly writings engage with the materials, and lab assignments engage directly with R. The assignments are described below.\nTo get started, download and save the following files (right-click to Save Link As…)",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html#weekly-writings",
+    "href": "assignment/index.html#weekly-writings",
+    "title": "Assignments",
+    "section": "Weekly Writings",
+    "text": "Weekly Writings\nTo encourage you to actively engage with the course content, you will write a ≈150 word memorandum about the reading or lecture each week. That’s fairly short: there are ≈250 words on a typical double-spaced page. You must complete eleven of these in the course. I will drop your one lowest weekly writing score. Your actual prompt will be assigned in class, so you must login each day to ensure you get these assignments. To keep you on your toes, we will vary whether these are assigned on Tuesdays or Thursdays. Each week’s weekly writing will be due on D2L by 11:59pm on Saturday\nYou can do a lot of different things with this memo: discuss something you learned from the course content, write about the best or worst data visualization you saw recently, connect the course content to your own work, etc. These reflections let you explore and answer some of the key questions of this course, including:\n\nWhen is a link correlational vs causal? How can we still make useful statements about non-causal things?\nWhy do we visualize data?\nWhat makes a great data analysis? What makes a bad analysis?\nHow do you choose which kind of analysis method to use?\nWhat is the role of the data structure in choosing an analysis? Can we be flexible?\n\nThe course content for each day will also include a set of questions specific to that topic. You do not have to answer all (or any) of these questions. That would be impossible. They exist to guide your thinking and to make complex reading more digestible. The specific topic for each week will be assigned in class. (We can’t emphasize this enough.)\nThe TA will grade these mini-exercises using a very simple system:\n\n✔+: (6 points (100%) in gradebook) Work is thoughtful, well-written, and shows engagement with the course content. This is the expected level of performance.\n✔: (5 points (83%) in gradebook) Work shows bare minimum of thought and engagement. Disappointing, but excusable occasionally.\n✔−: (3 points (50%) in gradebook) Work is hastily composed, too short, poorly formatted without headers, and/or only cursorily engages with the course content. This grade signals that you need to improve significantly next time. I will hopefully not assign these often.\n0: (0 points (0%) in gradebook) Work is wholly uninformed by the prompt and/or written to the wrong prompt, or is not rendered using latex in Rmarkdown (e.g. html or word docs that are saved as pdf’s).\n\n(There is an implicit 0 above for work that is not turned in by Saturday at 11:59pm). Notice that this is essentially a pass/fail or completion-based system. We’re not grading your writing ability; we’re not counting the exact number of words you’re writing; and we’re not looking for encyclopedic citations of every single reading to prove that you did indeed read everything. We are looking for thoughtful engagement. Read the material, engage with the work and you’ll get a ✓.\n\nWeekly Writing Template\nYou will turn these reflections in via D2L. You will write them using R Markdown and this template  Weekly writing template. You must knit your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc. All work must be rendered using latex to PDF. Do not use word or html docs saved as a PDF.",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html#lab-assignments",
+    "href": "assignment/index.html#lab-assignments",
+    "title": "Assignments",
+    "section": "Lab Assignments",
+    "text": "Lab Assignments\nEach week of the course has examples of code that teach and demonstrate how to do specific tasks in R. However, without practicing these principles and making graphics on your own, you won’t remember what you learn.\nPlease do not do labs more than one week ahead of time. I am updating the assignments as the semester proceeds, and you may do an entire assignment that is completely changed.\nFor example, to practice working with ggplot2 and making data-based graphics, you will complete a brief set of exercises over a few class sessions. These exercises will have 1–3 short tasks that are directly related to the topic for the week. You need to show that you made a good faith effort to work each question. There will also be a final question which requires significantly more thought and work. This will be where you get to show some creativity and stretch your abilities. Overall, labs will be graded the same check system:\n\n✔+: (12 points (100%) in gradebook) Exercises are complete. Every task was attempted and answered, and all answers are correct in detail. Knitted document is clean and easy to follow. Work on the final problem shows creativity or is otherwise exceptional. We will not assign these often.\n✔: (11 points (91%) in gradebook) Exercises are complete and most answers are correct. Document is correctly formatted with few minor formatting errors. This is the expected level of performance.\n✔−: (6 points (50%) in gradebook) Exercises are less than 70% complete and/or most answers are incorrect. Document is poorly formatted without appropriately rendered headers. This indicates that you need to improve next time. We will hopefully not assign these often.\n0: (0 points (0%) in gradebook) Exercises are less than 50% complete, are grossly incorrect, or clearly do not follow the questions. Or, knitted document is not rendered via latex to PDF.\n\nThere is an implicit 0 for any assignment not turned in on time. If you have only partial work, then turn that in for partial credit. As noted in the syllabus, we are not grading your coding ability. We are not checking each line of code to make sure it produces some exact final figure, and we do not expect perfection. Also note that a ✓ does not require 100% success. You will sometimes get stuck with weird errors that you can’t solve, or the demands of pandemic living might occasionally become overwhelming. We are looking for good faith effort. Try hard, engage with the task, and you’ll get a ✓.\nYou may work together on the labs, but you must turn in your own answers.\n\nLab Template\nYou will turn these labs in via D2L. You will write them using R Markdown and this  Lab assignment template. You must knit your work to a PDF document (this will be what you turn in). Your output must be rendered in latex. I do not accept rendering to HTML or Word and then converting to PDF and unrendered .rmd files are not allowed.",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/index.html#projects",
+    "href": "assignment/index.html#projects",
+    "title": "Assignments",
+    "section": "Projects",
+    "text": "Projects\nTo give you practice with the data and design principles you’ll learn in this class, you will complete two projects en route to the overarching final project of the course. Both these mini projects and the final project must be completed in groups. I will assign groups after the drop deadline passes. Groups will be 2-3 people. You are allowed to form your own groups, but I will assign groups. More details will follow later.\nThe projects are checkpoints to ensure you’re working on your project seriously. They will be graded using a continuous 0-100% scoring.\nBecause these mini projects give you practice for the final project, we will provide you with substantial feedback on your design and code.",
+    "crumbs": [
+      "Syllabus",
+      "Lab Assignments"
+    ]
+  },
+  {
+    "objectID": "assignment/09-assignment.html",
+    "href": "assignment/09-assignment.html",
+    "title": "9: No Lab",
+    "section": "",
+    "text": "Tuesday is fall break, and Thursday is presentation of Project 2.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "9: No Lab"
+    ]
+  },
+  {
+    "objectID": "assignment/09-assignment.html#no-lab-this-week",
+    "href": "assignment/09-assignment.html#no-lab-this-week",
+    "title": "9: No Lab",
+    "section": "",
+    "text": "Tuesday is fall break, and Thursday is presentation of Project 2.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "9: No Lab"
+    ]
+  },
+  {
+    "objectID": "content/index.html",
+    "href": "content/index.html",
+    "title": "Course Content",
+    "section": "",
+    "text": "Each week has two sets of required readings (pages in the sidebar) that you should complete before coming to lecture. Read the first before our first meeting of the week, and read the second before the second meetings. That is, you should complete the first reading, attend Tuesday class, then do the associated exercises contained within the reading, and read the second reading before Thursday. You will be working each week’s lab between Thursday afternoon and Monday at 11:59 PM (when the labs are due). Don’t forget your weekly writing in between, due Saturday at 11:59pm.\nThe course content is structured as follows. For each topic, we begin with a set of questions that might guide your reading and help frame your thoughts. These questions can serve as helpful starting places for your thinking; they are not representative of the totality of the content and are not intended to be limiting. You should not try to respond to all of these (or any of them if you don’t want to)—they’ll just help you know what to look for and think about as you read. The first reading is generally a “principles” reading, discussing the concepts for the week. The second is generally an “applications” reading, meant to give concrete examples and code. This isn’t always the case, but holds in general.",
+    "crumbs": [
+      "Syllabus",
+      "Course Content"
+    ]
+  },
+  {
+    "objectID": "content/index.html#content-navigation",
+    "href": "content/index.html#content-navigation",
+    "title": "Course Content",
+    "section": "Content navigation",
+    "text": "Content navigation\nUse the links on the sidebar to navigate between required reading. Readings are ordered by week, and within each week, by order of the class meetings.",
+    "crumbs": [
+      "Syllabus",
+      "Course Content"
+    ]
+  },
+  {
+    "objectID": "resource/design.html",
+    "href": "resource/design.html",
+    "title": "Design",
+    "section": "",
+    "text": "Vischeck: Simulate how your images look for people with different forms of colorblindness (web-based)\nColor Oracle: Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/design.html#accessibility",
+    "href": "resource/design.html#accessibility",
+    "title": "Design",
+    "section": "",
+    "text": "Vischeck: Simulate how your images look for people with different forms of colorblindness (web-based)\nColor Oracle: Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/design.html#colors",
+    "href": "resource/design.html#colors",
+    "title": "Design",
+    "section": "Colors",
+    "text": "Colors\n\nAdobe Color: Create, share, and explore rule-based and custom color palettes.\nColourLovers: Like Facebook for color palettes.\nviridis: Percetually uniform color scales.\nScientific Colour-Maps: Perceptually uniform color scales like viridis. Use them in R with scico.\nColorBrewer: Sequential, diverging, and qualitative color palettes that take accessibility into account.\nColorgorical: Create color palettes based on fancy mathematical rules for perceptual distance.\nColorpicker for data: More fancy mathematical rules for color palettes (explanation).\niWantHue: Yet another perceptual distance-based color palette builder.\nPhotochrome: Word-based color pallettes.\nPolicyViz Design Color Tools: Large collection of useful color resources",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/design.html#fonts",
+    "href": "resource/design.html#fonts",
+    "title": "Design",
+    "section": "Fonts",
+    "text": "Fonts\n\nGoogle Fonts: Huge collection of free, well-made fonts.\nThe Ultimate Collection of Google Font Pairings: A list of great, well-designed font pairings from all those fonts hosted by Google (for when you’re looking for good contrasting or complementary fonts).",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
+    ]
+  },
+  {
+    "objectID": "resource/design.html#graphic-assets",
+    "href": "resource/design.html#graphic-assets",
+    "title": "Design",
+    "section": "Graphic assets",
+    "text": "Graphic assets\n\nImages\n\nUse the Creative Commons filters on Google Images or Flickr\nUnsplash\nPexels\nPixabay\nStockSnap.io\nBurst\nfreephotos.cc\n\n\n\nVectors\n\nNoun Project: Thousands of free simple vector images\naiconica: 1,000+ vector icons\nVecteezy: Thousands of free vector images\n\n\n\nVectors, photos, videos, and other assets\n\nStockio",
+    "crumbs": [
+      "Other Useful Stuff",
+      "Design"
     ]
   },
   {
@@ -1424,58 +1620,41 @@
     ]
   },
   {
-    "objectID": "resource/design.html",
-    "href": "resource/design.html",
-    "title": "Design",
+    "objectID": "assignment/05-assignment.html",
+    "href": "assignment/05-assignment.html",
+    "title": "5: Data Wrangling",
     "section": "",
-    "text": "Vischeck: Simulate how your images look for people with different forms of colorblindness (web-based)\nColor Oracle: Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)",
+    "text": "Due Date\n\n\n\nThis assignment is due on Monday, September 29th\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.",
     "crumbs": [
-      "Other Useful Stuff",
-      "Design"
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "5: Data Wrangling"
     ]
   },
   {
-    "objectID": "resource/design.html#accessibility",
-    "href": "resource/design.html#accessibility",
-    "title": "Design",
+    "objectID": "assignment/05-assignment.html#data-wrangling-continued",
+    "href": "assignment/05-assignment.html#data-wrangling-continued",
+    "title": "5: Data Wrangling",
+    "section": "Data Wrangling Continued…",
+    "text": "Data Wrangling Continued…\nYou still work for a travel booking website as a data analyst. The hotel has once again asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They’ve asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.\nYou did this already in class, but your boss now has some different data. It’s similar, and your code from before will help, but it has some new wrinkles in it to tackle. Do not use the data from this week’s Example. Here’s your new data:\n\n booking.csv - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hotel. It was pulled by an intern who doesn’t understand date-time stamps.\n roomrates.csv - Contains the price of each room on each day. The Lab 11 version of this data is from our German affiliate, so pay attention to the date format, and be careful – it’s very wide, so using head will throw a lot of data at you.\n parking.csv - Contains the corporations who negotiated free parking for employees. It has been updated.\nParking at the hotel is $60 per night if you don’t have free parking. This hotel is in California, so everyone drives and parks when they stay.\n\n\n\n\n\n\n\nEXERCISE 1\n\n\n\n\nAs you did in class, but with your new set of data, total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking\nVisualize (using ggplot) each corporation’s spending at the hotel over time and by roomtype. Make one plot with ggplot that shows this.\nVisualize (using ggplot) the room rates over time by room type. Can you pick out one factor that determines when room prices are higher than usual? Note that we know each corporation gets the same room rate as the others on the same day, so this is about room rates, not corporate spending. Make two total plots, the first showing the room rates over time by room type, and the second explaining some feature of one of the room rates (e.g. when is the double room rate high? When is it low?). Using the month(...), day(...) or wday(..., label = TRUE) functions from lubridate will help with figuring out the patterns. Try exploring just one of the room types to start. You don’t have to perfectly analyze the room rate, just find one facet of the rate that changes regularly over time.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "5: Data Wrangling"
+    ]
+  },
+  {
+    "objectID": "content/Week_05/05b.html",
+    "href": "content/Week_05/05b.html",
+    "title": "Wrangle some Data",
     "section": "",
-    "text": "Vischeck: Simulate how your images look for people with different forms of colorblindness (web-based)\nColor Oracle: Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)",
+    "text": "Exercise in Data Wrangling: WW5\nYou work for a travel booking website as a data analyst. A hotel has asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They’ve asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.\nUnfortunately, you only have the following data:\n\n booking.csv - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hoted.\n roomrates.csv - Contains the price of each room on each day\n parking.csv - Contains the corporations who negotiated free parking for employees\nParking at the hotel is $60 per night if you don’t have free parking. This hotel is in California, so everyone drives and parks when they stay.\n\n\n\n\n\n\n\nTip\n\n\n\n\nRight-click on each of the links, copy the address, and read the URL in using read.csv to read .csv’s\nYou’ll find you need to use most of the tools we covered on Tuesday including pivot_longer, pivot_wider and more.\nYou’ll need lubridate and tidyverse loaded up.\n\n\n\nYour lab wil be based on similar data (with more wrinkles to fix) so share your code with your group when you’re done.",
     "crumbs": [
-      "Other Useful Stuff",
-      "Design"
-    ]
-  },
-  {
-    "objectID": "resource/design.html#colors",
-    "href": "resource/design.html#colors",
-    "title": "Design",
-    "section": "Colors",
-    "text": "Colors\n\nAdobe Color: Create, share, and explore rule-based and custom color palettes.\nColourLovers: Like Facebook for color palettes.\nviridis: Percetually uniform color scales.\nScientific Colour-Maps: Perceptually uniform color scales like viridis. Use them in R with scico.\nColorBrewer: Sequential, diverging, and qualitative color palettes that take accessibility into account.\nColorgorical: Create color palettes based on fancy mathematical rules for perceptual distance.\nColorpicker for data: More fancy mathematical rules for color palettes (explanation).\niWantHue: Yet another perceptual distance-based color palette builder.\nPhotochrome: Word-based color pallettes.\nPolicyViz Design Color Tools: Large collection of useful color resources",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Design"
-    ]
-  },
-  {
-    "objectID": "resource/design.html#fonts",
-    "href": "resource/design.html#fonts",
-    "title": "Design",
-    "section": "Fonts",
-    "text": "Fonts\n\nGoogle Fonts: Huge collection of free, well-made fonts.\nThe Ultimate Collection of Google Font Pairings: A list of great, well-designed font pairings from all those fonts hosted by Google (for when you’re looking for good contrasting or complementary fonts).",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Design"
-    ]
-  },
-  {
-    "objectID": "resource/design.html#graphic-assets",
-    "href": "resource/design.html#graphic-assets",
-    "title": "Design",
-    "section": "Graphic assets",
-    "text": "Graphic assets\n\nImages\n\nUse the Creative Commons filters on Google Images or Flickr\nUnsplash\nPexels\nPixabay\nStockSnap.io\nBurst\nfreephotos.cc\n\n\n\nVectors\n\nNoun Project: Thousands of free simple vector images\naiconica: 1,000+ vector icons\nVecteezy: Thousands of free vector images\n\n\n\nVectors, photos, videos, and other assets\n\nStockio",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Design"
+      "Course Content",
+      "Week 05",
+      "Wrangle some Data"
     ]
   },
   {
@@ -1483,7 +1662,7 @@
     "href": "groupproject/project2.html",
     "title": "Project 2",
     "section": "",
-    "text": "Project 2 is an in-class presentation which will occur during class on TBAh, 11:59PM (following Fall Break). Each group will make and present a short data analysis using one of the data sets from your Project 1 (or a new one, I’m not keeping track). Your presentation will introduce and detail a new ggplot geom_ or aesthetic mapping that we haven’t yet covered in class. You will be limited to a total of three slides (plus a cover slide), presented in no more than three minutes.",
+    "text": "Project 2 is an in-class presentation which will occur during class on Wednesday, October 22nd, 11:59PM (following Fall Break). Each group will make and present a short data analysis using one of the data sets from your Project 1 (or a new one, I’m not keeping track). Your presentation will introduce and detail a new ggplot geom_ or aesthetic mapping that we haven’t yet covered in class. You will be limited to a total of three slides (plus a cover slide), presented in no more than three minutes.",
     "crumbs": [
       "Assignments",
       "Group Projects",
@@ -1495,7 +1674,7 @@
     "href": "groupproject/project2.html#presenting-your-data-quickly",
     "title": "Project 2",
     "section": "",
-    "text": "Project 2 is an in-class presentation which will occur during class on TBAh, 11:59PM (following Fall Break). Each group will make and present a short data analysis using one of the data sets from your Project 1 (or a new one, I’m not keeping track). Your presentation will introduce and detail a new ggplot geom_ or aesthetic mapping that we haven’t yet covered in class. You will be limited to a total of three slides (plus a cover slide), presented in no more than three minutes.",
+    "text": "Project 2 is an in-class presentation which will occur during class on Wednesday, October 22nd, 11:59PM (following Fall Break). Each group will make and present a short data analysis using one of the data sets from your Project 1 (or a new one, I’m not keeping track). Your presentation will introduce and detail a new ggplot geom_ or aesthetic mapping that we haven’t yet covered in class. You will be limited to a total of three slides (plus a cover slide), presented in no more than three minutes.",
     "crumbs": [
       "Assignments",
       "Group Projects",
@@ -1507,7 +1686,7 @@
     "href": "groupproject/project2.html#some-specifics",
     "title": "Project 2",
     "section": "Some specifics",
-    "text": "Some specifics\n\nExplore your data\nYou will present exactly one visual based on a dataset of your group’s choice. Your task is to find one interesting relationship in the data that you wish to share. The relationship should be the sort that inspires further investigation of the data. For instance, your Rats data from Project 1 might have shown that summer months had higher numbers of rat sightings than did winter months, but this was only true in two of the five boroughs (I’m making this up, it may or may not be true in the data).\nYou will present your analysis in the form of one visual made with ggplot. No memo, no next. You get one visual to communicate it.\n\n\nCommunicate your data with a new geom_ or aesthetic\nEach group will be assigned a ggplot geom_ or aesthetic. The list will be posted here shortly. Your plot must show both your interesting relationship in the data, and it must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic.\n\n\nPut it all together\nYour presentation will have four slides.\n\nA cover slide with your group members names on it.\nA slide briefly introducing your dataset, showing a snippet of the relevant data.\n\n\nIn your presentation, you will highlight the relevant variables and the overarching topic you are exploring. For example “We are using the US Census ACS 5-year estimates to examine the relationship between income and commuting time. In this data, each observation is a census tract, and we have data on median tract income and average commuting time as well as marital status.” (where your slide shows a few rows of the data with the relevant values, plus any other variables you think are helpful.)\n\n\nA slide visualizing your “interesting relationship” in the data. The visual must use the assigned geometry or aesthetic.\n\n\nIn your presentation, you will discuss the “interesting relationship” you found.\n\n\nA slide showing the code from your visual. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it\n\n\nIn your presentation, walk through the data prep and code necessary to make the plot. Focus on the new geometry/aesthetic.\n\n\n\nThis will be short\nThere are three content slides and three of you in the group. Each person can take one slide. Do not plan on speaking for more than 30 seconds, we have a lot of class to get through. Just as a good visual boils the message down to it’s most pure form, so too should your presentation.",
+    "text": "Some specifics\n\nExplore your data\nYou will present exactly one visual based on a dataset of your group’s choice. Your task is to find one interesting relationship in the data that you wish to share. The relationship should be the sort that inspires further investigation of the data. For instance, your Rats data from Project 1 might have shown that summer months had higher numbers of rat sightings than did winter months, but this was only true in two of the five boroughs (I’m making this up, it may or may not be true in the data).\nYou will present your analysis in the form of one visual made with ggplot. No memo, no next. You get one visual to communicate it.\n\n\nCommunicate your data with a new geom_ or aesthetic\nEach group will be assigned a ggplot geom_ or aesthetic. The list will be posted here shortly. Your plot must show both your interesting relationship in the data, and it must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic.\n\n\nPut it all together\nYour presentation will have four slides.\n\nA cover slide with your group members names on it.\nA slide briefly introducing your dataset, showing a snippet of the relevant data.\n\n\nIn your presentation, you will highlight the relevant variables and the overarching topic you are exploring. For example “We are using the US Census ACS 5-year estimates to examine the relationship between income and commuting time. In this data, each observation is a census tract, and we have data on median tract income and average commuting time as well as marital status.” (where your slide shows a few rows of the data with the relevant values, plus any other variables you think are helpful.)\n\n\nA slide visualizing your “interesting relationship” in the data. The visual must use the assigned geometry or aesthetic.\n\n\nIn your presentation, you will discuss the “interesting relationship” you found.\n\n\nA slide showing the code from your visual. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it\n\n\nIn your presentation, walk through the data prep and code necessary to make the plot. Focus on the new geometry/aesthetic.\n\n\n\nThis will be short\nThere are three content slides and three of you in the group. Each person can take one slide. Do not plan on speaking for more than 30 seconds per person, we have a lot of class to get through. Just as a good visual boils the message down to it’s most pure form, so too should your presentation.",
     "crumbs": [
       "Assignments",
       "Group Projects",
@@ -1519,7 +1698,7 @@
     "href": "groupproject/project2.html#grading",
     "title": "Project 2",
     "section": "Grading",
-    "text": "Grading\nOut of 40 points:\n\nData analysis (10 points): Did you find an interesting relationship? Does it give important context or lead one to want to explore the data further?\nVisual (10 points): Is the visual clean, well-formatted, and free from errors. Does it adhere to our standards for good visualization? Does it clearly communicate it’s message with only basic discussion and description?\nApplication of new geometry/aesthetic (10 points): Did you successfully show your assigned geometry or aesthetic? Was the code clear enough for others to create something similar with minimal work?\nPresentation (10 points): Was your group organized and concise? Did you clearly cover all the discussion necessary in the allotted time?\n\nI will post the group list of assigned geometries / aesthetics here shortly. Remember, this is a 3-minute presentation that we’ll run back-to-back-to-back over all the groups, so efficiency is key. The plot has to hit fast and hard!",
+    "text": "Grading\nOut of 40 points:\n\nData analysis (10 points): Did you find an interesting relationship? Does it give important context or lead one to want to explore the data further?\nVisual (10 points): Is the visual clean, well-formatted, and free from errors. Does it adhere to our standards for good visualization? Does it clearly communicate it’s message with only basic discussion and description?\nApplication of new geometry/aesthetic/method (10 points): Did you successfully show your assigned geometry or aesthetic? Was the code clear enough for others to create something similar with minimal work?\nPresentation (10 points): Was your group organized and concise? Did you clearly cover all the discussion necessary in the allotted time?\n\nRemember, this is a 3-minute presentation that we’ll run back-to-back-to-back over all the groups, so efficiency is key. The plot has to hit fast and hard!",
     "crumbs": [
       "Assignments",
       "Group Projects",
@@ -1527,182 +1706,15 @@
     ]
   },
   {
-    "objectID": "assignment/index.html",
-    "href": "assignment/index.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "This course is the capstone of the Data Analytics Minor in the College of Social Science. Accordingly, you should—fingers crossed—enjoy data analysis. You will get the most of out this class if you:\nAssignments consist of Weekly Writings and Lab Assignments. Each type of assignment in this class helps with one of these strategies. Weekly writings engage with the materials, and lab assignments engage directly with R. The assignments are described below.\nTo get started, download and save the following files (right-click to Save Link As…)",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html#weekly-writings",
-    "href": "assignment/index.html#weekly-writings",
-    "title": "Assignments",
-    "section": "Weekly Writings",
-    "text": "Weekly Writings\nTo encourage you to actively engage with the course content, you will write a ≈150 word memorandum about the reading or lecture each week. That’s fairly short: there are ≈250 words on a typical double-spaced page. You must complete eleven of these in the course. I will drop your one lowest weekly writing score. Your actual prompt will be assigned in class, so you must login each day to ensure you get these assignments. To keep you on your toes, we will vary whether these are assigned on Tuesdays or Thursdays. Each week’s weekly writing will be due on D2L by 11:59pm on Saturday\nYou can do a lot of different things with this memo: discuss something you learned from the course content, write about the best or worst data visualization you saw recently, connect the course content to your own work, etc. These reflections let you explore and answer some of the key questions of this course, including:\n\nWhen is a link correlational vs causal? How can we still make useful statements about non-causal things?\nWhy do we visualize data?\nWhat makes a great data analysis? What makes a bad analysis?\nHow do you choose which kind of analysis method to use?\nWhat is the role of the data structure in choosing an analysis? Can we be flexible?\n\nThe course content for each day will also include a set of questions specific to that topic. You do not have to answer all (or any) of these questions. That would be impossible. They exist to guide your thinking and to make complex reading more digestible. The specific topic for each week will be assigned in class. (We can’t emphasize this enough.)\nThe TA will grade these mini-exercises using a very simple system:\n\n✔+: (6 points (100%) in gradebook) Work is thoughtful, well-written, and shows engagement with the course content. This is the expected level of performance.\n✔: (5 points (83%) in gradebook) Work shows bare minimum of thought and engagement. Disappointing, but excusable occasionally.\n✔−: (3 points (50%) in gradebook) Work is hastily composed, too short, poorly formatted without headers, and/or only cursorily engages with the course content. This grade signals that you need to improve significantly next time. I will hopefully not assign these often.\n0: (0 points (0%) in gradebook) Work is wholly uninformed by the prompt and/or written to the wrong prompt, or is not rendered using latex in Rmarkdown (e.g. html or word docs that are saved as pdf’s).\n\n(There is an implicit 0 above for work that is not turned in by Saturday at 11:59pm). Notice that this is essentially a pass/fail or completion-based system. We’re not grading your writing ability; we’re not counting the exact number of words you’re writing; and we’re not looking for encyclopedic citations of every single reading to prove that you did indeed read everything. We are looking for thoughtful engagement. Read the material, engage with the work and you’ll get a ✓.\n\nWeekly Writing Template\nYou will turn these reflections in via D2L. You will write them using R Markdown and this template  Weekly writing template. You must knit your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc. All work must be rendered using latex to PDF. Do not use word or html docs saved as a PDF.",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html#lab-assignments",
-    "href": "assignment/index.html#lab-assignments",
-    "title": "Assignments",
-    "section": "Lab Assignments",
-    "text": "Lab Assignments\nEach week of the course has examples of code that teach and demonstrate how to do specific tasks in R. However, without practicing these principles and making graphics on your own, you won’t remember what you learn.\nPlease do not do labs more than one week ahead of time. I am updating the assignments as the semester proceeds, and you may do an entire assignment that is completely changed.\nFor example, to practice working with ggplot2 and making data-based graphics, you will complete a brief set of exercises over a few class sessions. These exercises will have 1–3 short tasks that are directly related to the topic for the week. You need to show that you made a good faith effort to work each question. There will also be a final question which requires significantly more thought and work. This will be where you get to show some creativity and stretch your abilities. Overall, labs will be graded the same check system:\n\n✔+: (12 points (100%) in gradebook) Exercises are complete. Every task was attempted and answered, and all answers are correct in detail. Knitted document is clean and easy to follow. Work on the final problem shows creativity or is otherwise exceptional. We will not assign these often.\n✔: (11 points (91%) in gradebook) Exercises are complete and most answers are correct. Document is correctly formatted with few minor formatting errors. This is the expected level of performance.\n✔−: (6 points (50%) in gradebook) Exercises are less than 70% complete and/or most answers are incorrect. Document is poorly formatted without appropriately rendered headers. This indicates that you need to improve next time. We will hopefully not assign these often.\n0: (0 points (0%) in gradebook) Exercises are less than 50% complete, are grossly incorrect, or clearly do not follow the questions. Or, knitted document is not rendered via latex to PDF.\n\nThere is an implicit 0 for any assignment not turned in on time. If you have only partial work, then turn that in for partial credit. As noted in the syllabus, we are not grading your coding ability. We are not checking each line of code to make sure it produces some exact final figure, and we do not expect perfection. Also note that a ✓ does not require 100% success. You will sometimes get stuck with weird errors that you can’t solve, or the demands of pandemic living might occasionally become overwhelming. We are looking for good faith effort. Try hard, engage with the task, and you’ll get a ✓.\nYou may work together on the labs, but you must turn in your own answers.\n\nLab Template\nYou will turn these labs in via D2L. You will write them using R Markdown and this  Lab assignment template. You must knit your work to a PDF document (this will be what you turn in). Your output must be rendered in latex. I do not accept rendering to HTML or Word and then converting to PDF and unrendered .rmd files are not allowed.",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/index.html#projects",
-    "href": "assignment/index.html#projects",
-    "title": "Assignments",
-    "section": "Projects",
-    "text": "Projects\nTo give you practice with the data and design principles you’ll learn in this class, you will complete two projects en route to the overarching final project of the course. Both these mini projects and the final project must be completed in groups. I will assign groups after the drop deadline passes. Groups will be 2-3 people. You are allowed to form your own groups, but I will assign groups. More details will follow later.\nThe projects are checkpoints to ensure you’re working on your project seriously. They will be graded using a continuous 0-100% scoring.\nBecause these mini projects give you practice for the final project, we will provide you with substantial feedback on your design and code.",
-    "crumbs": [
-      "Syllabus",
-      "Lab Assignments"
-    ]
-  },
-  {
-    "objectID": "assignment/09-assignment.html",
-    "href": "assignment/09-assignment.html",
-    "title": "9: No Lab",
-    "section": "",
-    "text": "Tuesday is fall break, and Thursday is presentation of Project 2.",
+    "objectID": "groupproject/project2.html#assigned-geometries",
+    "href": "groupproject/project2.html#assigned-geometries",
+    "title": "Project 2",
+    "section": "Assigned Geometries",
+    "text": "Assigned Geometries\nIf you have any questions, please email me jkirk@msu.edu.\nMany examples (from which I created this list) can be found here. You can (and should!) use outside resources to get an understanding of what your assigned geometry/aesthetic/method looks like. For some of these geometries/aesthetics/methods, I’ve added a link to a package or example that should help.\nNot every dataset will work with your geometry. You may have to use one of your other datasets to find data that will work. Email me if you have questions.\n\nlibrary(googlesheets4)\n\nuselist &lt;- read_sheet('https://docs.google.com/spreadsheets/d/1Jc1SBtV4WiJ6INmRMcnRcSF75fn2OdUicP3P1T2nI9Q/edit?usp=sharing')\n\nset.seed(2025)\n\ngrouplist = readxl::read_excel(\"C:\\\\Users\\\\jkirk\\\\OneDrive - Michigan State University\\\\Teaching\\\\EC242_FS25 Grading\\\\Group Assignment 09182025.xlsx\", col_names = c('Junk1','netID','Junk2','Junk3','Gname','Fname','Lname')) %&gt;%\n  dplyr::select(-Junk1, -Junk2, -Junk3, -netID) %&gt;%\n  group_by(Gname) %&gt;%\n  dplyr::mutate(Number = sample(unique(uselist$Number), 1)) %&gt;%\n  ungroup() %&gt;%\n  left_join(uselist, by = 'Number') %&gt;%\n  dplyr::select(`Group Name` = Gname, `Last Name` = Lname, `geometry, aesthetic, or method name` = `geom name`, `Additional Info`) %&gt;%\n  dplyr::mutate(`Additional Info` = ifelse(is.na(`Additional Info`), '', `Additional Info`))\n\nknitr::kable(grouplist)\n\n\n\n\n\n\n\n\n\n\nGroup Name\nLast Name\ngeometry, aesthetic, or method name\nAdditional Info\n\n\n\n\nAstro bot\nLi\ngeom_rug\n\n\n\nAstro bot\nWang\ngeom_rug\n\n\n\nEC Lions\nArora\ngeom_errorbar\nHint: do this with regression results\n\n\nEC Lions\nGarrett\ngeom_errorbar\nHint: do this with regression results\n\n\nEC Lions\nIsmail\ngeom_errorbar\nHint: do this with regression results\n\n\nFellowship of Data\nDulaj\nWaffle Chart with geom_tile\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nFellowship of Data\nGjolaj\nWaffle Chart with geom_tile\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nFellowship of Data\nKim\nWaffle Chart with geom_tile\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGGplotters\nRozen\ngeom_encircle\n\n\n\nGGplotters\nSawada Guiguer\ngeom_encircle\n\n\n\nGGplotters\nScamehorn\ngeom_encircle\n\n\n\nGroup 242\nCaglayan\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroup 242\nDas\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroup 242\nSharull Anuar\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroves Falcons\nMoore\ntreemapify/ggplotify\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroves Falcons\nScott\ntreemapify/ggplotify\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroves Falcons\nTaylor\ntreemapify/ggplotify\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nIzzone Data Analysts\nFidel\ngeom_rug\n\n\n\nIzzone Data Analysts\nRothwell\ngeom_rug\n\n\n\nIzzone Data Analysts\nSacla\ngeom_rug\n\n\n\nJemsa\nBaasch\ngeom_errorbar\nHint: do this with regression results\n\n\nJemsa\nJohnson\ngeom_errorbar\nHint: do this with regression results\n\n\nJemsa\nLambdin\ngeom_errorbar\nHint: do this with regression results\n\n\nmessyverse\nAyala Hernandez\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nmessyverse\nBritt\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nmessyverse\nFuess\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_15\nDuhanxhiu\nStacked area chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_15\nMcAlpine\nStacked area chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_15\nVelpulla\nStacked area chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_16\nAhmed\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_16\nAl-Sewari\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_16\nLane\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_17\nScherer\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_17\nWagner\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_17\nWalter\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_18\nDesRoberts\ngeom_hex\n\n\n\nProject Group_18\nKanaski\ngeom_hex\n\n\n\nProject Group_18\nKlinger\ngeom_hex\n\n\n\nProject Group_19\nCampbell\nalpha\nFind an application where alpha is useful\n\n\nProject Group_19\nJames\nalpha\nFind an application where alpha is useful\n\n\nProject Group_19\nSmith\nalpha\nFind an application where alpha is useful\n\n\nProject Group_20\nBrady\nggradar\nhttps://github.com/ricardo-bion/ggradar\n\n\nProject Group_20\nHill\nggradar\nhttps://github.com/ricardo-bion/ggradar\n\n\nProject Group_20\nRyder\nggradar\nhttps://github.com/ricardo-bion/ggradar\n\n\nProject Group_21\nFatur\ncut_interval\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_21\nJohnson\ncut_interval\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_21\nNguyen\ncut_interval\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_22\nAkash\nshape\n\n\n\nProject Group_22\nMccort\nshape\n\n\n\nProject Group_22\nPohl\nshape\n\n\n\nProject Group_23\nHinderliter\ncut_number\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_23\nHsu\ncut_number\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_23\nLuo\ncut_number\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_24\nGiannetti\nPopulation Pyramid with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_24\nNguyen\nPopulation Pyramid with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_24\nSchack\nPopulation Pyramid with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_25\nErickson\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_25\nHeikkila\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_25\nJalan\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_26\nMassey\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_26\nPcionek\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_26\nSchwab\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_27\nAustin\ngeom_density2d\n\n\n\nProject Group_27\nBeye\ngeom_density2d\n\n\n\nProject Group_27\nDavila\ngeom_density2d\n\n\n\nProject Group_28\nHernandez\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_28\nMishra\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_28\nRedding\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_29\nPowers\nggMarginal\n\n\n\nProject Group_29\nSkubik\nggMarginal\n\n\n\nProject Group_29\nUmana\nggMarginal\n\n\n\nP-Value-Added Tax\nBilaspurwala\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nP-Value-Added Tax\nHambley\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nP-Value-Added Tax\nYang\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nRLJ\nBorina\ngeom_density2d\n\n\n\nRLJ\nBoylan\ngeom_density2d\n\n\n\nRLJ\nMolnar\ngeom_density2d\n\n\n\nSparty\nChamberlin\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nSparty\nNichanametla\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nSparty\nVillaire\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nTeam 6-7\nHughes\ngeom_bin2d\n\n\n\nTeam 6-7\nKevelighan\ngeom_bin2d\n\n\n\nTeam 6-7\nParks\ngeom_bin2d\n\n\n\nTeam Tidyverse\nBeaule\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nTeam Tidyverse\nJeffrey\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nTeam Tidyverse\nWechet\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/",
     "crumbs": [
       "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "9: No Lab"
-    ]
-  },
-  {
-    "objectID": "assignment/09-assignment.html#no-lab-this-week",
-    "href": "assignment/09-assignment.html#no-lab-this-week",
-    "title": "9: No Lab",
-    "section": "",
-    "text": "Tuesday is fall break, and Thursday is presentation of Project 2.",
-    "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "9: No Lab"
-    ]
-  },
-  {
-    "objectID": "content/index.html",
-    "href": "content/index.html",
-    "title": "Course Content",
-    "section": "",
-    "text": "Each week has two sets of required readings (pages in the sidebar) that you should complete before coming to lecture. Read the first before our first meeting of the week, and read the second before the second meetings. That is, you should complete the first reading, attend Tuesday class, then do the associated exercises contained within the reading, and read the second reading before Thursday. You will be working each week’s lab between Thursday afternoon and Monday at 11:59 PM (when the labs are due). Don’t forget your weekly writing in between, due Saturday at 11:59pm.\nThe course content is structured as follows. For each topic, we begin with a set of questions that might guide your reading and help frame your thoughts. These questions can serve as helpful starting places for your thinking; they are not representative of the totality of the content and are not intended to be limiting. You should not try to respond to all of these (or any of them if you don’t want to)—they’ll just help you know what to look for and think about as you read. The first reading is generally a “principles” reading, discussing the concepts for the week. The second is generally an “applications” reading, meant to give concrete examples and code. This isn’t always the case, but holds in general.",
-    "crumbs": [
-      "Syllabus",
-      "Course Content"
-    ]
-  },
-  {
-    "objectID": "content/index.html#content-navigation",
-    "href": "content/index.html#content-navigation",
-    "title": "Course Content",
-    "section": "Content navigation",
-    "text": "Content navigation\nUse the links on the sidebar to navigate between required reading. Readings are ordered by week, and within each week, by order of the class meetings.",
-    "crumbs": [
-      "Syllabus",
-      "Course Content"
-    ]
-  },
-  {
-    "objectID": "resource/data.html",
-    "href": "resource/data.html",
-    "title": "Data",
-    "section": "",
-    "text": "There are a ton of places to find data related to public policy and administration (as well as data on pretty much any topic you want) online:\n\nData is Plural newsletter: Jeremy Singer-Vine sends a weekly newsletter of the most interesting public datasets he’s found. You should subscribe to it. He also has an archive of all the datasets he’s highlighted.\nGoogle Dataset Search: Google indexes thousands of public datasets; search for them here.\nKaggle: Kaggle hosts machine learning competitions where people compete to create the fastest, most efficient, most predictive algorithms. A byproduct of these competitions is a host of fascinating datasets that are generally free and open to the public. See, for example, the European Soccer Database, the Salem Witchcraft Dataset or results from an Oreo flavors taste test. Note: when you are asked in an assignment or project to find data, Kaggle is not a valid source. You learn nothing about farming by getting fruit from the market. Similarly, you learn nothing about data analysis by getting pre-packaged data from Kaggle.\n360Giving: Dozens of British foundations follow a standard file format for sharing grant data and have made that data available online.\nUS City Open Data Census: More than 100 US cities have committed to sharing dozens of types of data, including data about crime, budgets, campaign finance, lobbying, transit, and zoning. This site from the Sunlight Foundation and Code for America collects this data and rates cities by how well they’re doing.\nPolitical science and economics datasets: There’s a wealth of data available for political science- and economics-related topics:\n\nFrançois Briatte’s extensive curated lists: Includes data from/about intergovernmental organizations (IGOs), nongovernmental organizations (NGOs), public opinion surveys, parliaments and legislatures, wars, human rights, elections, and municipalities.\nThomas Leeper’s list of political science datasets: Good short list of useful datasets, divided by type of data (country-level data, survey data, social media data, event data, text data, etc.).\nErik Gahner’s list of political science datasets: Huge list of useful datasets, divided by topic (governance, elections, policy, political elites, etc.)\n\nGeospatial datasets: For our geospatial unit, many entities (government agencies, etc.) post repositories of spatial data via arcgis.com, which is owned by ESRI, the company that makes the predominant commercial GIS software. The data owner decides what data to post and how to present it, but arcgis.com provides the hosting. R has excellent geospatial functionalities, so we cover (when time permits) geospatial data. It is easy to find geospatial data to import into R. Here are a few:\n\nState of Michigan Open Data Portal\nHomeland Infrastructure Foundation-Level Data (HIFLD)\nCity of East Lansing Data Viewer",
-    "crumbs": [
-      "Other Useful Stuff",
-      "Data"
-    ]
-  },
-  {
-    "objectID": "resource/index.html",
-    "href": "resource/index.html",
-    "title": "Helpful resources",
-    "section": "",
-    "text": "In these reference pages, I’ve included some useful resources to help you in the course."
-  },
-  {
-    "objectID": "assignment/04-assignment.html",
-    "href": "assignment/04-assignment.html",
-    "title": "4: Visualizing Large(ish) Data",
-    "section": "",
-    "text": "Due Date\n\n\n\nThis assignment is due on Monday, September 22nd\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.",
-    "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "4: Visualizing Large(ish) Data"
-    ]
-  },
-  {
-    "objectID": "assignment/04-assignment.html#postscript-how-we-got-this-unemployment-data",
-    "href": "assignment/04-assignment.html#postscript-how-we-got-this-unemployment-data",
-    "title": "4: Visualizing Large(ish) Data",
-    "section": "Postscript: how we got this unemployment data",
-    "text": "Postscript: how we got this unemployment data\nFor the curious, here’s the code we used to download the unemployment data from the BLS.\nAnd to pull the curtain back and show how much googling is involved in data visualization (and data analysis and programming in general), here was my process for getting this data:\n\nWe thought “We want to have students show variation in something domestic over time” and then we googled “us data by state”. Nothing really came up (since it was an exceedingly vague search in the first place), but some results mentioned unemployment rates, so we figured that could be cool.\nWe googled “unemployment statistics by state over time” and found that the BLS keeps statistics on this. We clicked on the “Data Tools” link in their main navigation bar, clicked on “Unemployment”, and then clicked on the “Multi-screen data search” button for the Local Area Unemployment Statistics (LAUS).\nWe walked through the multiple screens and got excited that we’d be able to download all unemployment stats for all states for a ton of years, but then the final page had links to 51 individual Excel files, which was dumb.\nSo we went back to Google and searched for “download bls data r” and found a few different packages people have written to do this. The first one we clicked on was blscrapeR at GitHub, and it looked like it had been updated recently, so we went with it.\nWe followed the examples in the blscrapeR package and downloaded data for every state.\n\nAnother day in the life of doing modern data science. This is an example of something you will be able to do by the end of this class. we had no idea people had written R packages to access BLS data, but there are (at least) 3 packages out there. After a few minutes of tinkering, we got it working and it is relatively straightforward.",
-    "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "4: Visualizing Large(ish) Data"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "\n            Social Science Data Analytics\n        ",
-    "section": "",
-    "text": "Social Science Data Analytics\n        \n        \n            EC242 - Fall 2025\n        \n        \n            Tu/Th 1:00 - 2:20pmNatSci 116Michigan State UniversityDepartment of Economics\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\n\n\nInstructor\n\n Justin Kirkpatrick\n Old Botany 105\n jkirk@msu.edu\n Slack\n\n\n\nCourse details\n\n Tu/Th 1:00 - 2:20pm\n NatSci 116\n\n\n\nContacting me\nFor individual questions, email is the best way to get in contact. So that I know the context, please include [EC242] at the start of your message. Questions regarding material, problem sets, or R coding are best directed to a course channel on Slack so that our TA and others may address your question quickly. I will reply to all queries usually within 24 hours."
-  },
-  {
-    "objectID": "content/Week_09/09b.html",
-    "href": "content/Week_09/09b.html",
-    "title": "Group Presentations",
-    "section": "",
-    "text": "Nothing. Attendance is required.",
-    "crumbs": [
-      "Course Content",
-      "Week 09",
-      "Group Presentations"
-    ]
-  },
-  {
-    "objectID": "content/Week_09/09b.html#required-reading",
-    "href": "content/Week_09/09b.html#required-reading",
-    "title": "Group Presentations",
-    "section": "",
-    "text": "Nothing. Attendance is required.",
-    "crumbs": [
-      "Course Content",
-      "Week 09",
-      "Group Presentations"
-    ]
-  },
-  {
-    "objectID": "content/Week_09/09b.html#group-project-2-presentations",
-    "href": "content/Week_09/09b.html#group-project-2-presentations",
-    "title": "Group Presentations",
-    "section": "Group Project 2 Presentations",
-    "text": "Group Project 2 Presentations\nToday, we will have a lightining-round set of group presentations where each group will present their work for Project 2.",
-    "crumbs": [
-      "Course Content",
-      "Week 09",
-      "Group Presentations"
+      "Group Projects",
+      "Project 2"
     ]
   },
   {
@@ -2864,6 +2876,18 @@
       "Course Content",
       "Week 05",
       "Data Wrangling"
+    ]
+  },
+  {
+    "objectID": "groupproject/project2.html#assigned-geometries-aesthetics-methods",
+    "href": "groupproject/project2.html#assigned-geometries-aesthetics-methods",
+    "title": "Project 2",
+    "section": "Assigned Geometries / aesthetics / methods",
+    "text": "Assigned Geometries / aesthetics / methods\nIf you have any questions, please email me jkirk@msu.edu.\nMany examples (from which I created this list) can be found here. You can (and should!) use outside resources to get an understanding of what your assigned geometry/aesthetic/method looks like. For some of these geometries/aesthetics/methods, I’ve added a link to a package or example that should help.\nNot every dataset will work with your geometry. You may have to use one of your other datasets to find data that will work. If your group is assigned a method, just use that method in whatever visualization best illustrates it. Email me if you have questions.\n\nlibrary(googlesheets4)\n\nuselist &lt;- read_sheet('https://docs.google.com/spreadsheets/d/1Jc1SBtV4WiJ6INmRMcnRcSF75fn2OdUicP3P1T2nI9Q/edit?usp=sharing')\n\nset.seed(2025)\n\ngrouplist = readxl::read_excel(\"C:\\\\Users\\\\jkirk\\\\OneDrive - Michigan State University\\\\Teaching\\\\EC242_FS25 Grading\\\\Group Assignment 09182025.xlsx\", col_names = c('Junk1','netID','Junk2','Junk3','Gname','Fname','Lname')) %&gt;%\n  dplyr::select(-Junk1, -Junk2, -Junk3, -netID) %&gt;%\n  group_by(Gname) %&gt;%\n  dplyr::mutate(Number = sample(unique(uselist$Number), 1)) %&gt;%\n  ungroup() %&gt;%\n  left_join(uselist, by = 'Number') %&gt;%\n  dplyr::select(`Group Name` = Gname, `Last Name` = Lname, `geometry, aesthetic, or method name` = `geom name`, `Additional Info`) %&gt;%\n  dplyr::mutate(`Additional Info` = ifelse(is.na(`Additional Info`), '', `Additional Info`))\n\nknitr::kable(grouplist)\n\n\n\n\n\n\n\n\n\n\nGroup Name\nLast Name\ngeometry, aesthetic, or method name\nAdditional Info\n\n\n\n\nAstro bot\nLi\ngeom_rug\n\n\n\nAstro bot\nWang\ngeom_rug\n\n\n\nEC Lions\nArora\ngeom_errorbar\nHint: do this with regression results\n\n\nEC Lions\nGarrett\ngeom_errorbar\nHint: do this with regression results\n\n\nEC Lions\nIsmail\ngeom_errorbar\nHint: do this with regression results\n\n\nFellowship of Data\nDulaj\nWaffle Chart with geom_tile\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nFellowship of Data\nGjolaj\nWaffle Chart with geom_tile\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nFellowship of Data\nKim\nWaffle Chart with geom_tile\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGGplotters\nRozen\ngeom_encircle\n\n\n\nGGplotters\nSawada Guiguer\ngeom_encircle\n\n\n\nGGplotters\nScamehorn\ngeom_encircle\n\n\n\nGroup 242\nCaglayan\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroup 242\nDas\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroup 242\nSharull Anuar\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroves Falcons\nMoore\ntreemapify/ggplotify\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroves Falcons\nScott\ntreemapify/ggplotify\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nGroves Falcons\nTaylor\ntreemapify/ggplotify\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nIzzone Data Analysts\nFidel\ngeom_rug\n\n\n\nIzzone Data Analysts\nRothwell\ngeom_rug\n\n\n\nIzzone Data Analysts\nSacla\ngeom_rug\n\n\n\nJemsa\nBaasch\ngeom_errorbar\nHint: do this with regression results\n\n\nJemsa\nJohnson\ngeom_errorbar\nHint: do this with regression results\n\n\nJemsa\nLambdin\ngeom_errorbar\nHint: do this with regression results\n\n\nmessyverse\nAyala Hernandez\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nmessyverse\nBritt\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nmessyverse\nFuess\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_15\nDuhanxhiu\nStacked area chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_15\nMcAlpine\nStacked area chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_15\nVelpulla\nStacked area chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_16\nAhmed\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_16\nAl-Sewari\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_16\nLane\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_17\nScherer\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_17\nWagner\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_17\nWalter\nDiverging barchart with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_18\nDesRoberts\ngeom_hex\n\n\n\nProject Group_18\nKanaski\ngeom_hex\n\n\n\nProject Group_18\nKlinger\ngeom_hex\n\n\n\nProject Group_19\nCampbell\nalpha\nFind an application where alpha is useful\n\n\nProject Group_19\nJames\nalpha\nFind an application where alpha is useful\n\n\nProject Group_19\nSmith\nalpha\nFind an application where alpha is useful\n\n\nProject Group_20\nBrady\nggradar\nhttps://github.com/ricardo-bion/ggradar\n\n\nProject Group_20\nHill\nggradar\nhttps://github.com/ricardo-bion/ggradar\n\n\nProject Group_20\nRyder\nggradar\nhttps://github.com/ricardo-bion/ggradar\n\n\nProject Group_21\nFatur\ncut_interval\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_21\nJohnson\ncut_interval\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_21\nNguyen\ncut_interval\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_22\nAkash\nshape\n\n\n\nProject Group_22\nMccort\nshape\n\n\n\nProject Group_22\nPohl\nshape\n\n\n\nProject Group_23\nHinderliter\ncut_number\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_23\nHsu\ncut_number\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_23\nLuo\ncut_number\nhttps://ggplot2.tidyverse.org/reference/cut_interval.html\n\n\nProject Group_24\nGiannetti\nPopulation Pyramid with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_24\nNguyen\nPopulation Pyramid with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_24\nSchack\nPopulation Pyramid with geom_bar\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_25\nErickson\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_25\nHeikkila\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_25\nJalan\nArea chart with geom_area\nSee https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html\n\n\nProject Group_26\nMassey\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_26\nPcionek\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_26\nSchwab\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_27\nAustin\ngeom_density2d\n\n\n\nProject Group_27\nBeye\ngeom_density2d\n\n\n\nProject Group_27\nDavila\ngeom_density2d\n\n\n\nProject Group_28\nHernandez\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_28\nMishra\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_28\nRedding\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nProject Group_29\nPowers\nggMarginal\n\n\n\nProject Group_29\nSkubik\nggMarginal\n\n\n\nProject Group_29\nUmana\nggMarginal\n\n\n\nP-Value-Added Tax\nBilaspurwala\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nP-Value-Added Tax\nHambley\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nP-Value-Added Tax\nYang\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nRLJ\nBorina\ngeom_density2d\n\n\n\nRLJ\nBoylan\ngeom_density2d\n\n\n\nRLJ\nMolnar\ngeom_density2d\n\n\n\nSparty\nChamberlin\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nSparty\nNichanametla\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nSparty\nVillaire\ntransition_time\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nTeam 6-7\nHughes\ngeom_bin2d\n\n\n\nTeam 6-7\nKevelighan\ngeom_bin2d\n\n\n\nTeam 6-7\nParks\ngeom_bin2d\n\n\n\nTeam Tidyverse\nBeaule\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nTeam Tidyverse\nJeffrey\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/\n\n\nTeam Tidyverse\nWechet\ntransition_reveal\nhttps://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/",
+    "crumbs": [
+      "Assignments",
+      "Group Projects",
+      "Project 2"
     ]
   }
 ]
