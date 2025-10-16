@@ -16,7 +16,7 @@ Project 2 is an in-class presentation which will occur during class on {{< var d
 ### Explore your data
 You will present exactly one visual based on a dataset of your group's choice. Your task is to find one interesting relationship in the data that you wish to share. The relationship should be the sort that inspires further investigation of the data. For instance, your Rats data from Project 1 might have shown that summer months had higher numbers of rat sightings than did winter months, but this was only true in two of the five boroughs (I'm making this up, it may or may not be true in the data).
 
-You will present your analysis in the form of one visual made with `ggplot`. No memo, no next. You get one visual to communicate it.
+You will present your analysis in the form of one visual made with `ggplot`. No memo, no text. You get one visual to communicate it.
 
 ### Communicate your data with a new `geom_` or aesthetic
 **Each group will be assigned a ggplot `geom_` or aesthetic**. The list will be posted here shortly. Your plot must show both your interesting relationship in the data, and it must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic. 
@@ -60,7 +60,7 @@ Many examples (from which I created this list) can be found [here](https://r-sta
 Not every dataset will work with your geometry. You may have to use one of your other datasets to find data that will work. If your group is assigned a method, just use that method in whatever visualization best illustrates it. Email me if you have questions.
 
 
-```{r, warning = F, error = F, message = F}
+```{r, warning = F, error = F, message = F, echo = F}
 library(googlesheets4)
 
 uselist <- read_sheet('https://docs.google.com/spreadsheets/d/1Jc1SBtV4WiJ6INmRMcnRcSF75fn2OdUicP3P1T2nI9Q/edit?usp=sharing')
