@@ -9,7 +9,7 @@ format:
 <!-- Ben: I made a google sheet of all the geometry types and am pulling a file that has the class list and group assignment from my TA on it. You might need to make a table separately -- see the code chunk at the end. -->
 
 ## Presenting Your Data (Quickly!)
-Project 2 is an in-class presentation which will occur during class on {{< var duedates.project2 >}} (following Fall Break). Each group will make and present a short data analysis using one of the data sets from your Project 1 (or a new one, I'm not keeping track). Your presentation will introduce and detail a new ggplot `geom_` or aesthetic mapping that we haven't yet covered in class. You will be limited to a total of three slides (plus a cover slide), presented in no more than three minutes.
+Project 2 is an in-class presentation which will occur during class on {{< var duedates.project2present >}} (this has been recently updated -- see email on 10/17). Each group will make and present a short data analysis using one of the data sets from your Project 1 (or a new one, I'm not keeping track). Your presentation will introduce and detail a new ggplot `geom_` or aesthetic mapping that we haven't yet covered in class. You will be limited to a total of three slides (plus a cover slide), presented in no more than three minutes.
 
 ## Some specifics
 
@@ -34,7 +34,9 @@ Your presentation will have four slides.
   
 4. A slide showing the code from your visual. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it
   - In your presentation, walk through the data prep and code necessary to make the plot. Focus on the new geometry/aesthetic.
-  
+
+#### Submit it on D2L
+Submit a single powerpoint file on D2L that contains your cover slide + your 3 content slides by the night before presentation ({{< var duedates.project2 >}}). I will assemble everyone's submissions into one big powerpoint that we can move through without delay.
   
 ### This will be short
 There are three content slides and three of you in the group. Each person can take one slide. **Do not plan on speaking for more than 30 seconds per person**, we have a lot of class to get through. Just as a good visual boils the message down to it's most pure form, so too should your presentation.
