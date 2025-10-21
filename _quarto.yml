@@ -13,9 +13,9 @@ project:
     #- "!Week_07/"
     #- "!Week_08/"
     #- "!Week_09/"
-    - "!Week_10/"
-    - "!Week_11/"
-    - "!Week_12/"
+    #- "!Week_10/"
+    #- "!Week_11/"
+    #- "!Week_12/"
     - "!Week_13/"
     - "!Week_14/"
     - "!Week_15/"
@@ -28,9 +28,9 @@ project:
     #- "!*/07-assignment.qmd"
     #- "!*/08-assignment.qmd"
     #- "!*/09-assignment.qmd"
-    - "!*/10-assignment.qmd"
-    - "!*/11-assignment.qmd"
-    - "!*/12-assignment.qmd"
+    #- "!*/10-assignment.qmd"
+    #- "!*/11-assignment.qmd"
+    #- "!*/12-assignment.qmd"
     - "!*/13-assignment.qmd"
     - "!*/14-assignment.qmd"
     - "!*/15-assignment.qmd"
@@ -61,12 +61,12 @@ execute:
 
 website:
   title: "EC242"
-  announcement:
-    icon: info-circle
-    dismissable: true
-    content: "Welcome to Fall Semester 2025"
-    type: primary
-    position: below-navbar
+  # announcement:
+  #   icon: info-circle
+  #   dismissable: true
+  #   content: "Welcome to Fall Semester 2025"
+  #   type: primary
+  #   position: below-navbar
   search: 
     show-item-context: tree
     location: navbar
