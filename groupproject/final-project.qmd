@@ -18,47 +18,12 @@ This Project is due on **{{< meta duedate >}}**. This is the absolute last day I
 <!-- Maybe I should describe more what I want for the plots (a la British BakeOff). Mention color-blind friendly colors and proper names and such. Add where the plots should be in the flow? -->
 
 
-As you may have guessed given Project 1 and Project 2, your final project will be a chance for you to work on an analysis pertaining to your own (group's) interest, and with data you find, clean, and analyze. 
+As you may have guessed given Project 1, 2, and 3, your final project will be a chance for you to work on an analysis pertaining to your own (group's) interest, and with data you find, clean, and analyze. 
 
-This assignment requires three steps which I outline here and detail below. First, you are to choose a topic, likely one that you have been writing about in the second parts of Project 1 and Project 2, and assemble and clean a rich dataset on the topic from multiple sources. Second, present an analysis of the data that *highlights a pattern in the data that is not easily expressed in a closed form* in the spirit of Project 1, primarily using visuals. This section will focus on a specific outcome (or two) that is of particular interest. Third, design and estimate using cross-validation a predictive model of the outcome of interest that performs well on an out-of-sample slice of your data. 
+This assignment requires three steps which I outline here and detail below. First, you are to choose a topic, likely one that you have been writing about in the second parts of your projects, and assemble and clean a rich dataset on the topic from multiple sources. Second, present an analysis of the data that *highlights a pattern in the data that is not easily expressed in a closed form* in the spirit of Project 1, primarily using visuals. This section will focus on a specific outcome (or two) that is of particular interest. Third, design and estimate using cross-validation a predictive model of the outcome of interest that performs well on an out-of-sample slice of your data. 
 
 Your final product will take the form of a short memo in two versions -- one with all code turned off, and one with all code turned on. Details for each section and a rubric for scoring are below.
 
-
-::: {.callout-tip}
-## A few tips
-
-Based on Project 2's feedback, I have added a few clarifications in the assignment. Since you are already working on the Final Project, I will summarize everything I've added here. Nothing has changed on the grading rubric. These are merely to help you make a good, interesting project
-
-#### Section 1: Data
-
-Still having trouble finding data, especially with $N$ large enough for a predictive model?
-
-One fun source is the Census *Public Use Microdata Survey*, which is the *individual* level survey response to ACS questions. "Individual-level" means we see the individual answer of every person in the ACS. **PUMS** is publicly available and can be downloaded from [https://data.census.gov/mdat](https://data.census.gov/mdat). Exploring the data, you can see that it contains the respondent's answers to questions like "Age" and "Number of cars" and all sorts of stuff that then gets tallied into block/tract/county-level ACS estimates.
-
-Of course, there is a catch: it only reports the person's state, census regions, and "PUMA" or "Public Use Microdata Area". PUMAs are much larger than census tracts, but can be pretty useful. To give you an idea of scale, there are about 3 PUMA's in the greater Lansing area.
-
-You can download the data through the link above. When doing so, at the "Download" tab, make sure you select "extract raw data (.csv)" option, otherwise it will try to summarize the data to a single observation per PUMA, and you (likely) want the individual responses.
-
-Once downloaded `tigris::pumas()` will download the PUMA polygons just like it did `counties` and `tracts`. Use `?pumas` to learn more.
-
-**Using `tidycensus`: **Another way to access PUMS data is through the tidycensus package. This is a new feature for tidycensus, so you'll have to lear more here [https://walker-data.com/tidycensus/articles/pums-data.html](https://walker-data.com/tidycensus/articles/pums-data.html). You'll probably still want to use the census website above to make your list of variables of interest.
-
-One last note: each individual is located within a household of size 1 or more. The household is identified by `SERIALNO` and the individual people are numbered starting with 1 in `SPORDER`, so for household measures you group on `SERIALNO` and use `summarize` to calculate the family variables.
-
-
-
-#### Section 3: Predictive Model
-
-For predictive models, remember that the complexity parameter (e.g. lambda for LASSO) *reduces* the complexity of the data. Thus, you have to start with a very complex model (e.g. lots of interactions) when you write the formula that you wil use, then let the method find the right amount to reduce the complexity such that test RMSE is maximized. In Project 2, you had hundreds of predictors (explanatory variables), so even if you started with a model like `TOTALBTU ~ .`, you'd still have a decent amount of complexity. But here, if you have a lot, but not hundreds, of predictors, then starting with a model like `Y ~ .` won't be very complex. It's even possible that, in this case, your test RMSE is minimized at the most complex point (e.g. lambda = 0 for LASSO, which is just linear regression).
-
-**Make sure you start with a complex specification**. If you have panel data (multiple observations of the same unit), make sure you interact the unit with your explanatory variables.
-
-Make sure you use a range of lambdas such that you find the bottom of the "U" shape for the test RMSE. And when plotting, make sure we can see where this occurs. In your plot, make sure that complexity is increasing in the x-axis (for LASSO, you have to reverse the axis as complexity increases as lambda $\rightarrow$ 0)
-
-
-
-:::
 
 
 ## The Memo
@@ -83,7 +48,7 @@ Briefly summarize the dataset including the number of observations and statistic
 
 ### Scoring Rubric Section 1
 
-- **Data Source** (~~15~~ 10 points): Do you have 2 or more data sources, and does each data source provide a relevant contribution to the topic?
+- **Data Source** (10 points): Do you have 2 or more data sources, and does each data source provide a relevant contribution to the topic?
 
 - **Merging** (10 points): Did you identify the proper key columns and correctly merge such that data is not distorted or unintentionally dropped? Does your work show technical mastery of the process?
 
@@ -113,11 +78,11 @@ I will be irrationally militant about the fine details in your plots. Your plots
 
 
 ## Section 3 of  3: Predictive Model (40 points)
-Your final section requires estimating a predictive model on your data using a method of your choice. Similar to Project 2, you will need to setup your dataset such that it is appropriate for use in your chosen predictive method. You must use LASSO, K-Nearest Neighbors, or a Regression Tree (or random forest, if you wish to be adventureous). You will predict your outcome of interest, basing the model construction (to the extent there is an underlying model structure) on your knowledge of the data gleaned from Section 2.
+Your final section requires estimating a predictive model on your data using a method of your choice. Similar to Project 3, you will need to setup your dataset such that it is appropriate for use in your chosen predictive method. You must use LASSO, K-Nearest Neighbors, or a Regression Tree (or random forest, if you wish to be adventureous). You will predict your outcome of interest, basing the model construction (to the extent there is an underlying model structure) on your knowledge of the data gleaned from Section 2.
 
 Start with a very complex specification in your formula. Unless you have thousands of predictors (explanatory variables), then starting with a simple multivariate regression with no interactions won't get you very far. Remember that your model tuning parameters (e.g. lambda) can decrease complexity, but cannot increase beyond what you start out with. If you have panel data (e.g. multiple observations of the same unit) consider adding interactions between the unit of observation and the explanatory variables. Look back at our linear regression unit to understand the role of interactions.
 
-Set aside 10\% of your sample as an evaluation sample as in Project 2. In this project, you *may* use built-in cross-validation functions (e.g. `cv.glmnet()` for LASSO/ridge/elastic net), or may choose to cross-validate "manually" as we did in Project 2. If choosing the former, you must be able to extract and show the train and test RMSEs across all the values of the tuning parameters (lambda, K, minsplit, cp, etc.). Estimate the model, extract the relevant RMSE's, identify your optimal tuning parameters, and calculate the evaluation sample's final RMSE (a single number). Show a plot of both test and train RMSE over the range of values of the tuning parameter, ensuring that you show a reasonable range of the tuning parameter, that the test-RMSE-minimizing point is clear on the plot, and that the x-axis is increasing in complexity.
+Set aside 10\% of your sample as an evaluation sample as in Project 3. In this project, you *may* use built-in cross-validation functions (e.g. `cv.glmnet()` for LASSO/ridge/elastic net), or may choose to cross-validate "manually" as we did in Project 3. If choosing the former, you must be able to extract and show the train and test RMSEs across all the values of the tuning parameters (lambda, K, minsplit, cp, etc.). Estimate the model, extract the relevant RMSE's, identify your optimal tuning parameters, and calculate the evaluation sample's final RMSE (a single number). Show a plot of both test and train RMSE over the range of values of the tuning parameter, ensuring that you show a reasonable range of the tuning parameter, that the test-RMSE-minimizing point is clear on the plot, and that the x-axis is increasing in complexity.
 
 Finally, using your evaluation sample, calculate your model's Evaluation RMSE (a single number) and report it with interpretation.
 

@@ -21,7 +21,10 @@ output:
 
 **Classification** is a form of **supervised learning** where the response variable is categorical, as opposed to numeric for regression. *Our goal is to find a rule, algorithm, or function which takes as input a feature vector, and outputs a category which is the true category as often as possible.*
 
-![](./images/classification.png)
+
+```{r, echo = F}
+include_graphics(here('images','classification.png'))
+```
 
 That is, the classifier $\hat{C}(x)$ returns the predicted category $\hat{y}(X)$.
 
@@ -169,6 +172,12 @@ default_tst_pred = simple_class(x = default_tst$balance,
 head(default_tst_pred, n = 10)
 ```
 
+OK, that's 10 "No" in a row. Is it all "No"?
+
+```{r}
+table(default_tst_pred)
+```
+
 
 ## Metrics for Classification
 
@@ -188,9 +197,21 @@ Often we give specific names to individual cells of these tables, and in the pre
 
 In statistics, we label the errors Type I and Type II, but these are hard to remember. False Positive and False Negative are more descriptive, so we choose to use these.
 
+In the table above, the **False Positives** are the observations for which we *predicted* "Yes" but were actually observed to be "No". There are `r tst_tab['Yes','No']` False Positives.
+
+::: {.callout-note}
+# Question
+
+How many False Negatives above?
+
+How many True Positives?
+
+How many True Negatives?
+:::
+
 <!-- ![](images/confusion.png) -->
 
-The `confusionMatrix()` function from the `caret` package can be used to obtain a wealth of additional information, which we see output below for the test data. Note that we specify which category is considered "positive."
+The `confusionMatrix()` function from the `caret` package can be used to obtain a wealth of additional information, which we see output below for the test data. Note that we specify which category is considered "positive." Here, "Yes" and "No" for default are pretty obvious, but if your binary target is not so clear, it's helpful to fix which outcome is "positive".
 
 ```{r}
 trn_con_mat  = confusionMatrix(trn_tab, positive = "Yes")
@@ -228,12 +249,12 @@ $$
 
 Accuracy values can be found by calling `confusionMatrix()`, or, if stored, can be accessed directly. Here, we use them to obtain **error rates** (1-Accuracy).
 
-```{r}
+```{r, collapse = F}
  1 - trn_con_mat$overall["Accuracy"]
 # Note, R doesn't know to rename the result "err", so it keeps the name "Accuracy"
 ```
 
-```{r}
+```{r, collapse = F}
 1 - tst_con_mat$overall["Accuracy"]
 # Note, R doesn't know to rename the result "err", so it keeps the name "Accuracy"
 ```
@@ -266,7 +287,7 @@ $$
 \text{Sensitivity} = \text{True Positive Rate} = \frac{\text{TP}}{\text{P}} = \frac{\text{TP}}{\text{TP + FN}}
 $$
 
-```{r}
+```{r, collapse = F}
 tst_con_mat$byClass["Sensitivity"]
 # 130/(130+28)
 ```
@@ -277,7 +298,7 @@ $$
 \text{Specificity} = \text{True Negative Rate} = \frac{\text{TN}}{\text{N}} = \frac{\text{TN}}{\text{TN + FP}}
 $$
 
-```{r}
+```{r, collapse = F}
 tst_con_mat$byClass["Specificity"]
 # 4319/(4319/523)
 ```
@@ -297,7 +318,6 @@ $$
 ```{r}
 trn_con_mat$byClass["Prevalence"]
 tst_con_mat$byClass["Prevalence"]
-# (29+137)/5000
 ```
 
 Here, we see an extremely low prevalence, which suggests an even simpler classifier than our current based on `balance`.
@@ -400,7 +420,7 @@ It would then seem reasonable that $\mathbf{X}\hat{\beta}$ is a reasonable estim
 model_lm = lm(default ~ balance, data = default_trn_lm)
 ```
 
-Everything seems to be working, until we plot the results.
+Everything seems to be working. Let's plot the results.
 
 ```{r, fig.height=5, fig.width=7}
 plot(default ~ balance, data = default_trn_lm,
@@ -457,6 +477,8 @@ $$
 
 This classifier is essentially estimating the Bayes Classifier - it takes the value of $x$, figures out which is larger, the $\hat{P}(Y=1|X=x)$ or $\hat{P}(Y=0 | X=x)$, and returns the classification $\hat{C}(x)$ as whichever probability is larger. Since there are only two values for $Y\in\{0,1\}$, the larger is always the one greater than $.50$. Thus, since this is a Bayes Classifier, it minimizes classification errors.
 
+That doesn't mean it's good. Or even very useful (it's predicting "No" for everyone here.)
+
 
 ## Logistic Regression with `glm()`
 
@@ -477,7 +499,7 @@ $$
 p(x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p x_p)}} = \sigma(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p x_p)
 $$
 
-Notice, we use the sigmoid function as shorthand notation, which appears often in deep learning literature. It takes any real input, and outputs a number between 0 and 1. How useful! (This is actualy a particular sigmoid function called the logistic function, but since it is by far the most popular sigmoid function, often sigmoid function is used to refer to the logistic function)
+Above, $\sigma$ is a function, the **sigmoid** function. It is shorthand notation which appears often in deep learning literature. It takes any real input, and outputs a number *between* 0 and 1. How useful! (This is actualy a particular sigmoid function called the logistic function, but since it is by far the most popular sigmoid function, often sigmoid function is used to refer to the logistic function)
 
 $$
 \sigma(x) = \frac{e^x}{1 + e^x} = \frac{1}{1 + e^{-x}}
@@ -497,7 +519,22 @@ plot(logisticfun, from = -10, to = 10)
 
 The model is fit by numerically maximizing the likelihood, which we will let `R` take care of. Essentially, `R` is going to try a whole bunch of guesses for $\mathbf{\beta}$ and choose the one that best explains the data we have.
 
-We start with a single predictor example, again using `balance` as our single predictor. Note that `default_trn` has a factor variable for `default` (No/Yes). Since `R` represents factor variables as numbers (here, 1 and 2), `glm` figures out that you mean `No` and `Yes` for `0` and `1`.
+We start with a single predictor example, again using `balance` as our single predictor. Note that `default_trn` has a factor variable for `default` (No/Yes). Since `R` represents factor variables as numbers (here, 1 and 2), but the order of those numbers and their mapping to the character string is arbitrary. `R` sets the first character string it sees as 1, the second as 2, etc., so if you read the data in a different order or re-make the factor variable, it can switch.
+
+It's best to be explicit. Let's set the `default` variable to be `Yes = 1` and `No = 0`. Then it's a true binary, and `mean(default_trn)` gives us the average default rate (in the training set). We *should* do this before we split the sample, but we can do it now to both samples as long as we do the exact same thing to each.
+
+```{r, collapse = F}
+default_trn = default_trn %>%
+  dplyr::mutate(default = case_when(default=='No' ~ as.integer(0),
+                                    default=='Yes'~ as.integer(1)))
+
+default_tst = default_tst %>%
+  dplyr::mutate(default = case_when(default=='No' ~ as.integer(0),
+                                    default=='Yes'~ as.integer(1)))
+
+```
+Now we have no ambiguity about what we are predicting.
+
 
 ```{r}
 model_glm = glm(default ~ balance, data = default_trn, family = "binomial")
@@ -536,7 +573,7 @@ $$
 \hat{p}(x) = \hat{P}(Y = 1 \mid X = x)
 $$
 
-we need to use `type = "response"`
+We could do that, or we could use `type = "response"`
 
 ```{r}
 head(predict(model_glm, type = "response"))
@@ -544,9 +581,9 @@ head(predict(model_glm, type = "response"))
 
 Note that these are probabilities, **not** classifications. To obtain classifications, we will need to compare to the correct cutoff value with an `ifelse()` statement.
 
-```{r}
-model_glm_pred = ifelse(predict(model_glm, type = "link") > 0, "Yes", "No")
-# model_glm_pred = ifelse(predict(model_glm, type = "response") > 0.5, "Yes", "No")
+```{r, collapse = F}
+model_glm_pred = ifelse(predict(model_glm, type = "link") > 0, 1, 0)
+# model_glm_pred = ifelse(predict(model_glm, type = "response") > 0.5, 1, 0)
 ```
 
 The line that is run is performing
@@ -595,10 +632,10 @@ calc_class_err(actual = default_trn$default, predicted = model_glm_pred)
 
 As we saw previously, the `table()` and `confusionMatrix()` functions can be used to quickly obtain many more metrics.
 
-```{r, message = FALSE, warning = FALSE}
+```{r, message = FALSE, warning = FALSE, collapse = F}
 train_tab = table(predicted = model_glm_pred, actual = default_trn$default)
-library(caret)
-train_con_mat = confusionMatrix(train_tab, positive = "Yes")
+
+train_con_mat = confusionMatrix(train_tab, positive = '1')
 c(train_con_mat$overall["Accuracy"],
   train_con_mat$byClass["Sensitivity"],
   train_con_mat$byClass["Specificity"])
@@ -618,7 +655,7 @@ This function will be useful later when calculating train and test errors for se
 
 ```{r}
 get_logistic_error(model_glm, data = default_trn,
-                   res = "default", pos = "Yes", neg = "No", cut = 0.5)
+                   res = "default", pos = 1, neg = 0, cut = 0.5)
 ```
 
 To see how much better logistic regression is for this task, we create the same plot we used for linear regression.
@@ -679,18 +716,20 @@ Using the usual formula syntax, it is easy to add or remove complexity from logi
 ```{r}
 model_1 = glm(default ~ 1, data = default_trn, family = "binomial")
 model_2 = glm(default ~ ., data = default_trn, family = "binomial")
-model_3 = glm(default ~ . ^ 2 + I(balance ^ 2),
+model_3 = glm(default ~ . ^ 2,
+              data = default_trn, family = "binomial")
+model_4 = glm(default ~ . ^ 3 + poly(balance, 3),
               data = default_trn, family = "binomial")
 ```
 
 Note that, using polynomial transformations of predictors will allow a linear model to have non-linear decision boundaries.
 
 ```{r}
-model_list = list(model_1, model_2, model_3)
+model_list = list(model_1, model_2, model_3, model_4)
 train_errors = sapply(model_list, get_logistic_error, data = default_trn,
-                      res = "default", pos = "Yes", neg = "No", cut = 0.5)
+                      res = "default", pos = 1, neg = 0, cut = 0.5)
 test_errors  = sapply(model_list, get_logistic_error, data = default_tst,
-                      res = "default", pos = "Yes", neg = "No", cut = 0.5)
+                      res = "default", pos = 1, neg = 0, cut = 0.5)
 
 knitr::kable(cbind(train_errors, test_errors))
 ```
@@ -734,11 +773,11 @@ Let's use this to obtain predictions using a low, medium, and high cutoff. (0.1,
 
 ```{r}
 test_pred_10 = get_logistic_pred(model_glm, data = default_tst, res = "default",
-                                 pos = "Yes", neg = "No", cut = 0.1)
+                                 pos = 1, neg = 0, cut = 0.1)
 test_pred_50 = get_logistic_pred(model_glm, data = default_tst, res = "default",
-                                 pos = "Yes", neg = "No", cut = 0.5)
+                                 pos = 1, neg = 0, cut = 0.5)
 test_pred_90 = get_logistic_pred(model_glm, data = default_tst, res = "default",
-                                 pos = "Yes", neg = "No", cut = 0.9)
+                                 pos = 1, neg = 0, cut = 0.9)
 ```
 
 Now we evaluate accuracy, sensitivity, and specificity for these classifiers.
@@ -748,9 +787,9 @@ test_tab_10 = table(predicted = test_pred_10, actual = default_tst$default)
 test_tab_50 = table(predicted = test_pred_50, actual = default_tst$default)
 test_tab_90 = table(predicted = test_pred_90, actual = default_tst$default)
 
-test_con_mat_10 = confusionMatrix(test_tab_10, positive = "Yes")
-test_con_mat_50 = confusionMatrix(test_tab_50, positive = "Yes")
-test_con_mat_90 = confusionMatrix(test_tab_90, positive = "Yes")
+test_con_mat_10 = confusionMatrix(test_tab_10, positive = "1")
+test_con_mat_50 = confusionMatrix(test_tab_50, positive = "1")
+test_con_mat_90 = confusionMatrix(test_tab_90, positive = "1")
 ```
 
 ```{r}
@@ -794,7 +833,7 @@ as.numeric(test_roc$auc)
 The AUC is the "area under the curve". One interpretation of the AUC is that it is "the probability that the model ranks a randomly selected positive more highly than a randomly selected negative." A good model will have a high AUC. A high AUC has a high sensitivity and a high specificity over all of the cutoff values.
 
 
-## Multinomial Logistic Regression
+## Multinomial Logistic Regression (BONUS)
 
 What if the response contains more than two categories? For that we need multinomial logistic regression.
 
@@ -835,6 +874,5 @@ head(predict(model_multi, newdata = iris_trn, type = "prob"))
 
 Notice that by default, classifications are returned. When obtaining probabilities, we are given the predicted probability for **each** class.
 
-Interestingly, you've just fit a neural network, and you didn't even know it! (Hence the `nnet` package.) Later we will discuss the connections between logistic regression, multinomial logistic regression, and simple neural networks. 
-
+Interestingly, you've just fit a neural network, and you didn't even know it! (Hence the `nnet` package.)
 

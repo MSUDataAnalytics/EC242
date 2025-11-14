@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5: Data Wrangling – EC242</title>
+<title>13: Applied Logistic Regression - Classification – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -129,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/05-assignment.html">5: Data Wrangling</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/13-assignment.html">13: Applied Logistic Regression - Classification</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -193,7 +227,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../assignment/05-assignment.html" class="sidebar-item-text sidebar-link active">
+  <a href="../assignment/05-assignment.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">5: Data Wrangling</span></a>
   </div>
 </li>
@@ -241,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../assignment/13-assignment.html" class="sidebar-item-text sidebar-link">
+  <a href="../assignment/13-assignment.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">13: Applied Logistic Regression - Classification</span></a>
   </div>
 </li>
@@ -293,9 +327,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/05-assignment.html">5: Data Wrangling</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/13-assignment.html">13: Applied Logistic Regression - Classification</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">5: Data Wrangling</h1>
+<h1 class="title">13: Applied Logistic Regression - Classification</h1>
 </div>
 
 
@@ -323,35 +357,44 @@ Due Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This assignment is due on <strong>Monday, September 29th</strong></p>
+<p>This assignment is due on <strong>Monday, November 24th</strong></p>
 </div>
 </div>
 <p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.</p>
-<section id="data-wrangling-continued" class="level2">
-<h2 class="anchored" data-anchor-id="data-wrangling-continued">Data Wrangling Continued…</h2>
-<p>You still work for a travel booking website as a data analyst. The hotel has once again asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They’ve asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.</p>
-<p><strong>You did this already in class, but your boss now has some <strong>different</strong> data. It’s similar, and your code from before will help, but it has some new wrinkles in it to tackle</strong>. Do <strong>not</strong> use the data from this week’s Example. Here’s your new data:</p>
-<ul>
-<li><p><a href="..\data/Lab_booking.csv"><i class="fas fa-file-csv"></i> <code>booking.csv</code></a> - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hotel. It was pulled by an intern who doesn’t understand date-time stamps.</p></li>
-<li><p><a href="..\data/Lab_roomrates.csv"><i class="fas fa-file-csv"></i> <code>roomrates.csv</code></a> - Contains the price of each room on each day. The Lab 11 version of this data is from our German affiliate, so pay attention to the date format, and be careful – it’s very wide, so using <code>head</code> will throw a lot of data at you.</p></li>
-<li><p><a href="..\data/Lab_parking.csv"><i class="fas fa-file-csv"></i> <code>parking.csv</code></a> - Contains the corporations who negotiated free parking for employees. It has been updated.</p></li>
-<li><p>Parking at the hotel is $60 per night if you don’t have free parking. This hotel is in California, so everyone drives and parks when they stay.</p></li>
-</ul>
+<section id="backstory-and-set-up" class="level2">
+<h2 class="anchored" data-anchor-id="backstory-and-set-up">Backstory and Set Up</h2>
+<p>You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They’ve given you a dataset on defaults (encoded as the variable <code>y</code>, and <strong>not</strong> the column called <em>default</em>). You’re going to try to predict this.</p>
+<p>This is some new data. The snippet below loads it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>bank <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"https://ec242.netlify.app/data/bank.csv"</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">sep =</span> <span class="st">","</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There’s not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-EXERCISE 1
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
+<p><strong>EXERCISE 1 of 1</strong></p>
 <ol type="1">
-<li><p>As you did in class, but with your new set of data, total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking</p></li>
-<li><p>Visualize (using <code>ggplot</code>) each corporation’s spending at the hotel over time and by roomtype. Make one plot with <code>ggplot</code> that shows this.</p></li>
-<li><p>Visualize (using <code>ggplot</code>) the room rates over time by room type. Can you pick out one factor that determines when room prices are higher than usual? Note that we know each corporation gets the same room rate as the others on the same day, so this is about room rates, not corporate spending. Make <strong>two</strong> total plots, the first showing the room rates over time by room type, and the second explaining some feature of one of the room rates (e.g.&nbsp;when is the double room rate high? When is it low?). Using the <code>month(...)</code>, <code>day(...)</code> or <code>wday(..., label = TRUE)</code> functions from <code>lubridate</code> will help with figuring out the patterns. Try exploring just one of the room types to start. You don’t have to perfectly analyze the room rate, just find one facet of the rate that changes regularly over time.</p></li>
+<li><p>Encode the outcome we’re trying to predict (<code>y</code>, and not <code>default</code>) as a binary.</p></li>
+<li><p>Check your data for any <code>NA</code>s (as should be customary).</p></li>
+<li><p>Split the data into an 80/20 train vs.&nbsp;test split. Make sure you explicitly set the seed for replicability.</p></li>
+<li><p>Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).</p></li>
+<li><p>Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. <strong>Briefly discuss your findings.</strong> How does the error rate, sensitivity, and specificity change as the number of predictors increases?</p></li>
 </ol>
+<p>A few hints:</p>
+<ul>
+<li>If you are not getting a 2x2 confusion matrix, you might need to adjust your cutoff probability.</li>
+<li>It might be the case that your model perfectly predicts the outcome variable when the setup cutoff probability is too high.</li>
+<li>You need to make sure your predictions take the same possible values as the <code>actual</code> data (which, remember, you had to convert to a binary 0/1 variable)</li>
+</ul>
 </div>
 </div>
 

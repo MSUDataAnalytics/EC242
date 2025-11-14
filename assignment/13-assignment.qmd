@@ -18,7 +18,7 @@ This assignment is due on **{{< meta duedate >}}**
 
 
 ## Backstory and Set Up
-You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They've given you a dataset on defaults (encoded as the variable `y`, and not the column *default*). You're going to try to predict this.
+You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They've given you a dataset on defaults (encoded as the variable `y`, and **not** the column called *default*). You're going to try to predict this.
 
 This is some new data. The snippet below loads it.
 
@@ -33,15 +33,17 @@ There's not going to be a whole lot of wind-up here. You should be well-versed i
 
 ::: {.callout-note}
 
-__EXERCISE 1__
+__EXERCISE 1 of 1__
 
-0. Encode the outcome we're trying to predict (`y`, and not `default`) as a binary.
+1. Encode the outcome we're trying to predict (`y`, and not `default`) as a binary.
 
-1. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability.
+2. Check your data for any `NA`s (as should be customary).
 
-2. Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).
+3. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability.
 
-3. Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. **Briefly discuss your findings.** How does the error rate, sensitivity, and specificity change as the number of predictors increases? 
+4. Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).
+
+5. Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. **Briefly discuss your findings.** How does the error rate, sensitivity, and specificity change as the number of predictors increases? 
 
 A few hints:
 
@@ -54,10 +56,10 @@ A few hints:
 
 
 ```{r, echo=F, eval = F, include = F}
-library(caret)
-bank = bank %>%
-  dplyr::mutate(y = case_when(y == 'yes' ~ 'yes',
-                              balance>5000 ~ sample(c('yes','no'), size = sum(balance>500), prob = c(.75,.25))))
+# library(caret)
+# bank = bank %>%
+#   dplyr::mutate(y = case_when(y == 'yes' ~ 'yes',
+#                               balance>5000 ~ sample(c('yes','no'), size = sum(balance>500), prob = c(.75,.25))))
 
 bank_sample = sample(NROW(bank), size = trunc(.80*NROW(bank)))
 
@@ -74,5 +76,10 @@ confusionMatrix(table(predicted = ifelse(predict(m2, type = "response") > 0.5, "
                       actual = ifelse(bank_train$y==1, "Yes", "No")),
                       positive = "Yes")
 
+# or
+
+confusionMatrix(table(predicted = ifelse(predict(m2, type = "response") > 0.5, 1,0),
+                      actual = ifelse(bank_train$y==1, 1,0)),
+                      positive = "1")
 
 ```
