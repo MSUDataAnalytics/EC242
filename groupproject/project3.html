@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>13: Applied Logistic Regression - Classification – EC242</title>
+<title>Project 3 – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -107,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-sidebar docked nav-fixed fullcontent">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -163,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/13-assignment.html">13: Applied Logistic Regression - Classification</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../groupproject/project1.html">Group Projects</a></li><li class="breadcrumb-item"><a href="../groupproject/project3.html">Project 3</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -196,11 +162,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../assignment/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Assignments</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../assignment/01-assignment.html" class="sidebar-item-text sidebar-link">
@@ -275,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../assignment/13-assignment.html" class="sidebar-item-text sidebar-link active">
+  <a href="../assignment/13-assignment.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">13: Applied Logistic Regression - Classification</span></a>
   </div>
 </li>
@@ -306,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../groupproject/project3.html" class="sidebar-item-text sidebar-link">
+  <a href="../groupproject/project3.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Project 3</span></a>
   </div>
 </li>
@@ -323,13 +289,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#predicting-energy-consumption" id="toc-predicting-energy-consumption" class="nav-link active" data-scroll-target="#predicting-energy-consumption">Predicting Energy Consumption</a>
+  <ul class="collapse">
+  <li><a href="#the-recs-data" id="toc-the-recs-data" class="nav-link" data-scroll-target="#the-recs-data">The RECS Data</a></li>
+  <li><a href="#data-details" id="toc-data-details" class="nav-link" data-scroll-target="#data-details">Data Details</a></li>
+  </ul></li>
+  <li><a href="#the-project" id="toc-the-project" class="nav-link" data-scroll-target="#the-project">The project</a>
+  <ul class="collapse">
+  <li><a href="#your-data-processing-approach-should-be" id="toc-your-data-processing-approach-should-be" class="nav-link" data-scroll-target="#your-data-processing-approach-should-be">Your data processing approach should be:</a></li>
+  </ul></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">Evaluation</a></li>
+  <li><a href="#turning-it-in" id="toc-turning-it-in" class="nav-link" data-scroll-target="#turning-it-in">Turning it in</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../assignment/index.html">Lab Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/index.html">Assignments</a></li><li class="breadcrumb-item"><a href="../assignment/13-assignment.html">13: Applied Logistic Regression - Classification</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../groupproject/project1.html">Group Projects</a></li><li class="breadcrumb-item"><a href="../groupproject/project3.html">Project 3</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">13: Applied Logistic Regression - Classification</h1>
+<h1 class="title">Project 3</h1>
 </div>
 
 
@@ -346,58 +330,120 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
-<div class="callout callout-style-default callout-warning callout-titled">
+<section id="predicting-energy-consumption" class="level2">
+<h2 class="anchored" data-anchor-id="predicting-energy-consumption">Predicting Energy Consumption</h2>
+<p>The goal of this project is to predict household energy consumption using the Department of Energy’s <em>Residential Energy Consuption Survey</em> for 2020 using one of the predictive models you have learned: LASSO, elastic net, ridge, KNN, or trees (but not OLS). The RECS is a sample of around 18,000 households that asks myriad questions about housing characteristics (age of house, size of house), appliances (heat pump, gas furnace, EV), and total energy consumption (measured in BTU’s such that electricity, gas, propane, etc. are all included). This is <em>microdata</em>, so each household is an observation in the data.</p>
+<p>This survey exists to provide data to utilities (power companies, gas companies, etc.) and state government’s for planning future energy consumption so that grids and utilities can be prepared for trends in energy use. Usually, this sort of analysis would be done in an interpretable way (modeling consumption with, say, and EV versus without tells you something about how aggregate energy use will look if more people have EV’s). For this project, though, we just want a good and useful prediction of energy consumption. And so, we will bring our prediction model tools to bear on the data.</p>
+<p>Your task is to develop, estimate, and evaluate a predictive model of the variable <code>TOTALBTU</code>. To compare across groups, we will hold out around 5% of the sample that will be the “evaluation” sample. The group with the lowest evaluation sample RMSE wins fame and fortune beyond comprehension. Also, +1% of your total grade in extra credit. The “evaluation” sample is a <em>third</em> subset of the data, in addition to the <em>test</em> and <em>train</em> samples.</p>
+<section id="the-recs-data" class="level3">
+<h3 class="anchored" data-anchor-id="the-recs-data">The RECS Data</h3>
+<p>Part of being a data analyst is learning your data. While our predictive models don’t necessarily need us to know every variable’s definition, we do need to use the data correctly. So part of your task will be to import, clean, process, and understand the data. Most categorical variables (like “Year Built”) are held in the data as integers, but represent ranges of years. You’ll need to make sure you’re handling these correctly. There are also many variables that likely aren’t going to help: for instance, “flags” probably shouldn’t be included (they are variables that indicate when an observation has some values that are missing or imputed). Use the “variable and response codebook” (also known as the <em>data dictionary</em>) understand the variables. Make sure you know the units you’re working in as well.</p>
+<p>Each observation has a <code>TOTALBTU</code> that you want to predict (your “target”). There are also subcategories of <code>TOTALBTU</code> that you will need to drop right away, these are listed below so you can drop them.</p>
+<p>It will take you some time to digest the data, so you won’t start predicting right out of the gate. Take your time to understand the data, and explore it as you work your way through the data dictionary. For many of our predictive models, you have to specify (possibly many, many, many) potential interactions or functional form transformations. You’ll need to have some idea of what might be an important interaction to do this. For instance, <code>HDD65</code> tells you how many cold days the household had. An interaction with <code>TOTSQFT</code> is probably useful to include.</p>
+</section>
+<section id="data-details" class="level3">
+<h3 class="anchored" data-anchor-id="data-details">Data Details</h3>
+<p>On the <em>microdata</em> tab for RECS 2020 <a href="https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata">https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata</a>, down at the bottom, you’ll find a link to the .csv file (ignore the SAS file), as well as an Excel “variable and response codebook”. The codebook has five columns: <code>Variable</code> contains the name of the variable exactly how you’ll find it in the .csv, <code>Type</code> tells you if the variable is numeric or character or logical. When it says “numeric” it doesn’t mean the variable itself is represented as a number – note that <code>CELLAR</code> (row 17) is represented as a numeric, but rather that the numbers map to values of “1 Yes”, “0 No” and “-2 Not applicable”. Column 3 is the description of the data, and Column 4 contains all of the <em>response codes</em> which tell you what each value means. Note that including something like <code>CELLAR</code> without making it a factor variable will use it in a bizarre and unhelpful way (as a continuous number). Column 5 tells you what section of the survey the data comes from.</p>
+<p>While not super-helpful for this application, the survey itself can be viewed on the microdata page. It can help in undertanding the responses.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Due Date
+Clarifications
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This assignment is due on <strong>Monday, November 24th</strong></p>
+<p>This is a new-ish project, so there may be some unclear descriptions or details that are necessary. I’ll add questions and answers here as they come in.</p>
 </div>
 </div>
-<p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.</p>
-<section id="backstory-and-set-up" class="level2">
-<h2 class="anchored" data-anchor-id="backstory-and-set-up">Backstory and Set Up</h2>
-<p>You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They’ve given you a dataset on defaults (encoded as the variable <code>y</code>, and <strong>not</strong> the column called <em>default</em>). You’re going to try to predict this.</p>
-<p>This is some new data. The snippet below loads it.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>bank <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"https://ec242.netlify.app/data/bank.csv"</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">sep =</span> <span class="st">","</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>There’s not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>EXERCISE 1 of 1</strong></p>
+</section>
+</section>
+<section id="the-project" class="level2">
+<h2 class="anchored" data-anchor-id="the-project">The project</h2>
+<p>This project will take the form of a short memo-style documentation and evaluation of your predictive model prepared using R and RMarkdown as usual. It will have five sections, each of which should be separated with a proper header.</p>
 <ol type="1">
-<li><p>Encode the outcome we’re trying to predict (<code>y</code>, and not <code>default</code>) as a binary. <strong>Drop</strong> the <code>default</code> column.</p></li>
-<li><p>Check your data for any <code>NA</code>s (as should be customary).</p></li>
-<li><p>Split the data into an 80/20 train vs.&nbsp;test split. Make sure you explicitly set the seed for replicability.</p></li>
-<li><p>Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).</p></li>
-<li><p>Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. <strong>Briefly discuss your findings.</strong> How does the error rate, sensitivity, and specificity change as the number of predictors increases?</p></li>
+<li><p><strong>Data Processing</strong> (10 points): Clean and process the RECS 2020 data starting by loading in the data .csv. Below, in the “Your approach should be…” section, I’ve included some important steps you must take. For this section, use <code>echo=T</code> in your code chunk(s) so that your cleaning and processing code is shown. It’s OK if it’s long (though try to be an efficient coder). All cleaning and processing should be shown here. If you find yourself taking extra steps later on with the data, move those steps up into this section. No write-up or description is required here, just your code.</p></li>
+<li><p><strong>State your priors</strong> (6 points): In 1-2 paragraphs, discuss your <em>prior beliefs</em> about the relationship between three of the variables and the target variable, <code>TOTALBTU</code>. While our predictive models often become un-interpretable, we have to start with some set of beliefs about the relationship, starting with the existence of some relationship. You cannot choose <code>HDD65</code> or <code>CDD65</code> for this section, though. These are too obvious. Make <em>one</em> plot of the relationship between <code>TOTALBTU</code> and some variable(s) that you think will be important and include that plot in this section. The plot has to be clean and clear, but the analysis behind it can be very simple and straightforward (this assignment is about the prediction, not a re-hash of Project 1). Do not include any of the code here – use <code>echo=F</code> to ensure that your code is not showing. You will turn in your .RMD file on D2L as well should the grader need to see your code.</p></li>
+<li><p><strong>Estimate a model</strong> (20 points): Estimate a robust and detailed predictive model that includes the relationship from (2) and anything and everything else you think will provide predictive power – the sky is the limit. Use one of the machine learning methods that we learned about (kNN, regression trees, LASSO/Ridge/Elastic Net, do <strong>not</strong> use regular OLS) and carefully tune your model using the train-test paradigm to arrive at your best prediction.</p></li>
 </ol>
-<p>A few hints:</p>
+<p>Some rules apply here:</p>
 <ul>
-<li>If you are not getting a 2x2 confusion matrix, you might need to adjust your cutoff probability.</li>
-<li>It might be the case that your model perfectly predicts the outcome variable when the setup cutoff probability is too high.</li>
-<li>You need to make sure your predictions take the same possible values as the <code>actual</code> data (which, remember, you had to convert to a binary 0/1 variable)</li>
+<li><p>Do not use the “canned” routines for finding the optimal values of your tuning parameter – you’ll need to set a range of complexity based on your chosen modeling method and use <code>lapply</code> or a loop to estimate over those complexity parameters. This means that you should not directly give <code>glmnet</code> (if using LASSO or Ridge) a vector of lambdas and should not use <code>cv.glmnet</code>, but rather should use <code>lapply</code> to estimate different models over a range of <code>lambda</code> (or <code>k</code> or whatever your tuning parameters are).</p></li>
+<li><p><strong>Do not output your estimation code or underlying output.</strong> Your output should be clean, but you will need to upload your .RMD file for your assignment as well.</p></li>
 </ul>
-</div>
-</div>
+<p>Some hints may come in handy:</p>
+<ul>
+<li><p>Most of methods we learned start out with a specification formula that is highly complex – unlike when we added variables to change complexity, our machine learning methods take a very deatiled formula possibly with polynomial terms and interactions, and use the tuning parameters to change the complexity of the model. So <em>start with a very complex model</em> in your formula.</p></li>
+<li><p>As you adjust your tuning parameters, you may find that a large part of the tuning parameter space (the values of the tuning parameters you’re trying) result in a flat, high RMSE. As we discussed in class, there is no “right” range for the tuning parameters, so you may need to adjust the range you cover so that you focus on the RMSE-minimizing values. If you’re in a tuning parameter range that results in very high RMSE, then your plot is going to “compress” the minimizing point down and you likely won’t be able to even tell there’s a minimum. Be smart and iterate the range for your tuning parameter estimates.</p></li>
+</ul>
+<p>In the write-up for this section (section 3), <strong>include a table</strong> showing the range of <em>complexity</em> that was tried (e.g.&nbsp;the <em>lambda</em> from a LASSO), the training RMSE, and the testing RMSE. The table will be long, but that’s OK. If you have more than 200 different values, then shorten the range around the test-RMSE-minimizing point. Use <code>round()</code> to cut down on the number of digits showing, but make sure enough are showing to find the minimizing level of complexity. Then, <strong>make a plot</strong> showing the progression of both RMSE’s as complexity increases. The plot should clearly show the nadir where the testing RMSE reaches it’s minimum and that point should be labeled. Complexity should be increasing along the x-axis, even if the tuning parameter is decreasing as complexity increases. If you are using a method that has two complexity parameters, you’ll need to include test and train RMSE’s for every combination of parameter values. In that case, choose a coarse number of parameter values in the complexity parameters so that you are not searching over too many values. You can plot across one complexity parameter with the other complexity parameter held fixed. Your write-up should <strong>not</strong> include any code in this section, just the table and the plot. You can try using <code>knitr::kable()</code> to output a table - this function converts data.frame-like R objects into clean tables for RMarkdown. We haven’t covered it in class, but it should be easy to figure out.</p>
+<p>Finally, in a 2-3 sentence discussion, note which model you have selected as your optimal model and why.</p>
+<ol start="4" type="1">
+<li><p><strong>Evaluate the Model</strong> (8 points): Take your model to the evaluation sample (see below), calculate the RMSE for your optimal (lowest <em>test</em> RMSE) model on this sample, and report it (2 points). Then, see if your priors were correct by changing the variable you hypothesized to be related, and see if your predictive model changes it’s prediction accordingly. For instance, I think having air conditioning <code>AIRCOND</code> will increase the energy consumed. To see if this holds in my model, I can increase <code>AIRCOND</code> from 0 to 1 (since it is a categorical variable; use a percent or a fixed amount for any continuous variable) across all the data, and compare the new prediction to the old. Do this for each of the three prior predictions you stated in (2). (6 points)</p></li>
+<li><p><strong>Data and Hypotheses</strong> (6 points): Go back to the three datasets from your first project. Choose one that you think you, as a group, might want to study further. Write up <strong>three</strong> hypothesis (labeled H1, H2, and H3) that you might want to test or predictions you might want to make (you can mix if you’d like - two hypothesis and one prediction, etc.) and <em>why</em> those might be interesting to others. That is, tell me why you or others would be interested in testing each hypothesis, or predicting an outcome. This is unrelated to Sections 1-4.</p></li>
+</ol>
+<section id="your-data-processing-approach-should-be" class="level3">
+<h3 class="anchored" data-anchor-id="your-data-processing-approach-should-be">Your data processing approach should be:</h3>
+<ul>
+<li><p>Import the data from RECS at <a href="https://www.eia.gov/consumption/residential/data/2020/csv/recs2020_public_v7.csv">https://www.eia.gov/consumption/residential/data/2020/csv/recs2020_public_v7.csv</a></p></li>
+<li><p>Drop <em>anything</em> starting with the letter <em>Z</em> – these are indicators that the variable following the <em>Z</em> was imputed (algorithmically guessed). You can explore the tidyverse selecter <code>starts_with()</code> to help with this.</p></li>
+<li><p>Drop <em>anything</em> starting with <em>NWEIGHT</em> as these are survey weights we don’t have to worry about.</p></li>
+<li><p>Drop <em>anything</em> starting with <em>KWH</em> or <em>BTU</em> or <em>DOL</em> or <em>CUFEET</em> or <em>GALLON</em> as these are subcategories of energy consumption reported, so obviously they’d perfectly predict total consumption.</p></li>
+<li><p>Drop <code>TOTALBTUSPH</code>, <code>TOTALDOLSPH</code>, <code>TOTALBTUWTH</code>, <code>TOTALDOLWTH</code>,<code>TOTALBTUOTH</code>,<code>TOTALDOLOTH</code>, <code>TOTALDOL</code> and <code>DOEID</code> as these are subcategories of total energy usage. But make sure you keep your target variable, <code>TOTALBTU</code>!</p></li>
+<li><p>Make sure all variables that are numeric but represent factor variables (e.g.&nbsp;<code>CELLAR</code>) are converted into factors. Do not convert variables like <code>HDD65</code> that are meant to be numeric. You can use the function <code>mutate(across(c(X,Y,Z), as.factor))</code> to convert columns X, Y, and Z (obviously, substitute your columns) to factor variables. Check to make sure you got it right using <code>str</code>!</p></li>
+<li><p>Digest and understand your data. The data is described in detail using codebooks found here: <a href="https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata">https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata</a>.</p></li>
+<li><p>Use <code>set.seed(2422025)</code> and then immediately do the following:</p>
+<ul>
+<li><p>Sample exactly 1,000 households to hold as the final evaluation data. This is neither test nor train, but a third holdout “evaluation” set with which we will use to evaluate the final model.</p></li>
+<li><p>Once you have <em>removed</em> the 1,000 household final evaluation data, split the remaining sample into test and train. Stick to 50/50. This should give you equal samples of 8,748 in each. You’ll have a <code>train</code>, a <code>test</code>, and an <code>evaluation</code> sample, all mutually exclusive and adding up to 18,496 rows total.</p></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
+<p>The project is worth a total of 50 points. I will evaluate according to the following rubric:</p>
+<p><strong>Section 1 (10 points)</strong></p>
+<ul>
+<li>Did you drop the stated variables?</li>
+<li>Did you convert factors correctly?</li>
+<li>Did you correctly sample your data into three sets?</li>
+<li>Did you show your processing code?</li>
+</ul>
+<p><strong>Part 2 (6 points, 2 points per prior)</strong></p>
+<ul>
+<li>Do your three priorsand their description make sense?</li>
+<li>Does your plot show the relationship?</li>
+<li>Does the plot meet the technical requirements (properly labeled, clear, colorblind-friendly, etc.)</li>
+</ul>
+<p><strong>Part 3 (20 points)</strong></p>
+<ul>
+<li>Did you estimate the predictive model properly without using a “canned” routing (e.g.&nbsp;manually testing across a range of complexity)?</li>
+<li>Does your table show the relationship between complexity and the train and test RMSEs?</li>
+<li>Is it nicely formatted and clear to read?</li>
+<li>Does complexity <em>increase</em> along the x-axis?</li>
+<li>Did you suppress the code and model results so that only the RMSE table, plot, and discussion is showing?</li>
+<li>Does the plot meet the technical requirements (properly labeled, clear, colorblind-friendly, etc.)?s</li>
+</ul>
+<p><strong>Part 4 (8 points)</strong></p>
+<ul>
+<li>Do you show the RMSE for the evaluation sample?</li>
+<li>Did you propertly test your three priors?</li>
+<li>Is the discussion clear and concise?</li>
+</ul>
+<p><strong>Part 5 (6 points, 2 points per hypothesis/prediction)</strong></p>
+<ul>
+<li>Did you state actual hypotheses – specific questions that are testable?</li>
+<li>For proposed predictions, did you state the variables that would be predicted?</li>
+<li>In both cases, did you properly describe why one might be interested in the prediction or hypothesis?</li>
+</ul>
+</section>
+<section id="turning-it-in" class="level2">
+<h2 class="anchored" data-anchor-id="turning-it-in">Turning it in</h2>
+<p><span class="text-red">You are required to turn in both your final, rendered project with no code showing (except as stated in Section 1) AND your .RMD file used to render the project. All code generated with generative AI (e.g.&nbsp;ChatGPT) must be labeled as such as required in the syllabus.</span>.</p>
+<p>Only one group member should post on D2L. Please make sure you coordinate to ensure this is done.</p>
 
 
 </section>

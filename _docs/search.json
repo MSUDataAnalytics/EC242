@@ -1,0 +1,28 @@
+[
+  {
+    "objectID": "assignment/13-assignment.html",
+    "href": "assignment/13-assignment.html",
+    "title": "13: Applied Logistic Regression - Classification",
+    "section": "",
+    "text": "Due Date\n\n\n\nThis assignment is due on Monday, November 24th\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "13: Applied Logistic Regression - Classification"
+    ]
+  },
+  {
+    "objectID": "assignment/13-assignment.html#backstory-and-set-up",
+    "href": "assignment/13-assignment.html#backstory-and-set-up",
+    "title": "13: Applied Logistic Regression - Classification",
+    "section": "Backstory and Set Up",
+    "text": "Backstory and Set Up\nYou work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They’ve given you a dataset on defaults (encoded as the variable y, and not the column called default). You’re going to try to predict this.\nThis is some new data. The snippet below loads it.\n\nbank &lt;- read.table(\"https://ec242.netlify.app/data/bank.csv\",\n                 header = TRUE,\n                 sep = \",\") %&gt;%\n  dplyr::select(-default)\n\nThere’s not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).\n\n\n\n\n\n\nNote\n\n\n\nEXERCISE 1 of 1\n\nEncode the outcome we’re trying to predict (y, and not default) as a binary. Drop the default column.\nCheck your data for any NAs (as should be customary).\nSplit the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability.\nRun a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).\nCreate eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. Briefly discuss your findings. How does the error rate, sensitivity, and specificity change as the number of predictors increases?\n\nA few hints:\n\nIf you are not getting a 2x2 confusion matrix, you might need to adjust your cutoff probability.\nIt might be the case that your model perfectly predicts the outcome variable when the setup cutoff probability is too high.\nYou need to make sure your predictions take the same possible values as the actual data (which, remember, you had to convert to a binary 0/1 variable)",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "13: Applied Logistic Regression - Classification"
+    ]
+  }
+]

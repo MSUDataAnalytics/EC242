@@ -26,7 +26,8 @@ This is some new data. The snippet below loads it.
 
 bank <- read.table("https://ec242.netlify.app/data/bank.csv",
                  header = TRUE,
-                 sep = ",")
+                 sep = ",") %>%
+  dplyr::select(-default)
 ```
 
 There's not going to be a whole lot of wind-up here. You should be well-versed in doing these sorts of things by now (if not, look back at the previous lab for sample code).
@@ -35,7 +36,7 @@ There's not going to be a whole lot of wind-up here. You should be well-versed i
 
 __EXERCISE 1 of 1__
 
-1. Encode the outcome we're trying to predict (`y`, and not `default`) as a binary.
+1. Encode the outcome we're trying to predict (`y`, and not `default`) as a binary. **Drop** the `default` column. 
 
 2. Check your data for any `NA`s (as should be customary).
 
