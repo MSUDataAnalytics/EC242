@@ -23,6 +23,8 @@ output:
 
 
 ```{r, echo = F}
+library(here)
+library(knitr)
 include_graphics(here('images','classification.png'))
 ```
 
