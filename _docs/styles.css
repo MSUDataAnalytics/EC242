@@ -1,0 +1,15 @@
+/* css styles */
+.navbar-default {
+    background-color: #93c951 !important;
+    border-color: #222222;
+}
+
+h1, .title {
+  font-weight: bold;
+}
+
+
+
+.text-red {
+  color: #ff0000;
+}
