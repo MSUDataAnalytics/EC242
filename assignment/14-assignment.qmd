@@ -39,7 +39,7 @@ Sales2020 = c('$1,420,142',
 2. We have the following student names:
 
 ```
-Students = c('Ali',' Meza','McAvoy', 'Mc Evoy', '.Donaldson','Kirkpatrick ')
+Students = c('Ali',' Meza','McEvoy', 'Mc Evoy', '.Donaldson','Kirkpatrick ')
 ```
 We would like to clean these student names and place them in alphabetical order. However, we note that "Mc Evoy" is a different name from "McEvoy" (the Irish are particular about that), so we need no more than two lines of code that can print these names in order (use `order` to place the cleaned names in order).
 
