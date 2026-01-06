@@ -191,7 +191,7 @@ everythingElse = 1-labsParticipationWriting
 ```
 Your grade in this course will be based on attendance/participation, labs, weekly writings, and a final project.
 
-The general breakdown will be approximately `r scales::percent(labsParticipationWriting)` for labs, participation, and weekly writings, and `r scales::percent(everythingElse)` for projects (see below for specific details). The primary focus of the course is a final project; this requires "mini-projects" to ensure you're making satisfactory progress. Assignment of numeric grades will follow the standard, where ties (e.g., 91.5%) are rounded to the nearest whole number. Evaluations (read: grades) are designed not to deter anyone from taking this course who might otherwise be interested, but will be taken seriously.
+The general breakdown will be approximately `r scales::percent(labsParticipationWriting)` for labs, participation, and weekly writings, and `r scales::percent(everythingElse)` for projects (see below for specific details). The primary focus of the course is a final project; this requires "mini-projects" to ensure you're making satisfactory progress. 
 
 Weekly writings are intended to be an easy way to get some points. Labs will be short homework assignments that require you to do something practical using `R`. You must have access to computing resources and the ability to program basic statistical analyses and use `ggplot`, as is required in PLS202. If you are unprepared to implement basic statistical coding, please take (or retake) PLS202. I highly encourage seeking coding advice from those who instruct computer science courses – it’s their job and they are better at it than I am. I’ll try to provide a good service, but I'm really not an expert in computer science.
 
@@ -199,6 +199,9 @@ More in-depth descriptions for all the assignments are on the [assignments page]
 
 ### Dropping your lowest scores {#sec-dropone}
 I will automatically drop your two lowest weekly writings and your one lowest lab assignment score. This allowance absorbs any personal issues, travel problems, computing issues, or non-excused medical issues that may preclude you from completing your assignment on time. If you request an extension or exemption, I will politely point you here.
+
+### Rounding
+All grades are first calculated as a percent, then rounded to the nearest whole integer. These are mapped to MSU grades using the following rubric. There are no exceptions or special rounding favors.
 
 ### Grade Rubric
 
@@ -232,7 +235,7 @@ Grading: **come to class.**
 
 **If** you complete all assignments and attend all class dates, I suspect you will do very well. Given the way the syllabus is structured, I conjecture that the following is a loose guide to grades:
 
-`4.0` Turned in all assignments with superb effort, showed exceptional mastery of the tools on all projects, produced memorable projects, and participated extensively.
+`4.0` Turned in all assignments with superb effort, showed exceptional mastery of the tools on all projects, produced memorable projects, and participated extensively. Note that the bar is very high for a 4.0.
 
 `3.5` Turned in all assignments with excellent effort, worked hard on the projects, was proud of final product, and participated regularly.
 
