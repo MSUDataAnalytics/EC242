@@ -1,0 +1,70 @@
+
+
+
+
+
+
+
+Focus more on data finding. Probably less on viz
+
+Use libarary data viz person
+
+Importing ArcGIS data without link -- add to viz
+arcgis library
+arc_open()
+arc_select()
+
+PLS202 does a lot of viz. Our last week was basic for those who had taken PLS202
+- Figure out what 202 is teaching (reliabily) (I have syllabus 12-19-2025) PLS IS REQUIRED
+
+
+Multinomial logit in prediction?
+
+FINAL SCORE NOTES: 26.4% have 4.0 (guidelines ask for <30%) (ope, two weren't rounded right, so it's now 28.73% yikes!)
+Average grade is 3.264 with rounding (guidelines ask for 2.8 to 3.3) (3.212 before rounding)
+Technically in guidelines but not by much.
+GET RID OF ROUNDING IN SYLLABUS. You gotta hit 94.0000000. 93.9999999 doesn't do it.
+
+
+FINAL PROJECT THOUGHTS:: (see 12/15/25 email for formatted version)
+
+We should probably teach "across" usage in the data wrangling section.
+
+
+Make sure memo clearly asks them to walk through data (what is it, source, what variables are useful?)
+Give "sections" of the memo: Data, Merging/Cleaning, etc.
+Intro should have summary of what I"m gonna learn in the analysis
+
+Data chosen should be panel? Should I require census (PUMS or ACS)?
+  A few were national time series
+  So many use one year when multiple years are available    
+  Do we need to teach how to make a panel?
+  If we do, how do they do prediction with time series? could be dangerous.
+  Put more constraints/requirements on data. PUMS and ACS are super.
+  Should make sure sufficient data is available and proper match on scales (no state-level summaries of demographics when using county level stuff unless data is not available)
+  Do I need to move up Week 15 for census data use?
+  PUMA data? A few groups found it.
+    Should census data unit include making time panel? Has to be over years (and mention that ACS isn't really built for that)
+
+  Missing should be discussed regardless (N of final sample + any missing/what/what assumptions)
+  
+
+Section 3 predictive rubric should make sure the u-shape is there. I think a lot of people are using the default output which does not show it. It has to have the U
+  Oh lordy, so many are corner optimal with awful, awful simple formulas. If your optimal is at the corner, then your formula is wrong.
+  Is this because our LASSO example used only the main variables (the Rubin slides)? That makes it look like you need only ~8 or so.
+  Really emphasize that the "U" requires being on both sides. MOVE THE WINDOW if your solution is at the extreme.
+  MAKE YOUR LASSO COMPLEX to start with.
+
+Predictive model data should be standardized. MOdel should be highly complex.
+
+
+
+
+Ismail and GGPlotters had really good examples
+
+Final with code, really. (but having them output it without code does make them think about presentation — so yearh, keep output without code.
+Add overall formatting to "Addl Instructions"
+
+Needs to have a peer review / roles section. Too many people no-showing on their groups.
+
+
