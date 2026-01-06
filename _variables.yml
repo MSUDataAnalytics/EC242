@@ -3,29 +3,29 @@
 
 version: 1.0
 
-semester: "Fall 2025"
+semester: "Spring 2026"
 
 
 meeting:
   time: "Tu/Th 1:00 - 2:20pm"
-  location: "NatSci 116"
+  location: "NatSci 204"
   
 names:
   instructor: "Prof. Kirkpatrick"
   instructorfull: "Justin Kirkpatrick"
-  TA: "TA Zach Henley"
+  TA: "TA Liza Inaba"
   instructorother: "Prof. Bushong"
 
 officehours: 
   instructor: "Thursday 2:20-3:30 PM and Sunday nights via Slack"
   instructorzoom: "[Zoom, (Passcode: GOGREEN)](https://msu.zoom.us/j/92054231037?pwd=OiRKvESN4M8ZbvjVbV5J9hLye9AA7G.1)"
   instructoroffice: "Old Botany 105"
-  TA: "Friday 9:30-11:30 AM"
+  TA: "TBA"
   TAzoom: "[Old Botany B3 and via Zoom, (Passcode:EC242)](https://msu.zoom.us/j/95051017076)"
 
 email:
   instructor: "[jkirk@msu.edu](mailto:jkirk@msu.edu)"  
-  TA: "[henleyza@msu.edu](mailto: henleyza@msu.edu)"
+  TA: "[inabaliz@msu.edu](mailto: inabaliz@msu.edu)"
   
 url:
   instructor: "www.justinkirkpatrick.com"
@@ -34,7 +34,7 @@ url:
 slack:
   link: "[Slack](https://ec242.slack.com)"
   linkclean: "https://ec242.slack.com"
-  invite: "[Join by Week 2 here](https://join.slack.com/t/ec242/shared_invite/zt-3bgwmkcrq-KmOtx~15mhfFla~_QpJRow)"
+  invite: "[Join by Week 2 here](https://join.slack.com/NEW)"
   # https://join.slack.com/t/msu-knz8878/shared_invite/zt-2oohvam9f-iiZRu1xavmxk_Kbbv47xoQ Fall 2024 invite
 
 
