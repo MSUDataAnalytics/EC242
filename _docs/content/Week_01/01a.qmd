@@ -15,13 +15,14 @@ library(tidyverse)
 # Welcome to EC242
 In class today, we'll talk about the course, review the syllabus, and check your installation of R, RStudio, and `tinytex` to ensure you're good to go on assignments.
 
-But first...who likes ice cream?
+But first a quick plug...
 
 ```{r, echo=F, out.width='80%'}
-knitr::include_graphics(here('images','Slide1.png'))
+knitr::include_graphics(here('images','London–Summer 2026-Info Session Flyer.png'))
 ```
 
-[RSVP Here](https://bit.ly/4mHSsjl)
+
+
 
 # Readings  
 
@@ -47,7 +48,7 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 ::: {.callout-note}
 ## New phone who dis?
 
-For one participation point, please email me {{< var email.instructor >}} with the subject *[EC242] Who Dis* (use exactly this subject!). In the message, tell me:
+For one mandatory participation point, please email me {{< var email.instructor >}} with the subject *[EC242] Who Dis* (use exactly this subject with the brackets!). In the message, tell me:
 
 - Name (with pronunciation guide)
 
@@ -61,7 +62,7 @@ For one participation point, please email me {{< var email.instructor >}} with t
 
 :::
 
-This will count for one of your participation points.
+This will count for one of your participation points and is required.
 
 
 
@@ -98,11 +99,13 @@ The following are the basic requirements for statistical learning:
 Some "data analytics" topics we will cover:
 
 - Linear regression: *il classico*.
-- LASSO
+- LASSO.
 - Models of classification or discrete choice.
 - Analysis of "wide" data.
 - Decision trees and other non-linear models.
-- Visualization (both analytics and communication)
+- Visualization (both analytics and communication).
+- Finding and working with data.
+
 
 ## Starting point for this course
 
@@ -271,6 +274,7 @@ dat %>%
         axis.line.x = element_blank(),
         plot.margin = unit(c(1,1,1,1), "cm"))
 ```
+
 You might want to look into the underlying data (in this case, fabricated) and think about what to do next. In this sense, you have *learned from data*. The data provides directions for exploration and clues as to potential explanations.
 
 

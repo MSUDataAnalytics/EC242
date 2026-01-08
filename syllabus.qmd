@@ -200,8 +200,6 @@ More in-depth descriptions for all the assignments are on the [assignments page]
 ### Dropping your lowest scores {#sec-dropone}
 I will automatically drop your two lowest weekly writings and your one lowest lab assignment score. This allowance absorbs any personal issues, travel problems, computing issues, or non-excused medical issues that may preclude you from completing your assignment on time. If you request an extension or exemption, I will politely point you here.
 
-### Rounding
-All grades are first calculated as a percent, then rounded to the nearest whole integer. These are mapped to MSU grades using the following rubric. There are no exceptions or special rounding favors.
 
 ### Grade Rubric
 
@@ -251,7 +249,7 @@ Grading: **come to class.**
 
 ### Rounding
 
-All grade ranges are applied after rounding off to the nearest integer. Please do not ask for special rounding favors. There are many ways to gain extra points in this class via participation. Place your efforts there.
+All grade ranges are applied after rounding to the nearest integer. Please do not ask for special rounding favors. There are many ways to gain extra points in this class via participation. Place your efforts there.
 
 ### Grading Appeals
 
@@ -263,7 +261,7 @@ All grades are considered final. Any request for a re-grade beyond simple point-
 
 Participation can take many forms. Most preferred is active participation during class. I will consistently ~~bribe~~ give participation credit points for answering specific questions in class, which I will clearly state as being for-credit. Wrong answers get the same credit as right answers. We are here to learn. If you knew everything already, you wouldn't be in the class. In the latter half of the semester, we will work in groups in class on small coding exercises and will share results at the end. Sharing your group's results and code will also count towards participation.
 
-We are a sizable class, so participation points will be awarded using EC slips which you will be able to turn into me (with your name on it) at the end of class. That way, I don't slow down the class trying to write down everyone's names. Each of the slips is worth one percentage point of your grade in participation. If you go beyond that (and I hope you do), each slip is worth 1/5th of the credit, with a cap of 5 percentage points of extra credit.
+We are a sizable class, so participation points will be awarded using EC slips which you will be able to turn into me (with your name on it) at the end of class. That way, I don't slow down the class trying to write down everyone's names. Each of the slips is worth one percentage point of your grade in the participation category on D2L. If you go beyond that (and I hope you do), each slip is worth 1/5th of the credit, with a cap of 5 percentage points of extra credit.
 
 
 ### Success in this Course
