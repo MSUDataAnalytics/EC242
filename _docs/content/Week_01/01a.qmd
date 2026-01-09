@@ -22,8 +22,6 @@ knitr::include_graphics(here('images','London–Summer 2026-Info Session Flyer.p
 ```
 
 
-
-
 # Readings  
 
 Your readings will be assigned each week in this area. For this initial week, please read the course content for this week. **Read closely** the following:
@@ -105,6 +103,7 @@ Some "data analytics" topics we will cover:
 - Decision trees and other non-linear models.
 - Visualization (both analytics and communication).
 - Finding and working with data.
+  - Including geospatial data
 
 
 ## Starting point for this course
@@ -144,6 +143,14 @@ from "A Call for a Moratorium on Prison Building" (1976)
 | --- | --- | --- |
 High construction | $\uparrow$~56\% | $\uparrow$~167\%
 Low construction | $\uparrow$~4\% | $\uparrow$~145\%
+
+::: {.callout-note}
+## Let's discuss
+
+1. What can we learn from this data?
+
+2. What questions can we ask to learn *more* or to find a *pattern*?
+:::
 
 
 ### The Pros and Cons of Correlation
@@ -214,9 +221,7 @@ Not obvious why this was true for Netflix; quite obvious why this is true in fin
 
 From a computer science perspective, it only matters that you get that improvement (\$\$). From a social science perspective, we would want to use the predictions to learn more about *why*.
 
-
-
-### More Recent Examples of Prediction
+#### More Recent Examples of Prediction
 
 - Identify the risk factors for prostate cancer.
 - Classify a tissue sample into one of several cancer classes, based on a gene expression profile.
@@ -375,7 +380,7 @@ This is a relatively simple and straightforward problem in social science: you h
 Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced `R` skills. Ideally, this is a refresher. However, we are aware that your preparation in previously courses varies greatly from student to student. Moreover, we want you to be aware that the usefulness of some of these early building blocks may not be immediately obvious. Later in the class you will appreciate having these skills. Mastery will be rewarded both in this class and (of course) in life.
 
 
-## Now, some class business
+# Now, some class business
 
 
 ### Please ask questions during class.

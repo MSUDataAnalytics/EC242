@@ -13,3 +13,26 @@ h1, .title {
 .text-red {
   color: #ff0000;
 }
+
+
+
+/* Base style */
+details.collapsible-bg {
+  background-color: #f8f9fa;
+  padding: 0.75em 1em;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  margin: 1em 0;
+}
+
+/* When open */
+details.collapsible-bg[open] {
+  background-color: #f8f9fa;
+}
+
+/* Summary row */
+details.collapsible-bg > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+

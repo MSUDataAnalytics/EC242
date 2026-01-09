@@ -27,9 +27,9 @@ To get started, download and save the following files (**right-click** to Save L
 
 ## Weekly Writings 
 
-To encourage you to actively engage with the course content, you will write a ≈150 word memorandum about the reading or lecture each week. That's fairly short: there are ≈250 words on a typical double-spaced page. You must complete eleven of these in the course. I will drop your one lowest weekly writing score. Your actual prompt will be assigned **in class**, so you must login each day to ensure you get these assignments. To keep you on your toes, we will vary whether these are assigned on Tuesdays or Thursdays. **Each week's weekly writing will be due on D2L by 11:59pm on Saturday**
+To encourage you to actively engage with the course content, you will write a ≈150 word memorandum about the reading or lecture each week. That's fairly short: there are ≈250 words on a typical double-spaced page. Your actual prompt will be assigned **in class**, so you must attend each day to ensure you get these prompts. You are welcome to ask questions or ask me to repeat the prompt on the day of class, but afterwards, I will not. To keep you on your toes, we will vary whether these are assigned on Tuesdays or Thursdays. **Each week's weekly writing will be due on D2L by 11:59pm on Saturday.**
 
-You can do a lot of different things with this memo: discuss something you learned from the course content, write about the best or worst data visualization you saw recently, connect the course content to your own work, etc. These reflections let you explore and answer some of the key questions of this course, including:
+You can do a lot of different things with this memo: discuss something you learned from the course content, write about the best or worst data visualization you saw recently, connect the course content to your own work, etc. These reflections let you explore and answer some of the key questions of this course, including (these are purely examples):
 
 - When is a link correlational vs causal? How can we still make useful statements about non-causal things?
 - Why do we visualize data?
@@ -79,7 +79,7 @@ You will turn these labs in via D2L. You will write them using `R Markdown` and 
 
 ## Projects
 
-To give you practice with the data and design principles you'll learn in this class, you will complete two projects en route to the overarching final project of the course. **Both these mini projects and the final project must be completed in groups.** I will assign groups after the drop deadline passes. Groups will be 2-3 people. You are allowed to form your own groups, but I will assign groups. More details will follow later.
+To give you practice with the data and design principles you'll learn in this class, you will complete two projects en route to the overarching final project of the course. **Both these mini projects and the final project must be completed in groups.** I will assign groups after the drop deadline passes. Groups will be 2-3 people. You are allowed to form your own groups, but I will assign groups to anyone not forming their own. More details will follow later.
 
 The projects are checkpoints to ensure you're working on your project seriously. They will be graded using a continuous 0-100% scoring.
 
