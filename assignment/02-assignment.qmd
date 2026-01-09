@@ -212,7 +212,7 @@ p + geom_point() + scale_x_log10(labels = dollar) + geom_smooth()
 **Try it:** (OPTIONAL)  What does `fill = continent` do? What do you think about the match of colors between lines and error bands?
 
 
-## Data Wranging First
+## Data Wrangling First
 
 For Exercise 3, use this [data on MI county-level income, age, population, and commute time](data/milong.csv), which can be installed using the following line of code to directly create the object in your code chunk:
 
