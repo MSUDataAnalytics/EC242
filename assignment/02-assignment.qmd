@@ -6,6 +6,8 @@ toc: true
 toc-depth: 1
 ---
 
+<!-- Note for Ben: Exericse 3 is new here and includes pivot-wider (reshaping) a little census data as I moved that content up from data wrangling. -->
+
 ::: {.callout-warning}
 ## Due Date
 This assignment is due on {{< meta duedate >}}.
@@ -25,56 +27,18 @@ Do this stuff
 
 So find those in the assignment below. There are a lot of questions clearly labeled "OPTIONAL" as well -- it helps to at least take a look at them, but only those questions in the labeled boxes are required for this lab assignment.
 
-## Data Viz
-
-Our primary tool for data visualization in the course will be ``ggplot``. Technically, we're using ``ggplot2``; the o.g. version lacked some of the modern features of its big brother. ``ggplot2`` implements the grammar of graphics, a coherent and relatively straightforward system for describing and building graphs. With ``ggplot2``, you can do more faster by learning one system and applying it in many places. Other languages provide more specific tools, but require you to learn a different tool for each application. In this class, we'll dig into a single package for our visuals.
-
-## Using ggplot2
-In order to get our hands dirty, we will first have to load ``ggplot2``. To do this, and to access the datasets, help pages, and functions that we will use in this assignment, we will load the so-called tidyverse by running this code:
-
-```
-library(tidyverse)
-```
-
-If you run this code and get an error message “there is no package called ‘tidyverse’”, you’ll need to first install it, then run library() once again. To install packages in ``R``, we utilize the simple function install.packages(). In this case, we would write:
-
-```
-install.packages("tidyverse")
-library(tidyverse)
-```
-
-Once we're up and running, we're ready to dive into some basic exercises. ``ggplot2`` works by specifying the connections between the variables in the data and the colors, points, and shapes you see on the screen. These logical connections are called *aesthetic mappings* or simply *aesthetics*.
-
-### How to use ``ggplot2`` -- the too-fast and wholly unclear recipe
-
-- `data = `: Define what your data is. For instance, below we'll use the mpg data frame found in ggplot2 (by using `ggplot2::mpg`). As a reminder, a data frame is a rectangular collection of variables (in the columns) and observations (in the rows). This structure of data is often called a "table" but we'll try to use terms slightly more precisely. The `mpg` data frame contains observations collected by the US Environmental Protection Agency on 38 different models of car.
-
-
-- `mapping = aes(...)`: How to map the variables in the data to aesthetics
-  - Axes, size of points, intensities of colors, which colors, shape of points, lines/points
-- Then say what type of plot you want:
-  - boxplot, scatterplot, histogram, ...
-  - these are called 'geoms' in ggplot's grammar, such as `geom_point()` giving scatter plots
-
-
-```
-library(ggplot2)
-... + geom_point() # Produces scatterplots
-... + geom_bar() # Bar plots
-.... + geom_boxplot() # boxplots
-... #
-```
-
-You link these steps by *literally* adding them together with `+` as we'll see.
-
-**Try it:** (OPTIONAL) What other types of plots are there? Try to find several more `geom_` functions.
+## `tidyverse` and `ggplot2`
+We start by assuming that you are familiar (and have installed) `tidyverse` and `ggplot2`. 
 
 ## Mappings Link Data to Things You See
 
 ```{r, collapse = T}
-library(gapminder)
+library(tidyverse)
 library(ggplot2)
-head(gapminder::gapminder)
+library(gapminder)
+
+gapminder = gapminder::gapminder
+head(gapminder)
 p <- ggplot(data = gapminder,
             mapping = aes(x = gdpPercap, y = lifeExp))
 p + geom_point()
@@ -132,7 +96,7 @@ Using your previous scatterplot of `displ` and `hwy`, map the colors of your poi
 
 ### Back to gapminder::gapminder
 
-Let's explore our previously saved `p` (using `gapminder::gapminder`) in greater detail. As with Exercise 1, we'll add a *layer*. This says how some data gets turned into concrete visual aspects.
+Let's explore our previously saved `p` (which used `gapminder::gapminder`) in greater detail. As with Exercise 1, we'll add a *layer*. This says how some data gets turned into concrete visual aspects.
 
 ```
 p + geom_point()
@@ -212,8 +176,6 @@ p + geom_point(...) + scale_x_log10()
 **Try it:** (OPTIONAL) describe in your words what is going on.
 One way to avoid such mistakes is to read arguments inside `aes(<property> = <variable>)`as *the property <property> in the graph is determined by the data in <variable>*.
 
-**Try it:** (OPTIONAL)  Write the above sentence for the original call `aes(x = gdpPercap, y = lifeExp, color = 'yellow')`.
-
 Aesthetics convey information about a variable in the dataset, whereas setting the color of all points to yellow conveys no information about the dataset - it changes the appearance of the plot in a way that is independent of the underlying data.
 
 Remember: `color = 'yellow'` and `aes(color = 'yellow')` are very different, and the second makes usually no sense, as `'yellow'` is treated as *data*.
@@ -249,31 +211,28 @@ p + geom_point() + scale_x_log10(labels = dollar) + geom_smooth()
 
 **Try it:** (OPTIONAL)  What does `fill = continent` do? What do you think about the match of colors between lines and error bands?
 
-```
-p <- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp))
-p + geom_point(mapping = aes(color = continent)) + geom_smooth() + scale_x_log10()
+
+## Data Wranging First
+
+For Exercise 3, use this [data on MI county-level income, age, population, and commute time](data/milong.csv), which can be installed using the following line of code to directly create the object in your code chunk:
+
+```{r, echo=T, warning = F, error = F, message = F}
+midata = read.csv('https://ec242.netlify.app/data/milong.csv', stringsAsFactors = F)
 ```
 
-**Try it:** (OPTIONAL)  Notice how the above code leads to a single smooth line, not one per continent. Why?
 
-**Try it:** (OPTIONAL)  What is bad about the following example, assuming the graph is the one we want? Think about why you should set aesthetics at the top level rather than at the individual geometry level if that's your intent.
-
-```
-p <- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp))
-p + geom_point(mapping = aes(color = continent)) +
-  geom_smooth(mapping = aes(color = continent, fill = continent)) +
-  scale_x_log10() +
-  geom_smooth(mapping = aes(color = continent), method = "gam")
-```
 
 ::: {.callout-note}
 
 ## Exercise 3 of 3
 
-Generate two new plots with `data = gapminder` (note: you'll need to install the package by the same name if you have not already). Label the axes and the header with clear, easy to understand language. In a few sentences, describe what you've visualized and why.
+First, use `pivot_wider` to get the data into tidy form (each observation should be a county). This data is taken from the 2023 US Census American Community Survey, which we'll learn about later on.
 
-Note that this is your first foray into `ggplot2`; accordingly, you should try to make sure that you do not bite off more than you can chew. We will improve and refine our abilities as we progress through the semester.
+Then, categorize each county into "small" and "large" based on population. Do the same for age ("young" and "old"). A logical cut-point would be the median or mean.
+
+Then, plot the relationship between *two of the variables of your choice* using the geometry of your choice. Use an aesthetic mapping on the young/old **or** small/large category to illustrate how the relationship may differ. If you're aesthetic mapping young/old to an aesthetic, do not also use it on the X or Y axis (that would be redundant).
+
+Label the axes and the header with clear, easy to understand language. Make sure you label everything, properly capitalize titled, etc. Below your plot, write a few sentences to describe what you've visualized and why.
+
 
 :::
