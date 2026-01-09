@@ -248,7 +248,7 @@ We can clearly see how much states vary across population size and the total num
 
 This data visualization shows us pretty much all the information in the data table. The code needed to make this plot is relatively simple. We will learn to create the plot part by part.
 
-The first step in learning __ggplot2__ is to be able to break a graph apart into components. Let's break down the plot above and introduce some of the __ggplot2__ terminology. The main five components to note are:
+Let's break down the plot above and introduce some of the __ggplot2__ terminology. The main five components to note are:
 
 * __Data__: The US murders data table is being summarized. We refer to this as the __data__ component.
 
@@ -577,5 +577,4 @@ p + geom_point(aes(x = population/10^6, y = total)) +
     - Does the `fill` aesthetic mapping help present the data here?
     - What color did you choose for the non-mapped fill aesthetic?
     
-
 :::

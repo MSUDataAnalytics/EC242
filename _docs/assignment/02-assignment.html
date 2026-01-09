@@ -269,6 +269,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<!-- Note for Ben: Exericse 3 is new here and includes pivot-wider (reshaping) a little census data as I moved that content up from data wrangling. -->
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -301,59 +302,31 @@ Exercise 1 of 3
 </div>
 <p>So find those in the assignment below. There are a lot of questions clearly labeled “OPTIONAL” as well – it helps to at least take a look at them, but only those questions in the labeled boxes are required for this lab assignment.</p>
 </section>
-<section id="data-viz" class="level2">
-<h2 class="anchored" data-anchor-id="data-viz">Data Viz</h2>
-<p>Our primary tool for data visualization in the course will be <code>ggplot</code>. Technically, we’re using <code>ggplot2</code>; the o.g. version lacked some of the modern features of its big brother. <code>ggplot2</code> implements the grammar of graphics, a coherent and relatively straightforward system for describing and building graphs. With <code>ggplot2</code>, you can do more faster by learning one system and applying it in many places. Other languages provide more specific tools, but require you to learn a different tool for each application. In this class, we’ll dig into a single package for our visuals.</p>
-</section>
-<section id="using-ggplot2" class="level2">
-<h2 class="anchored" data-anchor-id="using-ggplot2">Using ggplot2</h2>
-<p>In order to get our hands dirty, we will first have to load <code>ggplot2</code>. To do this, and to access the datasets, help pages, and functions that we will use in this assignment, we will load the so-called tidyverse by running this code:</p>
-<pre><code>library(tidyverse)</code></pre>
-<p>If you run this code and get an error message “there is no package called ‘tidyverse’”, you’ll need to first install it, then run library() once again. To install packages in <code>R</code>, we utilize the simple function install.packages(). In this case, we would write:</p>
-<pre><code>install.packages("tidyverse")
-library(tidyverse)</code></pre>
-<p>Once we’re up and running, we’re ready to dive into some basic exercises. <code>ggplot2</code> works by specifying the connections between the variables in the data and the colors, points, and shapes you see on the screen. These logical connections are called <em>aesthetic mappings</em> or simply <em>aesthetics</em>.</p>
-<section id="how-to-use-ggplot2-the-too-fast-and-wholly-unclear-recipe" class="level3">
-<h3 class="anchored" data-anchor-id="how-to-use-ggplot2-the-too-fast-and-wholly-unclear-recipe">How to use <code>ggplot2</code> – the too-fast and wholly unclear recipe</h3>
-<ul>
-<li><p><code>data =</code>: Define what your data is. For instance, below we’ll use the mpg data frame found in ggplot2 (by using <code>ggplot2::mpg</code>). As a reminder, a data frame is a rectangular collection of variables (in the columns) and observations (in the rows). This structure of data is often called a “table” but we’ll try to use terms slightly more precisely. The <code>mpg</code> data frame contains observations collected by the US Environmental Protection Agency on 38 different models of car.</p></li>
-<li><p><code>mapping = aes(...)</code>: How to map the variables in the data to aesthetics</p>
-<ul>
-<li>Axes, size of points, intensities of colors, which colors, shape of points, lines/points</li>
-</ul></li>
-<li><p>Then say what type of plot you want:</p>
-<ul>
-<li>boxplot, scatterplot, histogram, …</li>
-<li>these are called ‘geoms’ in ggplot’s grammar, such as <code>geom_point()</code> giving scatter plots</li>
-</ul></li>
-</ul>
-<pre><code>library(ggplot2)
-... + geom_point() # Produces scatterplots
-... + geom_bar() # Bar plots
-.... + geom_boxplot() # boxplots
-... #</code></pre>
-<p>You link these steps by <em>literally</em> adding them together with <code>+</code> as we’ll see.</p>
-<p><strong>Try it:</strong> (OPTIONAL) What other types of plots are there? Try to find several more <code>geom_</code> functions.</p>
-</section>
+<section id="tidyverse-and-ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="tidyverse-and-ggplot2"><code>tidyverse</code> and <code>ggplot2</code></h2>
+<p>We start by assuming that you are familiar (and have installed) <code>tidyverse</code> and <code>ggplot2</code>.</p>
 </section>
 <section id="mappings-link-data-to-things-you-see" class="level2">
 <h2 class="anchored" data-anchor-id="mappings-link-data-to-things-you-see">Mappings Link Data to Things You See</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">::</span>gapminder)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 6</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   country     continent  year lifeExp      pop gdpPercap</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Afghanistan Asia       1952    28.8  8425333      779.</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Afghanistan Asia       1957    30.3  9240934      821.</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Afghanistan Asia       1962    32.0 10267083      853.</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Afghanistan Asia       1967    34.0 11537966      836.</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Afghanistan Asia       1972    36.1 13079460      740.</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Afghanistan Asia       1977    38.4 14880372      786.</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> gapminder,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdpPercap, <span class="at">y =</span> lifeExp))</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">=</span> gapminder<span class="sc">::</span>gapminder</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 6</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   country     continent  year lifeExp      pop gdpPercap</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Afghanistan Asia       1952    28.8  8425333      779.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Afghanistan Asia       1957    30.3  9240934      821.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Afghanistan Asia       1962    32.0 10267083      853.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Afghanistan Asia       1967    34.0 11537966      836.</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Afghanistan Asia       1972    36.1 13079460      740.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Afghanistan Asia       1977    38.4 14880372      786.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> gapminder,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdpPercap, <span class="at">y =</span> lifeExp))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -418,7 +391,7 @@ Exercise 2 of 3
 </section>
 <section id="back-to-gapmindergapminder" class="level3">
 <h3 class="anchored" data-anchor-id="back-to-gapmindergapminder">Back to gapminder::gapminder</h3>
-<p>Let’s explore our previously saved <code>p</code> (using <code>gapminder::gapminder</code>) in greater detail. As with Exercise 1, we’ll add a <em>layer</em>. This says how some data gets turned into concrete visual aspects.</p>
+<p>Let’s explore our previously saved <code>p</code> (which used <code>gapminder::gapminder</code>) in greater detail. As with Exercise 1, we’ll add a <em>layer</em>. This says how some data gets turned into concrete visual aspects.</p>
 <pre><code>p + geom_point()
 p + geom_smooth()</code></pre>
 <p><strong>Note:</strong> Both of the above geom’s use the same mapping, where the x-axis represents <code>gdpPercap</code> and the y-axis represents <code>lifeExp</code>. You can find this yourself with some ease. But the first one maps the data to individual points, the other one maps it to a smooth line with error ranges.</p>
@@ -467,7 +440,6 @@ p + geom_point() + scale_x_log10()</code></pre>
             mapping = aes(x = gdpPercap, y = lifeExp, ...))
 p + geom_point(...) + scale_x_log10()</code></pre>
 <p><strong>Try it:</strong> (OPTIONAL) describe in your words what is going on. One way to avoid such mistakes is to read arguments inside <code>aes(&lt;property&gt; = &lt;variable&gt;)</code>as <em>the property <property> in the graph is determined by the data in <variable></variable></property></em>.</p>
-<p><strong>Try it:</strong> (OPTIONAL) Write the above sentence for the original call <code>aes(x = gdpPercap, y = lifeExp, color = 'yellow')</code>.</p>
 <p>Aesthetics convey information about a variable in the dataset, whereas setting the color of all points to yellow conveys no information about the dataset - it changes the appearance of the plot in a way that is independent of the underlying data.</p>
 <p>Remember: <code>color = 'yellow'</code> and <code>aes(color = 'yellow')</code> are very different, and the second makes usually no sense, as <code>'yellow'</code> is treated as <em>data</em>.</p>
 <pre><code>p &lt;- ggplot(data = gapminder,
@@ -489,17 +461,14 @@ p + geom_point()
 p + geom_point() + scale_x_log10(labels = dollar)
 p + geom_point() + scale_x_log10(labels = dollar) + geom_smooth()</code></pre>
 <p><strong>Try it:</strong> (OPTIONAL) What does <code>fill = continent</code> do? What do you think about the match of colors between lines and error bands?</p>
-<pre><code>p &lt;- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp))
-p + geom_point(mapping = aes(color = continent)) + geom_smooth() + scale_x_log10()</code></pre>
-<p><strong>Try it:</strong> (OPTIONAL) Notice how the above code leads to a single smooth line, not one per continent. Why?</p>
-<p><strong>Try it:</strong> (OPTIONAL) What is bad about the following example, assuming the graph is the one we want? Think about why you should set aesthetics at the top level rather than at the individual geometry level if that’s your intent.</p>
-<pre><code>p &lt;- ggplot(data = gapminder,
-            mapping = aes(x = gdpPercap, y = lifeExp))
-p + geom_point(mapping = aes(color = continent)) +
-  geom_smooth(mapping = aes(color = continent, fill = continent)) +
-  scale_x_log10() +
-  geom_smooth(mapping = aes(color = continent), method = "gam")</code></pre>
+</section>
+</section>
+<section id="data-wrangling-first" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling-first">Data Wrangling First</h2>
+<p>For Exercise 3, use this <a href="data/milong.csv">data on MI county-level income, age, population, and commute time</a>, which can be installed using the following line of code to directly create the object in your code chunk:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>midata <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://ec242.netlify.app/data/milong.csv'</span>, <span class="at">stringsAsFactors =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -510,13 +479,14 @@ Exercise 3 of 3
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Generate two new plots with <code>data = gapminder</code> (note: you’ll need to install the package by the same name if you have not already). Label the axes and the header with clear, easy to understand language. In a few sentences, describe what you’ve visualized and why.</p>
-<p>Note that this is your first foray into <code>ggplot2</code>; accordingly, you should try to make sure that you do not bite off more than you can chew. We will improve and refine our abilities as we progress through the semester.</p>
+<p>First, use <code>pivot_wider</code> to get the data into tidy form (each observation should be a county). This data is taken from the 2023 US Census American Community Survey, which we’ll learn about later on.</p>
+<p>Then, categorize each county into “small” and “large” based on population. Do the same for age (“young” and “old”). A logical cut-point would be the median or mean.</p>
+<p>Then, plot the relationship between <em>two of the variables of your choice</em> using the geometry of your choice. Use an aesthetic mapping on the young/old <strong>or</strong> small/large category to illustrate how the relationship may differ. If you’re aesthetic mapping young/old to an aesthetic, do not also use it on the X or Y axis (that would be redundant).</p>
+<p>Label the axes and the header with clear, easy to understand language. Make sure you label everything, properly capitalize titled, etc. Below your plot, write a few sentences to describe what you’ve visualized and why.</p>
 </div>
 </div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
