@@ -1,5 +1,5 @@
 ---
-title: "Introduction to Visualization"
+title: "(Re)introduction to Visualization"
 linktitle: "2: Visualization I"
 read_date: "2025-01-23"
 lastmod: "`r Sys.Date()`"
@@ -213,24 +213,10 @@ We also do not cover interactive graphics, a topic that is both too advanced for
 
 # ggplot2 {#ggplot2}
 
-Exploratory data visualization is perhaps the greatest strength of `R`. One can quickly go from idea to data to plot with a unique balance of flexibility and ease. For example, Excel may be easier than `R` for some plots, but it is nowhere near as flexible. `D3.js` may be more flexible and powerful than `R`, but it takes much longer to generate a plot. One of the reasons we use `R` is its incredible flexibility **and** ease.
+PLS202, a prerequisite for EC242, includes extensive coding in `R`, including the use of `ggplot2` (which I'll just call `ggplot` from now on). Therefore, we don't review the basics here. Ask questions if you're unsure. Posit (the maker of RStudio) has a nice tutorial [here](https://solutions.posit.co/connections/db/best-practices/visualization/) and a cheat sheeet / tutorial [available here](https://rstudio.github.io/cheatsheets/html/data-visualization.html)
 
+We'll cover the necessary elements of this here.
 
-Throughout this course, we will be creating plots using the __ggplot2__^[https://ggplot2.tidyverse.org/] package. Since this is part of the `tidyverse` package, we'll just load that:
-
-```{r, message=FALSE, warning=FALSE, echo=TRUE}
-library(tidyverse)
-```
-
-Many other approaches are available for creating plots in `R`. In fact, the plotting capabilities that come with a basic installation of `R` are already quite powerful. There are also other packages for creating graphics such as __grid__ and __lattice__. We chose to use __ggplot2__ in this course because it breaks plots into components in a way that permits beginners to create relatively complex and aesthetically pleasing plots using syntax that is intuitive and comparatively easy to remember.
-
-One reason __ggplot2__ is generally more intuitive for beginners is that it uses a so-called "grammar of graphics"^[http://www.springer.com/us/book/9780387245447], the letters _gg_ in __ggplot2__. This is analogous to the way learning grammar can help a beginner construct hundreds of different sentences by learning just a handful of verbs, nouns and adjectives without having to memorize each specific sentence. Similarly, by learning a handful of __ggplot2__ building blocks and its grammar, you will be able to create hundreds of different plots.
-
-Another reason __ggplot2__ is easy for beginners is that its default behavior is carefully chosen to satisfy the great majority of cases and is visually pleasing. As a result, it is possible to create informative and elegant graphs with relatively simple and readable code.
-
-One limitation is that __ggplot2__ is designed to work exclusively with data tables in tidy format (where rows are observations and columns are variables). However, a substantial percentage of datasets that beginners work with are in, or can be converted into, this format. An advantage of this approach is that, assuming that our data is tidy, __ggplot2__ simplifies plotting code and the learning of grammar for a variety of plots. You should review the previous content about tidy data if you are feeling lost.
-
-To use __ggplot2__  you will have to learn several functions and arguments. These are hard to memorize, so we highly recommend you have the ggplot2 cheat sheet handy. Just search for "ggplot2 cheat sheet". I like the site and PDF found [here](https://rstudio.github.io/cheatsheets/html/data-visualization.html).
 
 ## The components of a graph
 We will eventually construct a graph that summarizes the US murders dataset that looks like this:
