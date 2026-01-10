@@ -67,7 +67,7 @@ library(gridExtra)
 ```
 
 
-## A Starting List (from Tufte)
+## A Starting List (from Tufte) {}
 
 1. Show data variation, not design variation.
 
@@ -102,6 +102,8 @@ browsers <- data.frame(Browser = rep(c("Opera","Safari","Firefox","IE","Chrome")
                        Year = rep(c(2000, 2015), each = 5),
                        Percentage = c(3,21,23,28,26, 2,22,21,27,29)) %>%
   mutate(Browser = reorder(Browser, Percentage))
+
+browsers1 = copy(browsers) # for later callout
 ```
 
 
@@ -391,6 +393,56 @@ gdp_data %>%
   geom_bar(stat = "identity", width = 0.5) +
   labs(y = "GDP in trillions of US dollars")
 ```
+
+## Show what you mean to show
+Part of a visual cue is making sure you've set a glide path for the reader to understand what you want to communicate. In our New York HS exam plot from last week, it was immediately clear what we were supposed to see -- the grade distribution relative to the threshold.
+
+:::{.callout-note}
+# Let's discuss
+
+In our muders data (below), what sort of information might we want to communicate? There are only a few variables here, so we're pretty limited on what we can show. 
+```{r, echo=T}
+library(dslabs)
+data(murders)
+head(murders)
+```
+
+Any ideas?
+
+## What about the browser data?
+
+Anything else we can look at?
+:::
+
+
+<details class="collapsible-bg">
+<summary><strong>Don't open this till we've discssed it in class.</strong></summary>
+
+Sure, we can plot murders by state (see the top of Week 2's lesson), but what are we trying to communicate? I would posit that we are trying to communicate "how safe a person should feel in a state". But what communicates that?
+
+Is it:
+- Total murders?
+- Murder rate?
+
+It's the latter! While readers can guesstimate the murder *rate* from total murders and population, it's a lot better to *show* them the murder rate in the first place. We do that below.
+
+#### Browser data
+
+What if we wanted to show how shares have changed *over time* (which will be a common part of exploratory data analytics). It's not that share in any given year isn't interesting, it just shows something with a different meaning.
+
+```{r, echo = F}
+bdiff = browsers1 %>%
+  group_by(Browser) %>%
+  dplyr::summarize(YOY = Percentage[Year==2015] - Percentage[Year==2000])
+
+ggplot(bdiff, aes(x = Browser, y = YOY)) + geom_bar(stat = 'identity') +
+  labs(x = 'Browser', y = 'Change in Share 2000-2015')
+```
+
+What does your eye follow here?
+
+</details>
+
 
 ### Order categories by a meaningful value
 
