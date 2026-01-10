@@ -313,30 +313,13 @@ Exercise 1 of 3
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">=</span> gapminder<span class="sc">::</span>gapminder</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">=</span> gapminder<span class="sc">::</span>gapminder <span class="co"># dslabs::gapminder is different</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 6</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   country     continent  year lifeExp      pop gdpPercap</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Afghanistan Asia       1952    28.8  8425333      779.</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Afghanistan Asia       1957    30.3  9240934      821.</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Afghanistan Asia       1962    32.0 10267083      853.</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Afghanistan Asia       1967    34.0 11537966      836.</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Afghanistan Asia       1972    36.1 13079460      740.</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Afghanistan Asia       1977    38.4 14880372      786.</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> gapminder,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdpPercap, <span class="at">y =</span> lifeExp))</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="02-assignment_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> gapminder,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdpPercap, <span class="at">y =</span> lifeExp))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</div>
-<p><span class="text-red">Note that this gapminder dataset is from the gapminder package is not the same as the dslabs gapminder</span>. If you’re in doubt, use <code>gapminder = gapminder::gapminder</code> to set the gapminder package’s gapminder datset as your gapminder object (whew!). Compare <code>head(dslabs::gapminder)</code> and <code>head(gapminder::gapminder)</code> to see the difference. The <code>dslabs::...</code> says to find the thing in the <code>dslabs</code> package called “gapminder”.</p>
-<p>Above we’ve loaded a different dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what <em>might</em> be going on in this ggplot code. Any ideas?</p>
+<p>Above we’ve loaded a new dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what <em>might</em> be going on in this ggplot code. Any ideas?</p>
 <p>Here’s a breakdown of everything that happens after the <code>p&lt;- ggplot()</code> call:</p>
 <ul>
 <li><code>data = gapminder</code> tells ggplot to use gapminder dataset, so if variable names are mentioned, they should be looked up in gapminder</li>
@@ -346,6 +329,7 @@ Exercise 1 of 3
 <li><code>x</code> and <code>y</code> are predefined names that are used by <code>ggplot</code> and friends</li>
 </ul></li>
 </ul>
+<p>This should all be review for you. Let’s do our first exercise:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -446,13 +430,6 @@ p + geom_point(...) + scale_x_log10()</code></pre>
             mapping = aes(x = gdpPercap, y = lifeExp))
 p + geom_point() + geom_smooth(color = "orange", se = FALSE, size = 8, method = "lm") + scale_x_log10()</code></pre>
 <p><strong>Try it:</strong> (OPTIONAL) Write down what all those arguments in <code>geom_smooth(...)</code> do.</p>
-<pre><code>p + geom_point(alpha = 0.3) +
-  geom_smooth(method = "gam") +
-  scale_x_log10(labels = scales::dollar) +
-  labs(x = "GDP Per Capita", y = "Life Expectancy in Years",
-       title = "Economic Growth and Life Expectancy",
-       subtitle = "Data Points are country-years",
-       caption = "Source: Gapminder")</code></pre>
 <p>Coloring by continent:</p>
 <pre><code>library(scales)
 p &lt;- ggplot(data = gapminder,
@@ -463,11 +440,11 @@ p + geom_point() + scale_x_log10(labels = dollar) + geom_smooth()</code></pre>
 <p><strong>Try it:</strong> (OPTIONAL) What does <code>fill = continent</code> do? What do you think about the match of colors between lines and error bands?</p>
 </section>
 </section>
-<section id="data-wrangling-first" class="level2">
-<h2 class="anchored" data-anchor-id="data-wrangling-first">Data Wrangling First</h2>
-<p>For Exercise 3, use this <a href="data/milong.csv">data on MI county-level income, age, population, and commute time</a>, which can be installed using the following line of code to directly create the object in your code chunk:</p>
+<section id="tidy-up-your-data-then-plot" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-up-your-data-then-plot">Tidy up your data, then plot</h2>
+<p>For Exercise 3, use this <a href="data/milong.csv">data on MI county-level income, age, population, and yearly commute time</a>, which can be loaded using the following line of code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>midata <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://ec242.netlify.app/data/milong.csv'</span>, <span class="at">stringsAsFactors =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>midata <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://ec242.netlify.app/data/milong.csv'</span>, <span class="at">stringsAsFactors =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -480,8 +457,8 @@ Exercise 3 of 3
 </div>
 <div class="callout-body-container callout-body">
 <p>First, use <code>pivot_wider</code> to get the data into tidy form (each observation should be a county). This data is taken from the 2023 US Census American Community Survey, which we’ll learn about later on.</p>
-<p>Then, categorize each county into “small” and “large” based on population. Do the same for age (“young” and “old”). A logical cut-point would be the median or mean.</p>
-<p>Then, plot the relationship between <em>two of the variables of your choice</em> using the geometry of your choice. Use an aesthetic mapping on the young/old <strong>or</strong> small/large category to illustrate how the relationship may differ. If you’re aesthetic mapping young/old to an aesthetic, do not also use it on the X or Y axis (that would be redundant).</p>
+<p>Then, categorize each county into “Small” and “Large” based on population. Do the same for age (“Young” and “Old”). A logical cut-point would be the median.</p>
+<p>Then, plot the relationship between <em>two of the variables of your choice</em> using the geometry of your choice. Use an aesthetic mapping of your choice on the young/old <strong>or</strong> small/large category to illustrate how the relationship may differ across categories. If you’re aesthetic mapping young/old to an aesthetic, do not also use it on the X or Y axis (that would be redundant).</p>
 <p>Label the axes and the header with clear, easy to understand language. Make sure you label everything, properly capitalize titled, etc. Below your plot, write a few sentences to describe what you’ve visualized and why.</p>
 </div>
 </div>

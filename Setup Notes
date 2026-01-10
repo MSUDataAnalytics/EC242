@@ -62,6 +62,9 @@ You can change some things on the callouts: https://github.com/quarto-dev/quarto
 Keep callout-warning and callout-important and callout-tip, but change callout-note to "try-it" and callout-caution to "do-it".
 
 
+## Details (collapse)
+For S26, I've added <details><\details> (see 2a or 2b, I forget which) which collapses text and gives it a slightly gray background. I'm using this for material that is review from PLS202.
+
 
 
 ## Images inserted
@@ -87,7 +90,6 @@ Yeti (bootstrap) css: https://github.com/thomaspark/bootswatch/blob/v5/dist/yeti
 asdf
 :::
 
-
 Andrew Heiss has a lot of custom scss in his site: https://github.com/andrewheiss/evalsp24.classes.andrewheiss.com/blob/main/html/custom.scss
 
 
@@ -99,6 +101,8 @@ To refer to a page that is an index for a folder like content or assignment, use
 ## Screenshots-to-page
 https://github.com/Toniiiio/imageclipr
 I use this (an "add in" to Rstudio) that copies the clipboard (screenshot) to a new file in the current location, then inserts a reference to it. It would be nice if it went to the Image folder and refered to it there, but this makes it feasible to incorporate screenshots quickly.
+
+
 
 
 ## Rendering during semester

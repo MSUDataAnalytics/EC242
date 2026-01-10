@@ -32,21 +32,19 @@ We start by assuming that you are familiar (and have installed) `tidyverse` and 
 
 ## Mappings Link Data to Things You See
 
-```{r, collapse = T}
+```{r, collapse = T, eval = F}
 library(tidyverse)
 library(ggplot2)
 library(gapminder)
 
-gapminder = gapminder::gapminder
+gapminder = gapminder::gapminder # dslabs::gapminder is different
 head(gapminder)
 p <- ggplot(data = gapminder,
             mapping = aes(x = gdpPercap, y = lifeExp))
 p + geom_point()
 ```
 
-[Note that this gapminder dataset is from the gapminder package is not the same as the dslabs gapminder]{.text-red}. If you're in doubt, use `gapminder = gapminder::gapminder` to set the gapminder package's gapminder datset as your gapminder object (whew!). Compare `head(dslabs::gapminder)` and `head(gapminder::gapminder)` to see the difference. The `dslabs::...` says to find the thing in the `dslabs` package called "gapminder".
-
-Above we've loaded a different dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what *might* be going on in this ggplot code. Any ideas?
+Above we've loaded a new dataset and have started to explore a particular relationship. Before putting in this code yourself, try to intuit what *might* be going on in this ggplot code. Any ideas?
 
 Here's a breakdown of everything that happens after the `p<- ggplot()` call:
 
@@ -54,6 +52,8 @@ Here's a breakdown of everything that happens after the `p<- ggplot()` call:
 - `mapping = aes(...)` shows that the mapping is a function call. There is a deeper logic to this that I will disucss below, but it's easiest to simply accept that this is how you write it. Put another way, the `mapping = aes(...)` argument *links variables* to *things you will see* on the plot.
 - `aes(x = gdpPercap, y = lifeExp)` maps the GDP data onto `x`, which is a known aesthetic (the x-coordinate) and life expectancy data onto `y`
   - `x` and `y` are  predefined names that are used by `ggplot` and friends
+
+This should all be review for you. Let's do our first exercise:
 
 
 ::: {.callout-note}
@@ -188,15 +188,6 @@ p + geom_point() + geom_smooth(color = "orange", se = FALSE, size = 8, method = 
 
 **Try it:** (OPTIONAL)  Write down what all those arguments in `geom_smooth(...)` do.
 
-```
-p + geom_point(alpha = 0.3) +
-  geom_smooth(method = "gam") +
-  scale_x_log10(labels = scales::dollar) +
-  labs(x = "GDP Per Capita", y = "Life Expectancy in Years",
-       title = "Economic Growth and Life Expectancy",
-       subtitle = "Data Points are country-years",
-       caption = "Source: Gapminder")
-```
 
 Coloring by continent:
 
@@ -212,9 +203,34 @@ p + geom_point() + scale_x_log10(labels = dollar) + geom_smooth()
 **Try it:** (OPTIONAL)  What does `fill = continent` do? What do you think about the match of colors between lines and error bands?
 
 
-## Data Wrangling First
 
-For Exercise 3, use this [data on MI county-level income, age, population, and commute time](data/milong.csv), which can be loaded using the following line of code to directly create the object in your code chunk:
+## Tidy up your data, then plot
+
+For Exercise 3, use this [data on MI county-level income, age, population, and yearly commute time](data/milong.csv), which can be loaded using the following line of code:
+
+```{r, eval=F, echo=F, include=F}
+
+mi_county <- get_acs(
+  geography = "county",
+  state = "MI",
+  year = 2023,
+  survey = "acs5",
+  variables = c(
+    population = "B01003_001",
+    median_income = "B19013_001",
+    median_age = "B01002_001",
+    avg_commute_minutes = "B08135_001"
+  ),
+  output = "wide"
+) %>% dplyr::select(GEOID, NAME, ends_with('E'))  %>%
+  dplyr::mutate(avg_commute_minutesE = avg_commute_minutesE/populationE) %>%
+  pivot_longer(populationE:avg_commute_minutesE, names_to = 'variable', values_to = 'value') %>%
+  dplyr::mutate(variable = gsub(x = variable, pattern = 'E$', replacement = '')) %>%
+  dplyr::filter(!GEOID %in% c('26083','26095')) # no commute time for these
+
+# write.csv(mi_county, file = file.path('D:/Courses/EC242/data/milong.csv'))
+
+```
 
 ```{r, echo=T, eval = F, warning = F, error = F, message = F}
 midata = read.csv('https://ec242.netlify.app/data/milong.csv', stringsAsFactors = F)
@@ -228,11 +244,10 @@ midata = read.csv('https://ec242.netlify.app/data/milong.csv', stringsAsFactors 
 
 First, use `pivot_wider` to get the data into tidy form (each observation should be a county). This data is taken from the 2023 US Census American Community Survey, which we'll learn about later on.
 
-Then, categorize each county into "small" and "large" based on population. Do the same for age ("young" and "old"). A logical cut-point would be the median or mean.
+Then, categorize each county into "Small" and "Large" based on population. Do the same for age ("Young" and "Old"). A logical cut-point would be the median.
 
-Then, plot the relationship between *two of the variables of your choice* using the geometry of your choice. Use an aesthetic mapping on the young/old **or** small/large category to illustrate how the relationship may differ. If you're aesthetic mapping young/old to an aesthetic, do not also use it on the X or Y axis (that would be redundant).
+Then, plot the relationship between *two of the variables of your choice* using the geometry of your choice. Use an aesthetic mapping of your choice on the young/old **or** small/large category to illustrate how the relationship may differ across categories. If you're aesthetic mapping young/old to an aesthetic, do not also use it on the X or Y axis (that would be redundant).
 
 Label the axes and the header with clear, easy to understand language. Make sure you label everything, properly capitalize titled, etc. Below your plot, write a few sentences to describe what you've visualized and why.
-
 
 :::
