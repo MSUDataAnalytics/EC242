@@ -24,10 +24,6 @@ library(emo)
 ```
 
 
-# Groups and Projects 
-
-Spring 2025 groups will be announced on D2L shortly.
-
 
 # Data visualization in practice {#gapminder}
 

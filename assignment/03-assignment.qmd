@@ -2,7 +2,7 @@
 title: "3: Applying ggplot2 to Real Data"
 linktitle: "3: Applying ggplot2 to Real Data"
 duedate: "{{< var duedates.lab3 >}}"
-lastrevised: "09-16-2024"
+lastrevised: "01-10-2026"
 ---
 
 

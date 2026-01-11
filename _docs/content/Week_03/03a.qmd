@@ -39,7 +39,6 @@ As with last week's content, the technical aspects of this lecture will be explo
 > "The greatest value of a picture is when it forces us to notice what we never expected to see." -- John Tukey
 
 
-# Data visualization principles
 
 ```{r, echo=FALSE, warning=F, message=F}
 # img_path <- paste(here::here(), "/content/content/img", sep = "", collapse = NULL)
@@ -67,7 +66,7 @@ library(gridExtra)
 ```
 
 
-## A Starting List (from Tufte) {}
+# A Starting List (from Tufte)
 
 1. Show data variation, not design variation.
 
@@ -84,7 +83,7 @@ library(gridExtra)
 7. When possible (and in a visually suitable way), show the data.
 
 
-### Encoding data using visual cues
+## Encoding data using visual cues
  
 **Visual cues** are any element of design that gives the viewer clues as to how to use the object. For instance, we can look at door handles like these
 
@@ -191,7 +190,7 @@ In general, when displaying quantities, position and length are preferred over a
 
 
 
-### Avoid pseudo-three-dimensional plots
+## Visual miscues with pseudo-3D plots
 
 The figure below, taken from the scientific literature^[https://projecteuclid.org/download/pdf_1/euclid.ss/1177010488],
 shows three variables: dose, drug type and survival. Although your screen/book page is flat and two-dimensional, the plot tries to imitate three dimensions and assigned a dimension to each variable.
@@ -226,7 +225,7 @@ knitr::include_graphics(here('images','fig2d.png'))
 
 
 
-### Avoid too many significant digits
+## Avoid too many significant digits
 
 By default, statistical software like R returns many significant digits. The default behavior in R is to show 7 significant digits. That many digits often adds no information and the added visual clutter can make it hard for the viewer to understand the message. As an example, here are the per 10,000 disease rates, computed from totals and population in R, for California across the five decades:
 
@@ -268,6 +267,8 @@ if(knitr::is_html_output()){
 Useful ways to change the number of significant digits or to round numbers are `signif` and `round`. You can define the number of significant digits globally by setting options like this: `options(digits = 3)`.
 
 
+## Compare side-by-side 
+
 Another principle related to displaying tables is to place values being compared on columns rather than rows. Note that our table above is easier to read than this one:
 
 ```{r, echo=FALSE}
@@ -288,14 +289,9 @@ if(knitr::is_html_output()){
 }
 ```
 
-### Know your audience
-
-Graphs can be used for 1) our own exploratory data analysis, 2) to convey a message to experts, or 3) to help tell a story to a general audience. Make sure that the intended audience understands each element of the plot.
-
-As a simple example, consider that for your own exploration it may be more useful to log-transform data and then plot it. However, for a general audience that is unfamiliar with converting logged values back to the original measurements, using a log-scale for the axis instead of log-transformed values will be much easier to digest.
 
 
-### Know when to include 0
+## Know when to include 0
 
 When using barplots, it is misinformative not to start the bars at 0. This is because, by using a barplot, we are implying the length is proportional to the quantities being displayed -- a natural **visual cue**. By avoiding 0, relatively small differences can be made to look much bigger than they actually are. This approach is often used by politicians or media organizations trying to exaggerate a difference. Below is an illustrative example used by Peter Aldhous in this lecture: [http://paldhous.github.io/ucb/2016/dataviz/week2.html](http://paldhous.github.io/ucb/2016/dataviz/week2.html). 
 
@@ -359,7 +355,7 @@ grid.arrange(p2, p1, ncol = 2)
 Note that in the plot on the left, which includes 0, the space between 0 and 43 adds no information and makes it harder to compare the between and within group variability.
 
 
-### Do not distort quantities
+## Do not visually distort quantities
 
 During President Barack Obama’s 2011 State of the Union Address, the following chart was used to compare the US GDP to the GDP of four competing nations:
 ```{r, fig.cap = '(Source: The 2011 State of the Union Address^[https://www.youtube.com/watch?v=kl2g40GoRxg])'}
@@ -395,6 +391,7 @@ gdp_data %>%
 ```
 
 ## Show what you mean to show
+
 Part of a visual cue is making sure you've set a glide path for the reader to understand what you want to communicate. In our New York HS exam plot from last week, it was immediately clear what we were supposed to see -- the grade distribution relative to the threshold.
 
 :::{.callout-note}
@@ -421,7 +418,9 @@ Anything else we can look at?
 Sure, we can plot murders by state (see the top of Week 2's lesson), but what are we trying to communicate? I would posit that we are trying to communicate "how safe a person should feel in a state". But what communicates that?
 
 Is it:
+
 - Total murders?
+
 - Murder rate?
 
 It's the latter! While readers can guesstimate the murder *rate* from total murders and population, it's a lot better to *show* them the murder rate in the first place. We do that below.
@@ -444,7 +443,7 @@ What does your eye follow here?
 </details>
 
 
-### Order categories by a meaningful value
+## Order categories by a meaningful value
 
 When one of the axes is used to show categories, as is done in barplots, the default __ggplot2__ behavior is to order the categories alphabetically when they are defined by character strings. If they are defined by factors, they are ordered by the factor levels. We rarely want to use alphabetical order. Instead, we should order by a meaningful quantity. In all the cases above, the barplots were ordered by the values being displayed. The exception was the graph showing barplots comparing browsers. In this case, we kept the order the same across the barplots to ease the comparison. Specifically, instead of ordering the browsers separately in the two years, we ordered both years by the average value of 2000 and 2015.
 
@@ -517,6 +516,7 @@ The first orders the regions alphabetically, while the second orders them by the
 
 
 ## Show the data
+
 We have focused on displaying single quantities across categories. We now shift our attention to displaying data, with a focus on comparing groups.
 
 To motivate our first principle, "show the data", we go back to our artificial example of describing heights to a person who is unaware of some basic facts about the population of interest (and is otherwise unsophisticated). This time let's assume that this person is interested in the difference in heights between males and females. A commonly seen plot used for comparisons between groups, popularized by software such as Microsoft Excel, is the dynamite plot, which shows the average and standard errors.^[If you're unfamiliar, standard errors are defined later in the course---do not confuse them with the standard deviation of the data.] The plot looks like this:
@@ -556,7 +556,15 @@ heights %>%
 
 Now we start getting a sense that, on average, males are taller than females. We also note dark horizontal bands of points, demonstrating that many report values that are rounded to the nearest integer.
 
+
+
+# Good visuals = good data analysis
+The principles of making a good visual to communicate an analysis also assist in constructing the analysis. Faceting is a wonderful tool both for exploring data and for communicating what you've found.
+
+It is almost impossible to complete the course projects in this course without a reasonable use of faceting.
+
 ## Faceting
+
 Looking at the previous plot, it's easy to tell that males tend to be taller than females. Before, we showed how we can plot two distributions over each other using an aesthetic mapping. Something like this:
 
 ```{r, echo=TRUE}
@@ -702,6 +710,7 @@ dslabs::gapminder %>%
 
 
 ### Leave some space
+
 The design maven Edward Tufte emphasizes th eneed for clarifying and empty space. Resist the urge to pack everything into a small layout. Especially in digital formats, space can be inexpensive, and can help attract the eye to your work.
 
 We can control the space around our plots using the `theme()` function. We'll cover more details of `theme()` on Thursday. To add some space around a plot, we use `theme(plot.margin = margin(t=2, r = 2, b = 2, l = 2, unit = 'cm'))`, where the arguments correspond to top, right, bottom, left (in that order). I'm also going to add a black border to the outside so that we can see the boundary of the frame.
@@ -787,6 +796,7 @@ You should get in the habit of using colorblind-friendly colors. It will be requ
 :::
 
 ### Using a discrete color palette
+
 If you're simply trying to differentiate between groups by using color, there are many ways of changing your color palette in `ggplot`. Most use `scale_fill_discrete` or `scale_color_discrete` (depending on the aesthetic for which you're setting the color).
 
 The easiest way of getting good-looking (e.g. non-default) colors is the `scale_fill_viridis_d` function, which "inherits" (takes the place of and has the properties of) `scale_fill_discrete`. Viridis has four color palettes and each is designed to be used to maximize the differentiation between colors.
@@ -843,6 +853,7 @@ In the lower plot, we only give it a length-3 vector of colors, and it needs 5, 
 
 
 ### Using a continuous color palette
+
 We may often want to use the color to indicate a numeric value instead of simply using it to delineate groupings. When this is the case, the `fill` or `color` aesthetic is set to a continuous value. For instance, if one were to plot election results by precinct, we may represent precincts with heavy Republican support as dark red, swing districts as purple or white, and Democratic districts as blue. The intensity of red/blue indicates how heavily slanted votes in that precinct were in the election. This is known as a *color ramp*.
 
 Lets plot one country's GDP by year, but have the color indicate the life expectancy. Whenever you map a continuous variable to a color or fill aesthetic, you get the default color ramp -- dark-to-light blue:

@@ -265,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/Week_03/03b.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ggplot2: Everything you ever wanted to know</span></a>
+ <span class="menu-text">Visualizations in Practice</span></a>
   </div>
 </li>
       </ul>
@@ -305,11 +305,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#data-visualization-principles" id="toc-data-visualization-principles" class="nav-link active" data-scroll-target="#data-visualization-principles">Data visualization principles</a>
+  <li><a href="#a-starting-list-from-tufte" id="toc-a-starting-list-from-tufte" class="nav-link active" data-scroll-target="#a-starting-list-from-tufte">A Starting List (from Tufte)</a>
   <ul class="collapse">
-  <li><a href="#a-starting-list-from-tufte" id="toc-a-starting-list-from-tufte" class="nav-link" data-scroll-target="#a-starting-list-from-tufte">A Starting List (from Tufte)</a></li>
+  <li><a href="#encoding-data-using-visual-cues" id="toc-encoding-data-using-visual-cues" class="nav-link" data-scroll-target="#encoding-data-using-visual-cues">Encoding data using visual cues</a></li>
+  <li><a href="#visual-miscues-with-pseudo-3d-plots" id="toc-visual-miscues-with-pseudo-3d-plots" class="nav-link" data-scroll-target="#visual-miscues-with-pseudo-3d-plots">Visual miscues with pseudo-3D plots</a></li>
+  <li><a href="#avoid-too-many-significant-digits" id="toc-avoid-too-many-significant-digits" class="nav-link" data-scroll-target="#avoid-too-many-significant-digits">Avoid too many significant digits</a></li>
+  <li><a href="#compare-side-by-side" id="toc-compare-side-by-side" class="nav-link" data-scroll-target="#compare-side-by-side">Compare side-by-side</a></li>
+  <li><a href="#know-when-to-include-0" id="toc-know-when-to-include-0" class="nav-link" data-scroll-target="#know-when-to-include-0">Know when to include 0</a></li>
+  <li><a href="#do-not-visually-distort-quantities" id="toc-do-not-visually-distort-quantities" class="nav-link" data-scroll-target="#do-not-visually-distort-quantities">Do not visually distort quantities</a></li>
   <li><a href="#show-what-you-mean-to-show" id="toc-show-what-you-mean-to-show" class="nav-link" data-scroll-target="#show-what-you-mean-to-show">Show what you mean to show</a></li>
+  <li><a href="#order-categories-by-a-meaningful-value" id="toc-order-categories-by-a-meaningful-value" class="nav-link" data-scroll-target="#order-categories-by-a-meaningful-value">Order categories by a meaningful value</a></li>
   <li><a href="#show-the-data" id="toc-show-the-data" class="nav-link" data-scroll-target="#show-the-data">Show the data</a></li>
+  </ul></li>
+  <li><a href="#good-visuals-good-data-analysis" id="toc-good-visuals-good-data-analysis" class="nav-link" data-scroll-target="#good-visuals-good-data-analysis">Good visuals = good data analysis</a>
+  <ul class="collapse">
   <li><a href="#faceting" id="toc-faceting" class="nav-link" data-scroll-target="#faceting">Faceting</a></li>
   <li><a href="#think-of-the-color-blind" id="toc-think-of-the-color-blind" class="nav-link" data-scroll-target="#think-of-the-color-blind">Think of the color blind</a></li>
   <li><a href="#use-colorblind-friendly-colors-in-your-projects" id="toc-use-colorblind-friendly-colors-in-your-projects" class="nav-link" data-scroll-target="#use-colorblind-friendly-colors-in-your-projects">Use colorblind friendly colors in your projects</a></li>
@@ -362,11 +371,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>“The greatest value of a picture is when it forces us to notice what we never expected to see.” – John Tukey</p>
 </blockquote>
-</section>
-<section id="data-visualization-principles" class="level1">
-<h1>Data visualization principles</h1>
 <p>We have already provided some rules to follow as we created plots for our examples. Here, we aim to provide some general principles we can use as a guide for effective data visualization. Much of this section is based on a talk by Karl Broman<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> titled “Creating Effective Figures and Tables”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and includes some of the figures which were made with code that Karl makes available on his GitHub repository<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, as well as class notes from Peter Aldhous’ Introduction to Data Visualization course<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Following Karl’s approach, we show some examples of plot styles we should avoid, explain how to improve them, and use these as motivation for a list of principles. We compare and contrast plots that follow these principles to those that don’t.</p>
 <p>The principles are mostly based on research related to how humans detect patterns and make visual comparisons. The preferred approaches are those that best fit the way our brains process visual information. When deciding on a visualization approach, it is also important to keep our goal in mind. We may be comparing a viewable number of quantities, describing distributions for categories or numeric values, comparing the data from two groups, or describing the relationship between two variables. As a final note, we want to emphasize that for a data scientist it is important to adapt and optimize graphs to the audience. For example, an exploratory plot made for ourselves will be different than a chart intended to communicate a finding to a general audience.</p>
+</section>
 <section id="load-some-packages" class="level3">
 <h3 class="anchored" data-anchor-id="load-some-packages">Load some packages</h3>
 <p>We will be using these libraries—note the addition of <strong>gridExtra</strong>. I trust you to notice and install new packages from here on out:</p>
@@ -376,8 +383,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="a-starting-list-from-tufte" class="level2">
-<h2 class="anchored" data-anchor-id="a-starting-list-from-tufte">A Starting List (from Tufte)</h2>
+<section id="a-starting-list-from-tufte" class="level1">
+<h1>A Starting List (from Tufte)</h1>
 <ol type="1">
 <li><p>Show data variation, not design variation.</p></li>
 <li><p>The number of information carrying (variable) dimensions depicted should not exceed the number of dimensions in the data. Graphics must not quote data out of context.</p></li>
@@ -387,8 +394,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Empty space is informative. Do not fill every inch, but let the absence of information guide the viewer.</p></li>
 <li><p>When possible (and in a visually suitable way), show the data.</p></li>
 </ol>
-<section id="encoding-data-using-visual-cues" class="level3">
-<h3 class="anchored" data-anchor-id="encoding-data-using-visual-cues">Encoding data using visual cues</h3>
+<section id="encoding-data-using-visual-cues" class="level2">
+<h2 class="anchored" data-anchor-id="encoding-data-using-visual-cues">Encoding data using visual cues</h2>
 <p><strong>Visual cues</strong> are any element of design that gives the viewer clues as to how to use the object. For instance, we can look at door handles like these</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -492,8 +499,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>In general, when displaying quantities, position and length are preferred over angles and/or area as position and length provide better visual cues. Brightness and color are even harder to quantify than angles. But, as we will see later, they are sometimes useful when more than two dimensions must be displayed at once.</p>
 </section>
-<section id="avoid-pseudo-three-dimensional-plots" class="level3">
-<h3 class="anchored" data-anchor-id="avoid-pseudo-three-dimensional-plots">Avoid pseudo-three-dimensional plots</h3>
+<section id="visual-miscues-with-pseudo-3d-plots" class="level2">
+<h2 class="anchored" data-anchor-id="visual-miscues-with-pseudo-3d-plots">Visual miscues with pseudo-3D plots</h2>
 <p>The figure below, taken from the scientific literature<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, shows three variables: dose, drug type and survival. Although your screen/book page is flat and two-dimensional, the plot tries to imitate three dimensions and assigned a dimension to each variable.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -546,8 +553,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>Question</strong>: Which of the Tufte design principles above are violated by these plots?</p>
 </section>
-<section id="avoid-too-many-significant-digits" class="level3">
-<h3 class="anchored" data-anchor-id="avoid-too-many-significant-digits">Avoid too many significant digits</h3>
+<section id="avoid-too-many-significant-digits" class="level2">
+<h2 class="anchored" data-anchor-id="avoid-too-many-significant-digits">Avoid too many significant digits</h2>
 <p>By default, statistical software like R returns many significant digits. The default behavior in R is to show 7 significant digits. That many digits often adds no information and the added visual clutter can make it hard for the viewer to understand the message. As an example, here are the per 10,000 disease rates, computed from totals and population in R, for California across the five decades:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -659,6 +666,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Useful ways to change the number of significant digits or to round numbers are <code>signif</code> and <code>round</code>. You can define the number of significant digits globally by setting options like this: <code>options(digits = 3)</code>.</p>
+</section>
+<section id="compare-side-by-side" class="level2">
+<h2 class="anchored" data-anchor-id="compare-side-by-side">Compare side-by-side</h2>
 <p>Another principle related to displaying tables is to place values being compared on columns rather than rows. Note that our table above is easier to read than this one:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -709,13 +719,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="know-your-audience" class="level3">
-<h3 class="anchored" data-anchor-id="know-your-audience">Know your audience</h3>
-<p>Graphs can be used for 1) our own exploratory data analysis, 2) to convey a message to experts, or 3) to help tell a story to a general audience. Make sure that the intended audience understands each element of the plot.</p>
-<p>As a simple example, consider that for your own exploration it may be more useful to log-transform data and then plot it. However, for a general audience that is unfamiliar with converting logged values back to the original measurements, using a log-scale for the axis instead of log-transformed values will be much easier to digest.</p>
-</section>
-<section id="know-when-to-include-0" class="level3">
-<h3 class="anchored" data-anchor-id="know-when-to-include-0">Know when to include 0</h3>
+<section id="know-when-to-include-0" class="level2">
+<h2 class="anchored" data-anchor-id="know-when-to-include-0">Know when to include 0</h2>
 <p>When using barplots, it is misinformative not to start the bars at 0. This is because, by using a barplot, we are implying the length is proportional to the quantities being displayed – a natural <strong>visual cue</strong>. By avoiding 0, relatively small differences can be made to look much bigger than they actually are. This approach is often used by politicians or media organizations trying to exaggerate a difference. Below is an illustrative example used by Peter Aldhous in this lecture: <a href="http://paldhous.github.io/ucb/2016/dataviz/week2.html">http://paldhous.github.io/ucb/2016/dataviz/week2.html</a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -792,8 +797,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Note that in the plot on the left, which includes 0, the space between 0 and 43 adds no information and makes it harder to compare the between and within group variability.</p>
 </section>
-<section id="do-not-distort-quantities" class="level3">
-<h3 class="anchored" data-anchor-id="do-not-distort-quantities">Do not distort quantities</h3>
+<section id="do-not-visually-distort-quantities" class="level2">
+<h2 class="anchored" data-anchor-id="do-not-visually-distort-quantities">Do not visually distort quantities</h2>
 <p>During President Barack Obama’s 2011 State of the Union Address, the following chart was used to compare the US GDP to the GDP of four competing nations:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -842,7 +847,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-</section>
 <section id="show-what-you-mean-to-show" class="level2">
 <h2 class="anchored" data-anchor-id="show-what-you-mean-to-show">Show what you mean to show</h2>
 <p>Part of a visual cue is making sure you’ve set a glide path for the reader to understand what you want to communicate. In our New York HS exam plot from last week, it was immediately clear what we were supposed to see – the grade distribution relative to the threshold.</p>
@@ -883,7 +887,11 @@ Let’s discuss
 <strong>Don’t open this till we’ve discssed it in class.</strong>
 </summary>
 <p>Sure, we can plot murders by state (see the top of Week 2’s lesson), but what are we trying to communicate? I would posit that we are trying to communicate “how safe a person should feel in a state”. But what communicates that?</p>
-<p>Is it: - Total murders? - Murder rate?</p>
+<p>Is it:</p>
+<ul>
+<li><p>Total murders?</p></li>
+<li><p>Murder rate?</p></li>
+</ul>
 <p>It’s the latter! While readers can guesstimate the murder <em>rate</em> from total murders and population, it’s a lot better to <em>show</em> them the murder rate in the first place. We do that below.</p>
 <section id="browser-data" class="level4">
 <h4 class="anchored" data-anchor-id="browser-data">Browser data</h4>
@@ -900,8 +908,9 @@ Let’s discuss
 <p>What does your eye follow here?</p>
 </section></details>
 </section>
-<section id="order-categories-by-a-meaningful-value" class="level3">
-<h3 class="anchored" data-anchor-id="order-categories-by-a-meaningful-value">Order categories by a meaningful value</h3>
+</section>
+<section id="order-categories-by-a-meaningful-value" class="level2">
+<h2 class="anchored" data-anchor-id="order-categories-by-a-meaningful-value">Order categories by a meaningful value</h2>
 <p>When one of the axes is used to show categories, as is done in barplots, the default <strong>ggplot2</strong> behavior is to order the categories alphabetically when they are defined by character strings. If they are defined by factors, they are ordered by the factor levels. We rarely want to use alphabetical order. Instead, we should order by a meaningful quantity. In all the cases above, the barplots were ordered by the values being displayed. The exception was the graph showing barplots comparing browsers. In this case, we kept the order the same across the barplots to ease the comparison. Specifically, instead of ordering the browsers separately in the two years, we ordered both years by the average value of 2000 and 2015.</p>
 <p>We can use the <code>reorder</code> function, which helps us achieve this goal. This will let us re-order the levels of a factor variable. It is <strong>different</strong> from using <code>order()</code> or <code>arrange()</code> because it only changes the order in which a factor variable is recorded. That is, it doesn’t change the order of the data, it changes the order of the factor <em>levels</em>, and those factor levels are used by <code>ggplot</code> to determine the plotting position.</p>
 <p>To appreciate how the right order can help convey a message, suppose we want to create a plot to compare the murder rate across states. We are particularly interested in the most dangerous and safest states. Note the difference when we order alphabetically (the default) versus when we order by the actual rate:</p>
@@ -965,7 +974,6 @@ Let’s discuss
 </div>
 <p>The first orders the regions alphabetically, while the second orders them by the group’s median (the line on the boxplot is at the median). Note that <code>median</code> is an R function that does exactly what you think it’ll do: returns the median of a vector of numbers. <code>mean</code> works too as this is an R function. You can make your own function and use it as the <code>FUN</code> argument, too, it just has to be able to operate with only one argument, the vector of data.</p>
 </section>
-</section>
 <section id="show-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="show-the-data">Show the data</h2>
 <p>We have focused on displaying single quantities across categories. We now shift our attention to displaying data, with a focus on comparing groups.</p>
@@ -1006,6 +1014,11 @@ Let’s discuss
 </div>
 <p>Now we start getting a sense that, on average, males are taller than females. We also note dark horizontal bands of points, demonstrating that many report values that are rounded to the nearest integer.</p>
 </section>
+
+<section id="good-visuals-good-data-analysis" class="level1">
+<h1>Good visuals = good data analysis</h1>
+<p>The principles of making a good visual to communicate an analysis also assist in constructing the analysis. Faceting is a wonderful tool both for exploring data and for communicating what you’ve found.</p>
+<p>It is almost impossible to complete the course projects in this course without a reasonable use of faceting.</p>
 <section id="faceting" class="level2">
 <h2 class="anchored" data-anchor-id="faceting">Faceting</h2>
 <p>Looking at the previous plot, it’s easy to tell that males tend to be taller than females. Before, we showed how we can plot two distributions over each other using an aesthetic mapping. Something like this:</p>
@@ -1403,7 +1416,7 @@ Bad R behavior
 
 
 </section>
-
+</section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>

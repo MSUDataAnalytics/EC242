@@ -65,6 +65,13 @@ Keep callout-warning and callout-important and callout-tip, but change callout-n
 ## Details (collapse)
 For S26, I've added <details><\details> (see 2a or 2b, I forget which) which collapses text and gives it a slightly gray background. I'm using this for material that is review from PLS202.
 
+Use it like this:    
+<details class="collapsible-bg">
+<summary><strong>You should already be familiar with the Tidyverse, including `filter`, `select` and `%>%`. If not, click here to expand material.</strong></summary>
+
+...text...
+
+</details>
 
 
 ## Images inserted
