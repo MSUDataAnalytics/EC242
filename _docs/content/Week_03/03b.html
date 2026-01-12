@@ -284,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/Week_04/04b.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Visualizations</span></a>
+ <span class="menu-text">Data Wrangling</span></a>
   </div>
 </li>
       </ul>
@@ -301,11 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#front-matter" id="toc-front-matter" class="nav-link active" data-scroll-target="#front-matter">Front matter</a>
-  <ul class="collapse">
-  <li><a href="#groups" id="toc-groups" class="nav-link" data-scroll-target="#groups">Groups!</a></li>
-  <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings">Readings</a></li>
-  </ul></li>
+  <li><a href="#readings" id="toc-readings" class="nav-link active" data-scroll-target="#readings">Readings</a></li>
   <li><a href="#scales-and-transformations" id="toc-scales-and-transformations" class="nav-link" data-scroll-target="#scales-and-transformations">Scales and transformations</a></li>
   <li><a href="#axis-labels-legends-and-titles" id="toc-axis-labels-legends-and-titles" class="nav-link" data-scroll-target="#axis-labels-legends-and-titles">Axis labels, legends, and titles</a>
   <ul class="collapse">
@@ -348,19 +344,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- PostFall2025 note: Week 6a ALSO talks about distributions and viz, but we didn't get to it in F25. Didn't seem to matter. Make sure the material in F25-06a on distributions is in this week so 6a doesn't need it in the future (can use the time to have them code their own simulation probably? Prisoners Loop?) -->
 <!-- Note to Ben (S26 onward): I've moved this entire unit on histograms, densities, the normal distribution, and basic geometries (barplot, etc.) to a resource and replaced it with 4a (condensing down). -->
 <!-- after-F25: the try-its at the end didn't really work. Need to make it clear that the regions can be used to collapse the data further. Probably need a hint to start by calculating the polling"error". DONE -->
-<section id="front-matter" class="level1">
-<h1>Front matter</h1>
-<section id="groups" class="level2">
-<h2 class="anchored" data-anchor-id="groups">Groups!</h2>
-<p>Now that add-drop has passed, it’s time to set groups. <strong>If you have found 2 other people to form a 3-person group</strong>, then please do the following by this Saturday night at 11:59pm:</p>
-<ul>
-<li>Nominate <strong>one</strong> person in your group to e-mail myself <a href="mailto:jkirk@msu.edu">jkirk@msu.edu</a> <strong>AND</strong> TA Liza Inaba at <a href="mailto:%20inabaliz@msu.edu">inabaliz@msu.edu</a> with the subject <strong>[EC242] Groups</strong>.</li>
-<li>On the e-mail, cc- the other two members of the group (so two members + Prof.&nbsp;K + TA)</li>
-<li>In the e-mail, tell me the name of your group (be creative) and list the names and emails of all three members.</li>
-</ul>
-<p>Remember, only one person per group should send this email. Groups must be 3 people exactly. Groups will be the same for the semester (all 4 projects).</p>
-<p>On Sunday, our TA will assign all remaining students to a group. <em>No changes will be made and there is no room for late group formation.</em> You will recieve an email letting you know your group assignment on or before Tuesday.</p>
-</section>
 <section id="readings" class="level2">
 <h2 class="anchored" data-anchor-id="readings">Readings</h2>
 <ul>
@@ -384,7 +367,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> murders, <span class="fu">aes</span>(<span class="at">x =</span> population, <span class="at">y =</span> total, <span class="at">label =</span> abb))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
 </section>
 </section>
 <section id="scales-and-transformations" class="level1">
@@ -569,8 +551,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         style_positive = style_positive, style_negative = style_negative, 
         scale_cut = scale_cut, trim = trim, ...)
 }
-&lt;bytecode: 0x00000226ebaffc78&gt;
-&lt;environment: 0x00000226ebb02df0&gt;</code></pre>
+&lt;bytecode: 0x000001ddf6dc19a0&gt;
+&lt;environment: 0x000001ddf6dbe998&gt;</code></pre>
 </div>
 </div>
 <p>Wha? That looks like the output…is a function?</p>

@@ -1,570 +1,673 @@
 ---
-title: "Visualizations"
-linktitle: "4: Visualization III"
-draft: false
+title: "Data Wrangling"
 lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
     toc: true
-menu:
-  example:
-    parent: Examples
-    weight: 1
-type: docs
-weight: 1
-editor_options:
-  chunk_output_type: console
 ---
 
-```{r, echo=F}
-library(tidyverse)
-filter <- dplyr::filter
-library(emo)
+# Data Wrangling
 
-```
+Part of visualization is prepping your data. We previously covered [reshaping](/content/Week_02/02a.qmd#reshaping) during our tidyverse review. Today we go more in-depth to on joining and cleaning data.
 
 
+## Required Reading
 
-# Data visualization in practice {#gapminder}
+- This page.
 
-In this lecture, we will demonstrate how relatively simple __ggplot2__ code can create insightful and aesthetically pleasing plots. As motivation we will create plots that help us better understand trends in world health and economics. We will implement what we learned in previous sections of the class and learn how to augment the code to perfect the plots. As we go through our case study, we will describe relevant general data visualization principles.
+### Guiding Questions
+
+- What is a _join_ and why is it a common data wrangling maneuver?
+- What is a _primary key_ and why is it important to think about our data in this way?
+- How do we join spatial objects when the key relationship is spatially defined?
+- How do we deal with messy date variables?
 
 
-## Case study: new insights on poverty
 
-Hans Rosling^[https://en.wikipedia.org/wiki/Hans_Rosling] was the co-founder of the Gapminder Foundation^[http://www.gapminder.org/], an organization dedicated to educating the public by using data to dispel common myths about the so-called developing world. The organization uses data to show how actual trends in health and economics contradict the narratives that emanate from sensationalist media coverage of catastrophes, tragedies, and other unfortunate events. As stated in the Gapminder Foundation's website:
+# Joining tables
 
-> Journalists and lobbyists tell dramatic stories. That’s their job. They tell stories about extraordinary events and unusual people. The piles of dramatic stories pile up in peoples' minds into an over-dramatic worldview and strong negative stress feelings: "The world is getting worse!", "It’s we vs. them!”, “Other people are strange!", "The population just keeps growing!" and "Nobody cares!"
+The information we need for a given analysis may not be just in one table. For example, when forecasting elections we used the function `left_join` to combine the information from two tables. We also saw this in action using the `WDI` function (technically, the `WDI` API) in Project 2. Here we use a simpler example to illustrate the general challenge of combining tables.
 
-Hans Rosling conveyed actual data-based trends in a dramatic way of his own, using effective data visualization. This section is based on two talks that exemplify this approach to education: [New Insights on Poverty]^[https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en] and The Best Stats You've Ever Seen^[https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen]. Specifically, in this section, we use data to attempt to answer the following two questions:
+Suppose we want to explore the relationship between population size for US states and electoral votes. We have the population size in this table:
 
-1. Is it a fair characterization of today's world to say it is divided into western rich nations and the developing world in Africa, Asia, and Latin America?
-2. Has income inequality across countries worsened during the last 40 years?
-
-To answer these questions, we will be using the `gapminder` dataset provided in __dslabs__. This dataset was created using a number of spreadsheets available from the Gapminder Foundation. You can access the table like this:
-
-```{r load libraries, message=FALSE, echo=TRUE, warning = FALSE}
+```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(dslabs)
+data(murders)
+head(murders)
+```
+
+and electoral votes in this one:
+
+```{r}
+data(polls_us_election_2016)
+head(results_us_election_2016)
+```
+
+Just concatenating these two tables together will not work since the order of the states is not the same.
+
+```{r}
+identical(results_us_election_2016$state, murders$state)
+```
+
+The _join_ functions, described below, are designed to handle this challenge.
+
+## Joins {#joins}
+
+The _join_ functions in the __dplyr__ package (part of the tidyverse) make sure that the tables are combined so that matching rows are together. If you know SQL, you will see that the approach and syntax is very similar. The general idea is that one needs to identify one or more columns that will serve to match the two tables. Then a new table with the combined information is returned. Notice what happens if we join the two tables above by state using `left_join` (we will remove the `others` column and rename `electoral_votes` so that the tables fit on the page):
+
+```{r}
+tab <- left_join(murders, results_us_election_2016, by = "state") %>%
+  dplyr::select(-others) %>% 
+  rename(ev = electoral_votes)
+head(tab)
+```
+
+The data has been successfully joined and we can now, for example, make a plot to explore the relationship:
+
+```{r ev-vs-population, message=FALSE, warning=FALSE}
 library(ggrepel)
-library(ggthemes)
-gapminder = dslabs::gapminder %>% as_tibble()
-```
-
-```{r chunkset, echo=FALSE}
-knitr::opts_chunk$set(
-  warning = FALSE, error = FALSE, message = FALSE
-)
-```
-
-### Exploring the Data
-
-Taking an exercise from the _New Insights on Poverty_ video, we start by testing our knowledge regarding differences in child mortality across different countries. For each of the six pairs of countries below, which country do you think had the highest child mortality rates in 2015? Which pairs do you think are most similar?
-
-1. Sri Lanka or Turkey
-2. Poland or South Korea
-3. Malaysia or Russia
-4. Pakistan or Vietnam
-5. Thailand or South Africa
-
-When answering these questions without data, the non-European countries are typically picked as having higher child mortality rates: Sri Lanka over Turkey, South Korea over Poland, and Malaysia over Russia. It is also common to assume that countries considered to be part of the developing world: Pakistan, Vietnam, Thailand, and South Africa, have similarly high mortality rates.
-
-To answer these questions __with data__, we can use __tidyverse__ functions. For example, for the first comparison we see that:
-
-```{r, message=FALSE}
-dslabs::gapminder %>%
-  filter(year == 2015 & country %in% c("Sri Lanka","Turkey")) %>%
-  select(country, infant_mortality)
-```
-Turkey has the higher infant mortality rate.
-
-We can use this code on all comparisons and find the following:
-
-```{r, echo = FALSE, warning = FALSE}
-comp_table <- tibble(comparison = rep(1:5, each = 2),
-           country = c("Sri Lanka", "Turkey", "Poland", "South Korea", "Malaysia", "Russia", "Pakistan","Vietnam","Thailand","South Africa"))
-
-tmp <- gapminder %>%
-  filter(year == 2015) %>%
-  select(country, infant_mortality) %>%
-  mutate(country = as.character(country)) ##to match characters to characters
-
-tab <- inner_join(comp_table, tmp, by = "country") %>% select(-comparison)
-
-tmp <- bind_cols(slice(tab,seq(1,9,2)), slice(tab,seq(2,10,2)))
-names(tmp) <- c("country", "infant mortality", "country", "infant mortality")
-if(knitr::is_html_output()){
-  knitr::kable(tmp, "html") %>%
-    kableExtra::kable_styling(bootstrap_options = "striped", full_width = FALSE)
-} else{
-  knitr::kable(tmp, "latex", booktabs = TRUE) %>%
-    kableExtra::kable_styling(font_size = 8)
-}
-```
-
-We see that the European countries on this list have higher child mortality rates: Poland has a higher rate than South Korea, and Russia has a higher rate than Malaysia. We also see that Pakistan has a much higher rate than Vietnam, and South Africa has a much higher rate than Thailand. It turns out that when Hans Rosling gave this quiz to educated groups of people, the average score was less than 2.5 out of 5, worse than what they would have obtained had they guessed randomly. This implies that more than ignorant, we are misinformed. In this chapter we see how data visualization helps inform us by presenting *patterns in the data* that might not be obvious on first glance.
-
-
-
-
-
-### Slope charts 
-The slopechart is informative when you are comparing variables of the same type, but at different time points and for a relatively small number of comparisons. For example, comparing life expectancy between 2010 and 2015. In this case, we might recommend a _slope chart_.
-
-There is no geometry for slope charts in __ggplot2__, but we can construct one using `geom_line`. We need to do some tinkering to add labels. We'll paste together a character stright with the country name and the starting life expectancy, then do the same with just the later life expectancy for the right side. Below is an example comparing 2010 to 2015 for large western countries: 
-
-```{r slope-plot}
-west <- c("Western Europe","Northern Europe","Southern Europe",
-          "Northern America","Australia and New Zealand")
-
-dat <- gapminder %>%
-  filter(year%in% c(2010, 2015) & region %in% west &
-           !is.na(life_expectancy) & population > 10^7) %>%
-    mutate(label_first = ifelse(year == 2010, paste0(country, ": ", round(life_expectancy, 1), ' years'), NA),
-           label_last = ifelse(year == 2015,  paste0(round(life_expectancy, 1),' years'), NA))
-
-dat %>%
-  mutate(location = ifelse(year == 2010, 1, 2),
-         location = ifelse(year == 2015 &
-                             country %in% c("United Kingdom", "Portugal"),
-                           location+0.22, location),
-         hjust = ifelse(year == 2010, 1, 0)) %>%
-  mutate(year = as.factor(year)) %>%
-  ggplot(aes(year, life_expectancy, group = country)) +
-  geom_line(aes(color = country), show.legend = FALSE) +
-  geom_text_repel(aes(label = label_first, color = country), direction = 'y', nudge_x = -1, seed = 1234, show.legend = FALSE) +
-  geom_text_repel(aes(label = label_last, color = country), direction = 'y', nudge_x =  1, seed = 1234, show.legend = FALSE) +
-  xlab("") + ylab("Life Expectancy")
-```
-
-An advantage of the slope chart is that it permits us to quickly get an idea of changes based on the slope of the lines. Although we are using angle as the visual cue, we also have position to determine the exact values. Comparing the improvements is a bit harder with a scatterplot:
-
-
-```{r scatter-plot-instead-of-slope, echo=FALSE}
-west <- c("Western Europe","Northern Europe","Southern Europe",
-          "Northern America","Australia and New Zealand")
-
-dat <- gapminder %>%
-  filter(year%in% c(2010, 2015) & region %in% west &
-           !is.na(life_expectancy) & population > 10^7)
-
-dat %>%
-  mutate(year = paste0("life_expectancy_", year)) %>%
-  select(country, year, life_expectancy) %>%
-  spread(year, life_expectancy) %>%
-  ggplot(aes(x=life_expectancy_2010,y=life_expectancy_2015, label = country)) +
-  geom_point() + geom_text_repel() +
-  scale_x_continuous(limits=c(78.5, 83)) +
-  scale_y_continuous(limits=c(78.5, 83)) +
-  geom_abline(lty = 2) +
-  xlab("2010") +
-  ylab("2015")
-```
-
-In the scatterplot, we have followed the principle _use common axes_ since we are comparing these before and after. However, if we have many points, slope charts stop being useful as it becomes hard to see all the lines.
-
-### Bland-Altman plot
-
-Since we are primarily interested in the difference, it makes sense to dedicate one of our axes to it. The Bland-Altman plot, also known as the Tukey mean-difference plot and the MA-plot, shows the difference versus the average:
-
-```{r, bland-altman, echo=T}
-
-dat %>%
-  group_by(country) %>%
-  filter(year %in% c(2010, 2015)) %>%
-  dplyr::summarize(average = mean(life_expectancy),
-                   difference = life_expectancy[year==2015]-life_expectancy[year==2010]) %>%
-  ggplot(aes(average, difference, label = country)) +
+tab %>% ggplot(aes(population/10^6, ev, label = abb)) +
   geom_point() +
   geom_text_repel() +
-  geom_abline(lty = 2) +
-  xlab("Average of 2010 and 2015") +
-  ylab("Difference between 2015 and 2010")
+  scale_x_continuous(trans = "log2") +
+  scale_y_continuous(trans = "log2") +
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
-Here, by simply looking at the y-axis, we quickly see which countries have shown the most improvement. We also get an idea of the overall value from the x-axis. You already made a similar Altman plot in an earlier problem set, so we'll move on.
+We see the relationship is close to linear with about 2 electoral votes for every million persons, but with very small states getting higher ratios.
 
 
-
-
-
-
-### Bump charts
-
-Finally, we can make a bump chart that shows changes in rankings over time. We'll look at fertility in South Asia. First we need to calculate a new variable that shows the rank of each country within each year. We can do this if we group by year and then use the `rank()` function to rank countries by the `fertility` column.
-
-```{r filter-bump-data}
-sa_fe <- gapminder %>%
-  filter(region == "Southern Asia") %>%
-  filter(year >= 2004, year < 2015) %>%
-  group_by(year) %>%
-  mutate(rank = rank(fertility))
-```
-
-We then plot this with points and lines, reversing the y-axis so 1 is at the top:
-
-```{r make-bump-plot}
-ggplot(sa_fe, aes(x = year, y = rank, color = country)) +
-  geom_line() +
-  geom_point() +
-  scale_y_reverse(breaks = 1:8) +
-  labs(x = "Year", y = "Rank", color = "Country")
-```
-
-Iran holds the number 1 spot, while Sri Lanka dropped from 2 to 6, and Bangladesh increased from 4 to 2.
-
-As with the slopegraph, there are 8 different colors in the legend and it's hard to line them all up with the different lines, so we can plot the text directly instead. We'll use `geom_text()` again. We don't need to repel anything, since the text should fit in each row just fine. We need to change the `data` argument in `geom_text()` though and filter the data to only include one year, otherwise we'll get labels on every point, which is excessive. We can also adjust the theme and colors to make it cleaner.
-
-```{r bump-plot-fancier, echo = TRUE, fig.width=7, fig.height=4.2, warnings = F}
-bumpplot <- ggplot(sa_fe, aes(x = year, y = rank, color = country)) +
-  geom_line(size = 2) +
-  geom_point(size = 4) +
-  geom_text(data = sa_fe %>% dplyr::filter(year==2004) %>% arrange(rank),
-            aes(label = country, x = 2003), fontface = "bold", angle = 45) +
- geom_text(data = sa_fe %>% dplyr::filter(year==2014) %>% arrange(rank),
-            aes(label = country, x = 2015), fontface = "bold", angle = 45) + 
-  guides(color = 'none') + # another way of turning off legend
-  scale_y_reverse(breaks = 1:8) +
-  scale_x_continuous(breaks = 2004:2014) +
-  scale_color_viridis_d(option = "C", begin = 0.2, end = 0.9) +
-  labs(x = NULL, y = "Rank") +
-  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5),  "inches")) 
-
-bumpplot
-```
-
-
-
-
-### Themes
-We can go a little further towards a clean, easy-to-read data visualization by using __themes__ in our plots. Themes allow us to set a particular range of plot settings in one command, and let us further tweak things like fonts, background colors, and much more. We've used them in passing a few times without highlighting them, but we'll discuss them here.
-
-A pre-constructed set of instructions for making a visual theme can be had by using a theme's `ggplot` function. Let's look at two of my favorites.
-
-`theme_bw()` uses the black-and-white theme, which is helpful in making a nice, clean plot:
-
-```{r, echo = T,  fig.width=7, fig.height=5.2}
-bumpplot + theme_bw()
-```
-
-The background shading is gone, which gives the plot a nice, crisp feel. It adds the black outline around the plot, but doesn't mess with the colors in the plot.
-
-Here's `theme_minimal()`
-
-```{r, echo = T,  fig.width=7, fig.height=5.2}
-bumpplot + theme_minimal()
-```
-
-Themes can alter things in the plot as well. If we really want to strip it down and remove the Y-axis (which is rarely a good idea, but in a bump chart, it makes sense):
-
-```{r, echo = T,  fig.width=7, fig.height=5.2}
-bumpplot + theme_void()
-```
-
-Now **that's** clean!
-
-In our opening unit, we had a plot that was styled after the plots in the magazine, *The Economist*. That's a theme (in the `ggthemes` package that we loaded at the top)!
-
-```{r, echo = T,  fig.width=7, fig.height=5.2}
-bumpplot + theme_economist()
-```
-
-Themes affect some of the plot elements that we haven't gotten much into (like length of axis ticks and the color of the panel grid behind the plot). We can use a theme, then make further changes to the theme. We won't go into a lot of detail, but here's an example. Use the `?theme` to learn more about what you can change. Half the challenge is finding the right term for the thing you want to tweak! Theme changes occur in code order, so you can update a pre-set theme with your own details:
-
-```{r bump-plot-fancierest, echo = TRUE, fig.width=7, fig.height=5.2}
-bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
-                   plot.title = element_text(face = "bold"),
-                   axis.text.x = element_text(angle = 45, hjust = 1),
-                   panel.grid.major.y = element_blank(), # turn off all of the Y grid
-                   panel.grid.minor.y = element_blank(),
-                   panel.grid.minor.x = element_blank()) # turn off small x grid
-```
-
-### Theme elements
-The above code looks a little odd in that asking it to leave out the minor and major Y grid, and the major X grid, required `element_blank()`, a function! Since a "blank" part (or a solid color part) might entail a lot of particular things, the ggplot function is necessary here to take care of all the particular details. 
-
-Relatedly, if we wanted to change the background color of some panel (the plotted area), then `element_rect()` would be used because the panel is a rectangle. The theme argument would be `panel.background =element_rect(fill="red")` if we wanted to make it red (and hideous)
-
-```{r bump-plot-fancierestest, echo = TRUE, fig.width=7, fig.height=5.2}
-bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
-                                panel.background  = element_rect(fill='red'),
-                   plot.title = element_text(face = "bold"),
-                   axis.text.x = element_text(angle = 45, hjust = 1),
-                   panel.grid.major.y = element_blank(), # turn off all of the Y grid
-                   panel.grid.minor.y = element_blank(),
-                   panel.grid.minor.x = element_blank()) # turn off small x grid
-```
-
-We can also set the `strip.background` for the "strip" rectangles that label our `facet_wrap` and `facet_grid`sections,and `plot.background` for the area behind the plot panel.
-
-In the above example, we also set the `element_text` function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment so that they center over the line. `element_text` is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the `scales::label_comma` [from earlier this week](/content/Week_04/04a.html/#labelerFunctions). We can avoid scrunching our labels by using `element_text` to set a new angle (45 or 90).
-
-
-
-
-### Small multiples
-
-First we can make some small multiples plots and show life expectancy over time for a handful of countries. We'll make a list of some countries chosen at random while I scrolled through the data, and then filter our data to include only those rows. We then plot life expectancy, faceting by country.
+In practice, it is not always the case that each row in one table has a matching row in the other. For this reason, we have several versions of join. To illustrate this challenge, we will take subsets of the tables above. We create the tables `tab1` and `tab2` so that they have some states in common but not all:
 
 ```{r}
-life_expectancy_small <- gapminder %>%
-  filter(country %in% c("Argentina", "Bolivia", "Brazil",
-                        "Belize", "Canada", "Chile"))
-ggplot(data = life_expectancy_small,
-       mapping = aes(x = year, y = life_expectancy)) +
-  geom_line(size = 1) +
-  facet_wrap(vars(country))
+tab_1 <- slice(murders, 1:6) %>% dplyr::select(state, population)
+tab_1
+tab_2 <- results_us_election_2016 %>%
+  dplyr::filter(state%in%c("Alabama", "Alaska", "Arizona",
+                    "California", "Connecticut", "Delaware")) %>%
+  dplyr::select(state, electoral_votes) %>% rename(ev = electoral_votes)
+tab_2
 ```
 
-Small multiples! That's all we need to do.
 
-We can do some fancier things, though. We can make this plot hyper minimalist with a __theme__:
+We will use these two tables as examples in the next sections.
 
-```{r life-expectancy-small-minimalist}
-ggplot(data = life_expectancy_small,
-       mapping = aes(x = year, y = life_expectancy)) +
-  geom_line(size = 1) +
-  facet_wrap(vars(country), scales = "free_y") +
-  theme_void() +
-  theme(strip.text = element_text(face = "bold"))
-```
+### Left join
 
-We can do a whole part of a continent (poor Syria `r emo::ji("sad")`)
-
-```{r life-expectancy-mena, fig.width=10, fig.height=3.5}
-life_expectancy_mena <- gapminder %>%
-  filter(region == "Northern Africa" | region == "Western Asia")
-
-ggplot(data = life_expectancy_mena,
-       mapping = aes(x = year, y = life_expectancy)) +
-  geom_line(size = 1) +
-  facet_wrap(vars(country), scales = "free_y", nrow = 3) +
-  theme_void() +
-  theme(strip.text = element_text(face = "bold"))
-
-```
-
-We can use the [**geofacet** package](https://hafen.github.io/geofacet/) to arrange these facets by geography:
-
-```{r life-expectancy-eu, warning=FALSE, message=FALSE, fig.width=10, fig.height=8}
-library(geofacet)
-
-life_expectancy_eu <- gapminder %>%
-  filter(region== 'Western Europe' | region=='Northern Europe' | region=='Southern Europe')
-
-ggplot(life_expectancy_eu, aes(x = year, y = life_expectancy)) +
-  geom_line(size = 1) +
-  facet_geo(vars(country), grid = "europe_countries_grid1", scales = "free_y") +
-  labs(x = NULL, y = NULL, title = "Life expectancy from 1960–2015",
-       caption = "Source: Gapminder") +
-  theme_minimal() +
-  theme(strip.text = element_text(face = "bold"),
-        plot.title = element_text(face = "bold"),
-        axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-Neat!
-
-Anybody see any problems here?
-
-
-
-## The ecological fallacy and importance of showing the data
-
-Throughout this section, we have been comparing regions of the world. We have seen that, on average, some regions do better than others. In this section, we focus on describing the importance of variability within the groups when examining the relationship between a country's infant mortality rates and average income.
-
-We define a few more regions and compare the averages across regions:
-
-```{r ecological-fallacy-averages, echo=FALSE}
-gapminder_clean <- dslabs::gapminder %>%
-  mutate(group = case_when(
-    region %in% c("Western Europe", "Northern Europe",
-                  "Southern Europe", "Northern America",
-                  "Australia and New Zealand") ~ "West",
-    region %in% "Northern Africa" ~ "Northern Africa",
-    region %in% c("Eastern Asia", "South-Eastern Asia") ~ "East Asia",
-    region == "Southern Asia"~ "Southern Asia",
-    region %in% c("Central America", "South America",
-                  "Caribbean") ~ "Latin America",
-    continent == "Africa" &
-      region != "Northern Africa" ~ "Sub-Saharan",
-    region %in% c("Melanesia", "Micronesia",
-                  "Polynesia") ~ "Pacific Islands")) %>%  
-  mutate(dollars_per_day = gdp/population/365)
-
-surv_income <- gapminder_clean %>%
-  filter(year== 2010 & !is.na(gdp) &
-           !is.na(infant_mortality) & !is.na(group)) %>%
-  group_by(group) %>%
-  summarize(income = sum(gdp)/sum(population)/365,
-            infant_survival_rate =
-              1 - sum(infant_mortality/1000*population)/sum(population))
-
-#surv_income %>% arrange(income) %>% print(n=nrow(surv_income))
-
-surv_income %>% ggplot(aes(income, infant_survival_rate, label = group, color = group)) +
-  scale_x_continuous(trans = "log2", limits = c(0.25, 150)) +
-  scale_y_continuous(trans = "logit", limit = c(0.875, .9981),
-                     breaks = c(.85,.90,.95,.99,.995,.998)) +
-  geom_label_repel(size = 3, show.legend = FALSE) + geom_point()
-```
-
-The relationship between these two variables is almost perfectly linear and the graph shows a dramatic difference. While in the West less than 0.5% of infants die, in Sub-Saharan Africa the rate is higher than 6%!
-
-Note that the plot uses a new transformation, the logit transformation.
-
-### Logit transformation {#logit}
-The logit transformation for a proportion or rate $p$ is defined as:
-
-$$f(p) = \log \left( \frac{p}{1-p} \right)$$
-
-When $p$ is a proportion or probability, the quantity that is being logged, $p/(1-p)$, is called the _odds_. In this case $p$ is the proportion of infants that survived. The odds tell us how many more infants are expected to survive than to die. The log transformation makes this symmetric. If the rates are the same, then the log odds is 0. Fold increases or decreases turn into positive and negative increments, respectively.
-
-This scale is useful when we want to highlight differences near 0 or 1. For survival rates this is important because a survival rate of 90% is unacceptable, while a survival of 99% is relatively good. We would much prefer a survival rate closer to 99.9%. We want our scale to highlight these difference and the logit does this. Note that 99.9/0.1 is about 10 times bigger than 99/1 which is about 10 times larger than 90/10. By using the log, these fold changes turn into constant increases.
-
-### Show the data
-
-Now, back to our plot. Based on the plot above, do we conclude that a country with a low income is destined to have low survival rate? Do we conclude that survival rates in Sub-Saharan Africa are all lower than in Southern Asia, which in turn are lower than in the Pacific Islands, and so on?
-
-Jumping to this conclusion based on a plot showing averages is referred to as the _ecological fallacy_. The almost perfect relationship between survival rates and income is only observed for the averages at the region level. Once we show all the data, we see a somewhat more complicated story:
-
-```{r ecological-fallacy-all-data, echo=FALSE}
-
-highlight <- c("Sierra Leone", "Mauritius",  "Sudan", "Botswana", "Tunisia",
-               "Cambodia","Singapore","Chile", "Haiti", "Bolivia",
-               "United States","Sweden", "Angola", "Serbia")
-
-gapminder_clean %>% filter(year==2010 & !is.na(gdp) & !is.na(infant_mortality) & !is.na(group) ) %>%
-  mutate(country_name = ifelse(country %in% highlight, as.character(country), "")) %>%
-  ggplot(aes(dollars_per_day, 1 - infant_mortality/1000, col = group, label = country_name)) +
-  scale_x_continuous(trans = "log2", limits=c(0.25, 150)) +
-  scale_y_continuous(trans = "logit",limit=c(0.875, .9981),
-                     breaks=c(.85,.90,.95,.99,.995,.998)) +
-  geom_point(alpha = 0.5, size = 3) +
-  geom_text_repel(size = 4, show.legend = FALSE)
-```
-
-Specifically, we see that there is a large amount of variability. We see that countries from the same regions can be quite different and that countries with the same income can have different survival rates. For example, while on average Sub-Saharan Africa had the worse health and economic outcomes, there is wide variability within that group. Mauritius and Botswana are doing better than Angola and Sierra Leone, with Mauritius comparable to Western countries.
-
-## Case study: vaccines and infectious diseases {#vaccines}
-
-Vaccines have helped save millions of lives. In the 19th century, before herd immunization was achieved through vaccination programs, deaths from infectious diseases, such as smallpox and polio, were common. However, today vaccination programs have become somewhat controversial despite all the scientific evidence for their importance.
-
-The controversy started with a paper^[http://www.thelancet.com/journals/lancet/article/PIIS0140-6736(97)11096-0/abstract] published in 1988 and led by Andrew Wakefield claiming
-there was a link between the administration of the measles, mumps, and rubella (MMR) vaccine and the appearance of autism and bowel disease.
-Despite much scientific evidence contradicting this finding, sensationalist media reports and fear-mongering from conspiracy theorists led parts of the public into believing that vaccines were harmful. As a result, many parents ceased to vaccinate their children. This dangerous practice can be potentially disastrous given that the Centers for Disease Control (CDC) estimates that vaccinations will prevent more than 21 million hospitalizations and 732,000 deaths among children born in the last 20 years (see Benefits from Immunization during the Vaccines for Children Program Era — United States, 1994-2013, MMWR^[https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6316a4.htm]).
-The 1988 paper has since been retracted and Andrew Wakefield was eventually "struck off the UK medical register, with a statement identifying deliberate falsification in the research published in The Lancet, and was thereby barred from practicing medicine in the UK." (source: Wikipedia^[https://en.wikipedia.org/wiki/Andrew_Wakefield]). Yet misconceptions persist, in part due to self-proclaimed activists who continue to disseminate misinformation about vaccines.
-
-Effective communication of data is a strong antidote to misinformation and fear-mongering. Earlier we used an example provided by a Wall Street Journal article^[http://graphics.wsj.com/infectious-diseases-and-vaccines/] showing data related to the impact of vaccines on battling infectious diseases.  Here we reconstruct that example.
-
-The data used for these plots were collected, organized, and distributed by the Tycho Project^[http://www.tycho.pitt.edu/]. They include weekly reported counts for seven diseases from 1928 to 2011, from all fifty states. The yearly totals are helpfully included in the __dslabs__ package:
-
-```{r message=FALSE, warning=FALSE, echo = TRUE}
-library(RColorBrewer)
-data(us_contagious_diseases)
-names(us_contagious_diseases)
-```
-
-We create a temporary object `dat` that stores only the measles data, includes a per 100,000 rate, orders states by average value of disease and removes Alaska and Hawaii since they only became states in the late 1950s. Note that there is a `weeks_reporting` column that tells us for how many weeks of the year data was reported. We have to adjust for that value when computing the rate.
+Suppose we want a table like `tab_1`, but adding electoral votes to whatever states we have available. For this, we use `left_join` with `tab_1` as the first argument. We specify which column to use to match with the `by` argument.
 
 ```{r}
-the_disease <- "Measles"
-dat <- us_contagious_diseases %>%
-  filter(!state%in%c("Hawaii","Alaska") & disease == the_disease) %>%
-  mutate(rate = count / population * 10000 * 52 / weeks_reporting) %>%
-  mutate(state = reorder(state, rate))
+left_join(tab_1, tab_2, by = "state")
 ```
 
-We can now easily plot disease rates per year. Here are the measles data from California:
+Note that `NA`s are added to the two states not appearing in `tab_2`. Also, notice that this function, as well as all the other joins, can receive the first arguments through the pipe:
 
-```{r california-measles-time-series}
-dat %>% filter(state == "California" & !is.na(rate)) %>%
-  ggplot(aes(year, rate)) +
-  geom_line() +
-  ylab("Cases per 10,000")  +
-  geom_vline(xintercept=1963, col = "blue")
+```{r, eval=FALSE}
+tab_1 %>% left_join(tab_2, by = "state")
 ```
 
-We add a vertical line at 1963 since this is when the vaccine was introduced [Control, Centers for Disease; Prevention (2014). CDC health information for international travel 2014 (the yellow book). p. 250. ISBN 9780199948505].
 
-Now can we show data for all states in one plot? We have three variables to show: year, state, and rate. In the WSJ figure, they use the x-axis for year, the y-axis for state, and color hue to represent rates. However, the color scale they use, which goes from yellow to blue to green to orange to red, can be improved.
+### Right join
 
-In our example, we want to use a sequential palette since there is no meaningful center, just low and high rates.
-
-We use the geometry `geom_tile` to tile the region with colors representing disease rates. We use a square root transformation to avoid having the really high counts dominate the plot. Notice that missing values are shown in grey. Note that once a disease was pretty much eradicated, some states stopped reporting cases all together. This is why we see so much grey after 1980.
-
-```{r vaccines-plot, out.width="100%", fig.height=5}
-dat %>% 
-  mutate(state = factor(state, levels = rev(levels(state)[order(levels(state))]))) %>%
-  ggplot(aes(year, state, fill = rate)) +
-  geom_tile(color = "grey50") +
-  scale_x_continuous(expand=c(0,0)) +
-  scale_fill_gradientn(colors = brewer.pal(9, "Reds"), trans = "sqrt") +
-  geom_vline(xintercept=1963, col = "blue") +
-  theme_minimal() +
-  theme(panel.grid = element_blank(),
-        legend.position="bottom",
-        text = element_text(size = 8)) +
-  ggtitle(the_disease) +
-  ylab("") + xlab("")
-```
-
-This plot makes a very striking argument for the contribution of vaccines. However, one limitation of this plot is that it uses color to represent quantity, which we earlier explained makes it harder to know exactly how high values are going. Position and lengths are better cues. If we are willing to lose state information, we can make a version of the plot that shows the values with position. We can also show the average for the US, which we compute like this:
+If instead of a table with the same rows as first table, we want one with the same rows as second table, we can use `right_join`:
 
 ```{r}
-avg <- us_contagious_diseases %>%
-  filter(disease==the_disease) %>% group_by(year) %>%
-  summarize(us_rate = sum(count, na.rm = TRUE) /
-              sum(population, na.rm = TRUE) * 10000)
+tab_1 %>% right_join(tab_2, by = "state")
 ```
 
-Now to make the plot we simply use the `geom_line` geometry:
-```{r time-series-vaccines-plot}
-dat %>%
-  filter(!is.na(rate)) %>%
-    ggplot() +
-  geom_line(aes(year, rate, group = state),  color = "grey50",
-            show.legend = FALSE, alpha = 0.2, size = 1) +
-  geom_line(mapping = aes(year, us_rate),  data = avg, size = 1) +
-  scale_y_continuous(trans = "sqrt", breaks = c(5, 25, 125, 300)) +
-  ggtitle("Cases per 10,000 by state") +
-  xlab("") + ylab("") +
-  geom_text(data = data.frame(x = 1955, y = 50),
-            mapping = aes(x, y, label="US average"),
-            color="black") +
-  geom_vline(xintercept=1963, col = "blue")
+Now the NAs are in the column coming from `tab_1`.
+
+### Inner join
+
+If we want to keep only the rows that have information in both tables, we use `inner_join`. You can think of this as an intersection:
+
+```{r}
+inner_join(tab_1, tab_2, by = "state")
 ```
 
-In theory, we could use color to represent the categorical value state, but it is hard to pick 50 distinct colors.
+### Full join
 
+If we want to keep all the rows and fill the missing parts with NAs, we can use `full_join`. You can think of this as a union:
 
-### Saving your plot
-In RMarkdown, we display the plot as part of the chunk output. For your group project (or for future use) you'll likely need to save your plot as well. The function `ggsave` is a good way of outputting your plot. 
-
+```{r}
+full_join(tab_1, tab_2, by = "state")
 ```
-ggsave(myPlot, file = 'myPlot.png', width = 7, height = 5, dpi=300)
+
+### Semi join
+
+The `semi_join` function lets us keep the part of first table for which we have information in the second. It does not add the columns of the second. It isn't often used:
+
+```{r}
+semi_join(tab_1, tab_2, by = "state")
 ```
-File type will be discerned from the suffix on the file, and the height and width are in inches. The `dpi` argument sets the pixes-per-inch. Generally, screens display at around 150 (though this is rapidly increasing, it used to be 72 dpi), and print is usually 300 or better. A width of 5 inches at 300 dpi will render an image 1,500 pixels across.
+This gives the same result as:
+```{r}
+tab_1 %>% 
+  filter(state %in% tab_2$state) 
+```
+
+### Anti join
+
+The function `anti_join` is the opposite of `semi_join`. It keeps the elements of the first table for which there is no information in the second:
+
+```{r}
+anti_join(tab_1, tab_2, by = "state")
+```
+
+The following diagram summarizes the above joins:
+
+```{r, echo=F}
+include_graphics(here('images','joins.png'))
+```
+(Image courtesy of RStudio^[https://github.com/rstudio/cheatsheets]. CC-BY-4.0 license^[https://github.com/rstudio/cheatsheets/blob/master/LICENSE]. Cropped from original.)
+
+# Binding
+
+Although we have yet to use it in this book, another common way in which datasets are combined is by _binding_ them. Unlike the join function, the binding functions do not try to match by a variable, but instead simply combine datasets. If the datasets don't match by the appropriate dimensions, one obtains an error.
+
+## Binding columns
+
+The __dplyr__ function _bind_cols_ binds two objects by making them columns in a tibble. For example, we quickly want to make a data frame consisting of numbers we can use.
+
+```{r}
+bind_cols(a = 1:3, b = 4:6)
+```
+
+This function requires that we assign names to the columns. Here we chose `a` and `b`.
+
+Note that there is an R-base function `cbind` with the exact same functionality. An important difference is that `cbind` can create different types of objects, while `bind_cols` always produces a data frame.
+
+`bind_cols` can also bind two different data frames. For example, here we break up the `tab` data frame and then bind them back together:
+
+```{r}
+tab_1 <- tab[, 1:3]
+tab_2 <- tab[, 4:6]
+tab_3 <- tab[, 7:8]
+new_tab <- bind_cols(tab_1, tab_2, tab_3)
+head(new_tab)
+```
+
+
+## Binding by rows
+
+The `bind_rows` function is similar to `bind_cols`, but binds rows instead of columns:
+
+```{r}
+tab_1 <- tab[1:2,]
+tab_2 <- tab[3:4,]
+bind_rows(tab_1, tab_2)
+```
+
+This is based on an R-base function `rbind`.
+
+# Set operators
+
+Another set of commands useful for combining datasets are the set operators. When applied to vectors, these behave as their names suggest. Examples are `intersect`, `union`, `setdiff`, and `setequal`. However, if the __tidyverse__, or  more specifically __dplyr__, is loaded, these functions can be used on data frames as opposed to just on vectors.
+
+### Intersect
+
+You can take intersections of vectors of any type, such as numeric:
+
+```{r}
+intersect(1:10, 6:15)
+```
+or characters:
+
+```{r}
+intersect(c("a","b","c"), c("b","c","d"))
+```
+
+The __dplyr__ package includes an `intersect` function that can be applied to tables with the same column names. This function returns the rows in common between two tables. To make sure we use the __dplyr__ version of `intersect` rather than the base package version, we can use `dplyr::intersect` like this:
+
+
+```{r}
+tab_1 <- tab[1:5,]
+tab_2 <- tab[3:7,]
+dplyr::intersect(tab_1, tab_2)
+```
+
+
+## Union
+
+Similarly _union_ takes the union of vectors. For example:
+
+```{r}
+union(1:10, 6:15)
+union(c("a","b","c"), c("b","c","d"))
+```
+
+The __dplyr__ package includes a version of `union` that combines all the rows of two tables with the same column names.
+
+```{r}
+tab_1 <- tab[1:5,]
+tab_2 <- tab[3:7,]
+dplyr::union(tab_1, tab_2)
+```
+Note that we get 7 unique rows from this. We do not get duplicated rows from the overlap in `1:5` and `3:7`. If we were to `bind_rows` on the two subsets, we would get duplicates.
+
+## `setdiff`
+
+The set difference between a first and second argument can be obtained with `setdiff`. Unlike `intersect` and `union`, this function is not symmetric:
+
+
+```{r}
+setdiff(1:10, 6:15)
+setdiff(6:15, 1:10)
+```
+
+As with the functions shown above, __dplyr__ has a version for data frames:
+
+```{r}
+tab_1 <- tab[1:5,]
+tab_2 <- tab[3:7,]
+dplyr::setdiff(tab_1, tab_2)
+```
+
+## `setequal`
+
+Finally, the function `setequal` tells us if two sets are the same, regardless of order. So notice that:
+
+```{r}
+setequal(1:5, 1:6)
+```
+
+but:
+
+```{r}
+setequal(1:5, 5:1)
+```
+
+When applied to data frames that are not equal, regardless of order, the __dplyr__ version provides a useful message letting us know how the sets are different:
+
+```{r}
+dplyr::setequal(tab_1, tab_2)
+```
+
+
+:::fyi
+
+__TRY IT__
+
+1. Install and load the __Lahman__ library. This database includes data related to baseball teams. It includes summary statistics about how the players performed on offense and defense for several years. It also includes personal information about the players.
+
+The `Batting` data frame contains the offensive statistics for all players for many years. You can see, for example, the top 10 hitters by running this code:
+
+```{r, eval=FALSE}
+library(Lahman)
+
+top <- Batting %>%
+  dplyr::filter(yearID == 2016) %>%
+  arrange(desc(HR)) %>%
+  slice(1:10)
+
+top %>% as_tibble()
+```
+
+But who are these players? We see an ID, but not the names. The player names are in this table
+
+```{r, eval=FALSE}
+Master %>% as_tibble()
+```
+
+We can see column names `nameFirst` and `nameLast`. Use the `left_join` function to create a table of the top home run hitters. The table should have `playerID`, first name, last name, and number of home runs (HR).  Rewrite the object `top` with this new table.
 
 
 
+2. Now use the `Salaries` data frame to add each player's salary to the table you created in exercise 1. Note that salaries are different every year so make sure to filter for the year 2016, then use `right_join`. This time show first name, last name, team, HR, and salary.
 
-::: {.callout-note}
 
-## TRY IT
 
-1. Reproduce the heatmap plot we previously made but for smallpox. For this plot, do not include years in which cases were not reported in 10 or more weeks.
+3. In a previous exercise, we created a tidy version of the `co2` dataset:
 
-2. Now reproduce the time series plot we previously made, but this time following the instructions of the previous question for smallpox.
 
-3. For the state of California, make a time series plot showing rates for all diseases. Include only years with 10 or more weeks reporting. Use a different color for each disease.
+```{r, eval=FALSE}
+co2_wide <- data.frame(matrix(co2, ncol = 12, byrow = TRUE)) %>%
+  setNames(1:12) %>%
+  mutate(year = 1959:1997) %>%
+  pivot_longer(-year, names_to = 'month', values_to = 'co2')
+```
 
-4. Now do the same for the rates for the US. Hint: compute the US rate by using summarize: the total divided by total population.
+We want to see if the monthly trend is changing so we are going to remove the year effects and then plot the results. We will first compute the year averages. Use the `group_by` and `summarize` to compute the average co2 for each year. Save in an object called `yearly_avg`.
+
+
+4. Now use the `left_join` function to add the yearly average to the `co2_wide` dataset. Then compute the residuals: observed co2 measure - yearly average.
+
+
+5. Make a plot of the seasonal trends by year but only after removing the year effect.
 
 :::
 
 
+# A note about merging and duplicated rows
 
+When we merge data, we have to be very careful about duplicated rows. Specifically, we have to be certain that the fields we use to join on are unique **or** that we know they aren't unique and intend to duplicate rows.
+
+When we have tidy data, we have one row per observation. When we join data that has more than one row per observation, the new dataset will no longer be tidy. Here, the `notTidyData` is not tidy *in relation to the `tidyData` as it does not have one observation per year and state. For instance:
+
+```{r}
+tidyData <- bind_cols( state = c('MI','CA','MI','CA'), 
+                       year = c(2001, 2002, 2001, 2002),  
+                       Arrests = c(10, 21, 30, 12))
+
+notTidyData <- bind_cols(state = c('MI','MI','MI','CA','CA','CA'), 
+                         County = c('Ingham','Clinton','Wayne','Orange','Los Angeles','Kern'),
+                         InNOut_locations = c(0,0,0,20, 31, 8))
+
+head(tidyData)
+head(notTidyData)
+```
+
+If we use the only common field, `state` to merge `tidyData`, which is unique on `state` and `year`, to `notTidyData`, which is unique on `county`, then every time we see `state` in our "left" data, we will get **all three counties in that state and for that year**. Even worse, we will get the `InNOut_locations` tally repeated for every matching `state`!
+
+```{r}
+joinedData <- left_join(tidyData, notTidyData, by = c('state'))
+joinedData
+```
+
+Because we asked for all columns of `tidyData` that matched (on `state`) in `notTidyData`, we get replicated `Arrests` - look at MI in 2001 in the first three rows. The original data had 10 Arrests in Michigan in 2001. Now, *for every MI County in `notTidyData`, we have replicated the statewide arrests!*
+
+```{r}
+sum(joinedData$Arrests)
+sum(tidyData$Arrests)
+```
+
+Yikes! We now have 3x the number of arrests in our data. 
+
+```{r}
+sum(joinedData$InNOut_locations)
+sum(notTidyData$InNOut_locations)
+```
+
+And while we might like that we have 3x the In-N-Out locations, we definitely think our data shouldn't suddenly have more.
+
+The reason this happens is that we do not have a unique *key* variable. In the `WDI` tip in Project 2, we didn't have a single unique key variable - there were multiple values of `iso2` country code in the data because we had multiple years for each `iso2`. Thus, when we merged, use used `by = c('iso2','year')` because **the `iso2` x `year` combination was the unique key**.
+
+Here, each dataset would need to have a unique key (or "primary key") on `state` *and* `county` *and* `year` to merge without risk of messing up our data. Since `arrests` aren't broken out by county, we'd have to use `summarize` to total `notTidyData` at the `state` and `year` (to eliminate `county`). Then, we'd have to decide of the number of In-N-Outs are the same for each `year` since `notTidyData` doesn't have `year`.
+
+The lesson is this: always know what your join is doing. Know your unique keys. Use `sum(duplicated(tidyData$key))` to see if all values are unique, or `NROW(unique(tidyData %>% dplyr::select(key1, key2)))` to see if all rows are unique over the 2 keys (replacing "key1" and "key2" with your key fields).
+
+If it shouldn't add rows, then make sure the new data has the same number of rows as the old one, or use `setequal` to check. 
+
+
+# Parsing dates and times
+
+## The date data type
+
+We have described three main types of vectors: numeric, character, and logical. In data science projects, we very often encounter variables that are dates. Although we can represent a date with a string, for example `November 2, 2017`, once we pick a reference day, referred to as the _epoch_, they can be converted to numbers by calculating the number of days since the epoch. Computer languages usually use January 1, 1970, as the epoch. So, for example, January 2, 2017 is day 1, December 31, 1969 is day -1, and November 2, 2017, is day 17,204.
+
+Now how should we represent dates and times when analyzing data in R? We could just use days since the epoch, but then it is almost impossible to interpret. If I tell you it's November 2, 2017, you know what this means immediately. If I tell you it's day 17,204, you will be quite confused. Similar problems arise with times and even more complications can appear due to time zones.
+
+For this reason, `R` defines a data type just for dates and times. We saw an example in the polls data:
+
+```{r,  message=FALSE, warning=FALSE}
+library(tidyverse)
+library(dslabs)
+data("polls_us_election_2016")
+polls_us_election_2016$startdate %>% head
+```
+
+These look like strings, but they are not:
+
+```{r}
+class(polls_us_election_2016$startdate)
+```
+
+Look at what happens when we convert them to numbers:
+
+```{r}
+as.numeric(polls_us_election_2016$startdate) %>% head
+```
+
+It turns them into days since the epoch. The `as.Date` function can convert a character into a date. So to see that the epoch is day 0 we can type
+
+```{r}
+as.Date("1970-01-01") %>% as.numeric
+```
+
+Plotting functions, such as those in ggplot, are aware of the date format. This means that, for example, a scatterplot can use the numeric representation to decide on the position of the point, but include the string in the labels:
+
+```{r rawpolls-vs-time}
+polls_us_election_2016 %>% dplyr::filter(pollster == "Ipsos" & state =="U.S.") %>%
+  ggplot(aes(startdate, rawpoll_trump)) +
+  geom_line()
+```
+
+Note in particular that the month names are displayed, a very convenient feature.
+
+## The lubridate package {#lubridate}
+
+The __tidyverse__ includes functionality for dealing with dates through the __lubridate__ package.
+
+```{r, warning=FALSE, message=FALSE}
+library(lubridate)
+```
+
+We will take a random sample of dates to show some of the useful things one can do:
+
+```{r}
+set.seed(2002)
+dates <- sample(polls_us_election_2016$startdate, 10) %>% sort
+dates
+```
+
+The functions `year`, `month` and `day` extract those values:
+
+```{r}
+tibble(date = dates,
+       month = month(dates),
+       day = day(dates),
+       year = year(dates))
+```
+
+We can also extract the month labels:
+
+```{r}
+month(dates, label = TRUE)
+```
+
+
+Another useful set of functions are the _parsers_ that convert strings into dates. The function `ymd` assumes the dates are in the format YYYY-MM-DD and tries to parse as well as possible.
+
+```{r}
+x <- c(20090101, "2009-01-02", "2009 01 03", "2009-1-4",
+       "2009-1, 5", "Created on 2009 1 6", "200901 !!! 07")
+ymd(x)
+```
+
+A further complication comes from the fact that dates often come in different formats in which the order of year, month, and day are different. The preferred format is to show year (with all four digits), month (two digits), and then day, or what is called the ISO 8601. Specifically we use YYYY-MM-DD so that if we order the string, it will be ordered by date. You can see the function `ymd` returns them in this format.
+
+But, what if you encounter dates such as "09/01/02"? This could be September 1, 2002 or January 2, 2009 or January 9, 2002.
+In these cases, examining the entire vector of dates will help you determine what format it is by process of elimination. Once you know, you can use the many parses provided by __lubridate__.
+
+For example, if the string is:
+
+```{r}
+x <- "09/01/02"
+```
+
+The `ymd` function assumes the first entry is the year, the second is the month, and the third is the day, so it converts it to:
+
+```{r}
+ymd(x)
+```
+
+The `mdy` function assumes the first entry is the month, then the day, then the year:
+
+```{r}
+mdy(x)
+```
+
+The _lubridate_ package provides a function for every possibility:
+```{r}
+ydm(x)
+myd(x)
+dmy(x)
+dym(x)
+```
+
+The __lubridate__ package is also useful for dealing with times. In R base, you can get the current time typing `Sys.time()`. The __lubridate__ package provides a slightly more advanced function, `now`, that permits you to define the time zone:
+
+```{r}
+now()
+now("GMT")
+```
+
+You can see all the available time zones with `OlsonNames()` function.
+
+We can also extract hours, minutes, and seconds:
+
+```{r}
+now() %>% hour()
+now() %>% minute()
+now() %>% second()
+```
+
+The package also includes a function to parse strings into times as well as parsers for time objects that include dates:
+
+
+```{r}
+x <- c("12:34:56")
+hms(x)
+x <- "Nov/2/2012 12:34:56"
+mdy_hms(x)
+```
+
+This package has many other useful functions. We describe two of these here that we find particularly useful.
+
+The `make_date` function can be used to quickly create a date object. It takes three arguments: year, month, day. `make_datetime` takes the same as `make_date` but also adds hour, minute, seconds, and time zone like 'US/Michigan' but defaulting to UTC. So create an date object representing, for example, July 6, 2019 we write:
+
+```{r}
+make_date(2019, 7, 6)
+```
+
+To make a vector of January 1 for the 80s we write:
+
+```{r}
+make_date(1980:1989)
+```
+
+Another very useful function is the `round_date`. It can be used to _round_ dates to nearest year, quarter,  month, week, day, hour, minutes, or seconds. So if we want to group all the polls by week of the year we can do the following:
+
+```{r poll-margin-versus-week}
+polls_us_election_2016 %>%
+  mutate(week = round_date(startdate, "week")) %>%
+  group_by(week) %>%
+  summarize(margin = mean(rawpoll_clinton - rawpoll_trump)) %>%
+  qplot(week, margin, data = .)
+```
+
+Date objects can be added to and subtracted from with `hours`, `minutes`, etc.
+
+```{r}
+startDate <- ymd_hms('2021-06-14 12:20:57')
+
+startDate + seconds(4)
+
+startDate + hours(1) + days(2) - seconds(10)
+
+```
+
+You can even calculate time differences in specific units:
+
+```{r}
+endDate = ymd_hms('2021-06-15 01:00:00')
+
+endDate - startDate
+
+difftime(endDate, startDate, units = 'days')
+
+```
+
+Note that both of these result in a `difftime` object. You can use `as.numeric(difftime(endDate, startDate))` to get the numeric difference in times.
+
+Sequences can be created as well:
+
+```{r}
+seq(from = startDate, to = endDate, by = 'hour')
+
+```
+
+
+# Exercise in Data Wrangling: WW4
+
+You work for a travel booking website as a data analyst. A hotel has asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They've asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.
+
+Unfortunately, you only have the following data:
+
+- [<i class="fas fa-file-csv"></i> `booking.csv`](/data/Travel_booking.csv) - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hoted. 
+
+- [<i class="fas fa-file-csv"></i> `roomrates.csv`](/data/Travel_roomrates.csv) - Contains the price of each room on each day
+
+- [<i class="fas fa-file-csv"></i> `parking.csv`](/data/Travel_parking.csv) - Contains the corporations who negotiated free parking for employees
+
+- Parking at the hotel is \$60 per night if you don't have free parking. This hotel is in California, so everyone drives and parks when they stay.
+
+
+
+::: {.callout-tip}
+
+
+- Right-click on each of the links, copy the address, and read the URL in using `read.csv` to read .csv's
+
+- You'll find you need to use most of the tools we covered on Tuesday including `pivot_longer`, `pivot_wider` and more.
+
+- You'll need `lubridate` and `tidyverse` loaded up.
+
+:::
+
+Your lab wil be based on similar data (with more wrinkles to fix) so share your code with your group when you're done.
+
+
+```{r eval = F, include=F}
+
+### NOTE to BEN: script creating this data is in Example_11_practice.R in the "working" directory (since I wasn't sure where to put scripts that generate data; don't need the kids finding them)
+
+
+library(tidyverse)
+library(lubridate)
+library(here)
+
+# 
+# booking_raw = read.csv(here('data','Travel_booking.csv'))
+# roomrates_raw = read.csv(here('data','Travel_roomrates.csv'))
+# parking_raw = read.csv(here('data','Travel_parking.csv'))
+
+booking_raw = read.csv('https://ec242.netlify.app/data/Travel_booking.csv')
+roomrates_raw = read.csv('https://ec242.netlify.app/data/Travel_roomrates.csv')
+parking_raw = read.csv('https://ec242.netlify.app/data/Travel_parking.csv')
+
+
+## gather roomrates to merge to booking ##
+roomrates = gather(roomrates_raw, convert = T) %>% # this might be tricky since it doesn't require any options!
+  separate(key, sep = '_', into = c('price','roomtype','date')) %>%
+  dplyr::mutate(date_occupied = ymd(date)) %>%      # NOTE: new column name is exactly the column name for date in booking
+  dplyr::select(date_occupied, roomtype, rate = value)   # NOTE: column name can be renamed on the fly with select
+
+## Merge booking to parking
+booking = booking_raw %>%
+  left_join(parking_raw, by = 'corp') %>%
+  dplyr::mutate(Parking = case_when(
+    FreeParking==T ~ 0,
+    is.na(FreeParking) ~ 60,   # Parking is now $ spent on parking
+    TRUE ~ as.numeric(NA))) %>%
+  dplyr::mutate(date_occupied = ymd(date_occupied))
+
+booking.m = booking %>%
+  separate(room_use, sep = '_', into = 'roomtype', extra = 'drop')  # NOTE: new name for room_use corresponds to the name in roomrates
+
+setequal(booking.m$roomtype, roomrates$roomtype)
+
+booking.m = booking.m %>%
+  left_join(roomrates, by = c('date_occupied','roomtype'))
+
+booking.summary = booking.m %>%
+  group_by(corp) %>%
+  dplyr::summarize(sumSpent = sum(rate))
+
+booking.summary
+# B with 98,318
+```
 
 
 

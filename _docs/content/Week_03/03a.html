@@ -288,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/Week_04/04b.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Visualizations</span></a>
+ <span class="menu-text">Data Wrangling</span></a>
   </div>
 </li>
       </ul>
@@ -305,7 +305,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#a-starting-list-from-tufte" id="toc-a-starting-list-from-tufte" class="nav-link active" data-scroll-target="#a-starting-list-from-tufte">A Starting List (from Tufte)</a>
+  <li><a href="#front-matter" id="toc-front-matter" class="nav-link active" data-scroll-target="#front-matter">Front matter</a>
+  <ul class="collapse">
+  <li><a href="#groups" id="toc-groups" class="nav-link" data-scroll-target="#groups">Groups!</a></li>
+  <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings">Readings</a></li>
+  </ul></li>
+  <li><a href="#a-starting-list-from-tufte" id="toc-a-starting-list-from-tufte" class="nav-link" data-scroll-target="#a-starting-list-from-tufte">A Starting List (from Tufte)</a>
   <ul class="collapse">
   <li><a href="#encoding-data-using-visual-cues" id="toc-encoding-data-using-visual-cues" class="nav-link" data-scroll-target="#encoding-data-using-visual-cues">Encoding data using visual cues</a></li>
   <li><a href="#visual-miscues-with-pseudo-3d-plots" id="toc-visual-miscues-with-pseudo-3d-plots" class="nav-link" data-scroll-target="#visual-miscues-with-pseudo-3d-plots">Visual miscues with pseudo-3D plots</a></li>
@@ -353,12 +358,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- - Reveal the code on the re-order example towards the end. (DONE) -->
 <!-- Removed a dead link to bconnelly.net blog on colorblind friendly colors. (DONE) -->
 <!-- - The "align comparable things" notion is spread out all over the end. Focus the purpose of faceting, THEN introduce the alignment concept. -->
-<section id="readings" class="level3">
-<h3 class="anchored" data-anchor-id="readings">Readings</h3>
+<section id="front-matter" class="level1">
+<h1>Front matter</h1>
+<section id="groups" class="level2">
+<h2 class="anchored" data-anchor-id="groups">Groups!</h2>
+<p>Now that add-drop has passed, it’s time to set groups. <strong>If you have found 2 other people to form a 3-person group</strong>, then please do the following by this Saturday night at 11:59pm:</p>
+<ul>
+<li>Nominate <strong>one</strong> person in your group to e-mail myself <a href="mailto:jkirk@msu.edu">jkirk@msu.edu</a> <strong>AND</strong> TA Liza Inaba at <a href="mailto:%20inabaliz@msu.edu">inabaliz@msu.edu</a> with the subject <strong>[EC242] Groups</strong>.</li>
+<li>On the e-mail, cc- the other two members of the group (so two members + Prof.&nbsp;K + TA)</li>
+<li>In the e-mail, tell me the name of your group (be creative) and list the names and emails of all three members.</li>
+</ul>
+<p>Remember, only one person per group should send this email. Groups must be 3 people exactly. Groups will be the same for the semester (all 4 projects).</p>
+<p>On Sunday, our TA will assign all remaining students to a group. <em>No changes will be made and there is no room for late group formation.</em> You will recieve an email letting you know your group assignment on or before Tuesday.</p>
+</section>
+<section id="readings" class="level2">
+<h2 class="anchored" data-anchor-id="readings">Readings</h2>
 <ul>
 <li>This page.</li>
 </ul>
-</section>
 <section id="guiding-questions" class="level3">
 <h3 class="anchored" data-anchor-id="guiding-questions">Guiding Questions</h3>
 <ul>
@@ -367,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>What makes a visual compelling?</li>
 <li>What are the worst visuals? Which of these are most frequently used? Why?</li>
 </ul>
-<p>As with last week’s content, the technical aspects of this lecture will be explored in greater detail in the Thursday practical lecture. Today, we will focus on some principles.</p>
+<p>Today, we will focus on some principles of data exploration and visualization.</p>
 <blockquote class="blockquote">
 <p>“The greatest value of a picture is when it forces us to notice what we never expected to see.” – John Tukey</p>
 </blockquote>
@@ -382,6 +399,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+</section>
 </section>
 <section id="a-starting-list-from-tufte" class="level1">
 <h1>A Starting List (from Tufte)</h1>
@@ -892,7 +911,7 @@ Let’s discuss
 <li><p>Total murders?</p></li>
 <li><p>Murder rate?</p></li>
 </ul>
-<p>It’s the latter! While readers can guesstimate the murder <em>rate</em> from total murders and population, it’s a lot better to <em>show</em> them the murder rate in the first place. We do that below.</p>
+<p>It’s the latter! While readers can guesstimate the murder <em>rate</em> from total murders and population, it’s a lot better to <em>show</em> them the murder rate in the first place. We do that in the next section below.</p>
 <section id="browser-data" class="level4">
 <h4 class="anchored" data-anchor-id="browser-data">Browser data</h4>
 <p>What if we wanted to show how shares have changed <em>over time</em> (which will be a common part of exploratory data analytics). It’s not that share in any given year isn’t interesting, it just shows something with a different meaning.</p>

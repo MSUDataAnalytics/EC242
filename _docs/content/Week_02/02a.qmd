@@ -899,7 +899,7 @@ Write it using the pipe so that each function is called without arguments. Use t
 
 
 
-# Reshaping data
+# Reshaping data {#reshaping}
 
 Your lab will require some reshaping of data, so make sure you read this section closesly.
 
