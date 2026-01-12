@@ -72,7 +72,7 @@ Once loaded, note that each row is an approved project (the JOB NUMBERS are appr
 
 
 ::: {.callout-note}
-## Exercise 1 of 1: Essential pandemic construction
+## Exercise 1 of 2: Essential pandemic construction
 Uh-oh! One of our columns has different capitalization. Use `case_when` (or any other method) to make sure you have consistent character strings for each borough.
 
 Then, assume that each row (observation) is an approved construction project.
@@ -80,15 +80,19 @@ Then, assume that each row (observation) is an approved construction project.
 
 A. Show the count or proportion of approved projects by borough using a bar chart. Make sure all the elements of your plot (axes, legend, etc.) are labeled.
 
-B. Show the count or proportion of approved projects by *category* using a lollipop chart. Not sure of what a lollipop chart is? Google `R ggplot lollipop`. A huge portion of knowing how to code is knowing how to google, find examples, and figure out where to put your variables from your data! Make sure all the elements of your plot (axes, legend, etc.) are labeled.
-
-You don't need to make these super fancy, but if you're feeling brave, experiment with adding a `labs()` layer or changing fill colors with `scale_fill_manual()` or with palettes.
-
-__Bonus__
-
-Overlay the data from Part 1 above onto a map of NYC. Make sure all the elements of your plot (axes, legend, etc.) are labeled. This is hard!
+B. Show the count or proportion of approved projects by *category* using a lollipop chart. Not sure of what a lollipop chart is? Google `R ggplot lollipop`. A huge portion of knowing how to code is knowing how to google, find examples, and figure out where to put your variables from your data! Make sure all the elements of your plot (axes, legend, etc.) are labeled. Make sure ticks are well-placed, numbers are properly formatted, etc. Everything should look professional. Grading will be very picky on this!
 
 :::
+
+
+
+::: {.callout-note}
+## Exercise 2 of 2: Essential pandemic construction
+
+Now, use an apprpriate `facet` function (wrap or grid) to re-make this plot across each `CATEGORY`. Again, make sure everything is labeled well and properly formatted.
+
+:::
+
 
 ## Getting help
 

@@ -21,7 +21,7 @@ project:
     - "!Week_15/"
     #- "!*/01-assignment.qmd"
     #- "!*/02-assignment.qmd"
-    - "!*/03-assignment.qmd"
+    #- "!*/03-assignment.qmd"
     - "!*/04-assignment.qmd"
     - "!*/05-assignment.qmd"
     - "!*/06-assignment.qmd"
