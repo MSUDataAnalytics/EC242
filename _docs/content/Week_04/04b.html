@@ -1040,11 +1040,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2026-01-12 15:13:04 EST"</code></pre>
+<pre><code>[1] "2026-01-12 15:32:07 EST"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>(<span class="st">"GMT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2026-01-12 20:13:04 GMT"</code></pre>
+<pre><code>[1] "2026-01-12 20:32:07 GMT"</code></pre>
 </div>
 </div>
 <p>You can see all the available time zones with <code>OlsonNames()</code> function.</p>
@@ -1056,11 +1056,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">minute</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 13</code></pre>
+<pre><code>[1] 32</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">second</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.364376</code></pre>
+<pre><code>[1] 8.008447</code></pre>
 </div>
 </div>
 <p>The package also includes a function to parse strings into times as well as parsers for time objects that include dates:</p>
@@ -1171,7 +1171,7 @@ Tip
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Right-click on each of the links, copy the address, and read the URL in using <code>read.csv</code> to read .csv’s</p></li>
-<li><p>You’ll find you need to use most of the tools we covered on Tuesday including <code>pivot_longer</code>, <code>pivot_wider</code> and more.</p></li>
+<li><p>You’ll find you need to use most of the tools we covered previously including <code>pivot_longer</code>, <code>pivot_wider</code> and more.</p></li>
 <li><p>You’ll need <code>lubridate</code> and <code>tidyverse</code> loaded up.</p></li>
 </ul>
 </div>

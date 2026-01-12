@@ -3,7 +3,7 @@ title: "4: Data Wrangling"
 output:
   blogdown::html_page:
     toc: false
-duedate: "{{< var duedates.lab4>}}"
+duedate: "{{< var duedates.lab4 >}}"
 ---
 
 <!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
