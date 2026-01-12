@@ -1,9 +1,10 @@
 ---
 title: "2: Visualization with ggplot"
-
 duedate: "{{< var duedates.lab2 >}}" # change in the main _variables.yml file and it will cascade here and below
 toc: true
 toc-depth: 1
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 <!-- Note for Ben: Exericse 3 is new here and includes pivot-wider (reshaping) a little census data as I moved that content up from data wrangling. -->

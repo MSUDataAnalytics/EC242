@@ -8,6 +8,8 @@ type: docs
 output:
   blogdown::html_page:
     toc: true
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 <!-- Notes after F25: -->

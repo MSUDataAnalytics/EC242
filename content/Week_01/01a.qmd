@@ -1,6 +1,8 @@
 ---
 title: "Welcome To Data Analytics"
 lastmod: "`r Sys.Date()`" 
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 ```{r, include=F, eval=T}

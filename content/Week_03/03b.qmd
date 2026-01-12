@@ -12,6 +12,8 @@ type: docs
 weight: 1
 editor_options:
   chunk_output_type: console
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 <!-- PostFall2025 note: Week 6a ALSO talks about distributions and viz, but we didn't get to it in F25. Didn't seem to matter. Make sure the material in F25-06a on distributions is in this week so 6a doesn't need it in the future (can use the time to have them code their own simulation probably? Prisoners Loop?) -->

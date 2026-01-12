@@ -445,7 +445,9 @@ Let's map the `rate` we used in the heatmap above. Since we have many years of o
 
 ```{r, echo=T, collapse = T, message = F, error = F, warning = F}
 
-states = tigris::states()
+states = tigris::states(progress_bar = F)
+# progress_bar = F just keeps the function from putting out a progress bar, which takes up output space
+# probably use it on your projects, but not necessary for interactive.
 
 head(states)
 ggplot(states) + geom_sf()
@@ -456,7 +458,7 @@ We get a lot of information besides the `geometry` column, including the census 
 We also get all the territories, which extends the map window way out the South Pacific. Let's use some tricks to make this better. First off, US territories have FIPS codes of 60 and above, so we can filter to get the 50 US States + DC. Then, we can shift the geometry to include AK and HI (not to scale).
 
 ```{r, echo = T, message = F, error = F, warning = F, collapse = T}
-states = tigris::states(cb = T) %>%
+states = tigris::states(cb = T, progress_bar = F) %>%
   dplyr::filter(STATEFP<60) %>%
   tigris::shift_geometry(position = 'below') %>%
   dplyr::select(STATEFP, STATEFP, STUSPS, NAME)
@@ -527,3 +529,15 @@ p.1965 = ggplot(states.measles.1965, aes(fill = rate)) +
 p.1960 + p.1965 # this is patchwork
 
 ```
+
+
+:::{.callout-note}
+## TRY IT
+
+There's something wrong (or, at the very least, unhelpful) about the finished measles plot above. Can anyone guess what it is?
+
+And can anyone fix it?
+:::
+
+
+

@@ -14,6 +14,8 @@ type: docs
 weight: 1
 editor_options:
   chunk_output_type: console
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 ```{r, echo=F, include=F, eval=T, purl = F}

@@ -3,6 +3,8 @@ title: "Working with R and RStudio"
 toc: true
 toc-depth: 2
 toc-expand: 2
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 ```{r write-data, include=FALSE}
@@ -47,7 +49,7 @@ Pre-requisites for EC242 include PLS202, which covers the basics of using R and 
 
 We have created a video walkthrough for the basics of using `R` for another course, but it is useful here. You can [see part A here (labeled "Part 2a") here <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2a/1_kmszjw36)] and [part B here (labeled "Part 2b")  <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2b/1_c0vf0i63). You should already be at this level of familiarity with R, but if you need a review, this is a good place to start.
 
-If you are still unsure of the basic workings of `R`, I have created a review *resource* for you here: [Using R](resource/usingR.qmd)
+If you are still unsure of the basic workings of `R`, I have created a review *resource* for you here: [Using R](/resource/usingR.qmd)
 
   
 
@@ -71,7 +73,7 @@ It is important to get a grasp on this paradigm -- all code chunks are processed
 
 When you "knit" your script, it runs from a fresh, clean, empty state, and your environment is not accessible to it. Any work you do directly into the console will not apply when you run your code from the top. You can work in the console, but it's absolutely **vital** that you then copy your work to a code chunk. This will be a source of frustration while you get used to the paradigm of **code flow**.
 
-If you're unclear on the idea of `R`'s "workspace", see [here](resource/usingR.qmd#workspace)
+If you're unclear on the idea of `R`'s "workspace", see [here](/resource/usingR.qmd#workspace)
 
 
 ### `install.packages()`
@@ -83,7 +85,7 @@ To **use** a package, you include (in your .Rmd, usually in the first code chunk
 
 
 # Data Types and Coding Concepts
-For a full review of data types, see [the usingR resource](resource/usingR.qmd). I'm going to cover some of the important, non-basic data types we'll be using.
+For a full review of data types, see [the usingR resource](/resource/usingR.qmd). I'm going to cover some of the important, non-basic data types we'll be using.
 
 ## Functions
 
@@ -344,7 +346,7 @@ We won't be using lists until later, but you might encounter one in your own exp
 ::: {.callout-note}
 ## Try it!
   
-You should be familiar with the functions and concepts used in this TRY IT. If any are new to you, please see the [using R review](resource/usingR.qmd). Consider this to be a test for retention of PLS202 concepts and methods.  
+You should be familiar with the functions and concepts used in this TRY IT. If any are new to you, please see the [using R review](/resource/usingR.qmd). Consider this to be a test for retention of PLS202 concepts and methods.  
 
 1. Install the `dslabs` package, load the package, and load the US murders dataset.
 

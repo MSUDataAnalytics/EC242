@@ -4,6 +4,8 @@ linktitle: "1: Programming Basics in R"
 duedate: "{{< var duedates.lab1 >}}" # change in the main _variables.yml file and it will cascade here and below
 toc: true
 toc-depth: 1
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 <!-- # post-F25, I updated the exercises to have tryi-it callout boxes as in Assignment 2 -->

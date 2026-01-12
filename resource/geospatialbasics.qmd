@@ -1,6 +1,8 @@
 ---
 title: Geospatial Basics
 sidebar: resources
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 
@@ -154,13 +156,29 @@ While it's fun to draw our own shapes (caution: my definition of fun $\neq$ your
 We can open and use any one of these filetypes. I will cover Shapefiles and GEOJSON as the latter has become a very popular way of sharing spatial datasets.
 
 ### Where to find spatial data
-Spatial data is all around us! Try searching google for a topic + "spatial shapefile". One of my favorite sources for spatial data is the DHS [HIFLD Open database](https://hifld-geoplatform.hub.arcgis.com), which has lots of government datasets that are well-organized by category. Click through, choose the "open" database, and when you find something you like, click the "Download" button. If there is a GEOJSON or KML file available, **right-click** and copy the link address, or click on **full details** and scroll down to *I want to...View API Resources* and copy the GEOJSON link. Then, use that with `st_read()`. On many maps (including this one), the GeoJSON link is shown under the API drop-down. Use GeoJSON over KML as some systems have issues importing the data fields in KML. 
+Spatial data is all around us! Try searching google for a topic + "spatial shapefile". 
+
+~~One of my favorite sources for spatial data is the DHS [HIFLD Open database](https://hifld-geoplatform.hub.arcgis.com), which has lots of government datasets that are well-organized by category. Click through, choose the "open" database, and when you find something you like, click the "Download" button.~~ 
+
+As of November 2025, this dataset has been taken offline. I have a copy of the publicly available geojson file so that I can continue to use this lesson. You can load it from [this link](/data/natural-gas-processing-plants.geojson). 
+
+We'll have more on finding data in our course.
 
 ### Loading the data
 We'll use the `sf` package's `st_read` to open spatial data. Here, I'm loading the Natural Gas Processing Plants data from the Energy section of HIFLD. I'm using the **GeoJSON** option, which `st_read()` knows how to handle:
 
-```{r}
-gasplants = st_read('https://services7.arcgis.com/FGr1D95XCGALKXqM/arcgis/rest/services/NaturalGas_ProcessingPlants_US_EIA/FeatureServer/23/query?outFields=*&where=1%3D1&f=geojson') %>%
+```{r, eval = F, echo=T}
+# gasplants = st_read('https://services7.arcgis.com/FGr1D95XCGALKXqM/arcgis/rest/services/NaturalGas_ProcessingPlants_US_EIA/FeatureServer/23/query?outFields=*&where=1%3D1&f=geojson') %>%
+#   dplyr::select(name = Plant_Name)
+
+gasplants = st_read('your file path here') %>%
+  dplyr::select(name = Plant_Name)
+
+head(gasplants)
+```
+
+```{r, eval = T, echo = F, message = F, error = F, warning = F}
+gasplants = st_read(here('data','natural-gas-processing-plants.geojson')) %>%
   dplyr::select(name = Plant_Name)
 
 head(gasplants)

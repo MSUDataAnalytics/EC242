@@ -11,6 +11,8 @@ sidebar: contentsf
 order: 20
 output:
   toc: true
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 
