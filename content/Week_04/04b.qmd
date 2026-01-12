@@ -6,6 +6,12 @@ output:
     toc: true
 ---
 
+```{r, eval = T, include = F}
+library(knitr)
+```
+
+
+
 # Data Wrangling
 
 Part of visualization is prepping your data. We previously covered [reshaping](/content/Week_02/02a.qmd#reshaping) during our tidyverse review. Today we go more in-depth to on joining and cleaning data.
