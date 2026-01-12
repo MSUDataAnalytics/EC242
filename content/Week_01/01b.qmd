@@ -459,16 +459,17 @@ Rather than sort the input vector, the function `order` returns the index that s
 
 ```{r}
 index <- order(x)
-x[index]
-```
-
-This is the same output as that returned by `sort(x)`. If we look at this index, we see why it works:
-```{r}
-x
-order(x)
+print(index)
 ```
 
 The second entry of `x` is the smallest, so `order(x)` starts with `2`. The next smallest is the third entry, so the second entry is `3` and so on.
+
+To use this, we just need to place it as the index to `x`. If we look at this index, we see why it works:
+```{r}
+x[index]
+```
+
+This is the same output as that returned by `sort(x)`. 
 
 How does this help us order the states by murders? First, remember that the entries of vectors you access with `$` follow the same order as the rows in the table. For example, these two vectors containing state names and abbreviations, respectively, are matched by their order:
 
@@ -486,13 +487,16 @@ murders$abb[ind]
 
 According to the above, California had the most murders.
 
-If we wanted to re-order the whole data.frame based on the `murders$total` index, and **overwrite with the new order**:
+If we wanted to re-order the whole data.frame based on the `murders$total` index, and **write it with the new order**:
 
 ```{r}
 murders_ordered = murders[ind,]
 ```
 
 This saves `murders` in a new data.frame called `murders_ordered` that is in the order defined by `ind`.
+
+Usually when you're working with your data, you'll need to decide if you want to save as a *new* object (like `murders_ordered`), or just overwrite the original (`murders = murders[ind,]`). The answer depends on your workflow.
+
 
 ### `max` and `which.max`
 

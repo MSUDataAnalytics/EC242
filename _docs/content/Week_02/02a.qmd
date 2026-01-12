@@ -899,6 +899,8 @@ Write it using the pipe so that each function is called without arguments. Use t
 
 # Reshaping data
 
+Your lab will require some reshaping of data, so make sure you read this section closesly.
+
 Having data in _tidy_ format is what makes the tidyverse flow. After the first step in the data analysis process, importing data, a common next step is to reshape the data into a form that facilitates the rest of the analysis. The __tidyr__ package includes several functions that are useful for tidying data.
 
 ```{r, message=FALSE, warning=FALSE}
