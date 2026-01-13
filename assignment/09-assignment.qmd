@@ -12,8 +12,9 @@ This assignment is due on **{{< meta duedate >}}**
 
 {{< var blurbs.homeworkdue >}}
 
+### If you're looking for the Project 2 assignment, [go here](/groupproject/project2.qmd)
 
-# Group Project 2 Feedback
+# Lab 9: Group Project 2 Feedback
 
 This lab is a little different. Week 9, we will be having Group Project 2 presentations. Each group will present their work and a new `ggplot` geometry or method.
 
