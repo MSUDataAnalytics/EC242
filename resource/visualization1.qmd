@@ -5,7 +5,7 @@ sidebar: resources
 
 <!-- PostFall2025 note: Week 6a ALSO talks about distributions and viz, but we didn't get to it in F25. Didn't seem to matter. Make sure the material in F25-06a on distributions is in this week so 6a doesn't need it in the future (can use the time to have them code their own simulation probably? Prisoners Loop?) -->
 
-Note to Ben (S26 onward): I've moved this entire unit on histograms, densities, the normal distribution, and basic geometries (barplot, etc.) to a resource and replaced it with...something.
+<!-- Note to Ben (S26 onward): I've moved this entire unit on histograms, densities, the normal distribution, and basic geometries (barplot, etc.) to a resource and replaced it with...something. -->
 
 # Front matter
 

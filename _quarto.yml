@@ -122,13 +122,18 @@ website:
           contents:
             - resource/markdown.qmd
             - resource/rmarkdown.qmd
+        - section: "Visualization"
+          contents:
+            - resource/visualization.qmd
+            - resource/visualization1.qmd
+            - resource/visualization2.qmd
+            - resource/design.qmd
         - section: "Other Useful Stuff"
           contents: 
             - resource/data.qmd
             - resource/spatial.qmd
             - resource/unzipping.qmd
-            - resource/visualization.qmd
-            - resource/design.qmd
+            
       
     # 
     # - id: main
