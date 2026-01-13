@@ -1,8 +1,37 @@
 ---
-title: "9: No Lab"
+title: "9: Group Project 2 Feedback"
 duedate: "{{< var duedates.lab9 >}}"
 ---
 
-## No lab this week
 
-Tuesday is fall break, and Thursday is presentation of Project 2.
+
+::: {.callout-warning}
+## Due Date
+This assignment is due on **{{< meta duedate >}}**
+:::
+
+{{< var blurbs.homeworkdue >}}
+
+
+# Group Project 2 Feedback
+
+This lab is a little different. Week 9, we will be having Group Project 2 presentations. Each group will present their work and a new `ggplot` geometry or method.
+
+::: {.callout-note}
+## Exercise 1 of 2
+
+For *one* presentation, write up a short response or set of suggestions for the analysis presented. Provide feedback on the topic as if you were interacting with the group (I won't be sharing the feedback with the group, though). Your feedback should be constructive, and should provide avenues of exploration for the analysis as presented. For instance, if the presentation were on COVID and unemployment, suggest another variable that might be interesting to condition on or control for. Or suggest a dataset that might have interesting information.
+
+:::
+
+
+In a second section of your lab....
+
+::: {.callout-note}
+## Exercise 2 of 2
+
+For one of the presented geometries or methods that is **not** your own, apply the geometry / method to your own data. Present a well-formatted plot and discuss, in 2-3 sentences, what you have shown.
+
+The geometry or method you use does **not** have to be from the same group as the one you provided feedback on in Exercise 1. 
+
+:::

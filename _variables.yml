@@ -57,18 +57,18 @@ duedates:
   project1: "Saturday, February 14th, 11:59PM"
   lab5:  "Monday, February 16th"
   lab6:  "Monday, February 23rd"  # Spring Break 3/1 - 3/6
-  project2: "Tentatively Wednesday, February 25th, 11:59PM"
-  project2present: "Tentatively Thursday, February 26th, in class"
+  project2: "Tentatively Monday, March 16th, 11:59PM"
+  project2present: "Tentatively Tu-Th, March 17-19th, in class"
   lab7:  "Monday, March 9th"
   lab8:  "Monday, March 16th"  # extra time due to fall break / proj 2
-  lab9:  "No Lab 9"
-  lab10: "Monday, March 23rd"   # I usually allow longer for this one - Mon Nov 11
-  lab11: "Monday, March 30th"  
-  lab12: "Monday, April 6th"
-  lab13: "Monday, April 13th"
-  lab14: "Monday, April 20th"
-  project3: "TBA, 11:59PM"
-  lab15: "Monday, April 27th"
+  lab9:  "Monday, March 23rd"
+  lab10: "Monday, March 30th"   
+  lab11: "Monday, April 6th" 
+  lab12: "Monday, April 13th"
+  lab13: "Monday, April 20th"
+  lab14: "Monday, April 27th"
+  project3: "Saturday, April 11th, 11:59PM"
+  lab15: "Monday, April 27th"  # Not used S26 (14 week semester)
   finalproject: "Thursday, April 30th, 11:59PM"
   
   

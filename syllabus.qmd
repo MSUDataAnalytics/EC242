@@ -193,13 +193,15 @@ grading <- tribble(
 labsParticipationWriting = sum(assignments %>% dplyr::filter(grepl(Assignment, pattern = 'Participation|Writings|Labs')) %>% pull(Points))/sum(assignments$Points)
 everythingElse = 1-labsParticipationWriting
 ```
-Your grade in this course will be based on attendance/participation, labs, weekly writings, and a final project.
+
+Your grade in this course will be based on attendance/participation, labs, weekly writings, and multiple group projects.
 
 The general breakdown will be approximately `r scales::percent(labsParticipationWriting)` for labs, participation, and weekly writings, and `r scales::percent(everythingElse)` for projects (see below for specific details). The primary focus of the course is a final project; this requires "mini-projects" to ensure you're making satisfactory progress. 
 
 Weekly writings are intended to be an easy way to get some points. Labs will be short homework assignments that require you to do something practical using `R`. You must have access to computing resources and the ability to program basic statistical analyses and use `ggplot`, as is required in PLS202. If you are unprepared to implement basic statistical coding, please take (or retake) PLS202. I highly encourage seeking coding advice from those who instruct computer science courses – it’s their job and they are better at it than I am. I’ll try to provide a good service, but I'm really not an expert in computer science.
 
 More in-depth descriptions for all the assignments are on the [assignments page](/assignment/). As the course progresses, the assignments themselves will be posted within that page.
+
 
 ### Dropping your lowest scores {#sec-dropone}
 I will automatically drop your two lowest weekly writings and your one lowest lab assignment score. This allowance absorbs any personal issues, travel problems, computing issues, or non-excused medical issues that may preclude you from completing your assignment on time. If you request an extension or exemption, I will politely point you here.
