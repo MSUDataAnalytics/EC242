@@ -185,6 +185,7 @@ Cons:
   X causes Y and Y causes X (simultaneous equations)
 
 **So what does the "Social Science" in "Social Science Data Analytics" do?**
+
 - People do not obey the laws of physics
 - People's preferences and feelings do not obey a strict logic
   - You may prefer a burger for dinner today, but you might want spaghetti tomorrow
