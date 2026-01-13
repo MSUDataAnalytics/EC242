@@ -20,6 +20,7 @@ In class today, we'll talk about the course, review the syllabus, and check your
 But first a quick plug...
 
 ```{r, echo=F, out.width='80%'}
+#| fig-alt: "Flyer promoting MSU Applied Econ study abroad program. Image 1 of 2 shows a group of 20 students standing in front of an old building. Image 2 of 2 shows a skyline view of downton London."
 knitr::include_graphics(here('images','London–Summer 2026-Info Session Flyer.png'))
 ```
 
@@ -349,6 +350,8 @@ dat %>%
 But then you remember that (1) this is a hypothetical exercise; (2) you'll take literally any job at this point; and (3) Geographic diversity matters -- the United States is a large and diverse country with 50 very different states (plus the District of Columbia and some lovely territories).^[I'm especially partial to Puerto Rico.]
 
 ```{r us-murders-by-state-map, warning = FALSE, message=FALSE, echo=FALSE}
+#| fig-alt: "Image shows a map of US showing state-level murder rates per 100k people. Louisiana and Missouri are highest at 6+, while the upper west/midwest and upper New England areas are lowest"
+
 library(tidyverse)
 library(dslabs)
 
