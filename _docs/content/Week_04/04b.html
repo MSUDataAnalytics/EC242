@@ -326,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-date-data-type" id="toc-the-date-data-type" class="nav-link" data-scroll-target="#the-date-data-type">The date data type</a></li>
   <li><a href="#lubridate" id="toc-lubridate" class="nav-link" data-scroll-target="#lubridate">The lubridate package</a></li>
   </ul></li>
-  <li><a href="#in-class-exercise-in-data-wrangling-ww4" id="toc-in-class-exercise-in-data-wrangling-ww4" class="nav-link" data-scroll-target="#in-class-exercise-in-data-wrangling-ww4">In-Class Exercise in Data Wrangling: WW4</a></li>
+  <li><a href="#in-class-exercise-in-data-wrangling" id="toc-in-class-exercise-in-data-wrangling" class="nav-link" data-scroll-target="#in-class-exercise-in-data-wrangling">In-Class Exercise in Data Wrangling</a></li>
   </ul>
 </nav>
     </div>
@@ -1040,11 +1040,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2026-01-12 15:32:07 EST"</code></pre>
+<pre><code>[1] "2026-01-13 05:56:58 EST"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>(<span class="st">"GMT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2026-01-12 20:32:07 GMT"</code></pre>
+<pre><code>[1] "2026-01-13 10:56:58 GMT"</code></pre>
 </div>
 </div>
 <p>You can see all the available time zones with <code>OlsonNames()</code> function.</p>
@@ -1052,15 +1052,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">hour</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 15</code></pre>
+<pre><code>[1] 5</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">minute</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 32</code></pre>
+<pre><code>[1] 56</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">second</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 8.008447</code></pre>
+<pre><code>[1] 58.56751</code></pre>
 </div>
 </div>
 <p>The package also includes a function to parse strings into times as well as parsers for time objects that include dates:</p>
@@ -1149,8 +1149,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="in-class-exercise-in-data-wrangling-ww4" class="level1">
-<h1>In-Class Exercise in Data Wrangling: WW4</h1>
+<section id="in-class-exercise-in-data-wrangling" class="level1">
+<h1>In-Class Exercise in Data Wrangling</h1>
 <p>You work for a travel booking website as a data analyst. A hotel has asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They’ve asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.</p>
 <p>Unfortunately, you only have the following data:</p>
 <ul>

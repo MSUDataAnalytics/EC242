@@ -149,9 +149,13 @@ Many people have created many useful tools for selecting the correct chart type 
 - [**R Graph Catalog**](http://shinyapps.stat.ubc.ca/r-graph-catalog/): R code for 124 ggplot graphs.
 - [**Emery's Essentials**](http://annkemery.com/essentials/): Descriptions and examples of 26 different chart types.
 
+## MSU-offered resources {#datavis-resources}
+- [**MSU Data Vis Library Page**](https://libguides.lib.msu.edu/datavis)
+
 
 ## General resources
-
+- [**Data Visualisation Catalogue**](https://datavizcatalogue.com)
+- [**R Graph Gallery**](https://r-graph-gallery.com)
 - [**Storytelling with Data**](http://www.storytellingwithdata.com/): Blog and site full of resources by Cole Nussbaumer Knaflic.
 - [**Ann K. Emery's blog**](http://annkemery.com/blog/): Blog and tutorials by [Ann Emery](https://twitter.com/AnnKEmery).
 - [**Evergreen Data**](http://stephanieevergreen.com/): Helful resources by [Stephanie Evergreen](https://twitter.com/evergreendata).

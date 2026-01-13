@@ -124,7 +124,7 @@ Please ask your question in one of the coursewide channels so that our TA can an
 
 
 
-## About Me
+### About Me
 
 **Me:** My primary area of expertise is economics. {{< var aboutme.instructor >}}
 
