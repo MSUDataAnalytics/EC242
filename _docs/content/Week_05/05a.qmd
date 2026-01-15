@@ -1,10 +1,13 @@
 ---
-title: "Data Wrangling"
+title: "Data Hunting"
 lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
     toc: true
 ---
+
+
+
 
 
 

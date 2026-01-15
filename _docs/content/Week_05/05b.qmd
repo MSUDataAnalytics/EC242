@@ -7,3 +7,275 @@ output:
 ---
 
 
+
+
+
+# Reading
+
+
+# Guiding Questions
+
+- Where do we find (social science) data "in the wild"?
+
+- What challenges are presented in finding data?
+
+- Can generative AI like ChatGPT help? Hinder?
+
+
+
+# Let's discuss in the context of a question
+
+
+
+
+
+# Data Sources
+
+US Census
+- Decennial census (every 10 years, 100% of population)
+  - Public Use Microdata
+  - Summary tables 
+- American Community Survey (every year, 5% of population)
+  - Public Use Microdata
+  - Summary tables
+- American Housing Survey, commute, etc.  
+
+
+
+## Temporal and geospatial granularity
+
+Data is often limited in some way for privacy. That is, you should never be able to identify a single person in publicly available data, even if you know something about them. While data users like us would prefer to have very exact physical locations (imagine you'd like to see proximity to a greenspace for people with different income levels), privacy concerns mean we often only get to see less *granular* geographic location (like "city" or "county").
+
+Temporal granularity refers to time, the number of times we observe the same unit of observation, or the number of times we see any data. 
+
+### Panel Data
+When we see the same unit of observation at different points in time (yearly, decadally, etc.), and when we see more than one unit of observation, then we say we have "panel data". Panel data is very useful because we can look at changes over time for multiple units of observation, and we can look at the ways in which different variables change over time, and whether they change together.
+
+For example, if we see unemployment rate and average education level every year for every county in Michigan, we'd say "we have a panel of counties with yearly data." A panel dataset might be individuals as well, as long as we observe the same individual multiple times. If we saw that counties with increasing unemployment rates over time also tend to have decreasing average educational attainment, we will have learned somehting about the relationship (correlation) between the two, even if different counties have very different "usual" levels of unemployment.
+
+### Repeated cross-section
+If we have data where the same variable is measured at different points in time, but measured against a different sample from the same population at each time period, we call that a "repeated cross-section." It's not as useful as a panel, but it's better than nothing. Later, we'll work with the US Energy Information Administration's RECS (Residential Energy Consumption Survey), which is taken every 10 years and surveys a sample of around 10,000 homes in the US. Since it's different homes sampled every 10 years, it's a "repeated cross-section".
+
+### Cross section and time series
+A "cross section" is just a sample at one point in time (or taken over an interval of time, but without reporting the time). A time series dataset is one where a single unit of observation is followed over multiple points in time. Both of these are less useful for analysis.
+
+
+
+## US Census
+
+### Summary tables, cross-tabs, and individual data
+Most US Census data is used via summary tables, which report a single value for each spatial area (like a census tract). Average income by census tract, average age by county, etc. We often also use cross-tabs of summary files, which subdivides by two variables: average income **by age** by census tract, or average age **by nationality of birth** by county. The US census makes a lot of cross-tabs, but not every single combination you could imagine. Plus, they are limited by privacy, so they can't subdivide to the point you can identify a person. For instance, "average income by exact age by number of kids by profession by time living in current house by census block" would absolutely identify an individual's current income as they'd be the only one being averaged.
+
+The US decennial census and the yearly 5-year and 1-year American Community Survery (ACS) report summary tables with very rich cross-tabs. 
+
+**Individual data** allows for generating any cross-tab as individual data would contain all responses to all questions for the respondent. The US Census makes the ACS sample individual answers available to the public, along with the survey and codebook for translating responses. Of course, for privacy reasons, the geographic location provided with the individual data is limited. The finest area reported is the "PUMA" (Public Use Microdata Area), which contain around 50,000 individuals in each. For example, the City of Detroit is comprised of around 12 PUMAs. 
+
+### Spatial definitions
+
+- Region
+- Metropolitain Statistical Area (MSA)
+- Combined Statistical Areas (CSA)
+- State
+- County
+- PUMA
+- Tract
+- Blockgroup
+- Block
+- Many more (tribal areas, zip code ZCTAs, etc.)
+
+You can explore [all of the census geographies with the TIGER browser](https://tigerweb.geo.census.gov/tigerweb/) (make sure you turn on roads to get a sense of where you're looking).
+
+#### [GEOID](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html)
+
+The US Census has standardized a way of referring to each spatial unit ("geography") in the census data. The GEOID can be of different lengths depending on what it's pointing to, and when census geographies are perfectly nested, then the GEOID tells you which smaller units belong to which bigger units (tracts in county)
+
+First 2 are state
+Next 3 are county FIPS
+Next 6 are Tract
+Next 1 is blockgroup
+Last 4 are block (first block digit includes blockgroup)
+
+!! add picture of different geographies if possible !!
+
+Different data is reported at different levels. Most basic data is available at the block level (population, average income, average family size), but "cross-tabs" are not always available at block, blockgroup, or even sometimes tract level. For example, average income for females over 85 is a "cross-tab" (reported in a "summary table" since it's summarizing a population within a geography), but since there aren't very many 85 year olds in any block (40 houses), it's unlikely that the cross-tab can be reported.
+
+Since there are many census surveys (decennial and ACS) over time, we can obtain the data for different years. Decennial census access goes back to the 1940's and earlier, while ACS starts in the early 2000's. 
+
+Rule of thumb: you want your census data to be at the same spatial and temporal granularity of your other data. That is, if you have a count of "number of markets with fresh veggies" at the tract level from some source, you probably want to have things like "average income" reported at the tract level as well. If you only have the measure for one year, you probably just want the nearest year reported in the census. If you have it for multiple years, then you probably want the census product years that correspond.
+
+
+### Obtaining Census Data
+
+Using the `tidycensus` package, we can easily obtain US census data. First, you must obtain a US Census API key, which is free and fast. Go to [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html). Then, install the `tidycensus` package and, once loaded, run `tidycensus::census_api_key('your census API key')` once and only once. It will save the key on your computer and won't expose it in your code. Handy!
+
+Tidycensus can obtain data from both PUMS (individual) and from the summary tables for ACS and decennial censuses. The interface makes it easy to import data directly into your R session. The hard part, though, is knowing what to ask for.
+
+#### Individual (PUMS) data
+
+You can load into R the complete list of variables available for PUMS with the instructions [here](https://walker-data.com/tidycensus/articles/pums-data.html). PUMS reports both household-level responses and individuals. Individuals are "nested" in households and each has a weight within the household. You can easily move between individual and household by using `dplyr::summarize` after grouping by the household identifier.
+
+My preferred way of finding the right PUMA variable is to use the browser at [https://data.census.gov/app/mdat/ACSPUMS1Y2024](https://data.census.gov/app/mdat/ACSPUMS1Y2024). Choose a year and a sample to see the data browser. Clicking on a topic drop-down shows you the codebook for the variable -- the translation between the (compact) data returned and it's meaning. Click on `AGEP` and note that values of `0` mean "under 1 year" and values 1-99 indicate age of the individual (top-coded at 99 so there are no 101 year olds reported; they just get "99").
+
+If you select a few then click on "see data" it will give you totals for the whole US, and try to show you cross-tabs generated using this data. However, *if you record the variable names, we can import using `tidycensus::get_pums()` the individual observations*. We'll include the `PUMA` variable since this tells us which PUMA the person lives in. PUMAs are not uniquely numbered to the state, so if we're doing anything interstate, we'll need to `unite` the `ST` and `PUMA` columns.
+
+```{r, echo=T}
+individual1 = tidycensus::get_pums(variables = c('AGEP','NATIVITY','PUMA'), 
+                                   state = 'MI',
+                                   puma = NULL, # will pull all PUMAs in state
+                                   year = 2022,
+                                   survey = 'acs1')
+
+head(individual1)
+```
+
+The `SERIALNO` column shows the household identifier, and `SPORDER` contains the individual identifier (so a unique person is SERIALNO - SPORDER).
+
+We can immediately make our own visualization: how about the distribution of age by nativity?
+
+```{r, echo=T}
+#| fig-alt: "Density plot showing frequency of each age separated by foreign- and US-born. The blue US-born population is higher up to age 18, then less frequent from 18 to 60, then more frequen from 60 to 80, then less frequent from 80 to 99"
+
+ggplot(individual1 %>%
+         dplyr::mutate(NATIVITY = case_when(NATIVITY==1 ~ 'US-born',
+                                            NATIVITY==2 ~ 'Foreign born')), 
+       aes(x = AGEP, fill = as.factor(NATIVITY))) + 
+  geom_density(alpha = .33) +
+  labs(x = "Age", y = 'Density', fill = 'Nativity') +
+  theme_minimal()
+```
+
+We can do this for any variable we find on the data browser.
+
+#### PUMS maps
+
+Summarizing and showing on a map is easy. First, we need to obtain the PUMA map for the year that corresponds to our data (they are updated every 10 years). Then, we need to `group_by` and `summarize` the individual data so that each PUMS has one value for each variable.
+
+I'm interested in seeing where in MI there's a big gap between native-born age and foreign-born age.
+
+```{r, echo=T}
+MIpums = tigris::pumas(state = 'MI', year = 2022)  %>%
+  tigris::erase_water() # fixes the Great Lakes boundary issue
+
+MIpums.merge = MIpums %>%
+  dplyr::select(PUMACE20, NAMELSAD20) %>% # just keeping useful columns from tigris file
+  left_join(individual1 %>% group_by(PUMA) %>%
+              dplyr::summarize(avgAge.USborn = mean(AGEP[NATIVITY==1], na.rm=T),
+                               avgAge.foreignborn = mean(AGEP[NATIVITY==2], na.rm=T),
+                               diffAvgAge = avgAge.USborn - avgAge.foreignborn),
+            by = c('PUMACE20' = 'PUMA'))
+head(MIpums.merge)
+```
+
+Now, we can plot this (or use `mapview` to explore interactively)
+```{r, echo=T}
+#| fig-alt: "Map showing the difference in average age between US- and foreign-born poulation by PUMA."
+
+ggplot(MIpums.merge, aes(fill = diffAvgAge, col = diffAvgAge)) + geom_sf() +
+  theme_minimal() +
+  labs(fill = 'Diff. in avg\nage')
+
+```
+
+
+#### Summary tables
+
+Summary tables from decennial census or the ACS contain finer geographies (usually down to census block), but aggregate rather than giving individual observations. Many cross-tabs are calculated for each geography, so finding the right one can be tricky. Some tables report averages or shares (percent renters, average income) while some report total counts (count of renters, number of people earning between \$25-35k). 
+
+While `tidycensus` provides a function to import the whole list of all variables, we can also use the [data.census.gov](data.census.gov) website. We are looking for **tables**, so click on "explore tables".
+
+First thing we want to do is set our level (e.g. block, block-group, tract, county, etc.) so that we are searching for data that exists at the level we want. No sense in searching for something you want at the county level to find out it's only available at the state level! On the left side under "geography" click on the level you want (say, "census tract") then choose a random state and tract -- you're only using this to find the variable's code, not to actually retrieve data. I always use the first county in Alabama just because it's small-ish so it doesn't take long to load up.
+
+I'm also going to select the year 2022 by scrolling down and checking the 2022 box, just so we're only looking at ACS census data (ACS is only in non-decennial years). Not all variables exist for all years (especially over long periods of time). I'm going to search "house heating fuel" to find the type of heating fuel used. I'll select "B25117", which is the variable ID number for "House Heating Fuel" data.
+
+This is what you'll see at this point -- note the location and geography filter.
+
+```{r, echo=F}
+#| fig-alt: "Screenshot of data.gov showing B25117 'House Heating Fuel' highlighted and showing data for all tracts in one county"
+
+knitr::include_graphics(here('images','census1.png'))
+```
+
+Let's take a look at the columns that show up under "B25117". For this (and any table starting with "B"), there are two columns for each census tract header. The first is the "Estimate" and the second is the "Margin of Error". The MOE is there because this is a sample (ACS is 1% of the population). Decennial censuses are counts, so there is no MOE. Other tables will have more columns (cross-tabs or expressed as percent vs. counts). We'll get there in a second.
+
+Just "B25117" isn't quite enough. You see that there are multiple numbers in each column -- the "Total:", then "Utility gas" then "Bottled, tank, or LP gas" etc. There's also two groupings: "Owner occupied" and "Renter occupied". To import this data to `R`, we have to identify which of these (possibly many) numbers we want for every tract.
+
+Each of the rows is numbered, so if we want the total number of households in a tract that are counted for this variable, then our target is "B25117_001". If we want the total number of owner-occupied households using electric heating, we want row 5. If we want the same for renter-occupied, we want 15. And if we want to calculate, say, the *shares* of households using electric heat among renter-occupied households, we'd want row 15 divided by row 12. When there are blank lines, you do not count those lines.
+
+The "Total" (row 1) will be same for almost all variables we could choose in the same year and survey (2022 ACS) because the universe of households surveyed is the same for all the variables. So if we go to B11016 "Household Type by Household Size" and look at the same tract, we'll see the same estimate, but other rows for that variable will be different.
+
+Let's pull data for the first county in Alabama (FIPS = 01001) so we can convince ourselves that data.gov and `tidycensus` yield the same data. We'll calculate the "fraction of owner-occupied households that heat with "Bottled, tank, or LP gas" for renters and for owners. We'll note that we need the following:
+
+- Total owner-occupied (row 2)
+- Total owner-occupied using Bottled, tank or LP gas (row 4)
+- Total renter-occupied (row 12)
+- Total renter-occupied using Bottled, tank or LP gas (row 14)
+
+```{r, echo=T}
+AL.heat = get_acs(geography = 'tract', 
+                  variables = c('OwnerOccupied_total' = 'B25117_002',
+                                'OwnerOccupied_LPgas' = 'B25117_004',
+                                'RenterOccupied_total' = 'B25117_012',
+                                'RenterOccupied_LPgas' = 'B25117_014'),
+                  year = 2022, survey = 'acs5',
+                  output = 'wide', # in "wide" format
+                  state = '01', county = '001',
+                  geometry = TRUE)
+head(AL.heat)
+```
+
+The `variables` argument takes *named* vectors, and `tidycensus` uses the name you give it for each variable for the column it outputs (appending "E" and "M" for Estimate and MOE).
+
+That first line of the results shows 519 owner-occupied households total, same as on data.gov. We have both the Estimate and the Margin of Error, so we want to drop those. Then we want to calculate our shares.
+
+```{r, echo=T}
+AL.heat.proc = AL.heat %>%
+  dplyr::select(!ends_with('M')) %>%
+  dplyr::mutate(OwnerShareLPgas = OwnerOccupied_LPgasE/OwnerOccupied_totalE,
+                RenterShareLPgas = RenterOccupied_LPgasE/RenterOccupied_totalE) %>%
+  dplyr::select(GEOID, NAME, ends_with('gas'))
+
+head(AL.heat.proc)
+```
+
+The second lines uses a `tidyselect` shortcut to select anything that does NOT (!) end with "M" (so that we lose the "margin of error" columns). Similarly, the last line selects the GEOID, NAME and the two new variables I just created. 
+
+We can grab the census tract polygons for Alabama and plot these. **Or**, we could change `geography=TRUE` to our `get_acs` call, and we'll get the `tigris` polygons already attached for this county.
+
+Not all tables have just the "Estimate" and "Margin of Error" column. Some, like "S1101" (Households and Families) have cross-tabs across the columns (AND cross-tabs down the rows!). That's super helpful if we have a very narrowly defined population we're interested in, but also makes things harder. Let's find the S1101 data and look at it's table layout:
+
+```{r}
+#| fig-alt: "Data.gov table layout with multiple columns with different crosstabs for S1101 in the first county in Alabama"
+
+knitr::include_graphics(here('images','census2.png'))
+```
+
+
+Now on the right we see sets of columns with different cross-tabs. Total is still there (note that it's still 700, just as before), but now there's a pair of columns for "Married-couple family household" and "Male householder, no spouse present, family household" and more. Let's look at "Female householder, no spouse present, family household" and find out what fraction of these households own their own home.
+
+We'll need the following
+
+- Total households (row 1, since we don't count blanks)
+- Owner-occupied households (row 18, since we don't count blanks but we do count X's as those are cross-tabs that are censored for privacy)
+  - Note that this is already in percentage, so we don't really need the Total households.
+
+But we'll need them specifically for the "Female householder, no spouse present, family household" set of columns. That is the **third** set of columns, so we append it with "C03"
+
+```{r, echo=T}
+AL.fam = get_acs(geography = 'tract', 
+                  variables = c('TotalHouseholds' = 'S1101_C04_003',
+                                'PctFemaleNoSpouseFamily_OwnerOccupied' = 'S1101_C04_018'),
+                  year = 2022, survey = 'acs5',
+                  output = 'wide', # in "wide" format
+                  state = '01', county = '001',
+                  geometry = FALSE) %>%
+  dplyr::arrange(GEOID) %>% # comes in out of order for some reason
+  dplyr::select(!ends_with('M'))
+head(AL.fam)
+```
+
+Here, we see we get the expected number -- 59.3% owner-occupied. Now we can confidently change the state and county to whatever we are interested in, add other variables, and make new calculations.
+
+There is a full catalog of the structure of data.gov that can be found here: [https://api.census.gov/data/2022/acs/acs5/subject/variables.html](https://api.census.gov/data/2022/acs/acs5/subject/variables.html). It's a little tricky to use but knowing what you know now, you can parse it out if necessary.
+
+
+

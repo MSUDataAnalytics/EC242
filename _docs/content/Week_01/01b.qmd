@@ -27,7 +27,7 @@ A careful read of our syllabus under "class participation" will show that I do g
 Do some stuff in `R`
 :::
 
-I'll ask you to give it a go. Then, after a few minutes, I'll ask if anyone wants to share their answer. You get one point of your five necessary participation credits. If you've completed that, you'll get participation extra credits. Five of those is worth 1% of a grade boost, so these aren't negligible points. Max boost over the semester is 5%.
+I'll ask you to give it a go. Then, after a few minutes, I'll ask if anyone wants to share their answer. You get one point of your five necessary participation credits (or extra credit at 1/5th value after the first 5). We will use Zoom **only** to share screen -- the up-arrow logo in the website header next to the Slack logo will take you to the sharing zoom. You can join whenever, I'll call on folks to share using the participant list.
 
 
 
@@ -822,8 +822,13 @@ Note that every time you run this, you replace `murder` in your environment. So 
 8. Extend the code you used in exercise 7 to report the one entry that is **not** an actual abbreviation. Hint: use the `!` operator, which turns `FALSE` into `TRUE` and vice versa, then `which` to obtain an index.
 
 :::
-  
-  
+
+
+::: {.callout-tip}
+## Ope!
+If we get all the way to the end of Week 01b, we will likely start on Week 02a -- the tidyverse. I'm re-arranging the content and still fine-tuning length.
+:::
+
 ## Further help with `R`
   If you are not comfortable with `R`, the earlier you seek out help, the better. Quietly letting the course pass by you because you don't know how to fix an error will do nobody any good. Attend TA office hours or attend TA or {{< var names.instructor >}}'s office hours [see Syllabus](/syllabus.html) for times and Zoom links. Also, join the course Slack (see the front page of our course website for a link) and post questions there.
 
