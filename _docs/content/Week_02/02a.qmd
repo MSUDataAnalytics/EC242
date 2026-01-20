@@ -931,7 +931,7 @@ Here we want to reshape the `wide_data` dataset so that each row represents a co
 
 As with most tidyverse functions, the `pivot_longer` function's first argument is the data frame that will be converted. Easy enough.
 
-The second argument specifies the columns **containing observed values**; these are the columns that will be _pivot_longered_ (note: the original name of this function was `()`). The default (if we leave out the 2nd argument) is to gather **all** columns so, in most cases, we have to specify the columns. In our example we want columns `1960`, `1961` up to `2015`. Since these are non-standard column names, we have to backtick them so R doesn't think they're to be treated as integers.
+The second argument specifies the columns **containing observed values**; these are the columns that will be _pivot_longered_ (note: the original name of this function was `gather()`). The default (if we leave out the 2nd argument) is to pivot **all** columns so, in most cases, we have to specify the columns. In our example we want columns `1960`, `1961` up to `2015`. Since these are non-standard column names, we have to backtick them so R doesn't think they're to be treated as integers.
 
 The third and fourth arguments will tell `pivot_longer` the column names we want to assign to the columns containing the **current column names** (`names_to = `) and **the observed data** (`values_to = `), respectively. In this case a good choice for these two arguments would be something like `year` and `fertility`. These are not currenly column names in the data -- they are names we want to use to *hold* data currently located in the "wide" columns. We know this is fertility data only because we deciphered it from the file name.
 
@@ -943,7 +943,7 @@ The code to pivot_longer the fertility data therefore looks like this:
 new_tidy_data <- pivot_longer(wide_data,  `1960`:`2015`, names_to = 'year', values_to = 'fertility')
 ```
 
-We can also use the pipe like this:
+We can also use the pipe like this (so the data is the first argument):
 
 ```{r}
 new_tidy_data <- wide_data %>% pivot_longer(`1960`:`2015`, names_to = 'year', values_to = 'fertility')
@@ -955,10 +955,10 @@ We can see that the data have been converted to tidy format with columns `year` 
 head(new_tidy_data)
 ```
 
-We have the first column, which consists of "everything in the data that wasn't pivot_longered", the next two columns are named based on the arguments we gave. The second column, named by our argument above, contains the column names of the wide data. The third column, also named by our argument above, contains the value that was in each corresponding colum x country pair. What you leave *out* of the 4th argument is important!
+We have the first column, which consists of "everything in the data that wasn't pivot_longered", the next two columns are named based on the arguments we gave. The second column, named by our argument above, contains the column names of the wide data. The third column, also named by our argument above, contains the value that was in each corresponding colum x country pair. What you leave *out* of the 2nd argument is important!
 
 Note that each year resulted in two rows since we have two countries and this column was not pivot_longered.
-A somewhat quicker way to write this code is to specify which column will **not** be pivot_longered, rather than all the columns that will be pivot_longered:
+A somewhat quicker way to write this code is to specify in the 2nd argument which column will **not** be pivot_longered, rather than all the columns that will be pivot_longered:
 
 ```{r}
 new_tidy_data <- wide_data %>%
