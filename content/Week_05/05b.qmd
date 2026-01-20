@@ -275,7 +275,67 @@ head(AL.fam)
 
 Here, we see we get the expected number -- 59.3% owner-occupied. Now we can confidently change the state and county to whatever we are interested in, add other variables, and make new calculations.
 
-There is a full catalog of the structure of data.gov that can be found here: [https://api.census.gov/data/2022/acs/acs5/subject/variables.html](https://api.census.gov/data/2022/acs/acs5/subject/variables.html). It's a little tricky to use but knowing what you know now, you can parse it out if necessary.
+Not all tables have the same cross-tab-by-column paradigm. The Data Profiles (DP) tables have the letter "E" for estimate, "PE" for percent, and "M" and "PM" for the margin of error. All tables have some sort of structure we can derive from data.gov, but we might have to look closesly at that structure.
+
+Luckily, there is a full catalog of the structure of data.gov that can be found here: [https://api.census.gov/data/2021/acs/acs1.html](https://api.census.gov/data/2021/acs/acs1.html) (this is for ACS 1-year in 2021, change the address for other years and surveys). Clicking on "variables" shows all available variables for that survery and year. It's a little tricky to use but knowing what you know now, you can parse it out if necessary. You can see the different 
 
 
+
+```{r, echo=F, include=F}
+IngCo = get_acs(geography = 'tract',
+                variables = c('TotalHousingUnits' = 'DP04_0001E',
+                              'TotalMobileHomes' = 'DP04_0014E'),
+                geometry = F, year = 2021, output = 'wide', survey = 'acs5',
+                state = '26', county = '065') %>%
+  dplyr::select(TotalHousingUnits, TotalMobileHomes) %>%
+  dplyr::summarize_all( ~sum(.x))
+
+IngCo.puma = get_pums(state = '26', puma = c('01802','01801'),
+                      variables = c('BLD'), year = 2021, survey = 'acs5')
+
+IngCo.puma.hh = IngCo.puma %>%
+  dplyr::filter(SPORDER==1) 
+
+pums.total = IngCo.puma.hh %>%
+  dplyr::mutate(Household  = 1, 
+                MobileHh = BLD=='01') %>%
+  dplyr::summarize(Household = sum(Household*WGTP),
+                   MobileHh = sum(MobileHh*WGTP))
+IngCo
+pums.total
+
+```
+
+::: {.callout-note}
+## TRY IT
+
+### Part A:
+Let's take a look at Ingham Co. (FIPS 26065), which is where we're located. We'll use the ACS 1-year survey for 2021, specifically the `DP04` data profiles. [Here are the DP table structures](https://api.census.gov/data/2021/acs/acs1/profile/variables.html). At the "county" level, let's get a count of:
+
+1. Total housing units
+2. Total housing units that are mobile homes
+
+Write code that uses `get_acs` to pull those totals in count (estimate) form (not in percent). The variable ID should be `DP04` followed by the proper row. Use the DP table structure to figure out what to append to `DP04_`.
+
+
+
+### Part B1:
+Let's ask for the same data, but do it with PUMS data. Ingham County contains **two** PUMAs -- MI 01802 and MI 01801 (each state repeats numbering, so state + PUMA number is unique). For the two Ingham County PUMAs, pull the same data as in Part A: total housing units and total housing units that are mobile homes. Do it for the 2021 1-year data.
+
+This is a little tricky because there isn't a "do you live in a mobile home" question. But there **is** a question about the type of structure you live in, and one of the codes for that variable is....mobile home. See [https://api.census.gov/data/2021/acs/acs1.html](https://api.census.gov/data/2021/acs/acs1.html), select the "Public Use Microdata Sample" variables, and search for "structure". Use that table to tell which variables to ask for (or how to work with the variables it has available).
+
+From your data, how many individuals live in a mobile home? Remember, each row is an individual, and each unique `SERIALNO` is a household.
+
+### Part B2:
+Let's compare the PUMS counts to the ACS 1-year count. **Your goal here is to see if we can get ACS totals using the PUMS sample**. The ACS reports households, so we'll have to get to household counts rather than individuals.
+
+Part B1 should result in 2,436 observations with `r prettyNum(NROW(unique(IngCo.puma$SERIALNO)), big.mark = ',')` unique values (you can use `length(unique(Data$SERIALNO)))` to see how many unique household SERIALNOs there are. We know that the structure type is the same for all invididuals in a household. And our Part A data showed number of households. So, we want to "collapse" our data by keeping only the unique values of `SERIALNO` and our housing variable. *We are also going to keep the `WGTP` weight column. This column tells us how much we need to weight each household observation in order to "blow up" to the total estimate.*
+
+The column(s) we don't need are `SPORDER` (that's what shows the individual responses, but the household responses are all the same within household), and we don't need the individual weight `PWGTP`. We can use the `dplyr::distinct()` function, which returns the unique values of whatever data you give it, so `select()` first then pipe to `distinct()`. Hint: you should have `r prettyNum(NROW(unique(IngCo.puma$SERIALNO)), big.mark = ',')` rows when done. Each row will represent a household PUMS observation in one of the two PUMAs in Ingham county.
+
+**Weights**: to "blow up" from the *PUMS* (sample) to the totals reported in the ACS, we need simply multiply by the weight `WGTP`. It's pretty easy to do in a `summarize` call. Since you have both PUMAs in Ingham Co. you need only add them all together (once properly weighted).
+
+**Calculate the PUMS-based total number of households and total number of households living in mobile homes. Compare them to the numbers from Part A, as reported by the ACS. Do they match?**
+
+:::
 

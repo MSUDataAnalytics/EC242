@@ -567,15 +567,15 @@ library(dslabs)
 data("murders")
 ```
 
-1. Use the `$` operator to access the population size data and store it as the object `pop`. Then use the `sort` function to redefine `pop` so that it is sorted. Finally, use the `[` operator to report the smallest population size.
+1. Use the `$` operator to access the population size data and store it as the object `pop`. Then use the `sort` function to redefine `pop` so that it is sorted. Finally, use the `[` operator to report the smallest population size after sorting (it'll be the first one after sorting).
 
-2. Now instead of the smallest population size, find the index of the entry with the smallest population size. Hint: use `order` instead of `sort`.
+2. Now instead of finding the smallest population size, find the index of the entry with the smallest population size. Hint: use `order` instead of `sort`.
 
 3. We can actually perform the same operation as in the previous exercise using the function `which.min`. Write one line of code that does this.
 
 4. Now we know how small the smallest state is and we know which row represents it. Which state is it? Define a variable `states` to be the state names from the `murders` data frame. Report the name of the state with the smallest population.
 
-5. You can create a data frame using the `data.frame` function. Here is a quick example:
+5. Create a data frame using the `data.frame` function like so:
   
   
 ```{r}
