@@ -20,7 +20,6 @@ execute:
 
 - This page.
 - Chapter 1 of Introduction to Statistical Learning, available [here.](https://www.statlearning.com/)
-- Optional: The "Tidy Your Data" tutorial on [Rstudio Cloud Primers](https://rstudio.cloud/learn/primers)
 
 
 
@@ -1008,6 +1007,8 @@ As we will see in later examples, it is sometimes useful for data wrangling purp
 new_wide_data <- new_tidy_data %>% pivot_wider(names_from = year, values_from = fertility)
 dplyr::select(new_wide_data, country, `1960`:`1967`)
 ```
+
+The function assumes that the remaining columns -- those that aren't `names_from` or `values_from` *form a unique "tidy" observation*. If this isn't the case, you'll either need to use `select` to keep just the variables that uniquely define an observation *or* use the `id_cols` argument to state which columns do uniquely identify an observation. Since our `new_tidy_data` didn't have any additional columns, we didn't need to do this.
 
 The following diagram can help remind you how these two functions work:
 

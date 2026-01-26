@@ -390,7 +390,6 @@ window.Quarto = {
 <ul>
 <li>This page.</li>
 <li>Chapter 1 of Introduction to Statistical Learning, available <a href="https://www.statlearning.com/">here.</a></li>
-<li>Optional: The “Tidy Your Data” tutorial on <a href="https://rstudio.cloud/learn/primers">Rstudio Cloud Primers</a></li>
 </ul>
 <section id="your-labs" class="level3">
 <h3 class="anchored" data-anchor-id="your-labs">Your labs</h3>
@@ -1508,6 +1507,7 @@ TRY IT
 2 South Korea   6.16   5.99   5.79   5.57   5.36   5.16   4.99   4.85</code></pre>
 </div>
 </div>
+<p>The function assumes that the remaining columns – those that aren’t <code>names_from</code> or <code>values_from</code> <em>form a unique “tidy” observation</em>. If this isn’t the case, you’ll either need to use <code>select</code> to keep just the variables that uniquely define an observation <em>or</em> use the <code>id_cols</code> argument to state which columns do uniquely identify an observation. Since our <code>new_tidy_data</code> didn’t have any additional columns, we didn’t need to do this.</p>
 <p>The following diagram can help remind you how these two functions work:</p>
 <div class="cell">
 <div class="cell-output-display">

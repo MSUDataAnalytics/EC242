@@ -357,7 +357,7 @@ For more on using R Markdown, see the [R Markdown page of our course resources](
 
 ::: {.callout-note}
 
-## All exercises (1 to 11)
+## All exercises (1 to 13)
 
 1. In your first code chunk, load the package library `tidyverse`, which you will need for Question 8. Always load all your package libraries at the top, in the first code chunk! 
 
@@ -401,12 +401,12 @@ my_func <- function(y){
 
 9. Define an empty numerical vector `s_n` of size 25 using `s_n <- vector("numeric", 25)` and store in it the results of $S_1, S_2, \dots S_{25}$ using a for-loop.
 
-<!-- 10. Repeat exercise 8, but this time use `sapply`. -->
+10. Repeat exercise 8, but this time use `sapply`.
 
-<!-- 11. Repeat exercise 8, but this time use `map_dbl`. -->
+11. Repeat exercise 8, but this time use `map_dbl`.
 
-10. Create a data.frame holding $n$ and $S_n$. Plot $S_n$ versus $n$. Use points defined by $n=1,\dots,25$.
+12. Create a data.frame holding $n$ and $s_n$ (from either 9, 10, or 11). Plot $s_n$ versus $n$. Use points defined by $n=1,\dots,25$.
 
-11. Confirm that the equivalent formula for this sum is $S_n= n(n+1)(2n+1)/6$. To do so, compare whether `compute_s_n` gives the same result for the vector `s_n` as the equivalent formula for the sum. 
+13. Confirm that the equivalent formula for this sum is $S_n= n(n+1)(2n+1)/6$. To do so, compare whether `compute_s_n` gives the same result for the vector `s_n` as the equivalent formula for the sum. 
 
 :::
