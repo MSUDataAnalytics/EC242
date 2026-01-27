@@ -30,6 +30,7 @@ Now that add-drop has passed, it's time to set groups. **If you have found 2 oth
 - Nominate **one** person in your group to e-mail myself {{< var email.instructor >}} **AND** {{< var names.TA >}} at {{< var email.TA >}} with the subject **[EC242] Groups**.
 - On the e-mail, cc- the other two members of the group (so two members + Prof. K + TA)
 - In the e-mail, tell me the name of your group (be creative) and list the names and emails of all three members.
+- Give us the team name you'd like to have as well (or our TA will make one up for you.)
 
 Remember, only one person per group should send this email. Groups must be 3 people exactly. Groups will be the same for the semester (all 4 projects).
 
