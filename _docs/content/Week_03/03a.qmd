@@ -31,7 +31,7 @@ Now that add-drop has passed, it's time to set groups. **If you have found 2 oth
 - On the e-mail, cc- the other two members of the group (so two members + Prof. K + TA)
 - In the e-mail, tell me the name of your group (be creative) and list the names and emails of all three members.
 - Give us the team name you'd like to have as well (or our TA will make one up for you.)
-
+ƒ
 Remember, only one person per group should send this email. Groups must be 3 people exactly. Groups will be the same for the semester (all 4 projects).
 
 On Thursday, our TA will assign all remaining students to a group. *No changes will be made and there is no room for late group formation.* You will recieve an email letting you know your group assignment on or before Saturday.
@@ -284,6 +284,7 @@ if(knitr::is_html_output()){
 
 Useful ways to change the number of significant digits or to round numbers are `signif` and `round`. You can define the number of significant digits globally by setting options like this: `options(digits = 3)`.
 
+**What Tufte principle does this refer to**?
 
 ## Compare side-by-side 
 
@@ -307,7 +308,7 @@ if(knitr::is_html_output()){
 }
 ```
 
-
+Of course, this isn't "tidy" data. But our eye tends to read left-to-right by default (because that's how we write words of course), so we naturally want to compare stuff on the left to the next thing on the right. Our eyes want to follow the visual cue, even in a table.
 
 ## Know when to include 0
 
@@ -552,7 +553,7 @@ p1 <- heights %>%
 p1
 ```
 
-The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors.  If all ET receives is this plot, he will have little information on what to expect if he meets a group of human males and females. The bars go to 0: does this mean there are tiny humans measuring less than one foot? Are all males taller than the tallest females? Is there a range of heights? ET can't answer these questions since we have provided almost no information on the height distribution.
+The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors.  If all the viewer receives is this plot and has no other knowledge of human heights, they will have little information on what to expect if they meets a group of human males and females. The bars go to 0: does this mean there are tiny humans measuring less than one foot? Are all males taller than the tallest females? Is there a range of heights? ET can't answer these questions since we have provided almost no information on the height distribution.
 
 This brings us to our first principle: show the data. This simple __ggplot2__ code already generates a more informative plot than the barplot by simply showing all the data points:
 
@@ -618,7 +619,7 @@ heights %>%
   facet_grid(. ~ sex, scales = "free_x")
 ```
 
-
+Any axis you set to "free" will automatically show the axis under or next to every faceted plot, which may or may not be an issue for you.
 
 
 ### Align plots vertically to see horizontal changes and horizontally to see vertical changes
