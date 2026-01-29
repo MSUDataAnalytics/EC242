@@ -220,7 +220,25 @@ p + geom_point(aes(color = region), size = 3) +
   labs(x = 'Population', y = 'Total murders', color = 'US Region')
 ```
 
-We don't need the decimals on the y-axis labels, it's just there for illustration.
+We don't need the decimals on the y-axis tick labels, it's just there for illustration.
+
+Sometimes, our axis tick labels are still too long. When numbers get long, we usually have standard ways of representing them (like k, M, G, and T for kilo-, mega-, giga- and terabytes). Labeler functions can make this easy for us.
+
+We can use the `labels = label_number(scale_cut = cut_short_scale())` argument to shorten the display and use the common suffix.
+
+```{r, echo=T}
+p + geom_point(aes(color = region), size = 3) +
+  geom_text(nudge_x = .05) +
+  scale_x_log10(labels= scales::label_comma(scale_cut = scales::cut_short_scale())) +
+  scale_y_log10(labels= scales::label_comma(scale_cut = scales::cut_short_scale())) +
+  labs(x = 'Population', y = 'Total murders', color = 'US Region')
+```
+
+Of course, we could also transform the `Population` and `total` variables, dividing by 1,000,000 or 1,000, then add "Thousands" or "Millions" to the label. But this way is cleaner. Also, notice on the Y-axis that the suffix "K" is only used when necessary -- we don't have ".01K" on there.
+
+There is also a `cut_si()` function that takes as an input a scientific unit (like "g" for grams). It'll use the full scientific notation for larger quantites, so `cut_si("g")` would have "g", then "kg", then "Mg" where needed on the axis.
+
+There are other lots of neat tricks for axis labels on the tidyverse [scales vignette](https://tidyverse.org/blog/2022/04/scales-1-2-0/)
 
 ## Axis tick label orientation
 
