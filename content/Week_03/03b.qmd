@@ -444,8 +444,8 @@ You'll need to download two CSV files and put them somewhere on your computer (o
 ```{r, echo=TRUE, message=FALSE, eval=FALSE}
 # Load the necessary libraries
 library(tidyverse)
-electoral_votes <- read.csv("path_to/pres08.csv")
-polling_data <- read.csv("path_to/polls08.csv") %>%
+electoral_votes <- read_csv("path_to/pres08.csv")
+polling_data <- read_csv("path_to/polls08.csv") %>%
   dplyr::mutate(middate = as.Date(middate)) # we'll tackle dates later
 ```
 
@@ -469,17 +469,6 @@ Then, we need to generate a variable that represents the discrepancy between res
 
 Finally, we want something to cut the data -- below, we have some definitions for region. Use those (perhaps with `case_when()`?) to load in the state-to-region mapping.
 
-
-3. Complete Your Analysis 
-
-You are tasked with two things:
-
-A: Explore and visualize the discrepancies between polls and actual results using `combined_data`. How do you want to go about representing the data? How many observations do you have per state? What about per region?
-
-B: Visualize the relationship between the actual results and the poll results *over time* for the following state: `c('MI','WI','IA','FL','NC','GA')`. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*? To do this, you'll need to merge the final `Obama` and `McCain` results from `electoral_votes` into the original `polling_data`. Both contain `state` coluns!
-
-You might find these code bits to be useful (hint: use them with `case_when`):
-
 ```{r, eval=FALSE}
 # Define the regions
 Northeast = c('CT', 'ME', 'MA', 'NH', 'RI', 'VT', 'NJ', 'NY', 'PA')
@@ -488,7 +477,35 @@ South = c('DE', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'DC', 'WV', 'AL', 'KY', 'MS'
 West = c('AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY', 'AK', 'CA', 'HI', 'OR', 'WA')
 ```
 
+
+
+3. Complete Your Analysis 
+
+You are tasked with two different things:
+
+A: Explore and visualize the discrepancies between polls and actual results using `combined_data`. How do you want to go about representing the data? How many observations do you have per state? What about per region?
+
+You might find these code bits to be useful for this (hint: use them with `case_when`):
+
+
+```{r, eval=F, echo=F}
+ggplot(combined_data, aes(x = region, y = Obama_avg - Obama )) + geom_boxplot()
+```
+
+B: Visualize the relationship between the actual results and the poll results *over time* for the following states: `c('MI','WI','IA','FL','NC','GA')`. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*? To do this, you'll need to merge the final `Obama` and `McCain` results from `electoral_votes` into the original `polling_data`. Both contain `state` columns!
+
 **Make sure you label your axes, legends, and other elements correctly.** You may work in groups of up to three.
+
+```{r, eval=F, echo=F}
+pd = polling_data %>%
+  dplyr::filter(state %in% c('MI','WI','IA','FL','NC','GA')) %>%
+  left_join(electoral_votes %>% dplyr::select(state, ObamaActual = Obama, McCainActual = McCain), by = 'state') %>%
+  dplyr::mutate(Obama_diff = Obama - ObamaActual)
+
+ggplot(pd, aes(x = middate, y = Obama_diff, col = state)) + geom_line() + facet_wrap(~ state)
+
+```
+
 
 Use {{< var url.bitly >}} to share. Happy visualizing!
 

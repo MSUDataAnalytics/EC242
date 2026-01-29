@@ -551,8 +551,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         style_positive = style_positive, style_negative = style_negative, 
         scale_cut = scale_cut, trim = trim, ...)
 }
-&lt;bytecode: 0x0000028e25b92ed8&gt;
-&lt;environment: 0x0000028e25b93db8&gt;</code></pre>
+&lt;bytecode: 0x00000151016e8bc0&gt;
+&lt;environment: 0x00000151016e9e90&gt;</code></pre>
 </div>
 </div>
 <p>Wha? That looks like the output…is a function?</p>
@@ -894,8 +894,8 @@ Try it!
 <div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the necessary libraries</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>electoral_votes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"path_to/pres08.csv"</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>polling_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"path_to/polls08.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>electoral_votes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"path_to/pres08.csv"</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>polling_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"path_to/polls08.csv"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">middate =</span> <span class="fu">as.Date</span>(middate)) <span class="co"># we'll tackle dates later</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that you’ll have to replace <code>path_to</code> with the actual path to the files on your computer.</p>
@@ -914,13 +914,6 @@ Try it!
 </div>
 <p>Then, we need to generate a variable that represents the discrepancy between results (<code>Obama</code> and <code>McCain</code>) and the polling average (<code>Obama_avg</code>). Use <code>mutate()</code> to do so.</p>
 <p>Finally, we want something to cut the data – below, we have some definitions for region. Use those (perhaps with <code>case_when()</code>?) to load in the state-to-region mapping.</p>
-<ol start="3" type="1">
-<li>Complete Your Analysis</li>
-</ol>
-<p>You are tasked with two things:</p>
-<p>A: Explore and visualize the discrepancies between polls and actual results using <code>combined_data</code>. How do you want to go about representing the data? How many observations do you have per state? What about per region?</p>
-<p>B: Visualize the relationship between the actual results and the poll results <em>over time</em> for the following state: <code>c('MI','WI','IA','FL','NC','GA')</code>. <em>Does this relationship change over time?</em> Or, put another way, <em>were early polls or later polls more accurate</em>? To do this, you’ll need to merge the final <code>Obama</code> and <code>McCain</code> results from <code>electoral_votes</code> into the original <code>polling_data</code>. Both contain <code>state</code> coluns!</p>
-<p>You might find these code bits to be useful (hint: use them with <code>case_when</code>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the regions</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>Northeast <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'CT'</span>, <span class="st">'ME'</span>, <span class="st">'MA'</span>, <span class="st">'NH'</span>, <span class="st">'RI'</span>, <span class="st">'VT'</span>, <span class="st">'NJ'</span>, <span class="st">'NY'</span>, <span class="st">'PA'</span>)</span>
@@ -928,6 +921,13 @@ Try it!
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>South <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'DE'</span>, <span class="st">'FL'</span>, <span class="st">'GA'</span>, <span class="st">'MD'</span>, <span class="st">'NC'</span>, <span class="st">'SC'</span>, <span class="st">'VA'</span>, <span class="st">'DC'</span>, <span class="st">'WV'</span>, <span class="st">'AL'</span>, <span class="st">'KY'</span>, <span class="st">'MS'</span>, <span class="st">'TN'</span>, <span class="st">'AR'</span>, <span class="st">'LA'</span>, <span class="st">'OK'</span>, <span class="st">'TX'</span>)</span>
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>West <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'AZ'</span>, <span class="st">'CO'</span>, <span class="st">'ID'</span>, <span class="st">'MT'</span>, <span class="st">'NV'</span>, <span class="st">'NM'</span>, <span class="st">'UT'</span>, <span class="st">'WY'</span>, <span class="st">'AK'</span>, <span class="st">'CA'</span>, <span class="st">'HI'</span>, <span class="st">'OR'</span>, <span class="st">'WA'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<ol start="3" type="1">
+<li>Complete Your Analysis</li>
+</ol>
+<p>You are tasked with two different things:</p>
+<p>A: Explore and visualize the discrepancies between polls and actual results using <code>combined_data</code>. How do you want to go about representing the data? How many observations do you have per state? What about per region?</p>
+<p>You might find these code bits to be useful for this (hint: use them with <code>case_when</code>):</p>
+<p>B: Visualize the relationship between the actual results and the poll results <em>over time</em> for the following states: <code>c('MI','WI','IA','FL','NC','GA')</code>. <em>Does this relationship change over time?</em> Or, put another way, <em>were early polls or later polls more accurate</em>? To do this, you’ll need to merge the final <code>Obama</code> and <code>McCain</code> results from <code>electoral_votes</code> into the original <code>polling_data</code>. Both contain <code>state</code> columns!</p>
 <p><strong>Make sure you label your axes, legends, and other elements correctly.</strong> You may work in groups of up to three.</p>
 <p>Use <a href="https://bit.ly/EC242">bit.ly/EC242</a> to share. Happy visualizing!</p>
 </section>
