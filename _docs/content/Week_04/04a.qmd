@@ -81,6 +81,9 @@ Turkey has the higher infant mortality rate.
 
 We can use this code on all comparisons and find the following:
 
+<details class="collapsible-bg">
+<summary><strong>Click here to reveal results.</strong></summary>
+
 ```{r, echo = FALSE, warning = FALSE}
 comp_table <- tibble(comparison = rep(1:5, each = 2),
            country = c("Sri Lanka", "Turkey", "Poland", "South Korea", "Malaysia", "Russia", "Pakistan","Vietnam","Thailand","South Africa"))
@@ -105,6 +108,7 @@ if(knitr::is_html_output()){
 
 We see that the European countries on this list have higher child mortality rates: Poland has a higher rate than South Korea, and Russia has a higher rate than Malaysia. We also see that Pakistan has a much higher rate than Vietnam, and South Africa has a much higher rate than Thailand. It turns out that when Hans Rosling gave this quiz to educated groups of people, the average score was less than 2.5 out of 5, worse than what they would have obtained had they guessed randomly. This implies that more than ignorant, we are misinformed. In this chapter we see how data visualization helps inform us by presenting *patterns in the data* that might not be obvious on first glance.
 
+</details>
 
 
 
@@ -539,5 +543,26 @@ There's something wrong (or, at the very least, unhelpful) about the finished me
 And can anyone fix it?
 :::
 
+```{r, echo = F, message = F, error = F, warning = F, eval = F}
+
+p.1960b = ggplot(states.measles.1960, aes(fill = rate)) +
+  geom_sf() +
+  scale_fill_continuous(type = 'viridis', limits = c(min(c(states.measles.1960$rate, states.measles.1965$rate), na.rm=T),
+                                                     max(c(states.measles.1960$rate, states.measles.1965$rate), na.rm=T))) +
+  labs(fill = 'Measles Rate', title = 'Measles - 1960') +
+  theme_void() +# really get rid of the extra stuff
+  theme(legend.position = "bottom") 
+
+p.1965b = ggplot(states.measles.1965, aes(fill = rate)) +
+  geom_sf() +
+  scale_fill_continuous(type = 'viridis', limits = c(min(c(states.measles.1960$rate, states.measles.1965$rate), na.rm=T),
+                                                     max(c(states.measles.1960$rate, states.measles.1965$rate), na.rm=T))) +
+  labs(fill = 'Measles Rate', title = 'Measels - 1965') +
+  theme_void() +# really get rid of the extra stuff
+  theme(legend.position = "bottom")
+
+p.1960b + p.1965b + plot_layout(guides = "collect") &
+  theme(legend.position='bottom')# this is patchwork
+```
 
 
