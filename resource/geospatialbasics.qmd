@@ -21,7 +21,7 @@ execute:
 
 We will need a handful of new packages for our introduction to geospatial analysis in R. The primary package we will interact with is the `sf` package. `sf` stands for "simple features." It has become the standard for geospatial work in R, and relies on the `rgeos` and `rgdal` libraries (which are themselves `R` compilations of the `geos` and `gdal` libraries). Documentation of sf [can be found here](https://r-spatial.github.io/sf/). 
 
-We will also use the `mapview` package, as well as the `tmaptools` package. Plus, we'll use `tigris` to get state boundaries and `tidycensus` to pull down census maps. Install those, and any of the many dependencies that they also install. 
+We will also use the `mapview` package. Plus, we'll use `tigris` to get state boundaries and `tidycensus` to pull down census maps. Install those, and any of the many dependencies that they also install. 
 
 
 ```{r, echo=TRUE, message = F, warning = F}
