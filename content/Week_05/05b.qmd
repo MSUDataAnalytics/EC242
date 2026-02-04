@@ -164,7 +164,7 @@ My preferred way of finding the right PUMA variable is to use the browser at [ht
 
 If you select a few then click on "see data" it will give you totals for the whole US, and try to show you cross-tabs generated using this data. However, *if you record the variable names, we can import using `tidycensus::get_pums()` the individual observations*. We'll include the `PUMA` variable since this tells us which PUMA the person lives in. PUMAs are not uniquely numbered to the state, so if we're doing anything interstate, we'll need to `unite` the `ST` and `PUMA` columns.
 
-```{r, echo=T}
+```{r, echo=T, message = F, warning=F, error = F}
 library(tidycensus)
 library(tigris)
 
