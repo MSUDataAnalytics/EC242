@@ -19,39 +19,41 @@ output:
 
 - What challenges are presented in finding data?
 
-- Can generative AI like ChatGPT help? Hinder?
+- How is US census microdata structured?
+
+- How is US census summary data structured?
+
+- How can we obtain and work with useful samples of US Census data.
+
+
 
 # Before we start:
 You must obtain a US Census API key, which is free and fast. Go to [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html). Then, install the `tidycensus` package and, once loaded, run `tidycensus::census_api_key('your census API key')` once and only once. It will save the key on your computer and won't expose it in your code.
 
-# Let's discuss in the context of a question
 
 
+# Seeking out data
+We start our investigation of a social science question by asking "what sort of data can we bring to bear on this question". Sometimes, this is obvious: if we're interested in food deserts, we'd want some data on market locations, and some data on poverty in different areas, and we'd be able to see how many poor neighborhoods have (or do not have) access to fresh fruits and vegetables.
 
-# Data Sources
-There are many sources for data that we can use for social science research and analytics. Today's class will focus on US Census data, but I'll include some other common sources at the end. For the US Census, we'll look at:
+Some questions are not as up-front and require thinking about what data we'll need or, more likely, what data is available. A few points to consider when thinking about a question and data.
 
+1. Consider what your "dream data" might look like. 
 
-#### US Census Datasets
+You likely won't find "dream data", but at least you'll define what you're looking for. Maybe you're interested in household energy consumption by household wealth ("do rich people use more electricity?"). Your dream data would be a dataset of households with reported energy consumption (maybe multiple observations over time of the same household), and with household income attached. You aren't going to find that (if you do, email me right away!), but maybe if you start there, you can find something close. Say, monthly energy consumption aggregated to zip code, to which you can attach zip code level average income. Starting with "dream data" helps you figure out what features of data you're interested in.
 
-- Decennial census (every 10 years, 100% of population)
-  - Public Use Microdata
-  - Summary tables 
-  
-- American Community Survey (every year, 1% of population)
-  - Public Use Microdata
-  - Summary tables
-  
-- American Housing Survey
+2. Consider proxies
 
-- Commute flows
+Maybe you won't ever see energy consumption and income, but maybe you can find something that tends to vary along with income. Say, education or house size? Of course, the latter presents an issue for energy consumption (larger houses use more electricity), but maybe education can be a reasonable proxy for income. The zipcode level income in (1) would be a good proxy for a household's income, even if you don't have data on each household's income.
 
-- Many more [available here](https://www.census.gov/data/datasets.html), though most do not have packaged API's like ACS/Census.
+3. Subsets
+
+While dream data (or reasonable proxies) may not exist for the entire country, is it possible to find something close in a local region? Does your data exist for one (large) state? Or even a county? An electric utility? In a survey? You may have to trade off data coverage for data usefulness. That's OK, you just want to think about the "external validity" of your analysis -- if you are studying just one place (e.g. "Michigan") do you expect the same thing to hold in, say, California or Florida?
 
 
 
 
-## Temporal and geospatial granularity
+
+## Temporal and geospatial granularity of data
 
 Data is often limited in some way for privacy. That is, you should never be able to identify a single person in publicly available data, even if you know something about them. While data users like us would prefer to have very exact physical locations (imagine you'd like to see proximity to a greenspace for people with different income levels), privacy concerns mean we often only get to see less *granular* geographic location (like "city" or "county").
 
@@ -69,12 +71,37 @@ If we have data where the same variable is measured at different points in time,
 A "cross section" is just a sample at one point in time (or taken over an interval of time, but without reporting the time). A time series dataset is one where a single unit of observation is followed over multiple points in time. Both of these are less useful for analysis.
 
 
-### Micro-data vs. summary data
+## Micro-data vs. summary data
 Microdata is data where each observation is an instance of something recorded in the data. For instance, we may have data on shipments of dishwashers from an appliance distributor, aggregated to the month level. Maybe we see them split out by state of destination, or by customer (total sales units to customer X in month Y). This would be *summary* or *aggregated* data. *Microdata* in the same context would be sale-level records, one observation for each sale, including customer location and date. Of course, this could have varying levels of detail -- exact date vs. month of sale, price vs. just quantity, etc. For privacy reasons, or sheer data size, we don't often see microdata.
 
 Below, we'll see both US Census *summary table* data, and we'll learn about US census microdata (PUMA).
 
-## US Census
+
+
+
+# US Census
+
+There are many sources for data that we can use for social science research and analytics. Today's class will focus on US Census data, but I'll include some other common sources at the end. For the US Census, we'll look at:
+
+
+## US Census Datasets
+
+- Decennial census (every 10 years, 100% of population)
+  - Public Use Microdata
+  - Summary tables 
+  
+- American Community Survey (every year, 1% of population)
+  - Public Use Microdata
+  - Summary tables
+  
+- American Housing Survey
+
+- Commute flows
+
+- Many more [available here](https://www.census.gov/data/datasets.html), though most do not have packaged API's like ACS/Census.
+
+
+
 
 ### Summary tables, cross-tabs, and individual data
 Most US Census data is used via summary tables, which report a single value for each spatial area (like a census tract). Average income by census tract, average age by county, etc. We often also use cross-tabs of summary files, which subdivides by two or more variables. For instance, summary data may be reported for average income **by age** by census tract, or average age **by nationality of birth** by county. The US census makes a lot of cross-tabs, but not every single combination you could imagine. Plus, they are limited by privacy, so they can't subdivide to the point you can identify a person. For instance, "average income by exact age by number of kids by profession by time living in current house by census block" would absolutely identify an individual's current income as they'd be the only one being averaged.
@@ -123,13 +150,13 @@ Since there are many census surveys (decennial and ACS) over time, we can obtain
 Rule of thumb: you want your census data to be at the same spatial and temporal granularity of your other data. That is, if you have a count of "number of markets with fresh veggies" at the tract level from some source, you probably want to have things like "average income" reported at the tract level as well. If you only have the measure for one year, you probably just want the nearest year reported in the census. If you have it for multiple years, then you probably want the census product years that correspond.
 
 
-### Obtaining Census Data
+## Obtaining Census Data
 
 Using the `tidycensus` package, we can easily obtain US census data. First, you must obtain a US Census API key, which is free and fast. Go to [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html). Then, install the `tidycensus` package and, once loaded, run `tidycensus::census_api_key('your census API key')` once and only once. It will save the key on your computer and won't expose it in your code. Handy!
 
 Tidycensus can obtain data from both PUMS (individual) and from the summary tables for ACS and decennial censuses. The interface makes it easy to import data directly into your R session. The hard part, though, is knowing what to ask for.
 
-### Individual (PUMS) data
+## Individual (PUMS) data
 
 You can load into R the complete list of variables available for PUMS with the instructions [here](https://walker-data.com/tidycensus/articles/pums-data.html). PUMS reports both household-level responses and individuals. Individuals are "nested" in households and each has a weight within the household. You can easily move between individual and household by using `dplyr::summarize` after grouping by the household identifier.
 
@@ -202,7 +229,7 @@ You now have a wealth of socio-economic microdata at your fingertips, all linked
 
 
 
-### Decennial/ACS Summary tables
+## Decennial/ACS Summary tables
 
 Summary tables from decennial census or the ACS contain finer geographies (usually down to census block), but aggregate rather than giving individual observations. Many cross-tabs are calculated for each geography, so finding the right one can be tricky. Some tables report averages or shares (percent renters, average income) while some report total counts (count of renters, number of people earning between \$25-35k). 
 
@@ -386,7 +413,7 @@ Census data products are core resources in socio-economic research. But they are
   - Requires extracting data -- no straightforward access protocol
 
 
-### Other sources
+### Other common sources
 
 - Published journal articles in many journals are required to post code and data for replication (unless private or confidential data is used). 
   - In most cases, you can find the data and code in the journal's repository
@@ -403,7 +430,7 @@ Census data products are core resources in socio-economic research. But they are
 
 
 
-### Extracting from ArcGIS Online
+## Extracting from ArcGIS Online
 A large number of municipalities share their geospatial open data using ArcGIS maps. Problem is, they often don't let you download (you can view and make little story maps, but can't bring it into R to merge, etc.). 
 
 Here's how most (but not all) ArcGIS-hosted spatial data can be obtained.
@@ -425,7 +452,8 @@ Here's how most (but not all) ArcGIS-hosted spatial data can be obtained.
 8. Using `arcgislayer`:
 
 ```{r, echo=T, eval = F}
-library(arcgislayer)
+
+library(arcgislayers)
 library(sf)
 
 MI.easements.url = 'https://gisagoegle.state.mi.us/arcgis/rest/services/EGLE/WrdOpenData/MapServer/1/'
@@ -437,3 +465,6 @@ head(MI.easements)
 ```
 
 And now it's our own layer in R and we can merge, summarize, and analyze to our hearts content.
+
+Note: if you are having trouble installing `arcgislayers` on a Windows machine (and your error is asking about an installation of Rust), then use the following to install from already-compiled binaries: `install.packages("arcgis", repos = c("https://r-arcgis.r-universe.dev", "https://cloud.r-project.org"), type = 'win.binary')`
+
