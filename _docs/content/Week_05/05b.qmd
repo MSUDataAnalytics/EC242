@@ -452,7 +452,6 @@ Here's how most (but not all) ArcGIS-hosted spatial data can be obtained.
 8. Using `arcgislayer`:
 
 ```{r, echo=T, eval = F}
-
 library(arcgislayers)
 library(sf)
 

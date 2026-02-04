@@ -1,12 +1,7 @@
 ---
-title: "5: Data Wrangling"
-output:
-  blogdown::html_page:
-    toc: false
+title: "5: Geospatial in R"
 duedate: "{{< var duedates.lab5 >}}"
 ---
-
-<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
 
 
 
@@ -19,30 +14,24 @@ This assignment is due on **{{< meta duedate >}}**
 
 
 
-## Data Wrangling Continued...
 
-You still work for a travel booking website as a data analyst. The hotel has once again asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They've asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.
-
-**You did this already in class, but your boss now has some __different__ data. It's similar, and your code from before will help, but it has some new wrinkles in it to tackle**. Do __not__ use the data from this week's Example. Here's your new data:
-
-- [<i class="fas fa-file-csv"></i> `booking.csv`](/data/Lab_booking.csv) - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hotel. It was pulled by an intern who doesn't understand date-time stamps. 
-
-- [<i class="fas fa-file-csv"></i> `roomrates.csv`](/data/Lab_roomrates.csv) - Contains the price of each room on each day. The Lab 11 version of this data is from our German affiliate, so pay attention to the date format, and be careful -- it's very wide, so using `head` will throw a lot of data at you.
-
-- [<i class="fas fa-file-csv"></i> `parking.csv`](/data/Lab_parking.csv) - Contains the corporations who negotiated free parking for employees. It has been updated.
-
-- Parking at the hotel is \$60 per night if you don't have free parking. This hotel is in California, so everyone drives and parks when they stay.
+This assignment builds from the course materials for this week. Your assignment is to make a map of the change in an interesting census variable for your home county. If your home county is outside the US, you can use any county you like.
 
 
 ::: {.callout-note}
 
-## EXERCISE 1
+## Exercise 1 of 1
 
-1. As you did in class, but with your new set of data, total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking
+1. Load up all the necessary packages
 
-2. Visualize (using `ggplot`) each corporation's spending at the hotel over time and by roomtype. Make one plot with `ggplot` that shows this.
+2. Find the FIPS for your home county
 
-2. Visualize (using `ggplot`) the room rates over time by room type. Can you pick out one factor that determines when room prices are higher than usual? Note that we know each corporation gets the same room rate as the others on the same day, so this is about room rates, not corporate spending. Make **two** total plots, the first showing the room rates over time by room type, and the second explaining some feature of one of the room rates (e.g. when is the double room rate high? When is it low?). Using the `month(...)`, `day(...)` or `wday(..., label = TRUE)` functions from `lubridate` will help with figuring out the patterns. Try exploring just one of the room types to start. You don't have to perfectly analyze the room rate, just find one facet of the rate that changes regularly over time.
+3. Choose a variable you're interested in. It can be an ACS or PUMS variable, but it has to be different from any of those we used in class.
+
+4. Using `get_acs()` or `get_pums()`, create a dataset with two different time periods and calculate the *change* in that variable between the time periods. If you use PUMs data, you'll have to summarize the data for each PUMA in your county. Your county may have only one PUMA, or may even share its PUMA with other counties. That's fine.
+
+5. Make a map of that variable at the census tract level showing the difference over time. Make sure you label it clearly!
+
+6. Write a few sentences describing the result and why you chose to that variable. Are there areas with more/less change? Based on what you know of your area, why?
 
 :::
-
