@@ -1,5 +1,5 @@
 ---
-title: "Data Hunting"
+title: "Spatial Data Wrangling and Data Hunting I"
 lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:

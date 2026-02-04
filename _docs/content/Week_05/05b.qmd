@@ -1,5 +1,5 @@
 ---
-title: "Wrangle some Data"
+title: "Data Hunting II"
 lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
@@ -7,7 +7,7 @@ output:
 ---
 
 
-
+<!-- Ben: review coded answer to try-it at end. I've been emailing it to myself. -->
 
 
 # Reading
@@ -21,24 +21,33 @@ output:
 
 - Can generative AI like ChatGPT help? Hinder?
 
-
+# Before we start:
+You must obtain a US Census API key, which is free and fast. Go to [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html). Then, install the `tidycensus` package and, once loaded, run `tidycensus::census_api_key('your census API key')` once and only once. It will save the key on your computer and won't expose it in your code.
 
 # Let's discuss in the context of a question
 
 
 
-
-
 # Data Sources
+There are many sources for data that we can use for social science research and analytics. Today's class will focus on US Census data, but I'll include some other common sources at the end. For the US Census, we'll look at:
 
-US Census
+
+#### US Census Datasets
+
 - Decennial census (every 10 years, 100% of population)
   - Public Use Microdata
   - Summary tables 
-- American Community Survey (every year, 5% of population)
+  
+- American Community Survey (every year, 1% of population)
   - Public Use Microdata
   - Summary tables
-- American Housing Survey, commute, etc.  
+  
+- American Housing Survey
+
+- Commute flows
+
+- Many more [available here](https://www.census.gov/data/datasets.html), though most do not have packaged API's like ACS/Census.
+
 
 
 
@@ -46,7 +55,7 @@ US Census
 
 Data is often limited in some way for privacy. That is, you should never be able to identify a single person in publicly available data, even if you know something about them. While data users like us would prefer to have very exact physical locations (imagine you'd like to see proximity to a greenspace for people with different income levels), privacy concerns mean we often only get to see less *granular* geographic location (like "city" or "county").
 
-Temporal granularity refers to time, the number of times we observe the same unit of observation, or the number of times we see any data. 
+Temporal granularity refers to time, the number of times we observe the same unit of observation, or the number of times we see any data, or how detailed the recording is of when things occur in time.
 
 ### Panel Data
 When we see the same unit of observation at different points in time (yearly, decadally, etc.), and when we see more than one unit of observation, then we say we have "panel data". Panel data is very useful because we can look at changes over time for multiple units of observation, and we can look at the ways in which different variables change over time, and whether they change together.
@@ -60,19 +69,24 @@ If we have data where the same variable is measured at different points in time,
 A "cross section" is just a sample at one point in time (or taken over an interval of time, but without reporting the time). A time series dataset is one where a single unit of observation is followed over multiple points in time. Both of these are less useful for analysis.
 
 
+### Micro-data vs. summary data
+Microdata is data where each observation is an instance of something recorded in the data. For instance, we may have data on shipments of dishwashers from an appliance distributor, aggregated to the month level. Maybe we see them split out by state of destination, or by customer (total sales units to customer X in month Y). This would be *summary* or *aggregated* data. *Microdata* in the same context would be sale-level records, one observation for each sale, including customer location and date. Of course, this could have varying levels of detail -- exact date vs. month of sale, price vs. just quantity, etc. For privacy reasons, or sheer data size, we don't often see microdata.
+
+Below, we'll see both US Census *summary table* data, and we'll learn about US census microdata (PUMA).
 
 ## US Census
 
 ### Summary tables, cross-tabs, and individual data
-Most US Census data is used via summary tables, which report a single value for each spatial area (like a census tract). Average income by census tract, average age by county, etc. We often also use cross-tabs of summary files, which subdivides by two variables: average income **by age** by census tract, or average age **by nationality of birth** by county. The US census makes a lot of cross-tabs, but not every single combination you could imagine. Plus, they are limited by privacy, so they can't subdivide to the point you can identify a person. For instance, "average income by exact age by number of kids by profession by time living in current house by census block" would absolutely identify an individual's current income as they'd be the only one being averaged.
+Most US Census data is used via summary tables, which report a single value for each spatial area (like a census tract). Average income by census tract, average age by county, etc. We often also use cross-tabs of summary files, which subdivides by two or more variables. For instance, summary data may be reported for average income **by age** by census tract, or average age **by nationality of birth** by county. The US census makes a lot of cross-tabs, but not every single combination you could imagine. Plus, they are limited by privacy, so they can't subdivide to the point you can identify a person. For instance, "average income by exact age by number of kids by profession by time living in current house by census block" would absolutely identify an individual's current income as they'd be the only one being averaged.
 
 The US decennial census and the yearly 5-year and 1-year American Community Survery (ACS) report summary tables with very rich cross-tabs. 
 
-**Individual data** allows for generating any cross-tab as individual data would contain all responses to all questions for the respondent. The US Census makes the ACS sample individual answers available to the public, along with the survey and codebook for translating responses. Of course, for privacy reasons, the geographic location provided with the individual data is limited. The finest area reported is the "PUMA" (Public Use Microdata Area), which contain around 50,000 individuals in each. For example, the City of Detroit is comprised of around 12 PUMAs. 
+**Individual microdata** allows for generating any cross-tab as individual data would contain all responses to all questions for the respondent. The US Census makes the ACS sample individual answers available to the public, along with the survey and codebook for translating responses. Of course, for privacy reasons, the geographic location provided with the individual data is limited. The finest area reported is the "PUMA" (Public Use Microdata Area), which contain around 50,000 individuals in each. For example, the City of Detroit is comprised of around 12 PUMAs. 
 
-### Spatial definitions
+### US Census Spatial definitions
 
 - Region
+- Division
 - Metropolitain Statistical Area (MSA)
 - Combined Statistical Areas (CSA)
 - State
@@ -87,15 +101,20 @@ You can explore [all of the census geographies with the TIGER browser](https://t
 
 #### [GEOID](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html)
 
-The US Census has standardized a way of referring to each spatial unit ("geography") in the census data. The GEOID can be of different lengths depending on what it's pointing to, and when census geographies are perfectly nested, then the GEOID tells you which smaller units belong to which bigger units (tracts in county)
+The US Census has standardized a way of referring to each spatial unit ("geography") in the census data. The GEOID can be of different lengths depending on what it's pointing to, and when census geographies are perfectly nested, then the GEOID tells you which smaller units belong to which bigger units (tracts in county). The GEOID changes from smaller areas (tracts and below) from year to year, so you'll often see GEOID10 or GEOID20 (for 2010 or 2020 censuses).
 
-First 2 are state
-Next 3 are county FIPS
-Next 6 are Tract
-Next 1 is blockgroup
-Last 4 are block (first block digit includes blockgroup)
+- First 2 are state
+- Next 3 are county FIPS
+- Next 6 are Tract
+- Next 1 is blockgroup
+- Last 4 are block (first block digit includes blockgroup)
 
-!! add picture of different geographies if possible !!
+
+The GEOID for the tract containing the Abbot in downtown East Lansing is:
+
+$$\underbrace{26}_{\text{state}}\overbrace{065}^{\text{county}}\underbrace{004100}_{\text{tract}}\overbrace{3009}^{\text{block}}$$
+
+26 is the state, 065 is Ingham County, 004100 is the tract, 3 is the blockgroup and 009 is the block (3009 would be the complete block number). To give you an idea of scale, the Abbot is the entire census block.
 
 Different data is reported at different levels. Most basic data is available at the block level (population, average income, average family size), but "cross-tabs" are not always available at block, blockgroup, or even sometimes tract level. For example, average income for females over 85 is a "cross-tab" (reported in a "summary table" since it's summarizing a population within a geography), but since there aren't very many 85 year olds in any block (40 houses), it's unlikely that the cross-tab can be reported.
 
@@ -110,7 +129,7 @@ Using the `tidycensus` package, we can easily obtain US census data. First, you 
 
 Tidycensus can obtain data from both PUMS (individual) and from the summary tables for ACS and decennial censuses. The interface makes it easy to import data directly into your R session. The hard part, though, is knowing what to ask for.
 
-#### Individual (PUMS) data
+### Individual (PUMS) data
 
 You can load into R the complete list of variables available for PUMS with the instructions [here](https://walker-data.com/tidycensus/articles/pums-data.html). PUMS reports both household-level responses and individuals. Individuals are "nested" in households and each has a weight within the household. You can easily move between individual and household by using `dplyr::summarize` after grouping by the household identifier.
 
@@ -119,6 +138,9 @@ My preferred way of finding the right PUMA variable is to use the browser at [ht
 If you select a few then click on "see data" it will give you totals for the whole US, and try to show you cross-tabs generated using this data. However, *if you record the variable names, we can import using `tidycensus::get_pums()` the individual observations*. We'll include the `PUMA` variable since this tells us which PUMA the person lives in. PUMAs are not uniquely numbered to the state, so if we're doing anything interstate, we'll need to `unite` the `ST` and `PUMA` columns.
 
 ```{r, echo=T}
+library(tidycensus)
+library(tigris)
+
 individual1 = tidycensus::get_pums(variables = c('AGEP','NATIVITY','PUMA'), 
                                    state = 'MI',
                                    puma = NULL, # will pull all PUMAs in state
@@ -146,7 +168,7 @@ ggplot(individual1 %>%
 
 We can do this for any variable we find on the data browser.
 
-#### PUMS maps
+### PUMS maps
 
 Summarizing and showing on a map is easy. First, we need to obtain the PUMA map for the year that corresponds to our data (they are updated every 10 years). Then, we need to `group_by` and `summarize` the individual data so that each PUMS has one value for each variable.
 
@@ -154,7 +176,7 @@ I'm interested in seeing where in MI there's a big gap between native-born age a
 
 ```{r, echo=T}
 MIpums = tigris::pumas(state = 'MI', year = 2022)  %>%
-  tigris::erase_water() # fixes the Great Lakes boundary issue
+  tigris::erase_water(area_threshold = .95) # fixes the Great Lakes boundary issue (erases the largest 1-.95=5% of lakes)
 
 MIpums.merge = MIpums %>%
   dplyr::select(PUMACE20, NAMELSAD20) %>% # just keeping useful columns from tigris file
@@ -176,14 +198,17 @@ ggplot(MIpums.merge, aes(fill = diffAvgAge, col = diffAvgAge)) + geom_sf() +
 
 ```
 
+You now have a wealth of socio-economic microdata at your fingertips, all linked to a relatively granular spatial location.
 
-#### Summary tables
+
+
+### Decennial/ACS Summary tables
 
 Summary tables from decennial census or the ACS contain finer geographies (usually down to census block), but aggregate rather than giving individual observations. Many cross-tabs are calculated for each geography, so finding the right one can be tricky. Some tables report averages or shares (percent renters, average income) while some report total counts (count of renters, number of people earning between \$25-35k). 
 
 While `tidycensus` provides a function to import the whole list of all variables, we can also use the [data.census.gov](data.census.gov) website. We are looking for **tables**, so click on "explore tables".
 
-First thing we want to do is set our level (e.g. block, block-group, tract, county, etc.) so that we are searching for data that exists at the level we want. No sense in searching for something you want at the county level to find out it's only available at the state level! On the left side under "geography" click on the level you want (say, "census tract") then choose a random state and tract -- you're only using this to find the variable's code, not to actually retrieve data. I always use the first county in Alabama just because it's small-ish so it doesn't take long to load up.
+First thing we want to do is set our geography level (e.g. block, block-group, tract, county, etc.) so that we are searching for data that exists at the level we want. No sense in searching for something you want at the county level to find out it's only available at the state level! On the left side under "geography" click on the level you want (say, "census tract") then choose a random state and tract -- you're only using this to find the variable's code, not to actually retrieve data. I always use the first county in Alabama just because it's small-ish so it doesn't take long to load up.
 
 I'm also going to select the year 2022 by scrolling down and checking the 2022 box, just so we're only looking at ACS census data (ACS is only in non-decennial years). Not all variables exist for all years (especially over long periods of time). I'm going to search "house heating fuel" to find the type of heating fuel used. I'll select "B25117", which is the variable ID number for "House Heating Fuel" data.
 
@@ -195,13 +220,13 @@ This is what you'll see at this point -- note the location and geography filter.
 knitr::include_graphics(here('images','census1.png'))
 ```
 
-Let's take a look at the columns that show up under "B25117". For this (and any table starting with "B"), there are two columns for each census tract header. The first is the "Estimate" and the second is the "Margin of Error". The MOE is there because this is a sample (ACS is 1% of the population). Decennial censuses are counts, so there is no MOE. Other tables will have more columns (cross-tabs or expressed as percent vs. counts). We'll get there in a second.
+Let's take a look at the columns that show up under "B25117". For this (and any table starting with "B"), there are two columns for each census tract header. The first is the "Estimate" and the second is the "Margin of Error". The MOE is there because this is a sample (ACS is 1% of the population each year). Decennial censuses are counts, so there is no MOE. Other tables will have more columns (cross-tabs or expressed as percent vs. counts). We'll get there in a second.
 
 Just "B25117" isn't quite enough. You see that there are multiple numbers in each column -- the "Total:", then "Utility gas" then "Bottled, tank, or LP gas" etc. There's also two groupings: "Owner occupied" and "Renter occupied". To import this data to `R`, we have to identify which of these (possibly many) numbers we want for every tract.
 
 Each of the rows is numbered, so if we want the total number of households in a tract that are counted for this variable, then our target is "B25117_001". If we want the total number of owner-occupied households using electric heating, we want row 5. If we want the same for renter-occupied, we want 15. And if we want to calculate, say, the *shares* of households using electric heat among renter-occupied households, we'd want row 15 divided by row 12. When there are blank lines, you do not count those lines.
 
-The "Total" (row 1) will be same for almost all variables we could choose in the same year and survey (2022 ACS) because the universe of households surveyed is the same for all the variables. So if we go to B11016 "Household Type by Household Size" and look at the same tract, we'll see the same estimate, but other rows for that variable will be different.
+The "Total" (row 1) will be same for almost all variables we could choose in the same year, geography, and survey (2022 ACS) because the universe of households surveyed is the same for all the variables. So if we go to B11016 "Household Type by Household Size" and look at the same tract, we'll see the same estimate, but other rows for that variable will be different.
 
 Let's pull data for the first county in Alabama (FIPS = 01001) so we can convince ourselves that data.gov and `tidycensus` yield the same data. We'll calculate the "fraction of owner-occupied households that heat with "Bottled, tank, or LP gas" for renters and for owners. We'll note that we need the following:
 
@@ -282,6 +307,7 @@ Luckily, there is a full catalog of the structure of data.gov that can be found 
 
 
 ```{r, echo=F, include=F}
+#ANSWERS HERE
 IngCo = get_acs(geography = 'tract',
                 variables = c('TotalHousingUnits' = 'DP04_0001E',
                               'TotalMobileHomes' = 'DP04_0014E'),
@@ -328,7 +354,7 @@ From your data, how many individuals live in a mobile home? Remember, each row i
 
 
 ### Part B2:
-Let's compare the PUMS counts to the ACS 1-year count. **Your goal here is to see if we can get ACS totals using the PUMS sample**. The ACS reports households, so we'll have to get to household counts rather than individuals.
+Let's compare the PUMS counts to the ACS 1-year count. **Your goal here is to see if we can get (close to) ACS totals using the PUMS sample**. The ACS reports households, so we'll have to get to household counts rather than individuals.
 
 Part B1 should result in 2,436 observations with `r prettyNum(NROW(unique(IngCo.puma$SERIALNO)), big.mark = ',')` unique values (you can use `length(unique(Data$SERIALNO)))` to see how many unique household SERIALNOs there are. We know that the structure type is the same for all invididuals in a household. And our Part A data showed number of households. So, we want to "collapse" our data by keeping only the unique values of `SERIALNO` and our housing variable. *We are also going to keep the `WGTP` weight column. This column tells us how much we need to weight each household observation in order to "blow up" to the total estimate.*
 
@@ -342,4 +368,72 @@ The column(s) we don't need are `SPORDER` (that's what shows the individual resp
 
 
 
+## Other data sources
+Census data products are core resources in socio-economic research. But they are not the only games in town, of course. In this section, we discuss other data sources, and briefly introduce the use of API's for accessing many other data sources.
 
+
+### MSU-available data
+
+- [MSU Data Librarian start page](https://lib.msu.edu/data)
+  - MSU-subscribed datasets, may of which (but not all) are available to undergraduates
+- [Dewey Data Catalog](https://www.deweydata.io/)
+  - Clearinghouse of usually-expensive data across 25+ providers. Some examples:
+    - NatureQuant has urban heat indexes
+    - RentHub has rental price data over time (microdata from listings)
+    - ClimateCheck climate risk data
+    - SafeGraph cellphone point locations
+    - Much more
+  - Requires extracting data -- no straightforward access protocol
+
+
+### Other sources
+
+- Published journal articles in many journals are required to post code and data for replication (unless private or confidential data is used). 
+  - In most cases, you can find the data and code in the journal's repository
+  - So if you don't know where to find data, but you find research that covers what you're intersted in, you can simply pull data from their repository.
+  
+- Government open data portals
+  - Many state and local governments have open data portals with maps you can view and explore (see [Michigan's here: https://gis-michigan.opendata.arcgis.com](https://gis-michigan.opendata.arcgis.com).
+  - Many municipalities have something similar as well.
+  - However, many times they do not have the "download all data" ability turned on. Fear not - [see below](#extractingGIS) for instructions to extract from ArcGIS online hosted maps (a large majority of hosted maps).
+  
+  
+- Google has a [dataset search page](https://datasetsearch.research.google.com)
+
+
+
+
+### Extracting from ArcGIS Online
+A large number of municipalities share their geospatial open data using ArcGIS maps. Problem is, they often don't let you download (you can view and make little story maps, but can't bring it into R to merge, etc.). 
+
+Here's how most (but not all) ArcGIS-hosted spatial data can be obtained.
+
+1. Install the `arcgis` and `arcgislayers` packages.
+
+2. Find the map you want to extract. I'm going to go to the MI open data link at [https://gis-michigan.opendata.arcgis.com](https://gis-michigan.opendata.arcgis.com) and pull up a map of Michigan EGLE (Environment, Great Lakes, and Energy) conservation easements [see here]('https://gis-michigan.opendata.arcgis.com/datasets/f3ae9b93f8264699a5a5a1b51a4a46c8_1/explore?location=42.739688%2C-84.422098%2C15').
+
+3. Click on the map to highlight some feature -- it doesn't matter which, we just want our browser to query the map.
+
+4. Turn on your browser's Web Inspector pane (on Safari, it's under "Developer". On Firefox, it's CTRL+SHIFT+I)
+
+5. Click on the "network" tab
+
+6. In the "filter" or "filter URL" bar, type "query". This will highlight one or more entries where the "feature server" or "map server" was queried (just one if you only clicked once). It may just say "query".
+
+7. Click on one and look at the URL or URL summary. You're looking for an address that starts with the URL of the mapping site (for mine, gisagoegle.state.mi.us), then followed by `/arcgis/rest` and eventually ending with `/featureserver` or `mapserver` followed by a number. We want to copy everything up to the  number after `featureserver` or `mapserver`. In this example, the full address we want to copy is: `https://gisagoegle.state.mi.us/arcgis/rest/services/EGLE/WrdOpenData/MapServer/1/`.
+
+8. Using `arcgislayer`:
+
+```{r, echo=T, eval = F}
+library(arcgislayer)
+library(sf)
+
+MI.easements.url = 'https://gisagoegle.state.mi.us/arcgis/rest/services/EGLE/WrdOpenData/MapServer/1/'
+MI.easements = arc_open(MI.easements.url) %>%
+  arc_select()
+
+head(MI.easements)
+
+```
+
+And now it's our own layer in R and we can merge, summarize, and analyze to our hearts content.

@@ -171,7 +171,7 @@ We'll use the `sf` package's `st_read` to open spatial data. Here, I'm loading t
 # gasplants = st_read('https://services7.arcgis.com/FGr1D95XCGALKXqM/arcgis/rest/services/NaturalGas_ProcessingPlants_US_EIA/FeatureServer/23/query?outFields=*&where=1%3D1&f=geojson') %>%
 #   dplyr::select(name = Plant_Name)
 
-gasplants = st_read('your file path here') %>%
+gasplants = st_read('https://ec242.netlify.app/data/natural-gas-processing-plants.geojson') %>%
   dplyr::select(name = Plant_Name)
 
 head(gasplants)

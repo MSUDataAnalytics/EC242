@@ -10,9 +10,28 @@ Focus more on data finding. Probably less on viz
 Use libarary data viz person
 
 Importing ArcGIS data without link -- add to viz
-arcgis library
-arc_open()
-arc_select()
+      arcgislayers library
+      arc_open()
+      arc_select()
+      
+      library(arcgislayers)
+      furl = 'https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/OregonElectric_Utilities_WGS_1984_6_26_2023/FeatureServer/0'
+      flayer <- arc_open(furl)
+      orelec <- arc_select(flayer, page_size = 20)
+      
+      
+      
+      
+      library(arcgis)
+      library(arcgislayers)
+      library(arcgisplaces)
+      furl = 'https://gisagocss.state.mi.us/arcgis/rest/services/OpenData/michigan_geographic_framework/MapServer/2'
+      MCD = arc_open(furl)
+      MCDs = arc_select(MCD) %>%
+        st_transform(4326)
+        
+      saveRDS(MCDs, "/Volumes/SolarNEM/SLURM_VSS/MCD.rds")
+        
 
 PLS202 does a lot of viz. Our last week was basic for those who had taken PLS202
 - Figure out what 202 is teaching (reliabily) (I have syllabus 12-19-2025) PLS IS REQUIRED

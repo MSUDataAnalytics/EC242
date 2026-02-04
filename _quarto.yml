@@ -8,7 +8,7 @@ project:
     #- "!Week_02/"
     #- "!Week_03/"
     #- "!Week_04/"
-    - "!Week_05/"
+    #- "!Week_05/"
     - "!Week_06/"
     - "!Week_07/"
     - "!Week_08/"
@@ -23,7 +23,7 @@ project:
     #- "!*/02-assignment.qmd"
     #- "!*/03-assignment.qmd"
     #- "!*/04-assignment.qmd"
-    - "!*/05-assignment.qmd"
+    #- "!*/05-assignment.qmd"
     - "!*/06-assignment.qmd"
     - "!*/07-assignment.qmd"
     - "!*/08-assignment.qmd"
@@ -132,6 +132,7 @@ website:
           contents: 
             - resource/data.qmd
             - resource/spatial.qmd
+            - resource/geospatialbasics.qmd
             - resource/unzipping.qmd
             
       
