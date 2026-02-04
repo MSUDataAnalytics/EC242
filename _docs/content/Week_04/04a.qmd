@@ -22,7 +22,8 @@ library(emo)
 
 ```
 
-
+<!-- Ben: See answer at very very end and code for solution (not on course materials) -->
+<!-- Note: Didn't do the heatmap Try-It as a smaller share of students remembered the SF package. In future, may need to spend more time introducing SF and GIS data? -->
 
 # Data visualization in practice {#gapminder}
 
@@ -544,7 +545,8 @@ And can anyone fix it?
 :::
 
 ```{r, echo = F, message = F, error = F, warning = F, eval = F}
-
+## The problem is the guide scale doesn't line up.
+## 
 p.1960b = ggplot(states.measles.1960, aes(fill = rate)) +
   geom_sf() +
   scale_fill_continuous(type = 'viridis', limits = c(min(c(states.measles.1960$rate, states.measles.1965$rate), na.rm=T),

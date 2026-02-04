@@ -326,6 +326,7 @@ This is a little tricky because there isn't a "do you live in a mobile home" que
 
 From your data, how many individuals live in a mobile home? Remember, each row is an individual, and each unique `SERIALNO` is a household.
 
+
 ### Part B2:
 Let's compare the PUMS counts to the ACS 1-year count. **Your goal here is to see if we can get ACS totals using the PUMS sample**. The ACS reports households, so we'll have to get to household counts rather than individuals.
 
@@ -335,7 +336,10 @@ The column(s) we don't need are `SPORDER` (that's what shows the individual resp
 
 **Weights**: to "blow up" from the *PUMS* (sample) to the totals reported in the ACS, we need simply multiply by the weight `WGTP`. It's pretty easy to do in a `summarize` call. Since you have both PUMAs in Ingham Co. you need only add them all together (once properly weighted).
 
-**Calculate the PUMS-based total number of households and total number of households living in mobile homes. Compare them to the numbers from Part A, as reported by the ACS. Do they match?**
+**Calculate the PUMS-based total number of households and total number of households living in mobile homes. Compare them to the numbers from Part A, as reported by the ACS. Do they match? Are they pretty close?**
 
 :::
+
+
+
 

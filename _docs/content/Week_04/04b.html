@@ -717,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="setdiff" class="level2">
 <h2 class="anchored" data-anchor-id="setdiff"><code>setdiff</code></h2>
-<p>The set difference between a first and second argument can be obtained with <code>setdiff</code>. Unlike <code>intersect</code> and <code>union</code>, this function is not symmetric:</p>
+<p>The set difference between a first and second argument (“what is in the first that does not appear in the second”) can be obtained with <code>setdiff</code>. Unlike <code>intersect</code> and <code>union</code>, this function is not symmetric:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -763,7 +763,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] FALSE</code></pre>
 </div>
 </div>
-<div class="fyi">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p><strong>TRY IT</strong></p>
 <ol type="1">
 <li>Install and load the <strong>Lahman</strong> library. This database includes data related to baseball teams. It includes summary statistics about how the players performed on offense and defense for several years. It also includes personal information about the players.</li>
@@ -800,11 +809,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Make a plot of the seasonal trends by year but only after removing the year effect.</p></li>
 </ol>
 </div>
+</div>
 </section>
 </section>
 <section id="a-note-about-merging-and-duplicated-rows" class="level1">
 <h1>A note about merging and duplicated rows</h1>
-<p>When we merge data, we have to be very careful about duplicated rows. Specifically, we have to be certain that the fields we use to join on are unique <strong>or</strong> that we know they aren’t unique and intend to duplicate rows.</p>
+<p>When we merge data, we have to be very careful about duplicated rows. Specifically, we have to be certain that the fields we use to join on are unique <strong>or</strong> that we know they aren’t unique and intend to duplicate rows. Another way of putting this is that our primary keys have to be unique – one row for each combination in both datasets, or we have to know that we want to expand the data.</p>
 <p>When we have tidy data, we have one row per observation. When we join data that has more than one row per observation, the new dataset will no longer be tidy. Here, the <code>notTidyData</code> is not tidy *in relation to the <code>tidyData</code> as it does not have one observation per year and state. For instance:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>tidyData <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>( <span class="at">state =</span> <span class="fu">c</span>(<span class="st">'MI'</span>,<span class="st">'CA'</span>,<span class="st">'MI'</span>,<span class="st">'CA'</span>), </span>
@@ -883,8 +893,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>And while we might like that we have 3x the In-N-Out locations, we definitely think our data shouldn’t suddenly have more.</p>
-<p>The reason this happens is that we do not have a unique <em>key</em> variable. In the <code>WDI</code> tip in Project 2, we didn’t have a single unique key variable - there were multiple values of <code>iso2</code> country code in the data because we had multiple years for each <code>iso2</code>. Thus, when we merged, use used <code>by = c('iso2','year')</code> because <strong>the <code>iso2</code> x <code>year</code> combination was the unique key</strong>.</p>
-<p>Here, each dataset would need to have a unique key (or “primary key”) on <code>state</code> <em>and</em> <code>county</code> <em>and</em> <code>year</code> to merge without risk of messing up our data. Since <code>arrests</code> aren’t broken out by county, we’d have to use <code>summarize</code> to total <code>notTidyData</code> at the <code>state</code> and <code>year</code> (to eliminate <code>county</code>). Then, we’d have to decide of the number of In-N-Outs are the same for each <code>year</code> since <code>notTidyData</code> doesn’t have <code>year</code>.</p>
+<p>The reason this happens is that we do not have a unique <em>key</em> variable. Each dataset would need to have a unique key (or “primary key”) on <code>state</code> <em>and</em> <code>county</code> <em>and</em> <code>year</code> to merge without risk of messing up our data. Since <code>arrests</code> aren’t broken out by county, we’d have to use <code>summarize</code> to sum <code>notTidyData</code> at the <code>state</code> and <code>year</code> (to eliminate <code>county</code>). Then, we’d have to decide if the number of In-N-Outs are the same for each <code>year</code> since <code>notTidyData</code> doesn’t have <code>year</code>. Note that this last step is dependent on your understanding of the data. Do burger restuarant counts change a meaningful amount between years? Does it matter if we don’t catch maybe 1 or 2 new openings by assuming they are constant over years.</p>
 <p>The lesson is this: always know what your join is doing. Know your unique keys. Use <code>sum(duplicated(tidyData$key))</code> to see if all values are unique, or <code>NROW(unique(tidyData %&gt;% dplyr::select(key1, key2)))</code> to see if all rows are unique over the 2 keys (replacing “key1” and “key2” with your key fields).</p>
 <p>If it shouldn’t add rows, then make sure the new data has the same number of rows as the old one, or use <code>setequal</code> to check.</p>
 </section>
@@ -1040,11 +1049,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2026-01-13 05:56:58 EST"</code></pre>
+<pre><code>[1] "2026-02-04 07:46:21 EST"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>(<span class="st">"GMT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2026-01-13 10:56:58 GMT"</code></pre>
+<pre><code>[1] "2026-02-04 12:46:21 GMT"</code></pre>
 </div>
 </div>
 <p>You can see all the available time zones with <code>OlsonNames()</code> function.</p>
@@ -1052,15 +1061,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">hour</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5</code></pre>
+<pre><code>[1] 7</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">minute</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 56</code></pre>
+<pre><code>[1] 46</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">second</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 58.56751</code></pre>
+<pre><code>[1] 21.86845</code></pre>
 </div>
 </div>
 <p>The package also includes a function to parse strings into times as well as parsers for time objects that include dates:</p>
