@@ -367,7 +367,9 @@ window.Quarto = {
   <li><a href="#obtaining-census-data" id="toc-obtaining-census-data" class="nav-link" data-scroll-target="#obtaining-census-data">Obtaining Census Data</a></li>
   <li><a href="#individual-pums-data" id="toc-individual-pums-data" class="nav-link" data-scroll-target="#individual-pums-data">Individual (PUMS) data</a></li>
   <li><a href="#decennialacs-summary-tables" id="toc-decennialacs-summary-tables" class="nav-link" data-scroll-target="#decennialacs-summary-tables">Decennial/ACS Summary tables</a></li>
-  <li><a href="#other-data-sources" id="toc-other-data-sources" class="nav-link" data-scroll-target="#other-data-sources">Other data sources</a></li>
+  </ul></li>
+  <li><a href="#other-data-sources" id="toc-other-data-sources" class="nav-link" data-scroll-target="#other-data-sources">Other data sources</a>
+  <ul class="collapse">
   <li><a href="#extracting-from-arcgis-online" id="toc-extracting-from-arcgis-online" class="nav-link" data-scroll-target="#extracting-from-arcgis-online">Extracting from ArcGIS Online</a></li>
   </ul></li>
   </ul>
@@ -395,7 +397,7 @@ window.Quarto = {
 </header>
 
 
-<!-- Ben: review coded answer to try-it at end. I've been emailing it to myself. -->
+<!-- Ben: review coded answer to try-it at end. I've been emailing it to myself for class. -->
 <section id="reading" class="level1">
 <h1>Reading</h1>
 </section>
@@ -527,668 +529,17 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>individual1 <span class="ot">=</span> tidycensus<span class="sc">::</span><span class="fu">get_pums</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">'AGEP'</span>,<span class="st">'NATIVITY'</span>,<span class="st">'PUMA'</span>), </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">state =</span> <span class="st">'MI'</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">puma =</span> <span class="cn">NULL</span>, <span class="co"># will pull all PUMAs in state</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">year =</span> <span class="dv">2022</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">survey =</span> <span class="st">'acs1'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Downloading: 7.6 kB     
-Downloading: 7.6 kB     
-Downloading: 7.6 kB     
-Downloading: 7.6 kB     
-Downloading: 16 kB     
-Downloading: 16 kB     
-Downloading: 16 kB     
-Downloading: 16 kB     
-Downloading: 24 kB     
-Downloading: 24 kB     
-Downloading: 32 kB     
-Downloading: 32 kB     
-Downloading: 40 kB     
-Downloading: 40 kB     
-Downloading: 65 kB     
-Downloading: 65 kB     
-Downloading: 76 kB     
-Downloading: 76 kB     
-Downloading: 110 kB     
-Downloading: 110 kB     
-Downloading: 120 kB     
-Downloading: 120 kB     
-Downloading: 150 kB     
-Downloading: 150 kB     
-Downloading: 160 kB     
-Downloading: 160 kB     
-Downloading: 210 kB     
-Downloading: 210 kB     
-Downloading: 210 kB     
-Downloading: 210 kB     
-Downloading: 280 kB     
-Downloading: 280 kB     
-Downloading: 280 kB     
-Downloading: 280 kB     
-Downloading: 280 kB     
-Downloading: 280 kB     
-Downloading: 290 kB     
-Downloading: 290 kB     
-Downloading: 330 kB     
-Downloading: 330 kB     
-Downloading: 340 kB     
-Downloading: 340 kB     
-Downloading: 350 kB     
-Downloading: 350 kB     
-Downloading: 390 kB     
-Downloading: 390 kB     
-Downloading: 410 kB     
-Downloading: 410 kB     
-Downloading: 410 kB     
-Downloading: 410 kB     
-Downloading: 420 kB     
-Downloading: 420 kB     
-Downloading: 450 kB     
-Downloading: 450 kB     
-Downloading: 470 kB     
-Downloading: 470 kB     
-Downloading: 470 kB     
-Downloading: 470 kB     
-Downloading: 490 kB     
-Downloading: 490 kB     
-Downloading: 520 kB     
-Downloading: 520 kB     
-Downloading: 550 kB     
-Downloading: 550 kB     
-Downloading: 590 kB     
-Downloading: 590 kB     
-Downloading: 590 kB     
-Downloading: 590 kB     
-Downloading: 630 kB     
-Downloading: 630 kB     
-Downloading: 660 kB     
-Downloading: 660 kB     
-Downloading: 680 kB     
-Downloading: 680 kB     
-Downloading: 710 kB     
-Downloading: 710 kB     
-Downloading: 720 kB     
-Downloading: 720 kB     
-Downloading: 720 kB     
-Downloading: 720 kB     
-Downloading: 750 kB     
-Downloading: 750 kB     
-Downloading: 760 kB     
-Downloading: 760 kB     
-Downloading: 780 kB     
-Downloading: 780 kB     
-Downloading: 800 kB     
-Downloading: 800 kB     
-Downloading: 830 kB     
-Downloading: 830 kB     
-Downloading: 850 kB     
-Downloading: 850 kB     
-Downloading: 860 kB     
-Downloading: 860 kB     
-Downloading: 890 kB     
-Downloading: 890 kB     
-Downloading: 910 kB     
-Downloading: 910 kB     
-Downloading: 930 kB     
-Downloading: 930 kB     
-Downloading: 970 kB     
-Downloading: 970 kB     
-Downloading: 970 kB     
-Downloading: 970 kB     
-Downloading: 990 kB     
-Downloading: 990 kB     
-Downloading: 1 MB     
-Downloading: 1 MB     
-Downloading: 1.1 MB     
-Downloading: 1.1 MB     
-Downloading: 1.1 MB     
-Downloading: 1.1 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.2 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.3 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.4 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.5 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.6 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.7 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.8 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 1.9 MB     
-Downloading: 2 MB     
-Downloading: 2 MB     
-Downloading: 2 MB     
-Downloading: 2 MB     
-Downloading: 2 MB     
-Downloading: 2 MB     
-Downloading: 2 MB     
-Downloading: 2 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.1 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.2 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.3 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.4 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.5 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.6 MB     
-Downloading: 2.7 MB     
-Downloading: 2.7 MB     
-Downloading: 2.7 MB     
-Downloading: 2.7 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.8 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 2.9 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.1 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.2 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.3 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.4 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.5 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.6 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.7 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.8 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 3.9 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.1 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.2 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.3 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.4 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.5 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.6 MB     
-Downloading: 4.7 MB     
-Downloading: 4.7 MB     
-Downloading: 4.7 MB     
-Downloading: 4.7 MB     
-Downloading: 4.7 MB     
-Downloading: 4.7 MB     
-Downloading: 4.8 MB     
-Downloading: 4.8 MB     
-Downloading: 4.8 MB     
-Downloading: 4.8 MB     
-Downloading: 4.8 MB     
-Downloading: 4.8 MB     
-Downloading: 4.8 MB     
-Downloading: 4.8 MB     
-Downloading: 4.9 MB     
-Downloading: 4.9 MB     
-Downloading: 4.9 MB     
-Downloading: 4.9 MB     
-Downloading: 4.9 MB     
-Downloading: 4.9 MB     
-Downloading: 4.9 MB     
-Downloading: 4.9 MB     
-Downloading: 5 MB     
-Downloading: 5 MB     
-Downloading: 5 MB     
-Downloading: 5 MB     
-Downloading: 5 MB     
-Downloading: 5 MB     
-Downloading: 5.1 MB     
-Downloading: 5.1 MB     
-Downloading: 5.1 MB     
-Downloading: 5.1 MB     
-Downloading: 5.1 MB     
-Downloading: 5.1 MB     
-Downloading: 5.1 MB     
-Downloading: 5.1 MB     
-Downloading: 5.2 MB     
-Downloading: 5.2 MB     
-Downloading: 5.2 MB     
-Downloading: 5.2 MB     
-Downloading: 5.2 MB     
-Downloading: 5.2 MB     
-Downloading: 5.2 MB     
-Downloading: 5.2 MB     
-Downloading: 5.3 MB     
-Downloading: 5.3 MB     
-Downloading: 5.3 MB     
-Downloading: 5.3 MB     
-Downloading: 5.3 MB     
-Downloading: 5.3 MB     
-Downloading: 5.4 MB     
-Downloading: 5.4 MB     
-Downloading: 5.4 MB     
-Downloading: 5.4 MB     
-Downloading: 5.4 MB     
-Downloading: 5.4 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.5 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     
-Downloading: 5.6 MB     </code></pre>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">progress_enabled =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>individual1 <span class="ot">=</span> tidycensus<span class="sc">::</span><span class="fu">get_pums</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">'AGEP'</span>,<span class="st">'NATIVITY'</span>,<span class="st">'PUMA'</span>), </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">state =</span> <span class="st">'MI'</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">puma =</span> <span class="cn">NULL</span>, <span class="co"># will pull all PUMAs in state</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">year =</span> <span class="dv">2022</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">survey =</span> <span class="st">'acs1'</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(individual1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(individual1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 8
   SERIALNO      SPORDER  WGTP PWGTP  AGEP PUMA  ST    NATIVITY
@@ -1204,17 +555,17 @@ Downloading: 5.6 MB     </code></pre>
 <p>The <code>SERIALNO</code> column shows the household identifier, and <code>SPORDER</code> contains the individual identifier (so a unique person is SERIALNO - SPORDER).</p>
 <p>We can immediately make our own visualization: how about the distribution of age by nativity?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(individual1 <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>         dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">NATIVITY =</span> <span class="fu">case_when</span>(NATIVITY<span class="sc">==</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">'US-born'</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                                            NATIVITY<span class="sc">==</span><span class="dv">2</span> <span class="sc">~</span> <span class="st">'Foreign born'</span>)), </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> AGEP, <span class="at">fill =</span> <span class="fu">as.factor</span>(NATIVITY))) <span class="sc">+</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> .<span class="dv">33</span>) <span class="sc">+</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age"</span>, <span class="at">y =</span> <span class="st">'Density'</span>, <span class="at">fill =</span> <span class="st">'Nativity'</span>) <span class="sc">+</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(individual1 <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>         dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">NATIVITY =</span> <span class="fu">case_when</span>(NATIVITY<span class="sc">==</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">'US-born'</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                                            NATIVITY<span class="sc">==</span><span class="dv">2</span> <span class="sc">~</span> <span class="st">'Foreign born'</span>)), </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> AGEP, <span class="at">fill =</span> <span class="fu">as.factor</span>(NATIVITY))) <span class="sc">+</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> .<span class="dv">33</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age"</span>, <span class="at">y =</span> <span class="st">'Density'</span>, <span class="at">fill =</span> <span class="st">'Nativity'</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05b_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" alt="Density plot showing frequency of each age separated by foreign- and US-born. The blue US-born population is higher up to age 18, then less frequent from 18 to 60, then more frequen from 60 to 80, then less frequent from 80 to 99" width="672"></p>
+<p><img src="05b_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" alt="Density plot showing frequency of each age separated by foreign- and US-born. The blue US-born population is higher up to age 18, then less frequent from 18 to 60, then more frequen from 60 to 80, then less frequent from 80 to 99" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1223,87 +574,19 @@ Downloading: 5.6 MB     </code></pre>
 <section id="pums-maps" class="level3">
 <h3 class="anchored" data-anchor-id="pums-maps">PUMS maps</h3>
 <p>Summarizing and showing on a map is easy. First, we need to obtain the PUMA map for the year that corresponds to our data (they are updated every 10 years). Then, we need to <code>group_by</code> and <code>summarize</code> the individual data so that each PUMS has one value for each variable.</p>
-<p>I’m interested in seeing where in MI there’s a big gap between native-born age and foreign-born age.</p>
+<p>I’m interested in seeing where in MI there’s a big gap between native-born age and foreign-born age. I’ll first pull the PUMAS using <code>tigris::pumas()</code>, then merge it to my data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>MIpums <span class="ot">=</span> tigris<span class="sc">::</span><span class="fu">pumas</span>(<span class="at">state =</span> <span class="st">'MI'</span>, <span class="at">year =</span> <span class="dv">2022</span>)  <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  tigris<span class="sc">::</span><span class="fu">erase_water</span>(<span class="at">area_threshold =</span> .<span class="dv">95</span>) <span class="co"># fixes the Great Lakes boundary issue (erases the largest 1-.95=5% of lakes)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |=                                                                     |   2%
-  |                                                                            
-  |===                                                                   |   5%
-  |                                                                            
-  |======                                                                |   8%
-  |                                                                            
-  |======                                                                |   9%
-  |                                                                            
-  |=======                                                               |  10%
-  |                                                                            
-  |========                                                              |  11%
-  |                                                                            
-  |==========                                                            |  14%
-  |                                                                            
-  |============                                                          |  17%
-  |                                                                            
-  |=============                                                         |  18%
-  |                                                                            
-  |==============                                                        |  20%
-  |                                                                            
-  |================                                                      |  23%
-  |                                                                            
-  |==================                                                    |  26%
-  |                                                                            
-  |===================                                                   |  28%
-  |                                                                            
-  |====================                                                  |  28%
-  |                                                                            
-  |====================                                                  |  29%
-  |                                                                            
-  |======================                                                |  32%
-  |                                                                            
-  |==========================                                            |  36%
-  |                                                                            
-  |==============================                                        |  43%
-  |                                                                            
-  |================================                                      |  46%
-  |                                                                            
-  |=====================================                                 |  53%
-  |                                                                            
-  |=======================================                               |  55%
-  |                                                                            
-  |===========================================                           |  62%
-  |                                                                            
-  |=============================================                         |  64%
-  |                                                                            
-  |==================================================                    |  71%
-  |                                                                            
-  |====================================================                  |  74%
-  |                                                                            
-  |=======================================================               |  78%
-  |                                                                            
-  |========================================================              |  81%
-  |                                                                            
-  |==========================================================            |  83%
-  |                                                                            
-  |=============================================================         |  88%
-  |                                                                            
-  |===============================================================       |  90%
-  |                                                                            
-  |=================================================================     |  92%
-  |                                                                            
-  |======================================================================| 100%</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MIpums.merge <span class="ot">=</span> MIpums <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(PUMACE20, NAMELSAD20) <span class="sc">%&gt;%</span> <span class="co"># just keeping useful columns from tigris file</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(individual1 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(PUMA) <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">avgAge.USborn =</span> <span class="fu">mean</span>(AGEP[NATIVITY<span class="sc">==</span><span class="dv">1</span>], <span class="at">na.rm=</span>T),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">avgAge.foreignborn =</span> <span class="fu">mean</span>(AGEP[NATIVITY<span class="sc">==</span><span class="dv">2</span>], <span class="at">na.rm=</span>T),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">diffAvgAge =</span> avgAge.USborn <span class="sc">-</span> avgAge.foreignborn),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">'PUMACE20'</span> <span class="ot">=</span> <span class="st">'PUMA'</span>))</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MIpums.merge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>MIpums <span class="ot">=</span> tigris<span class="sc">::</span><span class="fu">pumas</span>(<span class="at">state =</span> <span class="st">'MI'</span>, <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">progress_bar =</span> <span class="cn">FALSE</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  tigris<span class="sc">::</span><span class="fu">erase_water</span>(<span class="at">area_threshold =</span> .<span class="dv">95</span>) <span class="co"># fixes the Great Lakes boundary issue (erases the largest 1-.95=5% of lakes)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>MIpums.merge <span class="ot">=</span> MIpums <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(PUMACE20, NAMELSAD20) <span class="sc">%&gt;%</span> <span class="co"># just keeping useful columns from tigris file</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(individual1 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(PUMA) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">avgAge.USborn =</span> <span class="fu">mean</span>(AGEP[NATIVITY<span class="sc">==</span><span class="dv">1</span>], <span class="at">na.rm=</span>T),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                               <span class="at">avgAge.foreignborn =</span> <span class="fu">mean</span>(AGEP[NATIVITY<span class="sc">==</span><span class="dv">2</span>], <span class="at">na.rm=</span>T),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                               <span class="at">diffAvgAge =</span> avgAge.USborn <span class="sc">-</span> avgAge.foreignborn),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">'PUMACE20'</span> <span class="ot">=</span> <span class="st">'PUMA'</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MIpums.merge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 6 features and 5 fields
 Geometry type: GEOMETRYCOLLECTION
@@ -1328,13 +611,14 @@ Geodetic CRS:  NAD83
 </div>
 <p>Now, we can plot this (or use <code>mapview</code> to explore interactively)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MIpums.merge, <span class="fu">aes</span>(<span class="at">fill =</span> diffAvgAge, <span class="at">col =</span> diffAvgAge)) <span class="sc">+</span> <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">'Diff. in avg</span><span class="sc">\n</span><span class="st">age'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MIpums.merge, <span class="fu">aes</span>(<span class="at">fill =</span> diffAvgAge, <span class="at">col =</span> diffAvgAge)) <span class="sc">+</span> <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_continuous</span>(<span class="at">guide =</span> <span class="st">'none'</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">'Diff. in avg</span><span class="sc">\n</span><span class="st">age'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05b_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" alt="Map showing the difference in average age between US- and foreign-born poulation by PUMA." width="672"></p>
+<p><img src="05b_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" alt="Map showing the difference in average age between US- and foreign-born poulation by PUMA." width="672"></p>
 </figure>
 </div>
 </div>
@@ -1370,41 +654,16 @@ Geodetic CRS:  NAD83
 <li>Total renter-occupied using Bottled, tank or LP gas (row 14)</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>AL.heat <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">'tract'</span>, </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">'OwnerOccupied_total'</span> <span class="ot">=</span> <span class="st">'B25117_002'</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OwnerOccupied_LPgas'</span> <span class="ot">=</span> <span class="st">'B25117_004'</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'RenterOccupied_total'</span> <span class="ot">=</span> <span class="st">'B25117_012'</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'RenterOccupied_LPgas'</span> <span class="ot">=</span> <span class="st">'B25117_014'</span>),</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">survey =</span> <span class="st">'acs5'</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">output =</span> <span class="st">'wide'</span>, <span class="co"># in "wide" format</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">state =</span> <span class="st">'01'</span>, <span class="at">county =</span> <span class="st">'001'</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">geometry =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |======                                                                |   9%
-  |                                                                            
-  |==============                                                        |  20%
-  |                                                                            
-  |======================                                                |  31%
-  |                                                                            
-  |=============================                                         |  42%
-  |                                                                            
-  |=====================================                                 |  53%
-  |                                                                            
-  |============================================                          |  64%
-  |                                                                            
-  |====================================================                  |  74%
-  |                                                                            
-  |============================================================          |  85%
-  |                                                                            
-  |===================================================================   |  96%
-  |                                                                            
-  |======================================================================| 100%</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(AL.heat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>AL.heat <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">'tract'</span>, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">'OwnerOccupied_total'</span> <span class="ot">=</span> <span class="st">'B25117_002'</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OwnerOccupied_LPgas'</span> <span class="ot">=</span> <span class="st">'B25117_004'</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'RenterOccupied_total'</span> <span class="ot">=</span> <span class="st">'B25117_012'</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'RenterOccupied_LPgas'</span> <span class="ot">=</span> <span class="st">'B25117_014'</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">survey =</span> <span class="st">'acs5'</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">output =</span> <span class="st">'wide'</span>, <span class="co"># in "wide" format</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">state =</span> <span class="st">'01'</span>, <span class="at">county =</span> <span class="st">'001'</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">geometry =</span> <span class="cn">TRUE</span>, <span class="at">progress_bar =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(AL.heat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 6 features and 10 fields
 Geometry type: MULTIPOLYGON
@@ -1444,13 +703,13 @@ Geodetic CRS:  NAD83
 <p>The <code>variables</code> argument takes <em>named</em> vectors, and <code>tidycensus</code> uses the name you give it for each variable for the column it outputs (appending “E” and “M” for Estimate and MOE).</p>
 <p>That first line of the results shows 519 owner-occupied households total, same as on data.gov. We have both the Estimate and the Margin of Error, so we want to drop those. Then we want to calculate our shares.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>AL.heat.proc <span class="ot">=</span> AL.heat <span class="sc">%&gt;%</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">!</span><span class="fu">ends_with</span>(<span class="st">'M'</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">OwnerShareLPgas =</span> OwnerOccupied_LPgasE<span class="sc">/</span>OwnerOccupied_totalE,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">RenterShareLPgas =</span> RenterOccupied_LPgasE<span class="sc">/</span>RenterOccupied_totalE) <span class="sc">%&gt;%</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(GEOID, NAME, <span class="fu">ends_with</span>(<span class="st">'gas'</span>))</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(AL.heat.proc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>AL.heat.proc <span class="ot">=</span> AL.heat <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">!</span><span class="fu">ends_with</span>(<span class="st">'M'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">OwnerShareLPgas =</span> OwnerOccupied_LPgasE<span class="sc">/</span>OwnerOccupied_totalE,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">RenterShareLPgas =</span> RenterOccupied_LPgasE<span class="sc">/</span>RenterOccupied_totalE) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(GEOID, NAME, <span class="fu">ends_with</span>(<span class="st">'gas'</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(AL.heat.proc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 6 features and 4 fields
 Geometry type: MULTIPOLYGON
@@ -1477,7 +736,7 @@ Geodetic CRS:  NAD83
 <p>We can grab the census tract polygons for Alabama and plot these. <strong>Or</strong>, we could change <code>geography=TRUE</code> to our <code>get_acs</code> call, and we’ll get the <code>tigris</code> polygons already attached for this county.</p>
 <p>Not all tables have just the “Estimate” and “Margin of Error” column. Some, like “S1101” (Households and Families) have cross-tabs across the columns (AND cross-tabs down the rows!). That’s super helpful if we have a very narrowly defined population we’re interested in, but also makes things harder. Let’s find the S1101 data and look at it’s table layout:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">'images'</span>,<span class="st">'census2.png'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">'images'</span>,<span class="st">'census2.png'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1497,16 +756,16 @@ Geodetic CRS:  NAD83
 </ul>
 <p>But we’ll need them specifically for the “Female householder, no spouse present, family household” set of columns. That is the <strong>third</strong> set of columns, so we append it with “C03”</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>AL.fam <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">'tract'</span>, </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">'TotalHouseholds'</span> <span class="ot">=</span> <span class="st">'S1101_C04_003'</span>,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'PctFemaleNoSpouseFamily_OwnerOccupied'</span> <span class="ot">=</span> <span class="st">'S1101_C04_018'</span>),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">survey =</span> <span class="st">'acs5'</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">output =</span> <span class="st">'wide'</span>, <span class="co"># in "wide" format</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">state =</span> <span class="st">'01'</span>, <span class="at">county =</span> <span class="st">'001'</span>,</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">geometry =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(GEOID) <span class="sc">%&gt;%</span> <span class="co"># comes in out of order for some reason</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">!</span><span class="fu">ends_with</span>(<span class="st">'M'</span>))</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(AL.fam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>AL.fam <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">'tract'</span>, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">'TotalHouseholds'</span> <span class="ot">=</span> <span class="st">'S1101_C04_003'</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'PctFemaleNoSpouseFamily_OwnerOccupied'</span> <span class="ot">=</span> <span class="st">'S1101_C04_018'</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">survey =</span> <span class="st">'acs5'</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">output =</span> <span class="st">'wide'</span>, <span class="co"># in "wide" format</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">state =</span> <span class="st">'01'</span>, <span class="at">county =</span> <span class="st">'001'</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">geometry =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(GEOID) <span class="sc">%&gt;%</span> <span class="co"># comes in out of order for some reason</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">!</span><span class="fu">ends_with</span>(<span class="st">'M'</span>))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(AL.fam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
   GEOID       NAME                       TotalHouseholdsE PctFemaleNoSpouseFam…¹
@@ -1551,7 +810,7 @@ TRY IT
 <section id="part-b2" class="level3">
 <h3 class="anchored" data-anchor-id="part-b2">Part B2:</h3>
 <p>Let’s compare the PUMS counts to the ACS 1-year count. <strong>Your goal here is to see if we can get (close to) ACS totals using the PUMS sample</strong>. The ACS reports households, so we’ll have to get to household counts rather than individuals.</p>
-<p>Part B1 should result in 2,436 observations with 6,388 unique values (you can use <code>length(unique(Data$SERIALNO)))</code> to see how many unique household SERIALNOs there are. We know that the structure type is the same for all invididuals in a household. And our Part A data showed number of households. So, we want to “collapse” our data by keeping only the unique values of <code>SERIALNO</code> and our housing variable. <em>We are also going to keep the <code>WGTP</code> weight column. This column tells us how much we need to weight each household observation in order to “blow up” to the total estimate.</em></p>
+<p>Part B1 should result in 2,436 observations with 6,388 unique values (you can use <code>length(unique(Data$SERIALNO))</code> to see how many unique household SERIALNOs there are). We know that the structure type is the same for all invididuals in a household. And our Part A data showed number of households. So, we want to “collapse” our data by keeping only the unique values of <code>SERIALNO</code> and our housing variable. <em>We are also going to keep the <code>WGTP</code> weight column. This column tells us how much we need to weight each household observation in order to “blow up” to the total estimate.</em></p>
 <p>The column(s) we don’t need are <code>SPORDER</code> (that’s what shows the individual responses, but the household responses are all the same within household), and we don’t need the individual weight <code>PWGTP</code>. We can use the <code>dplyr::distinct()</code> function, which returns the unique values of whatever data you give it, so <code>select()</code> first then pipe to <code>distinct()</code>. Hint: you should have 6,388 rows when done. Each row will represent a household PUMS observation in one of the two PUMAs in Ingham county.</p>
 <p><strong>Weights</strong>: to “blow up” from the <em>PUMS</em> (sample) to the totals reported in the ACS, we need simply multiply by the weight <code>WGTP</code>. It’s pretty easy to do in a <code>summarize</code> call. Since you have both PUMAs in Ingham Co.&nbsp;you need only add them all together (once properly weighted).</p>
 <p><strong>Calculate the PUMS-based total number of households and total number of households living in mobile homes. Compare them to the numbers from Part A, as reported by the ACS. Do they match? Are they pretty close?</strong></p>
@@ -1559,8 +818,9 @@ TRY IT
 </div>
 </div>
 </section>
-<section id="other-data-sources" class="level2">
-<h2 class="anchored" data-anchor-id="other-data-sources">Other data sources</h2>
+</section>
+<section id="other-data-sources" class="level1">
+<h1>Other data sources</h1>
 <p>Census data products are core resources in socio-economic research. But they are not the only games in town, of course. In this section, we discuss other data sources, and briefly introduce the use of API’s for accessing many other data sources.</p>
 <section id="msu-available-data" class="level3">
 <h3 class="anchored" data-anchor-id="msu-available-data">MSU-available data</h3>
@@ -1600,7 +860,6 @@ TRY IT
 <li>Google has a <a href="https://datasetsearch.research.google.com">dataset search page</a></li>
 </ul>
 </section>
-</section>
 <section id="extracting-from-arcgis-online" class="level2">
 <h2 class="anchored" data-anchor-id="extracting-from-arcgis-online">Extracting from ArcGIS Online</h2>
 <p>A large number of municipalities share their geospatial open data using ArcGIS maps. Problem is, they often don’t let you download (you can view and make little story maps, but can’t bring it into R to merge, etc.).</p>
@@ -1616,14 +875,42 @@ TRY IT
 <li><p>Using <code>arcgislayer</code>:</p></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arcgislayers)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>MI.easements.url <span class="ot">=</span> <span class="st">'https://gisagoegle.state.mi.us/arcgis/rest/services/EGLE/WrdOpenData/MapServer/1/'</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>MI.easements <span class="ot">=</span> <span class="fu">arc_open</span>(MI.easements.url) <span class="sc">%&gt;%</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arc_select</span>()</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MI.easements)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arcgislayers)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>MI.easements.url <span class="ot">=</span> <span class="st">'https://gisagoegle.state.mi.us/arcgis/rest/services/EGLE/WrdOpenData/MapServer/1/'</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>MI.easements <span class="ot">=</span> <span class="fu">arc_open</span>(MI.easements.url) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arc_select</span>()</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MI.easements)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 9 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 711852.2 ymin: 448737.2 xmax: 715152 ymax: 461692.5
+Projected CRS: NAD83 / Michigan Oblique Mercator
+  OBJECTID Id     Acres         MappingDate FileNumber County
+1        1  1 0.5833177 2008-03-03 19:00:00 06-01-0018 Alcona
+2        2  2 0.6375753 2008-03-03 19:00:00 03-01-0030 Alcona
+3        3  3 5.1003871 2008-03-03 19:00:00 03-01-0030 Alcona
+4        4  4 0.3197049 2008-03-03 19:00:00 03-01-0030 Alcona
+5        5  5 0.2803897 2008-03-03 19:00:00 03-01-0030 Alcona
+6        6  6 0.2680268 2008-03-03 19:00:00 03-01-0030 Alcona
+              Township Shape.STArea() Shape.STLength()
+1   Greenbush Township       2360.613         198.6734
+2 Harrisville Township       2580.186         222.0932
+3 Harrisville Township      20640.617        1520.8078
+4 Harrisville Township       1293.805         233.1256
+5 Harrisville Township       1134.702         165.4281
+6 Harrisville Township       1084.670         151.5164
+                        geometry
+1 POLYGON ((711852.9 448749.2...
+2 POLYGON ((714978.6 461686, ...
+3 POLYGON ((715115.4 461691.2...
+4 POLYGON ((715141.1 461692.1...
+5 POLYGON ((715078.4 461676.5...
+6 POLYGON ((715083.2 461611.3...</code></pre>
+</div>
 </div>
 <p>And now it’s our own layer in R and we can merge, summarize, and analyze to our hearts content.</p>
 <p>Note: if you are having trouble installing <code>arcgislayers</code> on a Windows machine (and your error is asking about an installation of Rust), then use the following to install from already-compiled binaries: <code>install.packages("arcgis", repos = c("https://r-arcgis.r-universe.dev", "https://cloud.r-project.org"), type = 'win.binary')</code></p>

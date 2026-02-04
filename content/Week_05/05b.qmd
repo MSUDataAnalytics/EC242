@@ -7,7 +7,7 @@ output:
 ---
 
 
-<!-- Ben: review coded answer to try-it at end. I've been emailing it to myself. -->
+<!-- Ben: review coded answer to try-it at end. I've been emailing it to myself for class. -->
 
 
 # Reading
@@ -164,19 +164,23 @@ My preferred way of finding the right PUMA variable is to use the browser at [ht
 
 If you select a few then click on "see data" it will give you totals for the whole US, and try to show you cross-tabs generated using this data. However, *if you record the variable names, we can import using `tidycensus::get_pums()` the individual observations*. We'll include the `PUMA` variable since this tells us which PUMA the person lives in. PUMAs are not uniquely numbered to the state, so if we're doing anything interstate, we'll need to `unite` the `ST` and `PUMA` columns.
 
-```{r, echo=T, message = F, warning=F, error = F}
+```{r, echo=T, message = F, warning=F, error = F, results = 'hide'}
 library(tidycensus)
 library(tigris)
+options(progress_enabled = FALSE)
+
 
 individual1 = tidycensus::get_pums(variables = c('AGEP','NATIVITY','PUMA'), 
                                    state = 'MI',
                                    puma = NULL, # will pull all PUMAs in state
                                    year = 2022,
                                    survey = 'acs1')
-
 head(individual1)
 ```
 
+```{r, echo=F}
+head(individual1)
+```
 The `SERIALNO` column shows the household identifier, and `SPORDER` contains the individual identifier (so a unique person is SERIALNO - SPORDER).
 
 We can immediately make our own visualization: how about the distribution of age by nativity?
@@ -199,10 +203,10 @@ We can do this for any variable we find on the data browser.
 
 Summarizing and showing on a map is easy. First, we need to obtain the PUMA map for the year that corresponds to our data (they are updated every 10 years). Then, we need to `group_by` and `summarize` the individual data so that each PUMS has one value for each variable.
 
-I'm interested in seeing where in MI there's a big gap between native-born age and foreign-born age.
+I'm interested in seeing where in MI there's a big gap between native-born age and foreign-born age. I'll first pull the PUMAS using `tigris::pumas()`, then merge it to my data. 
 
 ```{r, echo=T}
-MIpums = tigris::pumas(state = 'MI', year = 2022)  %>%
+MIpums = tigris::pumas(state = 'MI', year = 2022, progress_bar = FALSE)  %>%
   tigris::erase_water(area_threshold = .95) # fixes the Great Lakes boundary issue (erases the largest 1-.95=5% of lakes)
 
 MIpums.merge = MIpums %>%
@@ -220,7 +224,8 @@ Now, we can plot this (or use `mapview` to explore interactively)
 #| fig-alt: "Map showing the difference in average age between US- and foreign-born poulation by PUMA."
 
 ggplot(MIpums.merge, aes(fill = diffAvgAge, col = diffAvgAge)) + geom_sf() +
-  theme_minimal() +
+  theme_minimal() + 
+  scale_color_continuous(guide = 'none') +
   labs(fill = 'Diff. in avg\nage')
 
 ```
@@ -271,7 +276,7 @@ AL.heat = get_acs(geography = 'tract',
                   year = 2022, survey = 'acs5',
                   output = 'wide', # in "wide" format
                   state = '01', county = '001',
-                  geometry = TRUE)
+                  geometry = TRUE, progress_bar = FALSE)
 head(AL.heat)
 ```
 
@@ -383,7 +388,7 @@ From your data, how many individuals live in a mobile home? Remember, each row i
 ### Part B2:
 Let's compare the PUMS counts to the ACS 1-year count. **Your goal here is to see if we can get (close to) ACS totals using the PUMS sample**. The ACS reports households, so we'll have to get to household counts rather than individuals.
 
-Part B1 should result in 2,436 observations with `r prettyNum(NROW(unique(IngCo.puma$SERIALNO)), big.mark = ',')` unique values (you can use `length(unique(Data$SERIALNO)))` to see how many unique household SERIALNOs there are. We know that the structure type is the same for all invididuals in a household. And our Part A data showed number of households. So, we want to "collapse" our data by keeping only the unique values of `SERIALNO` and our housing variable. *We are also going to keep the `WGTP` weight column. This column tells us how much we need to weight each household observation in order to "blow up" to the total estimate.*
+Part B1 should result in 2,436 observations with `r prettyNum(NROW(unique(IngCo.puma$SERIALNO)), big.mark = ',')` unique values (you can use `length(unique(Data$SERIALNO))` to see how many unique household SERIALNOs there are). We know that the structure type is the same for all invididuals in a household. And our Part A data showed number of households. So, we want to "collapse" our data by keeping only the unique values of `SERIALNO` and our housing variable. *We are also going to keep the `WGTP` weight column. This column tells us how much we need to weight each household observation in order to "blow up" to the total estimate.*
 
 The column(s) we don't need are `SPORDER` (that's what shows the individual responses, but the household responses are all the same within household), and we don't need the individual weight `PWGTP`. We can use the `dplyr::distinct()` function, which returns the unique values of whatever data you give it, so `select()` first then pipe to `distinct()`. Hint: you should have `r prettyNum(NROW(unique(IngCo.puma$SERIALNO)), big.mark = ',')` rows when done. Each row will represent a household PUMS observation in one of the two PUMAs in Ingham county.
 
@@ -395,7 +400,7 @@ The column(s) we don't need are `SPORDER` (that's what shows the individual resp
 
 
 
-## Other data sources
+# Other data sources
 Census data products are core resources in socio-economic research. But they are not the only games in town, of course. In this section, we discuss other data sources, and briefly introduce the use of API's for accessing many other data sources.
 
 
@@ -451,7 +456,7 @@ Here's how most (but not all) ArcGIS-hosted spatial data can be obtained.
 
 8. Using `arcgislayer`:
 
-```{r, echo=T, eval = F}
+```{r, echo=T, eval = T}
 library(arcgislayers)
 library(sf)
 
