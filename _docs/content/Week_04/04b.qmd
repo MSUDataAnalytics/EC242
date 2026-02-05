@@ -14,7 +14,7 @@ library(knitr)
 
 # Data Wrangling
 
-Part of visualization is prepping your data. We previously covered [reshaping](/content/Week_02/02a.qmd#reshaping) during our tidyverse review. Today we go more in-depth to on joining and cleaning data.
+Part of visualization is prepping your data. We previously covered [reshaping](/content/Week_02/02a.qmd#reshaping) during our tidyverse review. Today we go more in-depth to on combining data.
 
 
 ## Required Reading
@@ -25,9 +25,59 @@ Part of visualization is prepping your data. We previously covered [reshaping](/
 
 - What is a _join_ and why is it a common data wrangling maneuver?
 - What is a _primary key_ and why is it important to think about our data in this way?
-- How do we join spatial objects when the key relationship is spatially defined?
 - How do we deal with messy date variables?
 
+# Binding
+
+One common (but naive) way in which datasets are combined is by _binding_ them. Binding functions do not try to match by a variable, but instead simply combine datasets. If the datasets don't match by the appropriate dimensions, one obtains an error. However, R won't tell you that you've done something silly. Let's take a brief look:
+
+## Binding columns
+
+The __dplyr__ function _bind_cols_ binds two objects by making them columns in a tibble. For example, we quickly want to make a data frame consisting of numbers we can use.
+
+```{r}
+bind_cols(a = 1:3, b = 4:6)
+```
+
+This function requires that we assign names to the columns. Here we chose `a` and `b`.
+
+Note that there is an R-base function `cbind` with the exact same functionality. An important difference is that `cbind` can create different types of objects, while `bind_cols` always produces a data frame.
+
+`bind_cols` can also bind two different data frames. For example, here we bind `dslabs::murders` and our election polling data from previous lessons
+
+```{r}
+library(tidyverse)
+library(dslabs)
+murders = dslabs::murders
+results_us_election_2016 = dslabs::results_us_election_2016
+```
+
+We can just bind the two datasets together (but watch out!):
+
+```{r}
+new_tab <- bind_cols(murders, results_us_election_2016)
+head(new_tab)
+```
+
+Well, two problems: first off, `state` was in both and `bind_cols` just....sticks the data together, so we now have duplicated column names (which R handles by adding '1' and '6' referring to their column position).
+
+Worse still, the orders weren't the same, so we get California's election result in the same row as Alabama (AL was definitely not 61.7% Clinton).
+
+So `bind_cols` puts the data together, but yikes.
+
+## Binding by rows
+
+The `bind_rows` function is similar to `bind_cols`, but binds rows instead of columns:
+
+```{r}
+br = bind_rows(murders, results_us_election_2016)
+head(br)
+tail(br)
+```
+
+This is based on an R-base function `rbind`. Here, we still haven't gotten anything useful: since `state' was in both datasets, we see it complete (no NA's) in the first part (murders) and second part (election results), but it repeats the states. Moreover, the population data is filled in on the top half but NA below, and the election results are NA at the beginning, and filled in below. R just lined up the columns that had the same name (`state`) and filled in the data elsewhere. 
+
+Probably not helpful, but it is useful if we split up data then have to re-connect it. Usually, we don't use `bind_rows` unless we know it has the same columns.
 
 
 # Joining tables
@@ -37,20 +87,16 @@ The information we need for a given analysis may not be just in one table. For e
 Suppose we want to explore the relationship between population size for US states and electoral votes. We have the population size in this table:
 
 ```{r, warning=FALSE, message=FALSE}
-library(tidyverse)
-library(dslabs)
-data(murders)
 head(murders)
 ```
 
 and electoral votes in this one:
 
 ```{r}
-data(polls_us_election_2016)
 head(results_us_election_2016)
 ```
 
-Just concatenating these two tables together will not work since the order of the states is not the same.
+Just concatenating these two tables together did not work since the order of the states is not the same.
 
 ```{r}
 identical(results_us_election_2016$state, murders$state)
@@ -174,44 +220,6 @@ When we merge, we merge on "keys". These are columns that (1) exist in both data
 Keys are super important. We'll see what can go wrong if we have poorly defined keys in a little bit.
 
 
-# Binding
-
-Although we have yet to use it in this book, another common way in which datasets are combined is by _binding_ them. Unlike the join function, the binding functions do not try to match by a variable, but instead simply combine datasets. If the datasets don't match by the appropriate dimensions, one obtains an error.
-
-## Binding columns
-
-The __dplyr__ function _bind_cols_ binds two objects by making them columns in a tibble. For example, we quickly want to make a data frame consisting of numbers we can use.
-
-```{r}
-bind_cols(a = 1:3, b = 4:6)
-```
-
-This function requires that we assign names to the columns. Here we chose `a` and `b`.
-
-Note that there is an R-base function `cbind` with the exact same functionality. An important difference is that `cbind` can create different types of objects, while `bind_cols` always produces a data frame.
-
-`bind_cols` can also bind two different data frames. For example, here we break up the `tab` data frame and then bind them back together:
-
-```{r}
-tab_1 <- tab[, 1:3]
-tab_2 <- tab[, 4:6]
-tab_3 <- tab[, 7:8]
-new_tab <- bind_cols(tab_1, tab_2, tab_3)
-head(new_tab)
-```
-
-
-## Binding by rows
-
-The `bind_rows` function is similar to `bind_cols`, but binds rows instead of columns:
-
-```{r}
-tab_1 <- tab[1:2,]
-tab_2 <- tab[3:4,]
-bind_rows(tab_1, tab_2)
-```
-
-This is based on an R-base function `rbind`.
 
 # Set operators
 
@@ -396,7 +404,7 @@ When we have tidy data, we have one row per observation. When we join data that 
 
 ```{r}
 tidyData <- bind_cols( state = c('MI','CA','MI','CA'), 
-                       year = c(2001, 2002, 2001, 2002),  
+                       year = c(2001, 2001, 2002, 2002),  
                        Arrests = c(10, 21, 30, 12))
 
 notTidyData <- bind_cols(state = c('MI','MI','MI','CA','CA','CA'), 
@@ -428,7 +436,7 @@ sum(joinedData$InNOut_locations)
 sum(notTidyData$InNOut_locations)
 ```
 
-And while we might like that we have 3x the In-N-Out locations, we definitely think our data shouldn't suddenly have more.
+And while we might like that we have 2x the In-N-Out locations, we definitely think our data shouldn't suddenly have more.
 
 The reason this happens is that we do not have a unique *key* variable. Each dataset would need to have a unique key (or "primary key") on `state` *and* `county` *and* `year` to merge without risk of messing up our data. Since `arrests` aren't broken out by county, we'd have to use `summarize` to sum `notTidyData` at the `state` and `year` (to eliminate `county`). Then, we'd have to decide if the number of In-N-Outs are the same for each `year` since `notTidyData` doesn't have `year`. Note that this last step is dependent on your understanding of the data. Do burger restuarant counts change a meaningful amount between years? Does it matter if we don't catch maybe 1 or 2 new openings by assuming they are constant over years.
 
