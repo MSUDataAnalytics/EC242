@@ -423,10 +423,8 @@ window.Quarto = {
 <p>We can open and use any one of these filetypes. I will cover Shapefiles and GEOJSON as the latter has become a very popular way of sharing spatial datasets.</p>
 <section id="where-to-find-spatial-data" class="level3">
 <h3 class="anchored" data-anchor-id="where-to-find-spatial-data">Where to find spatial data</h3>
-<p>Spatial data is all around us! Try searching google for a topic + “spatial shapefile”.</p>
-<p><del>One of my favorite sources for spatial data is the DHS <a href="https://hifld-geoplatform.hub.arcgis.com">HIFLD Open database</a>, which has lots of government datasets that are well-organized by category. Click through, choose the “open” database, and when you find something you like, click the “Download” button.</del></p>
+<p>We’ll go through more on finding data on Thursday. But for now, let’s use some data from the HIFLD Open Database, which <del>is one of my favorite sources for spatial data put out by the DHS <a href="https://hifld-geoplatform.hub.arcgis.com">HIFLD Open database</a>. It has lots of government datasets that are well-organized by category. Click through, choose the “open” database, and when you find something you like, click the “Download” button.</del></p>
 <p>As of November 2025, this dataset has been taken offline. I have a copy of the publicly available geojson file so that I can continue to use this lesson. You can load it from <a href="../..\data/natural-gas-processing-plants.geojson">this link</a>.</p>
-<p>We’ll have more on finding data in our course.</p>
 </section>
 <section id="loading-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="loading-the-data">Loading the data</h3>
@@ -820,12 +818,12 @@ Dimension:     XY
 Bounding box:  xmin: -115.7061 ymin: 31.5082 xmax: -111.5061 ymax: 39.30285
 Geodetic CRS:  NAD83
                         Name Description randomData STATEFP  STATENS
-1             Lower Colorado                     25      32 01779793
-1.1           Lower Colorado                     25      06 01779778
-1.2           Lower Colorado                     25      04 01779777
-2   Lower Colorado-Lake Mead                     23      49 01455989
-2.1 Lower Colorado-Lake Mead                     23      32 01779793
-2.2 Lower Colorado-Lake Mead                     23      04 01779777
+1             Lower Colorado                     12      32 01779793
+1.1           Lower Colorado                     12      06 01779778
+1.2           Lower Colorado                     12      04 01779777
+2   Lower Colorado-Lake Mead                     18      49 01455989
+2.1 Lower Colorado-Lake Mead                     18      32 01779793
+2.2 Lower Colorado-Lake Mead                     18      04 01779777
        AFFGEOID GEOID STUSPS       NAME LSAD        ALAND      AWATER
 1   0400000US32    32     NV     Nevada   00 284537290201  1839636284
 1.1 0400000US06    06     CA California   00 403671756816 20293573058
@@ -867,12 +865,12 @@ Dimension:     XY
 Bounding box:  xmin: -121.255 ymin: 31.5082 xmax: -111.5061 ymax: 42.3448
 Geodetic CRS:  NAD83
                           Name Description randomData STATEFP  STATENS
-1               Lower Colorado                     25      04 01779777
-2     Lower Colorado-Lake Mead                     23      04 01779777
-3    Northern Mojave-Mono Lake                     12      06 01779778
-4 Central Nevada Desert Basins                     21      32 01779793
-5               North Lahontan                     15      06 01779778
-6   Black Rock Desert-Humboldt                     20      32 01779793
+1               Lower Colorado                     12      04 01779777
+2     Lower Colorado-Lake Mead                     18      04 01779777
+3    Northern Mojave-Mono Lake                     13      06 01779778
+4 Central Nevada Desert Basins                     13      32 01779793
+5               North Lahontan                     14      06 01779778
+6   Black Rock Desert-Humboldt                     27      32 01779793
      AFFGEOID GEOID STUSPS       NAME LSAD        ALAND      AWATER
 1 0400000US04    04     AZ    Arizona   00 294363973043   855871553
 2 0400000US04    04     AZ    Arizona   00 294363973043   855871553
@@ -901,12 +899,12 @@ Dimension:     XY
 Bounding box:  xmin: -121.255 ymin: 31.5082 xmax: -111.5061 ymax: 42.3448
 Geodetic CRS:  NAD83
                           Name Description randomData STATEFP STATENS AFFGEOID
-1               Lower Colorado                     25    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-2     Lower Colorado-Lake Mead                     23    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-3    Northern Mojave-Mono Lake                     12    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-4 Central Nevada Desert Basins                     21    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-5               North Lahontan                     15    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-6   Black Rock Desert-Humboldt                     20    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+1               Lower Colorado                     12    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+2     Lower Colorado-Lake Mead                     18    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+3    Northern Mojave-Mono Lake                     13    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+4 Central Nevada Desert Basins                     13    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+5               North Lahontan                     14    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+6   Black Rock Desert-Humboldt                     27    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
   GEOID STUSPS NAME LSAD ALAND AWATER                       geometry
 1  &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    NA     NA POLYGON ((-114.6233 36.0304...
 2  &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    NA     NA POLYGON ((-115.0786 39.3005...
@@ -931,12 +929,12 @@ Dimension:     XY
 Bounding box:  xmin: -120.4649 ymin: 35.40541 xmax: -114.1471 ymax: 42.3448
 Geodetic CRS:  NAD83
                             Name Description randomData STATEFP  STATENS
-6     Black Rock Desert-Humboldt                     20      32 01779793
-6.1   Black Rock Desert-Humboldt                     20      06 01779778
-6.2   Black Rock Desert-Humboldt                     20      41 01155107
-7               Central Lahontan                     17      32 01779793
-7.1             Central Lahontan                     17      06 01779778
-4   Central Nevada Desert Basins                     21      32 01779793
+6     Black Rock Desert-Humboldt                     27      32 01779793
+6.1   Black Rock Desert-Humboldt                     27      06 01779778
+6.2   Black Rock Desert-Humboldt                     27      41 01155107
+7               Central Lahontan                     21      32 01779793
+7.1             Central Lahontan                     21      06 01779778
+4   Central Nevada Desert Basins                     13      32 01779793
        AFFGEOID GEOID STUSPS       NAME LSAD        ALAND      AWATER
 6   0400000US32    32     NV     Nevada   00 284537290201  1839636284
 6.1 0400000US06    06     CA California   00 403671756816 20293573058
@@ -983,12 +981,12 @@ Dimension:     XY
 Bounding box:  xmin: -120.4649 ymin: 32.2603 xmax: -111.5061 ymax: 41.10578
 Geodetic CRS:  NAD83
                             Name randomData STUSPS
-1.2               Lower Colorado         25     AZ
-2.2     Lower Colorado-Lake Mead         23     AZ
-6.1   Black Rock Desert-Humboldt         20     CA
-7.1             Central Lahontan         17     CA
-4.1 Central Nevada Desert Basins         21     CA
-1.1               Lower Colorado         25     CA
+1.2               Lower Colorado         12     AZ
+2.2     Lower Colorado-Lake Mead         18     AZ
+6.1   Black Rock Desert-Humboldt         27     CA
+7.1             Central Lahontan         21     CA
+4.1 Central Nevada Desert Basins         13     CA
+1.1               Lower Colorado         12     CA
                           geometry
 1.2 POLYGON ((-114.8165 32.5069...
 2.2 POLYGON ((-114.7368 36.0159...
@@ -1022,12 +1020,12 @@ Geodetic CRS:  NAD83
 # A tibble: 6 × 3
   STUSPS mean.randomData                                                geometry
   &lt;chr&gt;            &lt;dbl&gt;                                          &lt;GEOMETRY [°]&gt;
-1 AZ                23.9 POLYGON ((-114.7368 36.01591, -114.737 36.01577, -114.…
-2 CA                14.3 POLYGON ((-118.9235 38.25064, -118.9497 38.26894, -118…
-3 ID                23.8 POLYGON ((-117.243 44.39097, -117.2351 44.37385, -117.…
-4 MT                30   MULTIPOLYGON (((-111.3842 44.75446, -111.3846 44.75484…
-5 NV                19.9 POLYGON ((-118.7021 38.09324, -118.6216 38.03439, -118…
-6 OR                16.7 POLYGON ((-116.7012 45.24284, -116.7016 45.24301, -116…</code></pre>
+1 AZ                15.3 POLYGON ((-114.7368 36.01591, -114.737 36.01577, -114.…
+2 CA                13.6 POLYGON ((-118.9235 38.25064, -118.9497 38.26894, -118…
+3 ID                19.6 POLYGON ((-117.243 44.39097, -117.2351 44.37385, -117.…
+4 MT                22   MULTIPOLYGON (((-111.3842 44.75446, -111.3846 44.75484…
+5 NV                18.3 POLYGON ((-118.7021 38.09324, -118.6216 38.03439, -118…
+6 OR                16.8 POLYGON ((-116.7012 45.24284, -116.7016 45.24301, -116…</code></pre>
 </div>
 </div>
 <p><code>sf</code> with the <code>tidyverse</code> makes it really easy to apply spatial versions of <code>summarize</code> and <code>mutate</code>. Very useful.</p>

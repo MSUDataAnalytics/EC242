@@ -39,13 +39,10 @@ While it's fun to draw our own shapes (caution: my definition of fun $\neq$ your
 We can open and use any one of these filetypes. I will cover Shapefiles and GEOJSON as the latter has become a very popular way of sharing spatial datasets.
 
 ### Where to find spatial data
-Spatial data is all around us! Try searching google for a topic + "spatial shapefile". 
-
-~~One of my favorite sources for spatial data is the DHS [HIFLD Open database](https://hifld-geoplatform.hub.arcgis.com), which has lots of government datasets that are well-organized by category. Click through, choose the "open" database, and when you find something you like, click the "Download" button.~~ 
+We'll go through more on finding data on Thursday. But for now, let's use some data from the HIFLD Open Database, which ~~is one of my favorite sources for spatial data put out by the DHS [HIFLD Open database](https://hifld-geoplatform.hub.arcgis.com). It has lots of government datasets that are well-organized by category. Click through, choose the "open" database, and when you find something you like, click the "Download" button.~~ 
 
 As of November 2025, this dataset has been taken offline. I have a copy of the publicly available geojson file so that I can continue to use this lesson. You can load it from [this link](/data/natural-gas-processing-plants.geojson). 
 
-We'll have more on finding data in our course.
 
 ### Loading the data
 We'll use the `sf` package's `st_read` to open spatial data. Here, I'm loading the Natural Gas Processing Plants data from the Energy section of HIFLD. I'm using the **GeoJSON** option, which `st_read()` knows how to handle:

@@ -413,7 +413,7 @@ window.Quarto = {
 <section id="geospatial-in-r" class="level1">
 <h1>Geospatial in R</h1>
 <p>We will need a handful of new packages for our introduction to geospatial analysis in R. The primary package we will interact with is the <code>sf</code> package. <code>sf</code> stands for “simple features.” It has become the standard for geospatial work in R, and relies on the <code>rgeos</code> and <code>rgdal</code> libraries (which are themselves <code>R</code> compilations of the <code>geos</code> and <code>gdal</code> libraries). Documentation of sf <a href="https://r-spatial.github.io/sf/">can be found here</a>.</p>
-<p>We will also use the <code>mapview</code> package, as well as the <code>tmaptools</code> package. Plus, we’ll use <code>tigris</code> to get state boundaries and <code>tidycensus</code> to pull down census maps. Install those, and any of the many dependencies that they also install.</p>
+<p>We will also use the <code>mapview</code> package. Plus, we’ll use <code>tigris</code> to get state boundaries and <code>tidycensus</code> to pull down census maps. Install those, and any of the many dependencies that they also install.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span>
