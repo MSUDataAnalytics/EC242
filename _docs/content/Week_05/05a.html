@@ -818,12 +818,12 @@ Dimension:     XY
 Bounding box:  xmin: -115.7061 ymin: 31.5082 xmax: -111.5061 ymax: 39.30285
 Geodetic CRS:  NAD83
                         Name Description randomData STATEFP  STATENS
-1             Lower Colorado                     12      32 01779793
-1.1           Lower Colorado                     12      06 01779778
-1.2           Lower Colorado                     12      04 01779777
-2   Lower Colorado-Lake Mead                     18      49 01455989
-2.1 Lower Colorado-Lake Mead                     18      32 01779793
-2.2 Lower Colorado-Lake Mead                     18      04 01779777
+1             Lower Colorado                     20      32 01779793
+1.1           Lower Colorado                     20      06 01779778
+1.2           Lower Colorado                     20      04 01779777
+2   Lower Colorado-Lake Mead                     22      49 01455989
+2.1 Lower Colorado-Lake Mead                     22      32 01779793
+2.2 Lower Colorado-Lake Mead                     22      04 01779777
        AFFGEOID GEOID STUSPS       NAME LSAD        ALAND      AWATER
 1   0400000US32    32     NV     Nevada   00 284537290201  1839636284
 1.1 0400000US06    06     CA California   00 403671756816 20293573058
@@ -865,12 +865,12 @@ Dimension:     XY
 Bounding box:  xmin: -121.255 ymin: 31.5082 xmax: -111.5061 ymax: 42.3448
 Geodetic CRS:  NAD83
                           Name Description randomData STATEFP  STATENS
-1               Lower Colorado                     12      04 01779777
-2     Lower Colorado-Lake Mead                     18      04 01779777
-3    Northern Mojave-Mono Lake                     13      06 01779778
-4 Central Nevada Desert Basins                     13      32 01779793
-5               North Lahontan                     14      06 01779778
-6   Black Rock Desert-Humboldt                     27      32 01779793
+1               Lower Colorado                     20      04 01779777
+2     Lower Colorado-Lake Mead                     22      04 01779777
+3    Northern Mojave-Mono Lake                     22      06 01779778
+4 Central Nevada Desert Basins                     18      32 01779793
+5               North Lahontan                     25      06 01779778
+6   Black Rock Desert-Humboldt                     21      32 01779793
      AFFGEOID GEOID STUSPS       NAME LSAD        ALAND      AWATER
 1 0400000US04    04     AZ    Arizona   00 294363973043   855871553
 2 0400000US04    04     AZ    Arizona   00 294363973043   855871553
@@ -899,12 +899,12 @@ Dimension:     XY
 Bounding box:  xmin: -121.255 ymin: 31.5082 xmax: -111.5061 ymax: 42.3448
 Geodetic CRS:  NAD83
                           Name Description randomData STATEFP STATENS AFFGEOID
-1               Lower Colorado                     12    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-2     Lower Colorado-Lake Mead                     18    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-3    Northern Mojave-Mono Lake                     13    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-4 Central Nevada Desert Basins                     13    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-5               North Lahontan                     14    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
-6   Black Rock Desert-Humboldt                     27    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+1               Lower Colorado                     20    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+2     Lower Colorado-Lake Mead                     22    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+3    Northern Mojave-Mono Lake                     22    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+4 Central Nevada Desert Basins                     18    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+5               North Lahontan                     25    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
+6   Black Rock Desert-Humboldt                     21    &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;
   GEOID STUSPS NAME LSAD ALAND AWATER                       geometry
 1  &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    NA     NA POLYGON ((-114.6233 36.0304...
 2  &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    NA     NA POLYGON ((-115.0786 39.3005...
@@ -915,6 +915,9 @@ Geodetic CRS:  NAD83
 </div>
 </div>
 <p>None of the HUC-4’s completely cover a state, so we get <code>NA</code> for all the state data.</p>
+</section>
+<section id="st_intersection" class="level3">
+<h3 class="anchored" data-anchor-id="st_intersection"><code>st_intersection()</code></h3>
 <p>The other thing we can do is ask <code>R</code> to create separate polygons - one for every HUC-4 / state combination. That isn’t a merge, but it plays a similar role. Note this uses <code>st_intersection</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>poly.int <span class="ot">=</span> HUC4 <span class="sc">%&gt;%</span></span>
@@ -929,12 +932,12 @@ Dimension:     XY
 Bounding box:  xmin: -120.4649 ymin: 35.40541 xmax: -114.1471 ymax: 42.3448
 Geodetic CRS:  NAD83
                             Name Description randomData STATEFP  STATENS
-6     Black Rock Desert-Humboldt                     27      32 01779793
-6.1   Black Rock Desert-Humboldt                     27      06 01779778
-6.2   Black Rock Desert-Humboldt                     27      41 01155107
-7               Central Lahontan                     21      32 01779793
-7.1             Central Lahontan                     21      06 01779778
-4   Central Nevada Desert Basins                     13      32 01779793
+6     Black Rock Desert-Humboldt                     21      32 01779793
+6.1   Black Rock Desert-Humboldt                     21      06 01779778
+6.2   Black Rock Desert-Humboldt                     21      41 01155107
+7               Central Lahontan                     20      32 01779793
+7.1             Central Lahontan                     20      06 01779778
+4   Central Nevada Desert Basins                     18      32 01779793
        AFFGEOID GEOID STUSPS       NAME LSAD        ALAND      AWATER
 6   0400000US32    32     NV     Nevada   00 284537290201  1839636284
 6.1 0400000US06    06     CA California   00 403671756816 20293573058
@@ -981,12 +984,12 @@ Dimension:     XY
 Bounding box:  xmin: -120.4649 ymin: 32.2603 xmax: -111.5061 ymax: 41.10578
 Geodetic CRS:  NAD83
                             Name randomData STUSPS
-1.2               Lower Colorado         12     AZ
-2.2     Lower Colorado-Lake Mead         18     AZ
-6.1   Black Rock Desert-Humboldt         27     CA
-7.1             Central Lahontan         21     CA
-4.1 Central Nevada Desert Basins         13     CA
-1.1               Lower Colorado         12     CA
+1.2               Lower Colorado         20     AZ
+2.2     Lower Colorado-Lake Mead         22     AZ
+6.1   Black Rock Desert-Humboldt         21     CA
+7.1             Central Lahontan         20     CA
+4.1 Central Nevada Desert Basins         18     CA
+1.1               Lower Colorado         20     CA
                           geometry
 1.2 POLYGON ((-114.8165 32.5069...
 2.2 POLYGON ((-114.7368 36.0159...
@@ -1020,16 +1023,35 @@ Geodetic CRS:  NAD83
 # A tibble: 6 × 3
   STUSPS mean.randomData                                                geometry
   &lt;chr&gt;            &lt;dbl&gt;                                          &lt;GEOMETRY [°]&gt;
-1 AZ                15.3 POLYGON ((-114.7368 36.01591, -114.737 36.01577, -114.…
-2 CA                13.6 POLYGON ((-118.9235 38.25064, -118.9497 38.26894, -118…
-3 ID                19.6 POLYGON ((-117.243 44.39097, -117.2351 44.37385, -117.…
-4 MT                22   MULTIPOLYGON (((-111.3842 44.75446, -111.3846 44.75484…
-5 NV                18.3 POLYGON ((-118.7021 38.09324, -118.6216 38.03439, -118…
-6 OR                16.8 POLYGON ((-116.7012 45.24284, -116.7016 45.24301, -116…</code></pre>
+1 AZ                21.1 POLYGON ((-114.7368 36.01591, -114.737 36.01577, -114.…
+2 CA                21.8 POLYGON ((-118.9235 38.25064, -118.9497 38.26894, -118…
+3 ID                19.8 POLYGON ((-117.243 44.39097, -117.2351 44.37385, -117.…
+4 MT                21   MULTIPOLYGON (((-111.3842 44.75446, -111.3846 44.75484…
+5 NV                19.7 POLYGON ((-118.7021 38.09324, -118.6216 38.03439, -118…
+6 OR                18.1 POLYGON ((-116.7012 45.24284, -116.7016 45.24301, -116…</code></pre>
 </div>
 </div>
 <p><code>sf</code> with the <code>tidyverse</code> makes it really easy to apply spatial versions of <code>summarize</code> and <code>mutate</code>. Very useful.</p>
 <p>If we had wanted to just take the average (ignoring area), we’d just leave out the <code>w = State.HUC.area</code> or just used <code>mean</code>. If we had wanted to take, say, the minimum, we would use <code>min(randomData)</code> instead of <code>weighted.mean</code>. We can use whatever function we want in <code>summarize</code>, just as we did with non-spatial data.</p>
+</section>
+<section id="choosing-the-right-summarization" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-the-right-summarization">Choosing the right summarization</h3>
+<p>What’s the “right” way to summarize data after using <code>st_intersection</code>? Well, it’s going to depend on the data context. Above, we used the area-weighted mean to take the data from the smaller parts and add it up to the larger state measure.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Let’s discuss
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What sort of data would work well being weighted by area?</p>
+<p>What sort of data wouldn’t work well if weighted by area?</p>
+<p>What other ways could we weight data?</p>
+</div>
+</div>
 </section>
 </section>
 <section id="cropping-vs.-merging" class="level2">
@@ -1242,6 +1264,143 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </section>
+<section id="proximity-based-merges" class="level3">
+<h3 class="anchored" data-anchor-id="proximity-based-merges">Proximity-based merges</h3>
+<p>What if we wanted to identify every polygon (or point) within some distance (say, “X km”) of a gasplant rather than finding the closest gasplant? Of course, we could do the above steps, and then filter the distance matrix to keep only those within X km. Or, we could look for the polygons that intersect an X km circle around a gasplant. Doing this is easy in R.</p>
+<p>To do so, we use <code>st_buffer()</code> along with a projection that specifies distance in some linear measure (rather than degrees lat or lon. This is because a degree of longitude <em>changes</em> when we get closer to the poles. Let’s find all counties in Michigan that are within 50 km of any Great Lake. To do so, we first buffer our Great Lakes by 50km. The <code>st_crs()</code> of the <code>GL</code> object is already stated in meters, so we can buffer by 50,000:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(GL) <span class="co"># "LENGTHUNIT" is metre</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: NAD83 
+  wkt:
+GEOGCRS["NAD83",
+    DATUM["North American Datum 1983",
+        ELLIPSOID["GRS 1980",6378137,298.257222101,
+            LENGTHUNIT["metre",1]]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["latitude",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["longitude",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    ID["EPSG",4269]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>GL.buffer <span class="ot">=</span> <span class="fu">st_buffer</span>(GL, <span class="at">dist =</span> <span class="dv">50000</span>)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GL.buffer) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05a_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now, we can ask for county polygons that intersect this buffered object. We want an “inner” join (only those on the left that appear on the right, where “appear” refers to the spatial relationship):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>MI.lakeside.counties <span class="ot">=</span> MI.counties <span class="sc">%&gt;%</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(GL.buffer)) <span class="sc">%&gt;%</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(GL.buffer, <span class="at">left=</span>F)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MI.lakeside.counties) <span class="sc">+</span> <span class="fu">geom_sf</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05a_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Alternatively, we could have kept all of the counties but used the joined column <code>FEAT_NAME</code>, which merges with <code>NA</code> for counties that don’t touch, and <em>duplicates</em> observations for counties that touch 2 or more!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">NROW</span>(MI.counties) <span class="co">#83 counties</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 83</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>MI.lakeside.counties <span class="ot">=</span> MI.counties <span class="sc">%&gt;%</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(GL.buffer)) <span class="sc">%&gt;%</span></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(GL.buffer, <span class="at">left=</span>T)</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="fu">NROW</span>(MI.lakeside.counties)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 141</code></pre>
+</div>
+</div>
+<p>What happened? For each Great Lake within 50km, a county in the merged data got one row, so many counties got two (or more) rows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MI.lakeside.counties)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 15 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -88.11741 ymin: 42.44706 xmax: -82.60676 ymax: 46.96631
+Geodetic CRS:  NAD83
+     STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID      NAME         NAMELSAD
+31        26      103 01622994 0500000US26103 26103 Marquette Marquette County
+31.1      26      103 01622994 0500000US26103 26103 Marquette Marquette County
+31.2      26      103 01622994 0500000US26103 26103 Marquette Marquette County
+37        26      107 01622996 0500000US26107 26107   Mecosta   Mecosta County
+38        26      063 01622974 0500000US26063 26063     Huron     Huron County
+50        26      099 01622992 0500000US26099 26099    Macomb    Macomb County
+     STUSPS STATE_NAME LSAD      ALAND     AWATER OBJECTID FEAT_TYPE_CODE
+31       MI   Michigan   06 4685420990 4185337774       17          water
+31.1     MI   Michigan   06 4685420990 4185337774       20          water
+31.2     MI   Michigan   06 4685420990 4185337774       35          water
+37       MI   Michigan   06 1437843578   41665709       NA           &lt;NA&gt;
+38       MI   Michigan   06 2165275137 3369019054       18          water
+50       MI   Michigan   06 1241505063  237173297       18          water
+         FEAT_NAME                       geometry
+31   Lake Superior MULTIPOLYGON (((-87.40383 4...
+31.1 Lake Michigan MULTIPOLYGON (((-87.40383 4...
+31.2 Lake Superior MULTIPOLYGON (((-87.40383 4...
+37            &lt;NA&gt; MULTIPOLYGON (((-85.56275 4...
+38      Lake Huron MULTIPOLYGON (((-83.43178 4...
+50      Lake Huron MULTIPOLYGON (((-83.10289 4...</code></pre>
+</div>
+</div>
+<p>We need to figure out what to do with <code>NA</code> (no Great Lake) or multiple Great Lakes. Here’s what we do:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>MI.lakeside.counties <span class="ot">=</span> MI.lakeside.counties <span class="sc">%&gt;%</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(COUNTYFP, NAME) <span class="sc">%&gt;%</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">NearLake =</span> <span class="sc">!</span><span class="fu">any</span>(<span class="fu">is.na</span>(FEAT_NAME)))</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MI.lakeside.counties)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 3 fields
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: -87.11663 ymin: 42.41889 xmax: -83.19267 ymax: 46.69091
+Geodetic CRS:  NAD83
+# A tibble: 6 × 4
+# Groups:   COUNTYFP [6]
+  COUNTYFP NAME    NearLake                                             geometry
+  &lt;chr&gt;    &lt;chr&gt;   &lt;lgl&gt;                                          &lt;GEOMETRY [°]&gt;
+1 001      Alcona  TRUE     POLYGON ((-83.88854 44.72124, -83.8882 44.68209, -8…
+2 003      Alger   TRUE     MULTIPOLYGON (((-86.70946 46.54185, -86.70802 46.53…
+3 005      Allegan TRUE     POLYGON ((-86.27376 42.41928, -86.26154 42.41931, -…
+4 007      Alpena  TRUE     MULTIPOLYGON (((-83.2124 45.05158, -83.2058 45.0444…
+5 009      Antrim  TRUE     POLYGON ((-85.44311 44.85982, -85.42866 44.85976, -…
+6 011      Arenac  TRUE     MULTIPOLYGON (((-83.44171 44.03753, -83.44009 44.03…</code></pre>
+</div>
+</div>
+<p>And we can plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>MI.lakeside.counties <span class="sc">%&gt;%</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> NearLake)) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">'Near Great Lake'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05a_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="other-resources" class="level2">
 <h2 class="anchored" data-anchor-id="other-resources">Other resources</h2>
@@ -1272,14 +1431,14 @@ GreatLakes = st_read('/PUT YOUR LOCAL FILEPATH TO THE GEOJSON HERE.geojson') %&g
 MIx = st_difference(MI, GreatLakes)  # spatial version of the difference function</code></pre>
 <p>or, try the <code>erase_water()</code> function from <code>tigris</code>. This erases any body of water, no matter how small, so on a whole state, it can take a <strong>long</strong> time. The <code>area_threshold</code> argument (0 to 1) tells R how detailed you want the erasure to be. A threshold of .999 will remove Great Lakes and big lakes, but leave most inland lakes and won’t take as long.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>MI <span class="ot">=</span> <span class="fu">counties</span>(<span class="at">state =</span> <span class="st">'MI'</span>, <span class="at">progress_bar =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">erase_water</span>(<span class="at">area_threshold =</span> .<span class="dv">999</span>)</span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MI) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>MI <span class="ot">=</span> <span class="fu">counties</span>(<span class="at">state =</span> <span class="st">'MI'</span>, <span class="at">progress_bar =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">erase_water</span>(<span class="at">area_threshold =</span> .<span class="dv">999</span>)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MI) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05a_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="05a_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

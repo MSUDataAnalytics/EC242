@@ -46,7 +46,7 @@ The TA will grade these mini-exercises using a very simple system:
 
 ### Weekly Writing Template
 
-You will turn these reflections in via D2L. You will write them using `R Markdown` and this template {{< var blurbs.writingtemplate >}}. You must `knit` your work to a PDF document (this will be what you turn in). D2L will have eleven weekly writing assignments available. Upload your first weekly writing assignment to number 1, your second (regardless of which week you are writing on) to number 2, etc. All work must be rendered using latex to PDF. Do **not** use word or html docs saved as a PDF. 
+You will turn these reflections in via D2L. You will write them using `R Markdown` and this template {{< var blurbs.writingtemplate >}}. You must `knit` your work to a PDF document (this will be what you turn in). All work must be rendered using latex to PDF. Do **not** use word or html docs saved as a PDF. 
 
 
 

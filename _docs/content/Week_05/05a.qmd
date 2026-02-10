@@ -296,6 +296,8 @@ HUC4 %>%
 
 None of the HUC-4's completely cover a state, so we get `NA` for all the state data.
 
+### `st_intersection()`
+
 The other thing we can do is ask `R` to create separate polygons - one for every HUC-4 / state combination. That isn't a merge, but it plays a similar role. Note this uses `st_intersection`:
 
 ```{r, message = F, warning = F}
@@ -351,6 +353,21 @@ head(poly.int.summary)
 `sf` with the `tidyverse` makes it really easy to apply spatial versions of `summarize` and `mutate`. Very useful.
 
 If we had wanted to just take the average (ignoring area), we'd just leave out the `w = State.HUC.area` or just used `mean`. If we had wanted to take, say, the minimum, we would use `min(randomData)` instead of `weighted.mean`. We can use whatever function we want in `summarize`, just as we did with non-spatial data.
+
+### Choosing the right summarization
+
+What's the "right" way to summarize data after using `st_intersection`? Well, it's going to depend on the data context. Above, we used the area-weighted mean to take the data from the smaller parts and add it up to the larger state measure.
+
+::: {.callout-note}
+# Let's discuss
+
+What sort of data would work well being weighted by area?
+
+What sort of data wouldn't work well if weighted by area?
+
+What other ways could we weight data?
+
+:::
 
 
 ## Cropping vs. merging
@@ -483,6 +500,69 @@ closest.GL.index = st_nearest_feature(x = ourCities.spatial, y = GL)
 ourCities %>% dplyr::mutate(Closest.GreatLake = GL$FEAT_NAME[closest.GL.index])
 ```
 
+
+### Proximity-based merges
+What if we wanted to identify every polygon (or point) within some distance (say, "X km") of a gasplant rather than finding the closest gasplant? Of course, we could do the above steps, and then filter the distance matrix to keep only those within X km. Or, we could look for the polygons that intersect an X km circle around a gasplant. Doing this is easy in R.
+
+To do so, we use `st_buffer()` along with a projection that specifies distance in some linear measure (rather than degrees lat or lon. This is because a degree of longitude *changes* when we get closer to the poles. Let's find all counties in Michigan that are within 50 km of any Great Lake. To do so, we first buffer our Great Lakes by 50km. The `st_crs()` of the `GL` object is already stated in meters, so we can buffer by 50,000:
+
+```{r}
+st_crs(GL) # "LENGTHUNIT" is metre
+GL.buffer = st_buffer(GL, dist = 50000)
+
+ggplot(GL.buffer) + geom_sf()
+
+```
+
+
+
+Now, we can ask for county polygons that intersect this buffered object. We want an "inner" join (only those on the left that appear on the right, where "appear" refers to the spatial relationship):
+
+```{r}
+MI.lakeside.counties = MI.counties %>%
+  st_transform(st_crs(GL.buffer)) %>%
+  st_join(GL.buffer, left=F)
+
+ggplot(MI.lakeside.counties) + geom_sf() + theme_minimal()
+
+```
+
+Alternatively, we could have kept all of the counties but used the joined column `FEAT_NAME`, which merges with `NA` for counties that don't touch, and *duplicates* observations for counties that touch 2 or more!
+
+```{r}
+NROW(MI.counties) #83 counties
+
+MI.lakeside.counties = MI.counties %>%
+  st_transform(st_crs(GL.buffer)) %>%
+  st_join(GL.buffer, left=T)
+
+NROW(MI.lakeside.counties)
+```
+
+What happened? For each Great Lake within 50km, a county in the merged data got one row, so many counties got two (or more) rows:
+
+```{r}
+head(MI.lakeside.counties)
+```
+
+We need to figure out what to do with `NA` (no Great Lake) or multiple Great Lakes. Here's what we do:
+
+```{r}
+MI.lakeside.counties = MI.lakeside.counties %>%
+  group_by(COUNTYFP, NAME) %>%
+  summarize(NearLake = !any(is.na(FEAT_NAME)))
+
+head(MI.lakeside.counties)
+
+```
+
+And we can plot:
+
+```{r}
+MI.lakeside.counties %>%
+  ggplot() + geom_sf(aes(fill = NearLake)) + theme_minimal() + 
+  labs(fill = 'Near Great Lake')
+```
 
 ## Other resources
 - Claudia Engel's "[Using Spatial Data with R](https://cengel.github.io/R-spatial/)" is a very useful resource. It covers `sf` and an older geospatial library called `sp` that has similar functionality but was not tidyverse-friendly. 
