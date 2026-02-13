@@ -60,7 +60,7 @@ Some important notes on your assignment
 - Your assignment should be clean and polished as if you were a city employee and you were turning in a work product. It should should flow nicely and use subsections (using ```###``` at the start of the line) as appropriate.
 - Again, do **not** "annotate" your thought process (e.g. do not write "we tried X but there were too many NA's, so we did Y instead"). This should be a polished memo suitable for turning in as a work product. Each graphic should guide the analysis towards the next.
 - Your code should **not** appear in your output - it should be only your plots and memo writing. 
-  - To turn off code echoing, add `echo = FALSE` in each of your code chunk options (e.g. `{r setup, echo = FALSE}`), or set it globally in the first code chunk inside the `knitr::opts_chunk$set` function.
+  - To turn off code echoing, add `echo = FALSE` in each of your code chunk options (e.g. `{r setup, echo = FALSE}`), or set it globally in the first code chunk using `knitr::opts_chunk$set(echo = FALSE)` (you'll still have to add `echo=F` to that code chunk though).
 - Make sure you take a look at the **Evaluation** critera, below.
     
 ### Starter code

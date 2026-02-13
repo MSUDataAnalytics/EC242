@@ -342,7 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Again, do <strong>not</strong> “annotate” your thought process (e.g.&nbsp;do not write “we tried X but there were too many NA’s, so we did Y instead”). This should be a polished memo suitable for turning in as a work product. Each graphic should guide the analysis towards the next.</li>
 <li>Your code should <strong>not</strong> appear in your output - it should be only your plots and memo writing.
 <ul>
-<li>To turn off code echoing, add <code>echo = FALSE</code> in each of your code chunk options (e.g.&nbsp;<code>{r setup, echo = FALSE}</code>), or set it globally in the first code chunk inside the <code>knitr::opts_chunk$set</code> function.</li>
+<li>To turn off code echoing, add <code>echo = FALSE</code> in each of your code chunk options (e.g.&nbsp;<code>{r setup, echo = FALSE}</code>), or set it globally in the first code chunk using <code>knitr::opts_chunk$set(echo = FALSE)</code> (you’ll still have to add <code>echo=F</code> to that code chunk though).</li>
 </ul></li>
 <li>Make sure you take a look at the <strong>Evaluation</strong> critera, below.</li>
 </ul>
