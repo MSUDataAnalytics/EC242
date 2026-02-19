@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Visualizing Uncertainty – EC242</title>
+<title>Uncertainty – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -197,7 +197,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_06/06a.html">Week 06</a></li><li class="breadcrumb-item"><a href="../../content/Week_06/06b.html">Visualizing Uncertainty</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_06/06a.html">Week 06</a></li><li class="breadcrumb-item"><a href="../../content/Week_06/06b.html">Uncertainty</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -359,7 +359,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/Week_06/06b.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Visualizing Uncertainty</span></a>
+ <span class="menu-text">Uncertainty</span></a>
   </div>
 </li>
       </ul>
@@ -384,6 +384,9 @@ window.Quarto = {
   <li><a href="#distributions-versus-probability-distributions" id="toc-distributions-versus-probability-distributions" class="nav-link" data-scroll-target="#distributions-versus-probability-distributions">Distributions versus probability distributions</a></li>
   <li><a href="#notation-for-random-variables" id="toc-notation-for-random-variables" class="nav-link" data-scroll-target="#notation-for-random-variables">Notation for random variables</a></li>
   <li><a href="#the-expected-value-and-standard-error" id="toc-the-expected-value-and-standard-error" class="nav-link" data-scroll-target="#the-expected-value-and-standard-error">The expected value and standard error</a></li>
+  </ul></li>
+  <li><a href="#statistical-inference" id="toc-statistical-inference" class="nav-link" data-scroll-target="#statistical-inference">Statistical Inference</a>
+  <ul class="collapse">
   <li><a href="#central-limit-theorem" id="toc-central-limit-theorem" class="nav-link" data-scroll-target="#central-limit-theorem">Central Limit Theorem</a></li>
   <li><a href="#statistical-properties-of-averages" id="toc-statistical-properties-of-averages" class="nav-link" data-scroll-target="#statistical-properties-of-averages">Statistical properties of averages</a></li>
   <li><a href="#law-of-large-numbers" id="toc-law-of-large-numbers" class="nav-link" data-scroll-target="#law-of-large-numbers">Law of large numbers</a></li>
@@ -399,9 +402,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_06/06a.html">Week 06</a></li><li class="breadcrumb-item"><a href="../../content/Week_06/06b.html">Visualizing Uncertainty</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_06/06a.html">Week 06</a></li><li class="breadcrumb-item"><a href="../../content/Week_06/06b.html">Uncertainty</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Visualizing Uncertainty</h1>
+<h1 class="title">Uncertainty</h1>
 </div>
 
 
@@ -529,7 +532,7 @@ window.Quarto = {
 </section>
 <section id="distributions-versus-probability-distributions" class="level2">
 <h2 class="anchored" data-anchor-id="distributions-versus-probability-distributions">Distributions versus probability distributions</h2>
-<p>Before we continue, let’s make an important distinction and connection between the distribution of a list of numbers and a probability distribution. In the visualization lectures, we described how any list of numbers <span class="math inline">\(x_1,\dots,x_n\)</span> has a distribution. The definition is quite straightforward. We define <span class="math inline">\(F(a)\)</span> as the function that tells us what proportion of the <strong>list</strong> is less than or equal to <span class="math inline">\(a\)</span>. Because they are useful summaries when the distribution is approximately normal, we define the average and standard deviation. These are defined with a straightforward operation of the vector containing the list of numbers <code>x</code>:</p>
+<p>Before we continue, let’s make an important distinction and connection between the distribution of a list of numbers and a probability distribution. We could describe any list of numbers <span class="math inline">\(x_1,\dots,x_n\)</span> by it’s distribution. The definition is quite straightforward. We define <span class="math inline">\(F(a)\)</span> as the function that tells us what proportion of the <strong>list</strong> is less than or equal to <span class="math inline">\(a\)</span>. Because they are useful summaries when the distribution is approximately normal, we define the average and standard deviation. These are defined with a straightforward operation of the vector containing the list of numbers <code>x</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((x <span class="sc">-</span> m)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">length</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -582,10 +585,12 @@ TRY IT
 </div>
 </div>
 <p>To see this, notice that if there are <span class="math inline">\(n\)</span> beads in the urn, then we have <span class="math inline">\(np\)</span> <span class="math inline">\(a\)</span>s and <span class="math inline">\(n(1-p)\)</span> <span class="math inline">\(b\)</span>s and because the average is the sum, <span class="math inline">\(n\times a \times p + n\times b \times (1-p)\)</span>, divided by the total <span class="math inline">\(n\)</span>, we get that the average is <span class="math inline">\(ap + b(1-p)\)</span>.</p>
-<p>Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of the sum, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the <em>expected value of the sum of the draws</em> is <span class="math inline">\(E[nX] = nE[X]\)</span> when <span class="math inline">\(n\)</span> is a constant:</p>
+<p>Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of the sum of draws, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the <em>expected value of the sum of the draws</em> is <span class="math inline">\(E[nX] = nE[X]\)</span> when <span class="math inline">\(n\)</span> is a constant:</p>
 <p><span class="math display">\[
 \mbox{}\mbox{number of draws } \times \mbox{ average of the numbers in the urn}
 \]</span></p>
+<section id="standard-error" class="level3">
+<h3 class="anchored" data-anchor-id="standard-error">Standard error</h3>
 <p>So if 1,000 people play roulette, the casino expects to win, on average, about 1,000 <span class="math inline">\(\times\)</span> $0.05 = $50. But this is an expected value. How different can one observation be from the expected value? The casino really needs to know this. What is the range of possibilities? If negative numbers are too likely, they will not install roulette wheels. Statistical theory once again answers this question. The <em>standard error</em> (SE) gives us an idea of the size of the variation around the expected value. In statistics books, it’s common to use:</p>
 <p><span class="math display">\[\mbox{SE}[X]\]</span></p>
 <p>to denote the standard error of a random variable. This, like expectation, is a theoretical, population concept based on the probability distribution (e.g.&nbsp;“what is in the urn”)</p>
@@ -613,6 +618,7 @@ TRY IT
 </div>
 <p>As a result, when 1,000 people bet on red, the casino is expected to win $50 with a standard error of $32. It therefore seems like a safe bet. But we still haven’t answered the question: how likely is it to lose money? Here the CLT will help.</p>
 <p><strong>Advanced note</strong>: Before continuing we should point out that exact probability calculations for the casino winnings can be performed with the binomial distribution. However, here we focus on the CLT, which can be generally applied to sums of random variables in a way that the binomial distribution can’t.</p>
+</section>
 <section id="population-sd-versus-the-sample-sd" class="level3">
 <h3 class="anchored" data-anchor-id="population-sd-versus-the-sample-sd">Population SD versus the sample SD</h3>
 <p>The standard deviation of a list <code>x</code> (below we use heights as an example) is defined as the square root of the average of the squared differences:</p>
@@ -658,7 +664,14 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 <p>So be careful when using the <code>sd</code> function in R. However, keep in mind that throughout these notes we sometimes use the <code>sd</code> function when we really want the actual SD. This is because when the list size is big, these two are practically equivalent since <span class="math inline">\(\sqrt{(N-1)/N} \approx 1\)</span>. That <code>sd()</code> calculates sample SD not population SD by default will be useful in the near future.</p>
 </section>
+<section id="using-this-knowledge" class="level3">
+<h3 class="anchored" data-anchor-id="using-this-knowledge">Using this knowledge</h3>
+<p>How do we use these definitions and rules? Well, when there are things in the real world that we can model as random variables, then we can construct new random variables that tell us something we want to know. In your problem set, you’ll start with a random variable that represents the response to a political poll, but you’ll also incorporate something about a pollster’s bias. Following the rules of random variables, above, you’ll derive a random variable that (1) represents the question of interest, and (2) is constructed from random variables for which we can estimate, from a sample of data, the necessary properties.</p>
 </section>
+</section>
+</section>
+<section id="statistical-inference" class="level1">
+<h1>Statistical Inference</h1>
 <section id="central-limit-theorem" class="level2">
 <h2 class="anchored" data-anchor-id="central-limit-theorem">Central Limit Theorem</h2>
 <p>We really want to know the probability that a casino will lose money. We know the probability distribution of roulette which let us calculate the expected value and the standard deviation of a random variable that consists of 1,000 people playing roulette, but we don’t know the distribution of the sum of those random variables.</p>
@@ -874,10 +887,8 @@ This is a different approach
 <h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
 <p>Just like we use variables to define unknowns in systems of equations, in statistical inference we define <em>parameters</em> to define unknown parts of our models. In the urn model which we are using to mimic an opinion poll, <strong>we do not know the proportion of blue beads in the urn</strong>. We define the parameters <span class="math inline">\(p\)</span> to represent this quantity. <span class="math inline">\(p\)</span> is the average of the urn because if we take the average of the 1s (blue) and 0s (red), we get the proportion of blue beads. Since our main goal is figuring out what is <span class="math inline">\(p\)</span>, we are going to <em>estimate this parameter</em>.</p>
 <p>The ideas presented here on how we estimate parameters, and provide insights into how good these estimates are, extrapolate to many data science tasks. For example, we may want to determine the difference in health improvement between patients receiving treatment and a control group. We may ask, what are the health effects of smoking on a population? What are the differences in racial groups of fatal shootings by police? What is the rate of change in life expectancy in the US during the last 10 years? All these questions can be framed as a task of estimating a parameter from a sample.</p>
-</section>
-<section id="polling-versus-forecasting" class="level3">
-<h3 class="anchored" data-anchor-id="polling-versus-forecasting">Polling versus forecasting</h3>
-<p>Before we continue, let’s make an important clarification related to the practical problem of forecasting the election. If a poll is conducted four months before the election, it is estimating the <span class="math inline">\(p\)</span> for that moment and not for election day. The <span class="math inline">\(p\)</span> for election night might be different since people’s opinions fluctuate through time. The polls provided the night before the election tend to be the most accurate since opinions don’t change that much in a day. However, forecasters try to build tools that model how opinions vary across time and try to predict the election night results taking into consideration the fact that opinions fluctuate. We will describe some approaches for doing this in a later section.</p>
+<!-- ### Polling versus forecasting -->
+<!-- Before we continue, let's make an important clarification related to the practical problem of forecasting the election. If a poll is conducted four months before the election, it is estimating the $p$ for that moment and not for election day. The $p$ for election night might be different since people's opinions fluctuate through time. The polls provided the night before the election tend to be the most accurate since opinions don't change that much in a day. However, forecasters try to build tools that model how opinions vary across time and try to predict the election night results taking into consideration the fact that opinions fluctuate. We will describe some approaches for doing this in a later section. -->
 </section>
 <section id="properties-of-our-estimate-expected-value-and-standard-error" class="level3">
 <h3 class="anchored" data-anchor-id="properties-of-our-estimate-expected-value-and-standard-error">Properties of our estimate: expected value and standard error</h3>

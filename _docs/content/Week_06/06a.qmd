@@ -679,9 +679,14 @@ prob_win <- function(N, p=0.75){
 
 :::
 
-In previous lectures, we explained why when summarizing a list of numeric values, such as heights, it is not useful to construct a distribution that defines a proportion to each possible outcome. For example, if we measure every single person in a very large population of size $n$ with extremely high precision, since no two people are exactly the same height, we need to assign the proportion $1/n$ to each observed value and attain no useful summary at all. Similarly, when defining probability distributions, it is not useful to assign a very small probability to every single height.
 
-Just as when using distributions to summarize numeric data, it is much more practical to define a function that operates on intervals rather than single values. The standard way of doing this is using the _cumulative distribution function_ (CDF).
+# Distributions
+
+Imagine that we have our heights data, and we want to communicate to someone from another planet information about heights on earth. We could send them a list of all heights on earth (yikes!), or we could summarize it by just the average, or the average and standard deviation (everyone recalls standard deviation as a measure of *dispersion*, right?). Or, we could report on the proportions of each height. That's much more helpful! That's a *distribution*.
+
+Well, when summarizing a list of numeric values, such as heights, it is not really useful to construct a distribution that defines a proportion to every single possible outcome. For example, if we measure every single person in a very large population of size $n$ with extremely high precision, since no two people are exactly the same height, we need to assign the proportion $1/n$ to each observed value and attain no useful summary at all. Similarly, when defining probability distributions, it is not useful to assign a very small probability to every single height.
+
+Just as when using distributions to summarize numeric data, it is much more practical to define a *function* that operates on intervals rather than single values. The standard way of doing this is using the _cumulative distribution function_ (CDF).
 
 We described empirical cumulative distribution function (eCDF) as a basic summary of a list of numeric values. As an example, we earlier defined the height distribution for adult male students. Here, we define the vector $x$ to contain these heights:
 
