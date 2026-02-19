@@ -665,7 +665,7 @@ $$
 \mbox{Pr}(\bar{X}\leq p + .01) - \mbox{Pr}(\bar{X} \leq p - .01)
 $$
 
-Can we answer this question?  We can use the mathematical trick we learned in the previous lecture. Subtract the expected value and divide by the standard error to get a standard normal random variable, call it $Z$, on the left. Since $p$ is the expected value and $\mbox{SE}(\bar{X}) = \sqrt{p(1-p)/N}$ is the standard error we get:
+Can we answer this question?  We can use a mathematical trick. Subtract the expected value and divide by the standard error to get a standard normal random variable, call it $Z$, on the left. Since $p$ is the expected value and $\mbox{SE}(\bar{X}) = \sqrt{p(1-p)/N}$ is the standard error we get:
 
 $$
 \mbox{Pr}\left(Z \leq \frac{ \,.01} {\mbox{SE}(\bar{X})} \right) -
@@ -774,7 +774,7 @@ mean(x_hat)
 sd(x_hat)
 ```
 
-A histogram and qq-plot confirm that the normal approximation is accurate as well:
+A histogram and qq-plot confirm that the normal approximation is accurate as well. A qq-plot simply plots the observed quantile values (for quantiles 1-100 usually) agains the *theoretical* quantiles from a normal distribution with the same mean and standard error (from the sample's SD):
 
 ```{r normal-approximation-for-polls, echo=FALSE, warning=FALSE, message=FALSE, out.width="100%", fig.height=3}
 library(tidyverse)

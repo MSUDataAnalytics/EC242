@@ -940,7 +940,7 @@ Central Limit Theorem
 <p><span class="math display">\[
 \mbox{Pr}(\bar{X}\leq p + .01) - \mbox{Pr}(\bar{X} \leq p - .01)
 \]</span></p>
-<p>Can we answer this question? We can use the mathematical trick we learned in the previous lecture. Subtract the expected value and divide by the standard error to get a standard normal random variable, call it <span class="math inline">\(Z\)</span>, on the left. Since <span class="math inline">\(p\)</span> is the expected value and <span class="math inline">\(\mbox{SE}(\bar{X}) = \sqrt{p(1-p)/N}\)</span> is the standard error we get:</p>
+<p>Can we answer this question? We can use a mathematical trick. Subtract the expected value and divide by the standard error to get a standard normal random variable, call it <span class="math inline">\(Z\)</span>, on the left. Since <span class="math inline">\(p\)</span> is the expected value and <span class="math inline">\(\mbox{SE}(\bar{X}) = \sqrt{p(1-p)/N}\)</span> is the standard error we get:</p>
 <p><span class="math display">\[
 \mbox{Pr}\left(Z \leq \frac{ \,.01} {\mbox{SE}(\bar{X})} \right) -
 \mbox{Pr}\left(Z \leq - \frac{ \,.01} {\mbox{SE}(\bar{X})} \right)
@@ -1044,7 +1044,7 @@ A Monte Carlo simulation
 <pre><code>[1] 0.01579523</code></pre>
 </div>
 </div>
-<p>A histogram and qq-plot confirm that the normal approximation is accurate as well:</p>
+<p>A histogram and qq-plot confirm that the normal approximation is accurate as well. A qq-plot simply plots the observed quantile values (for quantiles 1-100 usually) agains the <em>theoretical</em> quantiles from a normal distribution with the same mean and standard error (from the sample’s SD):</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
