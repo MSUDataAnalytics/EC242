@@ -26,6 +26,8 @@ filter = dplyr::filter
 
 <!-- 2: I took out Part III, the extra visualizations. I want those to be in Group Project 2. I used knitr::knit_exit() to stop there. -->
 
+<!-- Sp 2026: I had to cover theoretical distributions (end of Tuesday) today, and thus barely got into polls, which is the core of the assignment. Yikes.  I should probably move stuff around to make the distributions stuff concise and easier to digest -->
+
 
 
 <!-- ### In-Class Exercise -->
