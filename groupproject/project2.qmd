@@ -9,12 +9,12 @@ format:
 <!-- Ben: I made a google sheet of all the geometry types and am pulling a file that has the class list and group assignment from my TA on it. You might need to make a table separately -- see the code chunk at the end. -->
 
 ## Presenting Your Data (Quickly!)
-Project 2 is an in-class presentation which will occur during class on {{< var duedates.project2present >}} (this has been recently updated -- see email on 10/17). Each group will make and present a short data analysis using one of the data sets from your Project 1 (or a new one, I'm not keeping track). Your presentation will introduce and detail a new ggplot `geom_` or aesthetic mapping that we haven't yet covered in class. You will be limited to a total of three slides (plus a cover slide), presented in no more than three minutes.
+Project 2 is an in-class presentation which will occur during class on {{< var duedates.project2present >}} (Tuesday and Thursday both). Each group will make and present a short data analysis using one of the data sets you listed in Section 2 of Project 1 (or a new one, I'm not keeping track). Your presentation will introduce and detail a new ggplot `geom_` or aesthetic mapping that we haven't yet covered in class. You will be limited to a total of six slides (plus a cover slide), presented in no more than eight minutes.
 
 ## Some specifics
 
 ### Explore your data
-You will present exactly one visual based on a dataset of your group's choice. Your task is to find one interesting relationship in the data that you wish to share. The relationship should be the sort that inspires further investigation of the data. For instance, your Rats data from Project 1 might have shown that summer months had higher numbers of rat sightings than did winter months, but this was only true in two of the five boroughs (I'm making this up, it may or may not be true in the data).
+You will present exactly two visuals based on a dataset of your group's choice. Your task is to find one interesting relationship in the data that you wish to share. The relationship should be the sort that inspires further investigation of the data, which you will do in one of your slide. For instance, your Rats data from Project 1 might have shown that summer months had higher numbers of rat sightings than did winter months, but this was only true in two of the five boroughs (I'm making this up, it may or may not be true in the data, and you are NOT to use the Rats data from Project 1). Then, for further exploration, you might look at weekend vs weekdays.
 
 You will present your analysis in the form of one visual made with `ggplot`. No memo, no text. You get one visual to communicate it.
 
@@ -22,21 +22,30 @@ You will present your analysis in the form of one visual made with `ggplot`. No 
 **Each group will be assigned a ggplot `geom_` or aesthetic**. The list will be posted here shortly. Your plot must show both your interesting relationship in the data, and it must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic. 
 
 ### Put it all together
-Your presentation will have four slides.
+Your presentation will have six slides.
 
 1. A cover slide with your group members names on it.
 
 2. A slide briefly introducing your dataset, showing a snippet of the relevant data. 
   - In your presentation, you will highlight the relevant variables and the overarching topic you are exploring. For example "We are using the US Census ACS 5-year estimates to examine the relationship between income and commuting time. In this data, each observation is a census tract, and we have data on median tract income and average commuting time as well as marital status." (where your slide shows a few rows of the data with the relevant values, plus any other variables you think are helpful.)
   
-3. A slide visualizing your "interesting relationship" in the data. **The visual must use the assigned geometry or aesthetic**. 
+3. A slide showing, through visualization, a summary of the "interesting relationship" in the data you're exploring. For example, if you're interested in unemployment during COVID, you'd first show a visualization of how unemployment changed 2019-2020-2021 across counties or states or something.
   - In your presentation, you will discuss the "interesting relationship" you found.
+  - *Either* this visualization or your previous visualization **must use your assigned geometry or aesthetic**
   
-4. A slide showing the code from your visual. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it
+4. A slide visualizing some feature of the "interesting relationship" in the data -- drill down by some other variable and explore the relationship further from the first.
+  - In your presentation, you will discuss the detailed feature of the "interesting relationship" you found. 
+  - *Either* this visualization or your previous visualization **must use your assigned geometry or aesthetic**
+  
+5. A slide showing the code from your visual that used your assigned geometry or aesthetic. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it
   - In your presentation, walk through the data prep and code necessary to make the plot. Focus on the new geometry/aesthetic.
+  
+6. Next steps on your data analysis and exploration.
+  - As a class, we'll discuss some ideas and ask questions here.
+  
 
 #### Submit it on D2L
-Submit a single powerpoint file on D2L that contains your cover slide + your 3 content slides by the night before presentation ({{< var duedates.project2 >}}). I will assemble everyone's submissions into one big powerpoint that we can move through without delay.
+Submit a single powerpoint file on D2L that contains your cover slide + your 5 content slides by the night before presentation ({{< var duedates.project2 >}}). I will assemble everyone's submissions into one big powerpoint that we can move through without delay.
   
 ### This will be short
 There are three content slides and three of you in the group. Each person can take one slide. **Do not plan on speaking for more than 30 seconds per person**, we have a lot of class to get through. Just as a good visual boils the message down to it's most pure form, so too should your presentation.
@@ -65,18 +74,22 @@ Not every dataset will work with your geometry. You may have to use one of your 
 ```{r, warning = F, error = F, message = F, echo = F}
 library(googlesheets4)
 
-uselist <- read_sheet('https://docs.google.com/spreadsheets/d/1Jc1SBtV4WiJ6INmRMcnRcSF75fn2OdUicP3P1T2nI9Q/edit?usp=sharing')
+uselist <- read_sheet('https://docs.google.com/spreadsheets/d/1Jc1SBtV4WiJ6INmRMcnRcSF75fn2OdUicP3P1T2nI9Q/edit?usp=sharing') %>%
+  dplyr::filter(!is.na(Type))
 
-set.seed(2025)
+set.seed(2026)
 
-grouplist = readxl::read_excel("C:\\Users\\jkirk\\OneDrive - Michigan State University\\Teaching\\EC242_FS25 Grading\\Group Assignment 09182025.xlsx", col_names = c('Junk1','netID','Junk2','Junk3','Gname','Fname','Lname')) %>%
-  dplyr::select(-Junk1, -Junk2, -Junk3, -netID) %>%
+grouplist = readxl::read_excel("C:\\Users\\jkirk\\OneDrive - Michigan State University\\Teaching\\EC242_SS26 Grading\\ClassList.xlsx") %>% #, col_names = c('Junk1','netID','Junk2','Junk3','Gname','Fname','Lname')) %>%
+  dplyr::select(Gname = Group, Lname = `Last Name`) %>%
   group_by(Gname) %>%
   dplyr::mutate(Number = sample(unique(uselist$Number), 1)) %>%
   ungroup() %>%
   left_join(uselist, by = 'Number') %>%
   dplyr::select(`Group Name` = Gname, `Last Name` = Lname, `geometry, aesthetic, or method name` = `geom name`, `Additional Info`) %>%
-  dplyr::mutate(`Additional Info` = ifelse(is.na(`Additional Info`), '', `Additional Info`))
+  dplyr::mutate(`Additional Info` = ifelse(is.na(`Additional Info`), '', `Additional Info`)) %>%
+  dplyr::arrange(`Group Name`, `Last Name`) #%>%
+  #dplyr::select(-c(`Last Name`)) %>%
+ #distinct()
 
 knitr::kable(grouplist)
 
