@@ -1,0 +1,226 @@
+---
+title: "Nonparametric Regression"
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+
+
+## Our data and goal
+We want to use the `wooldridge::wage2` data on wages to generate and tune a non-parametric model of wages using a regression tree (or decision tree, same thing). Use `?wage2` (after you've loaded the `wooldridge` package) to see the data dictionary. 
+
+```{r, echo=T, include=F}
+library(wooldridge)
+library(rpart)
+library(rpart.plot)
+library(skimr)
+
+wage2 = wooldridge::wage2
+
+```
+
+We've learned that our RMSE calculations have a hard time with `NA`s in the data. So let's use the `skim` output to tell us which variables have too many `NA` (see `n_missing`) values and should be dropped. Let's set a high bar here, and drop anything that isn't 100% complete. Of course, there are other things we can do (impute the `NA`s, or make dummies for them), but for now, it's easiest to drop them. 
+
+Remember, `skim()` is for your own exploration, it's not something that you should include in your output. 
+
+```{r, echo=F, include=T}
+wage_clean = wage2 %>%
+  dplyr::select(-brthord, -meduc, -feduc)
+```
+
+Once cleaned, we should be able to use `rpart(wage ~ ., data = wage_clean)` and not have any `NA`s in our prediction. That's what we'll do in our first Breakout.
+
+::: {.callout-note}
+
+## TRY IT
+
+### Predicting wage
+
+I'm going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (`caret`, `rpart`, and `rpart.plot`, plus `skimr`). Copy the `rmse` and `get_rmse` code into a blank R script (you don't have to use RMarkdown, just use a blank R script and run from there). You'll also want to have these functions from last week loaded:
+
+```{r}
+rmse = function(actual, predicted) {
+  sqrt(mean((actual - predicted) ^ 2))
+}
+```
+
+```{r}
+get_rmse = function(model, data, response) {
+  rmse(actual = subset(data, select = response, drop = TRUE),
+       predicted = predict(model, data))
+}
+```
+
+
+For the first breakout, all I want you to do is the following. We are trying to predict `wage` for this exercise:
+
+- Estimate a default regression tree on `wage_clean` using the default parameters (use the whole dataset for now, we'll train-test on the problem set). 
+- Use `rpart.plot` to vizualize your regression tree, and *talk through the interpretation* with each other. 
+- Calculate the RMSE for your regression tree.
+
+We'll spend about 5 minutes on this. Remember, you can use `?wage2` to see the variable names. Make sure you know what variables are showing up in the plot and explaining `wage` in your model. You may find something odd at first and may need to drop more variables...
+
+```{r, echo=F, include=F, eval=T}
+wage_clean$lwage = NULL
+```
+**5 minutes**
+
+### Breakout #1 discussion
+Let's choose a group to share their plot and discuss the results. Use our sharing zoom link: [bit.ly/EC242](https://bit.ly/EC242)
+
+:::
+
+
+<!-- ## Automating models -->
+<!-- Let's talk about a little code shortcut that helps iterate through your model selection. -->
+
+<!-- First, before, we used `list()` to store all of our models. This is because `list()` can "hold" anything at all, unlike a `matrix`, which is only numeric, or a `data.frame` which needs all rows in a column to be the same data type. `list()` is also recursive, so each element in a list can be a list. Of lists. Of lists! -->
+
+<!-- Lists are also really easy to add to iteratively. We can initiate an empty list using `myList <- list()`, then we can add things to it. Note that we use the double `[` to index: -->
+
+<!-- ```{r, echo = T} -->
+<!-- myList <- list() -->
+<!-- myList[['first']] = 'This is the first thing on my list' -->
+<!-- print(myList) -->
+<!-- ``` -->
+
+<!-- Lists let you name the "containers" (much like you can name colums in a `data.frame`). Our first one is called "first". We can add more later, but they always have to be unique: -->
+
+<!-- ```{r, echo = T} -->
+<!-- myList[['second']] = c(1,2,3) -->
+<!-- print(myList) -->
+<!-- ``` -->
+
+<!-- And still more: -->
+
+<!-- ```{r, echo = T} -->
+<!-- myList[['third']] = data.frame(a = c(1,2,3), b = c('Albert','Alex','Alice')) -->
+<!-- print(myList) -->
+<!-- ``` -->
+
+<!-- Now we have a `data.frame` in there! We can use `lapply` to do something to every element in the list: -->
+
+<!-- ```{r, echo=T} -->
+<!-- lapply(myList, length) # the length() function with the first entry being the list element -->
+<!-- ``` -->
+
+<!-- We get back a list of equal length but each (still-named) container is now the length of the original list's contents. -->
+
+<!-- ### Loops -->
+<!-- R has a very useful looping function that takes the form: -->
+
+<!-- ```{r} -->
+<!-- for(i in c('first','second','third')){ -->
+<!-- print(i) -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- Here, R is repeating the thing in the loop (`print(i)`) with a different value for `i` each time. R repeats only what is *inside the curly-brackets*, then when it reaches the close-curly-bracket, it goes back to the top, changes `i` to the next element, and repeats. -->
+
+<!-- We can use this to train our models. First, we clear our list object `myList` by setting it equal to an empty list. Then, we loop over some regression tree tuning parameters. First, we have to figure out how to use the loop to set a *unique* name for each list container. To do this, we'll use `paste0('Tuning',i)` which will result in a character string of `Tuning0` when `i=0`, `Tuning0.01` when `i=0.01`, etc. -->
+
+<!-- ```{r} -->
+<!-- myList <- list()   # resets the list. Otherwise, you'll just be adding to your old list! -->
+
+<!-- for(i in c(0, 0.01, 0.02)){ -->
+<!--   myList[[paste0('Tuning',i)]] = rpart(wage ~ ., data = wage_clean, cp = i) -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- If you use `names(myList)` you'll see the result of our `paste0` naming. If you want to see the plotted results, you can use: -->
+
+<!-- ```{r} -->
+<!-- rpart.plot(myList[['Tuning0.01']]) -->
+<!-- ``` -->
+
+### Side note: using `lapply` to repeat something
+As we did in the last two labs, we'll use `lapply` to iterate over a wide range of "tuning parameters" to optimize our model (find the lowest test RMSE).
+
+Once we have a list of things we want to iterate on, `lapply` lets us do something to each element of the list, and then returns a list of results (of the same length as the input). The arguments of `lapply` are (1) the list we want to iterate over, (2) the function we want to use, and, when needed, (3) other arguments to pass to the function (that are the same for every element in the list). The list we want to iterate over might be a list of models (as we do when we want to use `get_rmse` on each model), or it might be a list (or a vector that can be coerced to a list) of tuning parameters.
+
+Let's say we wanted to repeat our **TRY IT** with the `cp` values of `c(0, .01, .02, .03)`. We could make a list of those values, and use `lapply` to run `rpart()` and use each of the 4 values of `cp`. One way we could try doing this would be something like:
+
+```{r, eval = F}
+myList = lapply(c(0, .01, .02, 03), rpart, formula = wage ~ ., data = wage_clean, cp = ???)
+```
+
+The only problem here is that the first argument of `rpart` is not the `cp` parameter, so we can't just pass it in additional arguments.
+
+Instead, we previously introduced the *anonymous function* in `lapply` as follows:
+
+```{r, eval = F}
+myList = lapply(c(0, .01, .02, 03), function(x){
+  rpart(wage ~ ., data = wage_clean, cp = x)
+})
+```
+
+Well, it gets us the right answer, but whaaaaaat is going on? Curly brackets? `x`?
+
+This is an "anonymous function", or a function created on the fly. Here's how it works in `lapply`:
+
+- The first argument is the list you want to do something to (same as before)
+- The second argument would usually be the function you want to apply, like `get_rmse`
+- Here, we're going to ask R to *temporarily* create a function that takes one argument, `x`.
+- `x` is going to be each list element in `myList`. 
+- Think of it as a loop: 
+  - Take the first element of `myList` and refer to it as `x`. Run the function's code.
+  - Then it'll take the second element of `myList` and refer to it as `x` and run the function's code.
+  - Repeat until all elements of `x` have been used.
+- Once the anonymous function has been applied to `x`, the result is passed back and saved as the new element of the list output, always in the same position from where the `x` was taken.
+
+The curly brackets are the temporary function you want to create.
+
+
+So you can think of it like this:
+
+````
+x = 0
+myList[[1]] = rpart(wage ~ ., data = wage_clean, cp = x)
+
+x = 0.01
+myList[[2]] = rpart(wage ~ ., data = wage_clean, cp = x)
+
+x = 0.02
+myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)
+````
+
+As long as every entry in `myList` is a valid value of `cp`, then you'll get the results in a list.  Then, `unlist` just coerces the list to a vector. This is also the same way we get the RMSE, but instead of the anonymous function, we write one out and use that.
+
+If you had a list of `rpart` objects and wanted to, say, extract the `cp` tuning parameter from each, you could also use an anonymous function. Each `rpart` object has a list called `control` that includes all of the control (tuning) parameters used in its estimation:
+
+```{r, eval = F}
+cpList = lapply(myList, function(y){
+  y$control$cp
+})
+
+unlist(cpList)
+```
+
+
+::: {.callout-note}
+
+## TRY IT
+
+### Breakout #2
+Using the loop method or the `lapply` method, generate 10 regression trees to explain `wage` in `wage_clean`. You can iterate through values of `cp`, the complexity parameter, **or** `minsplit`, the minimum # of points that have to be in each split.
+
+**10 minutes**
+
+### Breakout #2 discussion
+We'll ask someone to share (a few of) their group's 10 regression trees using `rpart.plot`. Use [bit.ly/KIRKPATRICK](bit.ly/KIRKPATRICK) to volunteer to share.
+
+:::
+
+::: {.callout-note}
+## TRY IT
+
+### Breakout #3 (if time)
+Use `lapply` to get a list of your RMSE's (one for each of your models). The anonymous function may come in handy here (though it's not necessary). Note that we are not yet splitting into `test` and `train` (which you **will** need to do on your lab assignment). 
+
+Once you have your list, **create the plot of RMSEs** similar to the one we looked at in Content this week. Note: you can use `unlist(myRMSE)` to get a numeric vector of the RMSE's (as long as all of the elements in `myRMSE` are numeric). Then, it's a matter of plotting either with base `plot` or with `ggplot` (if you use `ggplot` you'll have to `tidy` the RMSE by adding the index column or naming the x-axis).
+
+
+:::
+
+

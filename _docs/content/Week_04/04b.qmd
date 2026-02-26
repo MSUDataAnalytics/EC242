@@ -1,0 +1,728 @@
+---
+title: "Data Wrangling"
+lastmod: "`r Sys.Date()`"
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+```{r, eval = T, include = F}
+library(knitr)
+```
+
+
+
+# Data Wrangling
+
+Part of visualization is prepping your data. We previously covered [reshaping](/content/Week_02/02a.qmd#reshaping) during our tidyverse review. Today we go more in-depth to on combining data.
+
+
+## Required Reading
+
+- This page.
+
+### Guiding Questions
+
+- What is a _join_ and why is it a common data wrangling maneuver?
+- What is a _primary key_ and why is it important to think about our data in this way?
+- How do we deal with messy date variables?
+
+# Binding
+
+One common (but naive) way in which datasets are combined is by _binding_ them. Binding functions do not try to match by a variable, but instead simply combine datasets. If the datasets don't match by the appropriate dimensions, one obtains an error. However, R won't tell you that you've done something silly. Let's take a brief look:
+
+## Binding columns
+
+The __dplyr__ function _bind_cols_ binds two objects by making them columns in a tibble. For example, we quickly want to make a data frame consisting of numbers we can use.
+
+```{r}
+bind_cols(a = 1:3, b = 4:6)
+```
+
+This function requires that we assign names to the columns. Here we chose `a` and `b`.
+
+Note that there is an R-base function `cbind` with the exact same functionality. An important difference is that `cbind` can create different types of objects, while `bind_cols` always produces a data frame.
+
+`bind_cols` can also bind two different data frames. For example, here we bind `dslabs::murders` and our election polling data from previous lessons
+
+```{r}
+library(tidyverse)
+library(dslabs)
+murders = dslabs::murders
+results_us_election_2016 = dslabs::results_us_election_2016
+```
+
+We can just bind the two datasets together (but watch out!):
+
+```{r}
+new_tab <- bind_cols(murders, results_us_election_2016)
+head(new_tab)
+```
+
+Well, two problems: first off, `state` was in both and `bind_cols` just....sticks the data together, so we now have duplicated column names (which R handles by adding '1' and '6' referring to their column position).
+
+Worse still, the orders weren't the same, so we get California's election result in the same row as Alabama (AL was definitely not 61.7% Clinton).
+
+So `bind_cols` puts the data together, but yikes.
+
+## Binding by rows
+
+The `bind_rows` function is similar to `bind_cols`, but binds rows instead of columns:
+
+```{r}
+br = bind_rows(murders, results_us_election_2016)
+head(br)
+tail(br)
+```
+
+This is based on an R-base function `rbind`. Here, we still haven't gotten anything useful: since `state' was in both datasets, we see it complete (no NA's) in the first part (murders) and second part (election results), but it repeats the states. Moreover, the population data is filled in on the top half but NA below, and the election results are NA at the beginning, and filled in below. R just lined up the columns that had the same name (`state`) and filled in the data elsewhere. 
+
+Probably not helpful, but it is useful if we split up data then have to re-connect it. Usually, we don't use `bind_rows` unless we know it has the same columns.
+
+
+# Joining tables
+
+The information we need for a given analysis may not be just in one table. For example, we joined (using `left_join`) the measles rates by state to a map of all US states earlier this week. Here we use a simpler example to illustrate the general challenge of combining tables.
+
+Suppose we want to explore the relationship between population size for US states and electoral votes. We have the population size in this table:
+
+```{r, warning=FALSE, message=FALSE}
+head(murders)
+```
+
+and electoral votes in this one:
+
+```{r}
+head(results_us_election_2016)
+```
+
+Just concatenating these two tables together did not work since the order of the states is not the same.
+
+```{r}
+identical(results_us_election_2016$state, murders$state)
+```
+
+The _join_ functions, described below, are designed to handle this challenge.
+
+## Joins {#joins}
+
+The _join_ functions in the __dplyr__ package (part of the tidyverse) make sure that the tables are combined so that matching rows are together. If you know SQL, you will see that the approach and syntax is very similar. The general idea is that one needs to identify one or more columns that will serve to match the two tables. Then a new table with the combined information is returned. Notice what happens if we join the two tables above by state using `left_join` (we will remove the `others` column and rename `electoral_votes` so that the tables fit on the page):
+
+```{r}
+tab <- left_join(murders, results_us_election_2016, by = "state") %>%
+  dplyr::select(-others) %>% 
+  rename(ev = electoral_votes)
+head(tab)
+```
+
+The data has been successfully joined and we can now, for example, make a plot to explore the relationship:
+
+```{r ev-vs-population, message=FALSE, warning=FALSE}
+library(ggrepel)
+tab %>% ggplot(aes(population/10^6, ev, label = abb)) +
+  geom_point() +
+  geom_text_repel() +
+  scale_x_continuous(trans = "log2") +
+  scale_y_continuous(trans = "log2") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+We see the relationship is close to linear with about 2 electoral votes for every million persons, but with very small states getting higher ratios.
+
+
+In practice, it is not always the case that each row in one table has a matching row in the other. For this reason, we have several versions of join. To illustrate this challenge, we will take subsets of the tables above. We create the tables `tab1` and `tab2` so that they have some states in common but not all:
+
+```{r}
+tab_1 <- slice(murders, 1:6) %>% dplyr::select(state, population)
+tab_1
+tab_2 <- results_us_election_2016 %>%
+  dplyr::filter(state%in%c("Alabama", "Alaska", "Arizona",
+                    "California", "Connecticut", "Delaware")) %>%
+  dplyr::select(state, electoral_votes) %>% rename(ev = electoral_votes)
+tab_2
+```
+
+
+We will use these two tables as examples in the next sections.
+
+### Left join
+
+Suppose we want a table like `tab_1`, but adding electoral votes to whatever states we have available. For this, we use `left_join` with `tab_1` as the first argument. We specify which column to use to match with the `by` argument.
+
+```{r}
+left_join(tab_1, tab_2, by = "state")
+```
+
+Note that `NA`s are added to the two states not appearing in `tab_2`. Also, notice that this function, as well as all the other joins, can receive the first arguments through the pipe:
+
+```{r, eval=FALSE}
+tab_1 %>% left_join(tab_2, by = "state")
+```
+
+
+### Right join
+
+If instead of a table with the same rows as first table, we want one with the same rows as second table, we can use `right_join`:
+
+```{r}
+tab_1 %>% right_join(tab_2, by = "state")
+```
+
+Now the NAs are in the column coming from `tab_1`.
+
+### Inner join
+
+If we want to keep only the rows that have information in both tables, we use `inner_join`. You can think of this as an intersection:
+
+```{r}
+inner_join(tab_1, tab_2, by = "state")
+```
+
+### Full join
+
+If we want to keep all the rows and fill the missing parts with NAs, we can use `full_join`. You can think of this as a union:
+
+```{r}
+full_join(tab_1, tab_2, by = "state")
+```
+
+### Semi join
+
+The `semi_join` function lets us keep the part of first table for which we have information in the second. It does not add the columns of the second. It isn't often used:
+
+```{r}
+semi_join(tab_1, tab_2, by = "state")
+```
+This gives the same result as:
+```{r}
+tab_1 %>% 
+  filter(state %in% tab_2$state) 
+```
+
+### Anti join
+
+The function `anti_join` is the opposite of `semi_join`. It keeps the elements of the first table for which there is no information in the second. It's mostly useful for diagnostics:
+
+```{r}
+anti_join(tab_1, tab_2, by = "state")
+```
+
+The following diagram summarizes the above joins:
+
+```{r, echo=F}
+include_graphics(here('images','joins.png'))
+```
+(Image courtesy of RStudio^[https://github.com/rstudio/cheatsheets]. CC-BY-4.0 license^[https://github.com/rstudio/cheatsheets/blob/master/LICENSE]. Cropped from original.)
+
+## Keys
+When we merge, we merge on "keys". These are columns that (1) exist in both datasets (with common values in each), and (2) define unique combinations for which we want to merge data. Above, "state" is the key. The column exists (with the same name and common values) in both datasets, and for each "state" in the left dataset, we look for the observation(s) in the right dataset we want to attach.
+
+Keys are super important. We'll see what can go wrong if we have poorly defined keys in a little bit.
+
+
+
+# Set operators
+
+Another set of commands useful for combining datasets are the set operators. When applied to vectors, these behave as their names suggest. Examples are `intersect`, `union`, `setdiff`, and `setequal`. However, if the __tidyverse__, or  more specifically __dplyr__, is loaded, these functions can be used on data frames as opposed to just on vectors.
+
+
+### Intersect
+
+You can take intersections of vectors of any type, such as numeric:
+
+```{r}
+intersect(1:10, 6:15)
+```
+or characters:
+
+```{r}
+intersect(c("a","b","c"), c("b","c","d"))
+```
+
+The __dplyr__ package includes an `intersect` function that can be applied to tables with the same column names. This function returns the rows in common between two tables. To make sure we use the __dplyr__ version of `intersect` rather than the base package version, we can use `dplyr::intersect` like this:
+
+
+```{r}
+tab_1 <- tab[1:5,]
+tab_2 <- tab[3:7,]
+dplyr::intersect(tab_1, tab_2)
+```
+
+
+## Union
+
+Similarly _union_ takes the union of vectors. For example:
+
+```{r}
+union(1:10, 6:15)
+union(c("a","b","c"), c("b","c","d"))
+```
+
+The __dplyr__ package includes a version of `union` that combines all the rows of two tables with the same column names.
+
+```{r}
+tab_1 <- tab[1:5,]
+tab_2 <- tab[3:7,]
+dplyr::union(tab_1, tab_2)
+```
+Note that we get 7 unique rows from this. We do not get duplicated rows from the overlap in `1:5` and `3:7`. If we were to `bind_rows` on the two subsets, we would get duplicates.
+
+## `setdiff`
+
+The set difference between a first and second argument ("what is in the first that does not appear in the second") can be obtained with `setdiff`. Unlike `intersect` and `union`, this function is not symmetric:
+
+
+```{r}
+setdiff(1:10, 6:15)
+setdiff(6:15, 1:10)
+```
+
+As with the functions shown above, __dplyr__ has a version for data frames:
+
+```{r}
+tab_1 <- tab[1:5,]
+tab_2 <- tab[3:7,]
+dplyr::setdiff(tab_1, tab_2)
+```
+
+**`setdiff` is particularly useful in joining because it tells you which keys are in one dataset but aren't in another.
+
+## `setequal`
+
+Finally, the function `setequal` tells us if two sets are the same, regardless of order. So notice that:
+
+```{r}
+setequal(1:5, 1:6)
+```
+
+but:
+
+```{r}
+setequal(1:5, 5:1)
+```
+
+When applied to data frames that are not equal, regardless of order, the __dplyr__ version provides a useful message letting us know how the sets are different:
+
+```{r}
+dplyr::setequal(tab_1, tab_2)
+```
+
+## `distinct`
+
+Since a proper merge usually uses unique primary keys, we often need to check to make sure all of our key columns *combined* are unique. The tidyverse function `distinct` does this for us. Given a data.frame, it returns all of the unique combinations in the data. If there are multiple columns, `distinct` gives us one observation for each unique combination. (The base function `unique` also does this).
+
+```{r, echo=T}
+gapminder = dslabs::gapminder # use dslabs gapminder
+
+# is this data "unique" on `country` alone?
+gapminder.country.distinct = gapminder %>%
+  dplyr::select(country) %>%
+  distinct() 
+
+NROW(gapminder.country.distinct)
+NROW(gapminder)
+```
+Ope, nope, gapminder is not distinct on country! What about on `country` and `year`?
+
+```{r, ech=T}
+gapminder %>%
+  dplyr::select(country, year) %>%
+  distinct() %>%
+  NROW()
+```
+Ahh, yes it is!
+
+## `duplicated`
+
+Similarly, the function `duplicated` can help us identify where we have repeats of values. For each row in a dataset (or for each element in a vector) his function returns "0" if it's not duplicate of an earlier one, and "1" if it is. So if there are duplicates, the *first* instance is 0 and the second (and each additional) is 1. So to count non-unique observations, we have to sum.
+
+```{r, echo=T}
+gapminder %>%
+  dplyr::select(country) %>%
+  duplicated() %>%
+  sum()
+```
+
+
+```{r, echo=T}
+gapminder %>%
+  dplyr::select(country, year) %>%
+  duplicated() %>%
+  sum()
+```
+
+Now we know that country x year is unique (and just country alone is not). If we were to merge using just country, we'd be duplicating a lot of data. Is that what we want? Maybe! But that's context-dependent.
+
+
+::: {.callout-note}
+
+__TRY IT__
+
+1. Install and load the __Lahman__ library. This database includes data related to baseball teams. It includes summary statistics about how the players performed on offense and defense for several years. It also includes personal information about the players.
+
+The `Batting` data frame contains the offensive statistics for all players for many years. You can see, for example, the top 10 hitters by running this code:
+
+```{r, eval=FALSE}
+library(Lahman)
+
+top <- Batting %>%
+  dplyr::filter(yearID == 2016) %>%
+  arrange(desc(HR)) %>%
+  slice(1:10)
+
+top %>% as_tibble()
+```
+
+But who are these players? We see an ID, but not the names. The player names are in this table
+
+```{r, eval=FALSE}
+People %>% as_tibble()
+```
+
+How can we merge them? They have to have a common primary key. Since we are working with only one year, it should be unique. This will show us the columns the tables have in common:
+
+```{r, eval=F}
+intersect(names(People), names(top))
+```
+
+We can see column names `nameFirst` and `nameLast` in `People`. Use the `left_join` function to create a table of the top home run hitters. The table should have `playerID`, first name, last name, and number of home runs (HR).  Rewrite the object `top` with this new table.
+
+
+2. Now use the `Salaries` data frame to add each player's salary to the table you created in exercise 1. Note that salaries are different every year so make sure to filter for the year 2016 (if you're only looking at 2016 then ), then use `right_join`. This time show first name, last name, team, HR, and salary.
+
+
+:::
+
+
+# A note about merging and duplicated rows
+
+When we merge data, we have to be very careful about duplicated rows. Specifically, we have to be certain that the fields we use to join on are unique **or** that we know they aren't unique and intend to duplicate rows. Another way of putting this is that our primary keys have to be unique -- one row for each combination in both datasets, or we have to know that we want to expand the data.
+
+Here, we'll see what happens if we don't have a unique primary key to join.
+
+When we have tidy data, we have one row per observation. When we join data that has more than one row per observation, the new dataset will no longer be tidy. Here, the `notTidyData` is not tidy *in relation to the `tidyData` as it does not have one observation per year and state. For instance:
+
+```{r}
+tidyData <- bind_cols( state = c('MI','CA','MI','CA'), 
+                       year = c(2001, 2001, 2002, 2002),  
+                       Arrests = c(10, 21, 30, 12))
+
+notTidyData <- bind_cols(state = c('MI','MI','MI','CA','CA','CA'), 
+                         County = c('Ingham','Clinton','Wayne','Orange','Los Angeles','Kern'),
+                         InNOut_locations = c(0,0,0,20, 31, 8))
+
+head(tidyData)
+head(notTidyData)
+```
+
+If we use the only common field, `state` to merge `tidyData`, which is unique on `state` and `year`, to `notTidyData`, which is unique on `county`, then every time we see `state` in our "left" data, we will get **all three counties in that state and for that year**. Even worse, we will get the `InNOut_locations` tally repeated for every matching `state`!
+
+```{r}
+joinedData <- left_join(tidyData, notTidyData, by = c('state'))
+joinedData
+```
+
+Because we asked for all columns of `tidyData` that matched (on `state`) in `notTidyData`, we get replicated `Arrests` - look at MI in 2001 in the first three rows. The original data had 10 Arrests in Michigan in 2001. Now, *for every MI County in `notTidyData`, we have replicated the statewide arrests!*
+
+```{r}
+sum(joinedData$Arrests)
+sum(tidyData$Arrests)
+```
+
+Yikes! We now have 3x the number of arrests in our data. 
+
+```{r}
+sum(joinedData$InNOut_locations)
+sum(notTidyData$InNOut_locations)
+```
+
+And while we might like that we have 2x the In-N-Out locations, we definitely think our data shouldn't suddenly have more.
+
+The reason this happens is that we do not have a unique *key* variable. Each dataset would need to have a unique key (or "primary key") on `state` *and* `county` *and* `year` to merge without risk of messing up our data. Since `arrests` aren't broken out by county, we'd have to use `summarize` to sum `notTidyData` at the `state` and `year` (to eliminate `county`). Then, we'd have to decide if the number of In-N-Outs are the same for each `year` since `notTidyData` doesn't have `year`. Note that this last step is dependent on your understanding of the data. Do burger restuarant counts change a meaningful amount between years? Does it matter if we don't catch maybe 1 or 2 new openings by assuming they are constant over years.
+
+The lesson is this: always know what your join is doing. Know your unique keys. Use `sum(duplicated(tidyData$key))` to see if all values are unique, or `NROW(unique(tidyData %>% dplyr::select(key1, key2)))` to see if all rows are unique over the 2 keys (replacing "key1" and "key2" with your key fields).
+
+If it shouldn't add rows, then make sure the new data has the same number of rows as the old one, or use `setequal` to check. 
+
+
+# Parsing dates and times
+
+## The date data type
+
+We have described three main types of vectors: numeric, character, and logical. In data science projects, we very often encounter variables that are dates. Although we can represent a date with a string, for example `November 2, 2017`, once we pick a reference day, referred to as the _epoch_, they can be converted to numbers by calculating the number of days since the epoch. Computer languages usually use January 1, 1970, as the epoch. So, for example, January 2, 2017 is day 1, December 31, 1969 is day -1, and November 2, 2017, is day 17,204.
+
+Now how should we represent dates and times when analyzing data in R? We could just use days since the epoch, but then it is almost impossible to interpret. If I tell you it's November 2, 2017, you know what this means immediately. If I tell you it's day 17,204, you will be quite confused. Similar problems arise with times and even more complications can appear due to time zones.
+
+For this reason, `R` defines a data type just for dates and times. We saw an example in the polls data:
+
+```{r,  message=FALSE, warning=FALSE}
+library(tidyverse)
+library(dslabs)
+data("polls_us_election_2016")
+polls_us_election_2016$startdate %>% head
+```
+
+These look like strings, but they are not:
+
+```{r}
+class(polls_us_election_2016$startdate)
+```
+
+Look at what happens when we convert them to numbers:
+
+```{r}
+as.numeric(polls_us_election_2016$startdate) %>% head
+```
+
+It turns them into days since the epoch. The `as.Date` function can convert a character into a date. So to see that the epoch is day 0 we can type
+
+```{r}
+as.Date("1970-01-01") %>% as.numeric
+```
+
+Plotting functions, such as those in ggplot, are aware of the date format. This means that, for example, a scatterplot can use the numeric representation to decide on the position of the point, but include the string in the labels:
+
+```{r rawpolls-vs-time}
+polls_us_election_2016 %>% dplyr::filter(pollster == "Ipsos" & state =="U.S.") %>%
+  ggplot(aes(startdate, rawpoll_trump)) +
+  geom_line()
+```
+
+Note in particular that the month names are displayed, a very convenient feature.
+
+## The lubridate package {#lubridate}
+
+The __tidyverse__ includes functionality for dealing with dates through the __lubridate__ package.
+
+```{r, warning=FALSE, message=FALSE}
+library(lubridate)
+```
+
+We will take a random sample of dates to show some of the useful things one can do:
+
+```{r}
+set.seed(2002)
+dates <- sample(polls_us_election_2016$startdate, 10) %>% sort
+dates
+```
+
+The functions `year`, `month` and `day` extract those values:
+
+```{r}
+tibble(date = dates,
+       month = month(dates),
+       day = day(dates),
+       year = year(dates))
+```
+
+We can also extract the month labels:
+
+```{r}
+month(dates, label = TRUE)
+```
+
+
+Another useful set of functions are the _parsers_ that convert strings into dates. The function `ymd` assumes the dates are in the format YYYY-MM-DD and tries to parse as well as possible.
+
+```{r}
+x <- c(20090101, "2009-01-02", "2009 01 03", "2009-1-4",
+       "2009-1, 5", "Created on 2009 1 6", "200901 !!! 07")
+ymd(x)
+```
+
+A further complication comes from the fact that dates often come in different formats in which the order of year, month, and day are different. The preferred format is to show year (with all four digits), month (two digits), and then day, or what is called the ISO 8601. Specifically we use YYYY-MM-DD so that if we order the string, it will be ordered by date. You can see the function `ymd` returns them in this format.
+
+But, what if you encounter dates such as "09/01/02"? This could be September 1, 2002 or January 2, 2009 or January 9, 2002.
+In these cases, examining the entire vector of dates will help you determine what format it is by process of elimination. Once you know, you can use the many parses provided by __lubridate__.
+
+For example, if the string is:
+
+```{r}
+x <- "09/01/02"
+```
+
+The `ymd` function assumes the first entry is the year, the second is the month, and the third is the day, so it converts it to:
+
+```{r}
+ymd(x)
+```
+
+The `mdy` function assumes the first entry is the month, then the day, then the year:
+
+```{r}
+mdy(x)
+```
+
+The _lubridate_ package provides a function for every possibility:
+```{r}
+ydm(x)
+myd(x)
+dmy(x)
+dym(x)
+```
+
+The __lubridate__ package is also useful for dealing with times. In R base, you can get the current time typing `Sys.time()`. The __lubridate__ package provides a slightly more advanced function, `now`, that permits you to define the time zone:
+
+```{r}
+now()
+now("GMT")
+```
+
+You can see all the available time zones with `OlsonNames()` function.
+
+We can also extract hours, minutes, and seconds:
+
+```{r}
+now() %>% hour()
+now() %>% minute()
+now() %>% second()
+```
+
+The package also includes a function to parse strings into times as well as parsers for time objects that include dates:
+
+
+```{r}
+x <- c("12:34:56")
+hms(x)
+x <- "Nov/2/2012 12:34:56"
+mdy_hms(x)
+```
+
+This package has many other useful functions. We describe two of these here that we find particularly useful.
+
+The `make_date` function can be used to quickly create a date object. It takes three arguments: year, month, day. `make_datetime` takes the same as `make_date` but also adds hour, minute, seconds, and time zone like 'US/Michigan' but defaulting to UTC. So create an date object representing, for example, July 6, 2019 we write:
+
+```{r}
+make_date(2019, 7, 6)
+```
+
+To make a vector of January 1 for the 80s we write:
+
+```{r}
+make_date(1980:1989)
+```
+
+Another very useful function is the `round_date`. It can be used to _round_ dates to nearest year, quarter,  month, week, day, hour, minutes, or seconds. So if we want to group all the polls by week of the year we can do the following:
+
+```{r poll-margin-versus-week}
+polls_us_election_2016 %>%
+  mutate(week = round_date(startdate, "week")) %>%
+  group_by(week) %>%
+  summarize(margin = mean(rawpoll_clinton - rawpoll_trump)) %>%
+  qplot(week, margin, data = .)
+```
+
+Date objects can be added to and subtracted from with `hours`, `minutes`, etc.
+
+```{r}
+startDate <- ymd_hms('2021-06-14 12:20:57')
+
+startDate + seconds(4)
+
+startDate + hours(1) + days(2) - seconds(10)
+
+```
+
+You can even calculate time differences in specific units:
+
+```{r}
+endDate = ymd_hms('2021-06-15 01:00:00')
+
+endDate - startDate
+
+difftime(endDate, startDate, units = 'days')
+
+```
+
+Note that both of these result in a `difftime` object. You can use `as.numeric(difftime(endDate, startDate))` to get the numeric difference in times.
+
+Sequences can be created as well:
+
+```{r}
+seq(from = startDate, to = endDate, by = 'hour')
+
+```
+
+
+# In-Class Exercise in Data Wrangling
+
+You work for a travel booking website as a data analyst. A hotel has asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They've asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.
+
+Unfortunately, you only have the following data:
+
+- [<i class="fas fa-file-csv"></i> `booking.csv`](/data/Travel_booking.csv) - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hoted. 
+
+- [<i class="fas fa-file-csv"></i> `roomrates.csv`](/data/Travel_roomrates.csv) - Contains the price of each room on each day
+
+- [<i class="fas fa-file-csv"></i> `parking.csv`](/data/Travel_parking.csv) - Contains the corporations who negotiated free parking for employees
+
+- Parking at the hotel is \$60 per night if you don't have free parking. This hotel is in California, so everyone drives and parks when they stay.
+
+
+
+::: {.callout-tip}
+
+
+- Right-click on each of the links, copy the address, and read the URL in using `read.csv` to read .csv's
+
+- You'll find you need to use most of the tools we covered previously including `pivot_longer`, `pivot_wider` and more.
+
+- You'll need `lubridate` and `tidyverse` loaded up.
+
+:::
+
+Your lab wil be based on similar data (with more wrinkles to fix) so share your code with your group when you're done.
+
+
+```{r eval = F, include=F}
+
+### NOTE to BEN: script creating this data is in Example_11_practice.R in the "working" directory (since I wasn't sure where to put scripts that generate data; don't need the kids finding them)
+
+
+library(tidyverse)
+library(lubridate)
+library(here)
+
+# 
+# booking_raw = read.csv(here('data','Travel_booking.csv'))
+# roomrates_raw = read.csv(here('data','Travel_roomrates.csv'))
+# parking_raw = read.csv(here('data','Travel_parking.csv'))
+
+booking_raw = read.csv('https://ec242.netlify.app/data/Travel_booking.csv')
+roomrates_raw = read.csv('https://ec242.netlify.app/data/Travel_roomrates.csv')
+parking_raw = read.csv('https://ec242.netlify.app/data/Travel_parking.csv')
+
+
+## gather roomrates to merge to booking ##
+roomrates = gather(roomrates_raw, convert = T) %>% # this might be tricky since it doesn't require any options!
+  separate(key, sep = '_', into = c('price','roomtype','date')) %>%
+  dplyr::mutate(date_occupied = ymd(date)) %>%      # NOTE: new column name is exactly the column name for date in booking
+  dplyr::select(date_occupied, roomtype, rate = value)   # NOTE: column name can be renamed on the fly with select
+
+## Merge booking to parking
+booking = booking_raw %>%
+  left_join(parking_raw, by = 'corp') %>%
+  dplyr::mutate(Parking = case_when(
+    FreeParking==T ~ 0,
+    is.na(FreeParking) ~ 60,   # Parking is now $ spent on parking
+    TRUE ~ as.numeric(NA))) %>%
+  dplyr::mutate(date_occupied = ymd(date_occupied))
+
+booking.m = booking %>%
+  separate(room_use, sep = '_', into = 'roomtype', extra = 'drop')  # NOTE: new name for room_use corresponds to the name in roomrates
+
+setequal(booking.m$roomtype, roomrates$roomtype)
+
+booking.m = booking.m %>%
+  left_join(roomrates, by = c('date_occupied','roomtype'))
+
+booking.summary = booking.m %>%
+  group_by(corp) %>%
+  dplyr::summarize(sumSpent = sum(rate))
+
+booking.summary
+# B with 98,318
+```
+
+
+
