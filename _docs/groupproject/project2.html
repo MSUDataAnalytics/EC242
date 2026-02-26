@@ -307,48 +307,42 @@ ul.task-list li input[type="checkbox"] {
 <!-- Ben: I made a google sheet of all the geometry types and am pulling a file that has the class list and group assignment from my TA on it. You might need to make a table separately -- see the code chunk at the end. -->
 <section id="presenting-your-data-quickly" class="level2">
 <h2 class="anchored" data-anchor-id="presenting-your-data-quickly">Presenting Your Data (Quickly!)</h2>
-<p>Project 2 is an in-class presentation which will occur during class on Tentatively Tu-Th, March 17-19th, in class (Tuesday and Thursday both). Each group will make and present a short data analysis using one of the data sets you listed in Section 2 of Project 1 (or a new one, I’m not keeping track). Your presentation will introduce and detail a new ggplot <code>geom_</code> or aesthetic mapping that we haven’t yet covered in class. You will be limited to a total of six slides (plus a cover slide), presented in no more than eight minutes.</p>
+<p>Project 2 is an in-class presentation which will occur during class on Tentatively Tu-Th, March 17-19th, in class (Tuesday and Thursday both). Each group will make and present a short data analysis using one of the data sets you listed in Section 2 of Project 1 (or a new one, I’m not keeping track). Your presentation will introduce and detail a new ggplot <code>geom_</code> or aesthetic mapping that we haven’t yet covered in class. You will be limited to a total of six slides (plus a cover slide), presented in no more than eight minutes, including questions/discussion.</p>
 </section>
 <section id="some-specifics" class="level2">
 <h2 class="anchored" data-anchor-id="some-specifics">Some specifics</h2>
 <section id="explore-your-data" class="level3">
 <h3 class="anchored" data-anchor-id="explore-your-data">Explore your data</h3>
-<p>You will present exactly two visuals based on a dataset of your group’s choice. Your task is to find one interesting relationship in the data that you wish to share. The relationship should be the sort that inspires further investigation of the data, which you will do in one of your slide. For instance, your Rats data from Project 1 might have shown that summer months had higher numbers of rat sightings than did winter months, but this was only true in two of the five boroughs (I’m making this up, it may or may not be true in the data, and you are NOT to use the Rats data from Project 1). Then, for further exploration, you might look at weekend vs weekdays.</p>
-<p>You will present your analysis in the form of one visual made with <code>ggplot</code>. No memo, no text. You get one visual to communicate it.</p>
+<p>You will present exactly two visuals based on a dataset of your group’s choice. Your task is to find one interesting relationship in the data that you wish to share. The relationship should be the sort that inspires further investigation of the data, which you will do in one of your slide. For instance, your Rats data from Project 1 might have shown that summer months had higher numbers of rat sightings than did winter months, but this was only true in two of the five boroughs (I’m making this up, it may or may not be true in the data, and you are NOT to use the Rats data from Project 1). Then, for further exploration, you might look at weekend vs weekdays, as an example.</p>
+<p>You will present your analysis in the form of two visuals made with <code>ggplot</code>. No memo, no text. You get two visuals to communicate it.</p>
 </section>
 <section id="communicate-your-data-with-a-new-geom_-or-aesthetic" class="level3">
 <h3 class="anchored" data-anchor-id="communicate-your-data-with-a-new-geom_-or-aesthetic">Communicate your data with a new <code>geom_</code> or aesthetic</h3>
-<p><strong>Each group will be assigned a ggplot <code>geom_</code> or aesthetic</strong>. The list will be posted here shortly. Your plot must show both your interesting relationship in the data, and it must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic.</p>
+<p><strong>Each group will be assigned a ggplot <code>geom_</code> or aesthetic</strong>. The list is at the bottom of this page. Your plots must show both your interesting relationship in the data, and one must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic.</p>
 </section>
 <section id="put-it-all-together" class="level3">
 <h3 class="anchored" data-anchor-id="put-it-all-together">Put it all together</h3>
 <p>Your presentation will have six slides.</p>
 <ol type="1">
 <li><p>A cover slide with your group members names on it.</p></li>
-<li><p>A slide briefly introducing your dataset, showing a snippet of the relevant data.</p></li>
-</ol>
+<li><p>A slide briefly introducing your dataset, showing a snippet of the relevant data.</p>
 <ul>
 <li>In your presentation, you will highlight the relevant variables and the overarching topic you are exploring. For example “We are using the US Census ACS 5-year estimates to examine the relationship between income and commuting time. In this data, each observation is a census tract, and we have data on median tract income and average commuting time as well as marital status.” (where your slide shows a few rows of the data with the relevant values, plus any other variables you think are helpful.)</li>
-</ul>
-<ol start="3" type="1">
-<li>A slide showing, through visualization, a summary of the “interesting relationship” in the data you’re exploring. For example, if you’re interested in unemployment during COVID, you’d first show a visualization of how unemployment changed 2019-2020-2021 across counties or states or something.</li>
-</ol>
+</ul></li>
+<li><p>A slide showing, through visualization, a summary of the “interesting relationship” in the data you’re exploring. For example, if you’re interested in unemployment during COVID, you’d first show a visualization of how unemployment changed 2019-2020-2021 across counties or states or something.</p>
 <ul>
 <li>In your presentation, you will discuss the “interesting relationship” you found.</li>
 <li><em>Either</em> this visualization or your previous visualization <strong>must use your assigned geometry or aesthetic</strong></li>
-</ul>
-<ol start="4" type="1">
-<li>A slide visualizing some feature of the “interesting relationship” in the data – drill down by some other variable and explore the relationship further from the first.</li>
-</ol>
+</ul></li>
+<li><p>A slide visualizing some feature of the “interesting relationship” in the data – drill down by some other variable and explore the relationship further from the first.</p>
 <ul>
-<li>In your presentation, you will discuss the detailed feature of the “interesting relationship” you found.</li>
+<li>In your presentation, you will discuss the detailed feature of the “interesting relationship” you found, and why you think it is happening.</li>
 <li><em>Either</em> this visualization or your previous visualization <strong>must use your assigned geometry or aesthetic</strong></li>
-</ul>
-<ol start="5" type="1">
-<li>A slide showing the code from your visual that used your assigned geometry or aesthetic. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it</li>
+</ul></li>
+<li><p>A slide showing the code from your visual that used your assigned geometry, function, or aesthetic. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it</p></li>
 </ol>
 <ul>
-<li>In your presentation, walk through the data prep and code necessary to make the plot. Focus on the new geometry/aesthetic.</li>
+<li>In your presentation, walk through the code necessary to make the plot. Focus on the new geometry/aesthetic.</li>
 </ul>
 <ol start="6" type="1">
 <li>Next steps on your data analysis and exploration.</li>
@@ -358,12 +352,12 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <section id="submit-it-on-d2l" class="level4">
 <h4 class="anchored" data-anchor-id="submit-it-on-d2l">Submit it on D2L</h4>
-<p>Submit a single powerpoint file on D2L that contains your cover slide + your 5 content slides by the night before presentation (Tentatively Monday, March 16th, 11:59PM). I will assemble everyone’s submissions into one big powerpoint that we can move through without delay.</p>
+<p>Submit a single powerpoint file on D2L that contains your cover slide + your 5 content slides by the night before presentation (Tentatively Monday, March 16th, 11:59PM). I will assemble everyone’s submissions into one big powerpoint that we can move through without delay. You can submit as a Powerpoint or as a PDF (Powerpoint is preferred as I will load them all into one giant powerpoint).</p>
 </section>
 </section>
 <section id="this-will-be-short" class="level3">
 <h3 class="anchored" data-anchor-id="this-will-be-short">This will be short</h3>
-<p>There are three content slides and three of you in the group. Each person can take one slide. <strong>Do not plan on speaking for more than 30 seconds per person</strong>, we have a lot of class to get through. Just as a good visual boils the message down to it’s most pure form, so too should your presentation.</p>
+<p>There are five content slides and three of you in the group. Each person can take 1-2 slides. <strong>Do not plan on speaking for more than 1 minute or so per person</strong>, we have a lot of class to get through. Just as a good visual boils the message down to it’s most pure form, so too should your presentation.</p>
 </section>
 </section>
 <section id="grading" class="level2">
@@ -375,7 +369,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Application of new geometry/aesthetic/method (10 points): Did you successfully show your assigned geometry or aesthetic? Was the code clear enough for others to create something similar with minimal work?</p></li>
 <li><p>Presentation (10 points): Was your group organized and concise? Did you clearly cover all the discussion necessary in the allotted time?</p></li>
 </ul>
-<p>Remember, this is a 3-minute presentation that we’ll run back-to-back-to-back over all the groups, so efficiency is key. The plot has to hit fast and hard!</p>
+<p>Remember, this is a 8-minute presentation that we’ll run back-to-back-to-back over all the groups, so efficiency is key. The plot has to hit fast and hard!</p>
 </section>
 <section id="assigned-geometries-aesthetics-methods" class="level2">
 <h2 class="anchored" data-anchor-id="assigned-geometries-aesthetics-methods">Assigned Geometries / aesthetics / methods</h2>
