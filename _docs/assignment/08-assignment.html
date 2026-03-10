@@ -370,7 +370,7 @@ Due Date
 <p>You have been recently hired to Zillow’s Zestimate product team as a junior analyst. As a part of their regular hazing, they have given you access to a small subset of their historic sales data. Your job is to present some basic predictions for housing values in a small geographic area (Ames, IA) using this historical pricing.</p>
 <p>First, let’s load the data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ameslist <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">'https://ec242.netlify.app/data/ames.csv'</span>, </span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Ames <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">'https://ec242.netlify.app/data/ames.csv'</span>, </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sep =</span> <span class="st">','</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -380,7 +380,7 @@ Due Date
 <p>We’re now ready to start playing with a model. We will start by using the <code>lm()</code> function to fit a simple linear regression model, with <code>SalePrice</code> as the response and <code>GrLivArea</code> as the predictor.</p>
 <p>Recall that the basic <code>lm()</code> syntax is <code>lm(y∼x,data)</code>, where <code>y</code> is the <strong>response</strong>, <code>x</code> is the <strong>predictor</strong>, and <code>data</code> is the data set in which these two variables are kept. Let’s quickly run this with two variables:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lm.fit <span class="ot">=</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> GrLivArea, <span class="at">data =</span> ameslist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lm.fit <span class="ot">=</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> GrLivArea, <span class="at">data =</span> Ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we type <code>lm.fit</code>, some basic information about the model is output. For more detailed information, we use <code>summary(lm.fit)</code>. This gives us p-values and standard errors for the coefficients, as well as the <span class="math inline">\(R^2\)</span> statistic and <span class="math inline">\(F\)</span>-statistic for the entire model.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>Utilizing these functions hels us see some interesting results. Note that we built (nearly) the simplest possible model:</p>
@@ -390,7 +390,7 @@ Due Date
 <p><strong>Try it:</strong> Use <code>plot()</code> to explore the model above (it will make a sequence of plots; don’t put it in a code chunk, just use it for your own exploration). Do you suspect that some outliers have a large influence on the data? We will explore this point specifically in the future.</p>
 <p>We can now go crazy adding variables to our model. It’s as simple as appending them to the previous code—though you should be careful executing this, as it will overwrite your previous output:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lm.fit <span class="ot">=</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea, <span class="at">data =</span> ameslist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lm.fit <span class="ot">=</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea, <span class="at">data =</span> Ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Try it:</strong> Does controlling for <code>LotArea</code> change the <em>qualitative</em> conclusions from the previous regression? What about the <em>quantitative</em> results? Does the direction of the change in the quantitative results make sense to you?</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -399,19 +399,63 @@ Due Date
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercises
+Exercise 1/6
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><p>Use the <code>lm()</code> function in a <strong>simple</strong> linear regression (e.g., with only one predictor) with <code>SalePrice</code> as the response to determine the value of a garage.</p></li>
-<li><p>Use the <code>lm()</code> function to perform a multiple linear regression with <code>SalePrice</code> as the response and all other variables from your <code>Ames</code> data as the predictors. You can do this easily with the formula <code>SalePrice ~ .</code> which tells <code>lm</code> to use all of the data’s columns (except <code>SalePrice</code>) on the right-hand-side. To do this, you’ll need to drop a few variables first, though. Use <code>dplyr::select(-PoolQC, -MiscFeature, -Fence, -FireplaceQu, -LotFrontage, -Exterior2nd, -Electrical)</code> to get rid of some variables that have a lot of <code>NA</code> values. Use the <code>summary()</code> or <code>tidy</code> function to print the results. Comment on the output. For instance:</p>
-<ul>
-<li>Is there a relationship between the predictors and the response?</li>
-<li>Which predictors appear to have a statistically significant relationship to the response? (Hint: look for stars)</li>
-<li>What does the coefficient for the year variable suggest?</li>
-</ul></li>
-<li><p>There are a few <code>NA</code>s in the output from the regression in Question 2. You can use <code>tidy</code> to save the output in a familiar data.frame style “tibble”, and then explore it to see what variables are coming up <code>NA</code>. Remember what <code>R</code> did when we tried to give it dummy variables representing all three possible values of a factor variable (see “Parameterization” in Example 06). Keeping that in mind, <em>scroll</em> to the first <code>NA</code> in your regression output and see if you can explain why it might be <code>NA</code>. Please remember that we can use functions like <code>View()</code> to explore data, but we never put <code>View()</code> in a code chunk.</p></li>
+<li>Use the <code>lm()</code> function in a <strong>simple</strong> linear regression (e.g., with only one predictor) with <code>SalePrice</code> as the response to determine the value of a garage. Interpret the coefficient in 1-2 sentences.</li>
+</ol>
+</div>
+</div>
+<section id="data-cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h3>
+<p><strong>Do not skip this section. This isn’t your kitchen junk drawer – you can’t get away with not cleaning your data.</strong></p>
+<p>Oh, the Ames data yet again. It’s given us lots of trouble. Many of you have found a few variables (columns) that should be avoided. The main problem is that some columns have only one value in them, or they have only <code>NA</code> and one value, so once <code>lm(...)</code> drops the <code>NA</code> rows, they are left with only one value. Linear regression by OLS does not like variables that don’t vary! So, let’s be systematic about figuring out which columns in our data are to be avoided.</p>
+<p>The function <code>na.omit</code> takes a data.frame and drops all rows in which there is one or more <code>NA</code>. So if you have a lot of variables and they have lots of <code>NA</code>s, you may lose a lot of rows. Let’s try it:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercises 2-3 of 7
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol start="2" type="1">
+<li><p>Calculate the number of rows left in <code>Ames</code> after you use <code>na.omit()</code> to drop any row that has one or more <code>NA</code>s in it. Don’t overwrite your original <code>Ames</code> data – just get the number of rows of the output. Are <code>NA</code>s a problem here? Take a look at the data, does it look like there’s one variable with a lot of <code>NA</code>s or are the <code>NA</code>s scattere throughout the data?</p></li>
+<li><p>Just for fun, use the <code>lm()</code> function to perform a multiple linear regression with <code>SalePrice</code> as the response and all other variables from your original <code>Ames</code> data as the predictors. You can do this easily with the formula <code>SalePrice ~ .</code> which tells <code>lm</code> to use all of the data’s columns (except <code>SalePrice</code>) on the right-hand-side. What was the output?</p></li>
+</ol>
+</div>
+</div>
+<section id="skimr" class="level4">
+<h4 class="anchored" data-anchor-id="skimr"><code>skimr</code></h4>
+<p>The <code>skimr</code> package is very helpful for seeing what our data contains. Install it, and then use <code>skim(Ames)</code> <span class="text-red">directly in the console</span> (we’re just looking at data – do <strong>not</strong> put <code>skim</code> output into your RMarkdown output - it will give you an error). Take a look at the “complete rate” column - this tells us the fraction of observations in that column that are <code>NA</code>. If it’s very small, then that variable will be problematic. The “n_unique” column tells us if there are few or many different values - a “1” in “n_unique” is definitely going to be a problem as well, and you must drop that variable.</p>
+<p>You can make a note of those columns that have extremely low “complete rates” or only 1 unique value and drop them to start off. Of course, we could keep them, and drop all observations where any of those columns are <code>NA</code>, but we did that in exercise 2 and it decimated our data!</p>
+<p>Using <code>skimr</code>, make a character vector of column names that should be dropped. You can get started with this, but you’ll need to add more:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dropCols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'PoolQC'</span>,<span class="st">'MiscFeature'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then, we can use <code>dplyr::select()</code> with a <code>tidyselect</code> function <code>contains(dropCols)</code>, which finds all the column names that contain any of the character vector <code>dropCols</code> (and the <code>-</code> drops them):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>AmesClean <span class="ot">=</span> Ames <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">contains</span>(dropCols))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Do this, then check the number of rows that will be left for the regression using <code>na.omit</code>. Get to a reasonable number of rows, then save <code>AmesClean</code> and use that from here on out.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercises 4-7
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>4.Now that your data is clean, use <code>lm()</code> and the formula <code>SalePrice ~ .</code> to regress <code>SalePrice</code> on all of the explanatory variables in the data. Remember <code>~ .</code> tells R to use every variable that isn’t the left hand side variable. Then, use the <code>summary()</code> or <code>tidy()</code> function on your <code>lm</code> object to print the results. Comment on the output. For instance: - Is there a relationship between the predictors and the response? - Which predictors appear to have a statistically significant relationship to the response? (Hint: look for stars) - What does the coefficient for the year variable suggest?</p>
+<ol start="5" type="1">
+<li><p>There are a few <code>NA</code>s in the output from the regression in Question 2. These aren’t because of <code>NA</code>s in your data. You can use <code>tidy</code> to save the output in a familiar data.frame style “tibble”, and then explore it to see what variables are coming up <code>NA</code>. Remember what <code>R</code> did when we tried to give it dummy variables representing all three possible values of a factor variable (see <a href="..\content/week_08/08b#parameterization">parameterization</a> in this week’s lecture). Keeping that in mind, <em>scroll</em> to the first <code>NA</code> in your regression output and see if you can explain why it might be <code>NA</code>. Please remember that we can use functions like <code>View()</code> to explore data, but we never put <code>View()</code> in a code chunk.</p></li>
 <li><p>It’s rarely a good idea to throw all the variables into a regression. We want to be smarter about building our model. We’ll use fewer variables, but include interactions. As we saw this week, the <code>:</code> symbol allows you to create an interction term between two variables. Use the <code>:</code> symbols to fit a linear regression model with <em>one</em> well-chosen interaction effect plus 3-4 of the other variables of your choice. Why did you select the variables you did, and what was the result?</p></li>
 <li><p>Try a few (e.g., two) different transformations of the variables, such as <span class="math inline">\(ln(x)\)</span>, <span class="math inline">\(x^2\)</span>, <span class="math inline">\(\sqrt x\)</span>. Do any of these make sense to include in a model of <code>SalePrice</code>? Comment on your findings.</p></li>
 </ol>
@@ -419,6 +463,8 @@ Exercises
 </div>
 
 
+</section>
+</section>
 </section>
 
 

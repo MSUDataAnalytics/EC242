@@ -18,8 +18,8 @@ You have been recently hired to Zillow’s Zestimate product team as a junior an
 
 First, let's load the data.
 
-```{r, eval=FALSE}
-ameslist <- read.table('https://ec242.netlify.app/data/ames.csv', 
+```{r, eval=T, warning = F, message = F}
+Ames <- read.table('https://ec242.netlify.app/data/ames.csv', 
                    header = TRUE,
                    sep = ',') 
 ```
@@ -32,7 +32,7 @@ model, with `SalePrice` as the response and `GrLivArea` as the predictor.
 Recall that the basic `lm()` syntax is `lm(y∼x,data)`, where `y` is the **response**, `x` is the **predictor**, and `data` is the data set in which these two variables are kept. Let's quickly run this with two variables:
 
 ```{r,  eval=FALSE}
-lm.fit = lm(SalePrice ~ GrLivArea, data = ameslist)
+lm.fit = lm(SalePrice ~ GrLivArea, data = Ames)
 ```
 
 If we type `lm.fit`, some basic information about the model is output. For more detailed information, we use `summary(lm.fit)`. This gives us p-values and standard errors for the coefficients, as well as the $R^2$ statistic and $F$-statistic for the entire model.[^3]
@@ -52,26 +52,72 @@ Saving the model as we did above is useful because we can explore other pieces o
 We can now go crazy adding variables to our model. It's as simple as appending them to the previous code---though you should be careful executing this, as it will overwrite your previous output:
 
 ```{r,eval=FALSE}
-lm.fit = lm(SalePrice ~ GrLivArea + LotArea, data = ameslist)
+lm.fit = lm(SalePrice ~ GrLivArea + LotArea, data = Ames)
 ```
 
 **Try it:** Does controlling for `LotArea` change the *qualitative* conclusions from the previous regression? What about the *quantitative* results? Does the direction of the change in the quantitative results make sense to you?
 
 ::: {.callout-note}
-## Exercises
+## Exercise 1/6
 
-1. Use the `lm()` function in a **simple** linear regression (e.g., with only one predictor) with `SalePrice` as the response to determine the value of a garage.
+1. Use the `lm()` function in a **simple** linear regression (e.g., with only one predictor) with `SalePrice` as the response to determine the value of a garage. Interpret the coefficient in 1-2 sentences.
 
-2. Use the `lm()` function to perform a multiple linear regression with `SalePrice` as the response and all other variables from your `Ames` data as the predictors. You can do this easily with the formula `SalePrice ~ .` which tells `lm` to use all of the data's columns (except `SalePrice`) on the right-hand-side. To do this, you'll need to drop a few variables first, though. Use `dplyr::select(-PoolQC, -MiscFeature, -Fence, -FireplaceQu, -LotFrontage, -Exterior2nd, -Electrical)` to get rid of some variables that have a lot of `NA` values. Use the `summary()` or `tidy` function to print the results. Comment on the output. For instance:
+:::
+
+
+###  Data Cleaning
+**Do not skip this section. This isn't your kitchen junk drawer -- you can't get away with not cleaning your data.**
+
+Oh, the Ames data yet again. It's given us lots of trouble. Many of you have found a few variables (columns) that should be avoided. The main problem is that some columns have only one value in them, or they have only `NA` and one value, so once `lm(...)` drops the `NA` rows, they are left with only one value. Linear regression by OLS does not like variables that don't vary! So, let's be systematic about figuring out which columns in our data are to be avoided.
+
+The function `na.omit` takes a data.frame and drops all rows in which there is one or more `NA`. So if you have a lot of variables and they have lots of `NA`s, you may lose a lot of rows. Let's try it:
+
+
+::: {.callout-note}
+## Exercises 2-3 of 7
+
+2. Calculate the number of rows left in `Ames` after you use `na.omit()` to drop any row that has one or more `NA`s in it. Don't overwrite your original `Ames` data -- just get the number of rows of the output. Are `NA`s a problem here? Take a look at the data, does it look like there's one variable with a lot of `NA`s or are the `NA`s scattere throughout the data?
+
+3. Just for fun, use the `lm()` function to perform a multiple linear regression with `SalePrice` as the response and all other variables from your original `Ames` data as the predictors. You can do this easily with the formula `SalePrice ~ .` which tells `lm` to use all of the data's columns (except `SalePrice`) on the right-hand-side. What was the output?
+
+:::
+
+
+#### `skimr`
+
+The `skimr` package is very helpful for seeing what our data contains. Install it, and then use `skim(Ames)` [directly in the console]{.text-red} (we're just looking at data -- do **not** put `skim` output into your RMarkdown output - it will give you an error). Take a look at the "complete rate" column - this tells us the fraction of observations in that column that are `NA`. If it's very small, then that variable will be problematic. The "n_unique" column tells us if there are few or many different values - a "1" in "n_unique" is definitely going to be a problem as well, and you must drop that variable.
+
+You can make a note of those columns that have extremely low "complete rates" or only 1 unique value and drop them to start off. Of course, we could keep them, and drop all observations where any of those columns are `NA`, but we did that in exercise 2 and it decimated our data!
+
+Using `skimr`, make a character vector of column names that should be dropped. You can get started with this, but you'll need to add more:
+
+```{r, echo=T}
+
+dropCols = c('PoolQC','MiscFeature')
+
+```
+
+Then, we can use `dplyr::select()` with a `tidyselect` function `contains(dropCols)`, which finds all the column names that contain any of the character vector `dropCols` (and the `-` drops them):
+
+```{r, echo=T, eval = F}
+AmesClean = Ames %>%
+  dplyr::select(-contains(dropCols))
+```
+
+Do this, then check the number of rows that will be left for the regression using `na.omit`. Get to a reasonable number of rows, then save `AmesClean` and use that from here on out.
+
+::: {.callout-note}
+## Exercises 4-7
+
+4.Now that your data is clean, use `lm()` and the formula `SalePrice ~ .` to regress `SalePrice` on all of the explanatory variables in the data. Remember `~ .` tells R to use every variable that isn't the left hand side variable. Then, use the `summary()` or `tidy()` function on your `lm` object to print the results. Comment on the output. For instance:
     - Is there a relationship between the predictors and the response?
     - Which predictors appear to have a statistically significant relationship to the response? (Hint: look for stars)
     - What does the coefficient for the year variable suggest?
 
-3. There are a few `NA`s in the output from the regression in Question 2. You can use `tidy` to save the output in a familiar data.frame style "tibble", and then explore it to see what variables are coming up `NA`. Remember what `R` did when we tried to give it dummy variables representing all three possible values of a factor variable (see "Parameterization" in Example 06). Keeping that in mind, *scroll* to the first `NA` in your regression output and see if you can explain why it might be `NA`. Please remember that we can use functions like `View()` to explore data, but we never put `View()` in a code chunk. 
+5. There are a few `NA`s in the output from the regression in Question 2. These aren't because of `NA`s in your data. You can use `tidy` to save the output in a familiar data.frame style "tibble", and then explore it to see what variables are coming up `NA`. Remember what `R` did when we tried to give it dummy variables representing all three possible values of a factor variable (see [parameterization](/content/week_08/08b#parameterization) in this week's lecture). Keeping that in mind, *scroll* to the first `NA` in your regression output and see if you can explain why it might be `NA`. Please remember that we can use functions like `View()` to explore data, but we never put `View()` in a code chunk. 
 
+6. It's rarely a good idea to throw all the variables into a regression. We want to be smarter about building our model. We'll use fewer variables, but include interactions. As we saw this week, the `:` symbol allows you to create an interction term between two variables. Use the `:` symbols to fit a linear regression model with *one* well-chosen interaction effect plus 3-4 of the other variables of your choice. Why did you select the variables you did, and what was the result?
 
-4. It's rarely a good idea to throw all the variables into a regression. We want to be smarter about building our model. We'll use fewer variables, but include interactions. As we saw this week, the `:` symbol allows you to create an interction term between two variables. Use the `:` symbols to fit a linear regression model with *one* well-chosen interaction effect plus 3-4 of the other variables of your choice. Why did you select the variables you did, and what was the result?
-
-5. Try a few (e.g., two) different transformations of the variables, such as $ln(x)$, $x^2$, $\sqrt x$. Do any of these make sense to include in a model of `SalePrice`? Comment on your findings.
+7. Try a few (e.g., two) different transformations of the variables, such as $ln(x)$, $x^2$, $\sqrt x$. Do any of these make sense to include in a model of `SalePrice`? Comment on your findings.
 
 :::

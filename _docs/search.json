@@ -1680,71 +1680,6 @@
     "text": "Footnotes\n\n\nIf you’ve got money to burn, you can buy me a burrito.↩︎\nThis bothers me way more than it should.↩︎\nBy the end of the course, you will realize that 1) I make many many many errors; 2) that I frequently cannot remember a command or the correct syntax; and 3) that none of this matters too much in the big picture because I know the broad approaches I’m trying to take and I know how to Google stuff. Learn from my idiocy.↩︎\nSo just don’t cheat or plagiarize. This is an easy problem to avoid.↩︎"
   },
   {
-    "objectID": "assignment/03-assignment.html",
-    "href": "assignment/03-assignment.html",
-    "title": "3: Applying ggplot2 to Real Data",
-    "section": "",
-    "text": "Due Date\n\n\n\nThis assignment is due on Monday, February 2nd\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.",
-    "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "3: Applying ggplot2 to Real Data"
-    ]
-  },
-  {
-    "objectID": "assignment/03-assignment.html#preliminaries",
-    "href": "assignment/03-assignment.html#preliminaries",
-    "title": "3: Applying ggplot2 to Real Data",
-    "section": "Preliminaries",
-    "text": "Preliminaries\nAs always, we will first have to load ggplot2. To do this, we will load the tidyverse by running this code:\nlibrary(tidyverse)",
-    "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "3: Applying ggplot2 to Real Data"
-    ]
-  },
-  {
-    "objectID": "assignment/03-assignment.html#background",
-    "href": "assignment/03-assignment.html#background",
-    "title": "3: Applying ggplot2 to Real Data",
-    "section": "Background",
-    "text": "Background\nThe New York City Department of Buildings (DOB) maintains a list of construction sites that have been categorized as “essential” during the city’s shelter-in-place pandemic order. They’ve provided an interactive map here where you can see the different projects. There’s also a link there to download the complete dataset.\nFor this exercise, you’re going to use this data to visualize the amounts or proportions of different types of essential projects in the five boroughs of New York City (Brooklyn, Manhattan, the Bronx, Queens, and Staten Island).\nAs you hopefully figured out by now, you’ll be doing all your R work in R Markdown. You can use an RStudio Project to keep your files well organized (either on your computer or on RStudio.cloud), but this is optional. If you decide to do so, either create a new project for this exercise only, or make a project for all your work in this class.\nYou’ll need to download one CSV file and put it somewhere on your computer (or upload it to RStudio.cloud if you’ve gone that direction)—preferably in a folder named data in your project folder. You can download the data from the DOB’s map, or use this link to get it directly:\n\n EssentialConstruction.csv\n\n\nR Markdown\nWriting regular text with R Markdown follows the rules of Markdown. You can make lists; different-size headers, etc. This should be relatively straightfoward. We talked about a few Markdown features like bold and italics in class. See this resource for more formatting.\nYou’ll also need to insert your own code chunks where needed. Rather than typing them by hand (that’s tedious and you might miscount the number of backticks!), use the “Insert” button at the top of the editing window, or type ctrl + alt + i on Windows, or ⌘ + ⌥ + i on macOS.\n\n\n\n\n\n\n\n\n\n\n\nData Prep\nOnce you download the EssentialConstruction.csv file and save it in your project folder, you can open it and start cleaning. Loading in the basic data is straightforward:\n\nlibrary(tidyverse)\nessential = read_csv('pathTo/EssentialConstruction.csv')\n\nWhere the “pathTo” part is the path to your local folder. If you saved the data in the same folder as your template, then you can just use:\n\nessential = read_csv('EssentialConstruction.csv')\n\nOnce loaded, note that each row is an approved project (the JOB NUMBERS are approved projects, so each row is one approved project).\n\n\n\n\n\n\nExercise 1 of 2: Essential pandemic construction\n\n\n\nUh-oh! One of our columns has different capitalization. Use case_when (or any other method) to make sure you have consistent character strings for each borough.\nThen, assume that each row (observation) is an approved construction project.\nA. Show the count or proportion of approved projects by borough using a bar chart. Make sure all the elements of your plot (axes, legend, etc.) are labeled.\nB. Show the count or proportion of approved projects by category using a lollipop chart. Not sure of what a lollipop chart is? Google R ggplot lollipop. A huge portion of knowing how to code is knowing how to google, find examples, and figure out where to put your variables from your data! Make sure all the elements of your plot (axes, legend, etc.) are labeled. Make sure ticks are well-placed, numbers are properly formatted, etc. Everything should look professional. Grading will be very picky on this!\n\n\n\n\n\n\n\n\nExercise 2 of 2: Essential pandemic construction\n\n\n\nNow, use an apprpriate facet function (wrap or grid) to re-make this plot across each CATEGORY. Again, make sure everything is labeled well and properly formatted.",
-    "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "3: Applying ggplot2 to Real Data"
-    ]
-  },
-  {
-    "objectID": "assignment/03-assignment.html#getting-help",
-    "href": "assignment/03-assignment.html#getting-help",
-    "title": "3: Applying ggplot2 to Real Data",
-    "section": "Getting help",
-    "text": "Getting help\nUse the EC242 Slack if you get stuck (click the Slack logo at the top right of this website header).",
-    "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "3: Applying ggplot2 to Real Data"
-    ]
-  },
-  {
-    "objectID": "assignment/03-assignment.html#turning-everything-in",
-    "href": "assignment/03-assignment.html#turning-everything-in",
-    "title": "3: Applying ggplot2 to Real Data",
-    "section": "Turning everything in",
-    "text": "Turning everything in\nWhen you’re all done, click on the “Knit” button at the top of the editing window and create a PDF. Upload the PDF file to D2L.",
-    "crumbs": [
-      "Assignments",
-      "Lab Assignments",
-      "Assignments",
-      "3: Applying ggplot2 to Real Data"
-    ]
-  },
-  {
     "objectID": "assignment/08-assignment.html",
     "href": "assignment/08-assignment.html",
     "title": "8: Model Building",
@@ -1762,7 +1697,7 @@
     "href": "assignment/08-assignment.html#backstory-and-set-up",
     "title": "8: Model Building",
     "section": "Backstory and Set Up",
-    "text": "Backstory and Set Up\nYou have been recently hired to Zillow’s Zestimate product team as a junior analyst. As a part of their regular hazing, they have given you access to a small subset of their historic sales data. Your job is to present some basic predictions for housing values in a small geographic area (Ames, IA) using this historical pricing.\nFirst, let’s load the data.\n\nameslist &lt;- read.table('https://ec242.netlify.app/data/ames.csv', \n                   header = TRUE,\n                   sep = ',')",
+    "text": "Backstory and Set Up\nYou have been recently hired to Zillow’s Zestimate product team as a junior analyst. As a part of their regular hazing, they have given you access to a small subset of their historic sales data. Your job is to present some basic predictions for housing values in a small geographic area (Ames, IA) using this historical pricing.\nFirst, let’s load the data.\n\nAmes &lt;- read.table('https://ec242.netlify.app/data/ames.csv', \n                   header = TRUE,\n                   sep = ',')",
     "crumbs": [
       "Assignments",
       "Lab Assignments",
@@ -1775,7 +1710,7 @@
     "href": "assignment/08-assignment.html#building-a-model",
     "title": "8: Model Building",
     "section": "Building a Model",
-    "text": "Building a Model\nWe’re now ready to start playing with a model. We will start by using the lm() function to fit a simple linear regression model, with SalePrice as the response and GrLivArea as the predictor.\nRecall that the basic lm() syntax is lm(y∼x,data), where y is the response, x is the predictor, and data is the data set in which these two variables are kept. Let’s quickly run this with two variables:\n\nlm.fit = lm(SalePrice ~ GrLivArea, data = ameslist)\n\nIf we type lm.fit, some basic information about the model is output. For more detailed information, we use summary(lm.fit). This gives us p-values and standard errors for the coefficients, as well as the \\(R^2\\) statistic and \\(F\\)-statistic for the entire model.1\nUtilizing these functions hels us see some interesting results. Note that we built (nearly) the simplest possible model:\n\\[\\text{SalePrice} = \\beta_0 + \\beta_1*(\\text{GrLivArea}) + \\epsilon.\\]\nBut even on its own, this model is instructive. It suggest that an increase in overall living area of 1 ft \\(^2\\) is correlated with an expected increase in sales price of $107. (Note that we cannot make causal claims!)\nSaving the model as we did above is useful because we can explore other pieces of information it stores. Specifically, we can use the names() function in order to find out what else is stored in lm.fit. Although we can extract these quantities by name—e.g. lm.fit$coefficients—it is safer to use the extractor functions like coef(lm.fit) to access them. We can also use a handy tool like plot() applied directly to lm.fit to see some interesting data that is automatically stored by the model.\nTry it: Use plot() to explore the model above (it will make a sequence of plots; don’t put it in a code chunk, just use it for your own exploration). Do you suspect that some outliers have a large influence on the data? We will explore this point specifically in the future.\nWe can now go crazy adding variables to our model. It’s as simple as appending them to the previous code—though you should be careful executing this, as it will overwrite your previous output:\n\nlm.fit = lm(SalePrice ~ GrLivArea + LotArea, data = ameslist)\n\nTry it: Does controlling for LotArea change the qualitative conclusions from the previous regression? What about the quantitative results? Does the direction of the change in the quantitative results make sense to you?\n\n\n\n\n\n\nExercises\n\n\n\n\nUse the lm() function in a simple linear regression (e.g., with only one predictor) with SalePrice as the response to determine the value of a garage.\nUse the lm() function to perform a multiple linear regression with SalePrice as the response and all other variables from your Ames data as the predictors. You can do this easily with the formula SalePrice ~ . which tells lm to use all of the data’s columns (except SalePrice) on the right-hand-side. To do this, you’ll need to drop a few variables first, though. Use dplyr::select(-PoolQC, -MiscFeature, -Fence, -FireplaceQu, -LotFrontage, -Exterior2nd, -Electrical) to get rid of some variables that have a lot of NA values. Use the summary() or tidy function to print the results. Comment on the output. For instance:\n\nIs there a relationship between the predictors and the response?\nWhich predictors appear to have a statistically significant relationship to the response? (Hint: look for stars)\nWhat does the coefficient for the year variable suggest?\n\nThere are a few NAs in the output from the regression in Question 2. You can use tidy to save the output in a familiar data.frame style “tibble”, and then explore it to see what variables are coming up NA. Remember what R did when we tried to give it dummy variables representing all three possible values of a factor variable (see “Parameterization” in Example 06). Keeping that in mind, scroll to the first NA in your regression output and see if you can explain why it might be NA. Please remember that we can use functions like View() to explore data, but we never put View() in a code chunk.\nIt’s rarely a good idea to throw all the variables into a regression. We want to be smarter about building our model. We’ll use fewer variables, but include interactions. As we saw this week, the : symbol allows you to create an interction term between two variables. Use the : symbols to fit a linear regression model with one well-chosen interaction effect plus 3-4 of the other variables of your choice. Why did you select the variables you did, and what was the result?\nTry a few (e.g., two) different transformations of the variables, such as \\(ln(x)\\), \\(x^2\\), \\(\\sqrt x\\). Do any of these make sense to include in a model of SalePrice? Comment on your findings.",
+    "text": "Building a Model\nWe’re now ready to start playing with a model. We will start by using the lm() function to fit a simple linear regression model, with SalePrice as the response and GrLivArea as the predictor.\nRecall that the basic lm() syntax is lm(y∼x,data), where y is the response, x is the predictor, and data is the data set in which these two variables are kept. Let’s quickly run this with two variables:\n\nlm.fit = lm(SalePrice ~ GrLivArea, data = Ames)\n\nIf we type lm.fit, some basic information about the model is output. For more detailed information, we use summary(lm.fit). This gives us p-values and standard errors for the coefficients, as well as the \\(R^2\\) statistic and \\(F\\)-statistic for the entire model.1\nUtilizing these functions hels us see some interesting results. Note that we built (nearly) the simplest possible model:\n\\[\\text{SalePrice} = \\beta_0 + \\beta_1*(\\text{GrLivArea}) + \\epsilon.\\]\nBut even on its own, this model is instructive. It suggest that an increase in overall living area of 1 ft \\(^2\\) is correlated with an expected increase in sales price of $107. (Note that we cannot make causal claims!)\nSaving the model as we did above is useful because we can explore other pieces of information it stores. Specifically, we can use the names() function in order to find out what else is stored in lm.fit. Although we can extract these quantities by name—e.g. lm.fit$coefficients—it is safer to use the extractor functions like coef(lm.fit) to access them. We can also use a handy tool like plot() applied directly to lm.fit to see some interesting data that is automatically stored by the model.\nTry it: Use plot() to explore the model above (it will make a sequence of plots; don’t put it in a code chunk, just use it for your own exploration). Do you suspect that some outliers have a large influence on the data? We will explore this point specifically in the future.\nWe can now go crazy adding variables to our model. It’s as simple as appending them to the previous code—though you should be careful executing this, as it will overwrite your previous output:\n\nlm.fit = lm(SalePrice ~ GrLivArea + LotArea, data = Ames)\n\nTry it: Does controlling for LotArea change the qualitative conclusions from the previous regression? What about the quantitative results? Does the direction of the change in the quantitative results make sense to you?\n\n\n\n\n\n\nExercise 1/6\n\n\n\n\nUse the lm() function in a simple linear regression (e.g., with only one predictor) with SalePrice as the response to determine the value of a garage. Interpret the coefficient in 1-2 sentences.\n\n\n\n\nData Cleaning\nDo not skip this section. This isn’t your kitchen junk drawer – you can’t get away with not cleaning your data.\nOh, the Ames data yet again. It’s given us lots of trouble. Many of you have found a few variables (columns) that should be avoided. The main problem is that some columns have only one value in them, or they have only NA and one value, so once lm(...) drops the NA rows, they are left with only one value. Linear regression by OLS does not like variables that don’t vary! So, let’s be systematic about figuring out which columns in our data are to be avoided.\nThe function na.omit takes a data.frame and drops all rows in which there is one or more NA. So if you have a lot of variables and they have lots of NAs, you may lose a lot of rows. Let’s try it:\n\n\n\n\n\n\nExercises 2-3 of 7\n\n\n\n\nCalculate the number of rows left in Ames after you use na.omit() to drop any row that has one or more NAs in it. Don’t overwrite your original Ames data – just get the number of rows of the output. Are NAs a problem here? Take a look at the data, does it look like there’s one variable with a lot of NAs or are the NAs scattere throughout the data?\nJust for fun, use the lm() function to perform a multiple linear regression with SalePrice as the response and all other variables from your original Ames data as the predictors. You can do this easily with the formula SalePrice ~ . which tells lm to use all of the data’s columns (except SalePrice) on the right-hand-side. What was the output?\n\n\n\n\nskimr\nThe skimr package is very helpful for seeing what our data contains. Install it, and then use skim(Ames) directly in the console (we’re just looking at data – do not put skim output into your RMarkdown output - it will give you an error). Take a look at the “complete rate” column - this tells us the fraction of observations in that column that are NA. If it’s very small, then that variable will be problematic. The “n_unique” column tells us if there are few or many different values - a “1” in “n_unique” is definitely going to be a problem as well, and you must drop that variable.\nYou can make a note of those columns that have extremely low “complete rates” or only 1 unique value and drop them to start off. Of course, we could keep them, and drop all observations where any of those columns are NA, but we did that in exercise 2 and it decimated our data!\nUsing skimr, make a character vector of column names that should be dropped. You can get started with this, but you’ll need to add more:\n\ndropCols = c('PoolQC','MiscFeature')\n\nThen, we can use dplyr::select() with a tidyselect function contains(dropCols), which finds all the column names that contain any of the character vector dropCols (and the - drops them):\n\nAmesClean = Ames %&gt;%\n  dplyr::select(-contains(dropCols))\n\nDo this, then check the number of rows that will be left for the regression using na.omit. Get to a reasonable number of rows, then save AmesClean and use that from here on out.\n\n\n\n\n\n\nExercises 4-7\n\n\n\n4.Now that your data is clean, use lm() and the formula SalePrice ~ . to regress SalePrice on all of the explanatory variables in the data. Remember ~ . tells R to use every variable that isn’t the left hand side variable. Then, use the summary() or tidy() function on your lm object to print the results. Comment on the output. For instance: - Is there a relationship between the predictors and the response? - Which predictors appear to have a statistically significant relationship to the response? (Hint: look for stars) - What does the coefficient for the year variable suggest?\n\nThere are a few NAs in the output from the regression in Question 2. These aren’t because of NAs in your data. You can use tidy to save the output in a familiar data.frame style “tibble”, and then explore it to see what variables are coming up NA. Remember what R did when we tried to give it dummy variables representing all three possible values of a factor variable (see parameterization in this week’s lecture). Keeping that in mind, scroll to the first NA in your regression output and see if you can explain why it might be NA. Please remember that we can use functions like View() to explore data, but we never put View() in a code chunk.\nIt’s rarely a good idea to throw all the variables into a regression. We want to be smarter about building our model. We’ll use fewer variables, but include interactions. As we saw this week, the : symbol allows you to create an interction term between two variables. Use the : symbols to fit a linear regression model with one well-chosen interaction effect plus 3-4 of the other variables of your choice. Why did you select the variables you did, and what was the result?\nTry a few (e.g., two) different transformations of the variables, such as \\(ln(x)\\), \\(x^2\\), \\(\\sqrt x\\). Do any of these make sense to include in a model of SalePrice? Comment on your findings.",
     "crumbs": [
       "Assignments",
       "Lab Assignments",
@@ -1794,6 +1729,18 @@
       "Lab Assignments",
       "Assignments",
       "8: Model Building"
+    ]
+  },
+  {
+    "objectID": "resource/RstudioCloud.html",
+    "href": "resource/RstudioCloud.html",
+    "title": "Using Posit (Rstudio) Cloud",
+    "section": "",
+    "text": "What is Rstudio.cloud Posit.cloud?\nInstalling R and RStudio/Posit locally (on your computer) is the preferred method. Additionally, most MSU computer labs have R and RStudio installed. However, if your computer isn’t able to run RStudio, or you run into errors that we can’t troubleshoot, using RStudio Cloud is a viable alternative. Hosted at Posit.cloud, RStudio Posit Cloud is an online, web-based version of R and RStudio. On the “pro” side, it doesn’t require anything of your system except a functioning browser and can be up and running in a few minutes. The “con”, though, is that you must have an internet connection to use it, and it is limited to 25 hours per month for the free account (and $5/month for up to 75 hours per month). You shouldn’t need more than 25 hours per month, but if you’re very new to coding, it’s possible you will.\nBoth Rstudio.cloud and Posit.cloud take you to the same site – posit.cloud. RStudio is in the process of rebranding to Posit. I have updated some, but not all, references here.\n\n\nSetting up Posit.cloud\n\nStart by going to Posit.cloud and create a free account.\nClick “Your Workspace”\nIn the top right corner, click on “New Project” and name it something like “EC242”\n\n\n\n\n\n\n\n\n\n\n\nThe “Files” tab in the lower-right pane shows your cloud project storage space. Let’s add a templates folder and store the two course assignment templates there.\n\n\nGo to assignments, scroll down, and right-click on the Weekly Writing template and select “Save As…” and save it to your desktop\nDo the same for the Lab Assignment template. Clicking on the link will open the text of the file in a browser window and you cannot just copy the text into an R file.\nWith the files on your computer, go back to RStudio.cloud and in the Files tab, click on “New Folder” and name it templates\nUpload the templates one at a time to the folder.\n\n\nUse the green up arrow to navigate the “Files” tab back to your main directory and create a folder for Labs and one for Weekly Writings.\nOpen the Lab Assignment template\nAt the top of the template in the upper-left pane, you’ll see a warning that RStudio needs to install some packages. Click “Install”\n\n\n\n\n\n\n\n\n\n\n\nAfter R finishes installing packages (less than a minute), click the “Knit” button on the toolbar.\nRMarkdown will need to install a few more packages. Click “Yes”.\n\n\n\n\n\n\n\n\n\n\n\nA pop-up window will open showing you the PDF of the rendered template. Congrats, you are ready to get to work!\n\n\n\n\n\n\n\n\n\n\nYour RStudio.cloud version of RStudio will work just like a “local” install on a computer. Make sure you “Save As…” when you do your Lab or Weekly Writing assignments so that you don’t have to re-upload the templates. Keep a separate folder for each Lab inside the Labs to keep things clean in your workspace.",
+    "crumbs": [
+      "Syllabus",
+      "Getting Started in R",
+      "Using Posit (Rstudio) Cloud"
     ]
   },
   {
@@ -2390,15 +2337,68 @@
     ]
   },
   {
-    "objectID": "resource/RstudioCloud.html",
-    "href": "resource/RstudioCloud.html",
-    "title": "Using Posit (Rstudio) Cloud",
+    "objectID": "assignment/03-assignment.html",
+    "href": "assignment/03-assignment.html",
+    "title": "3: Applying ggplot2 to Real Data",
     "section": "",
-    "text": "What is Rstudio.cloud Posit.cloud?\nInstalling R and RStudio/Posit locally (on your computer) is the preferred method. Additionally, most MSU computer labs have R and RStudio installed. However, if your computer isn’t able to run RStudio, or you run into errors that we can’t troubleshoot, using RStudio Cloud is a viable alternative. Hosted at Posit.cloud, RStudio Posit Cloud is an online, web-based version of R and RStudio. On the “pro” side, it doesn’t require anything of your system except a functioning browser and can be up and running in a few minutes. The “con”, though, is that you must have an internet connection to use it, and it is limited to 25 hours per month for the free account (and $5/month for up to 75 hours per month). You shouldn’t need more than 25 hours per month, but if you’re very new to coding, it’s possible you will.\nBoth Rstudio.cloud and Posit.cloud take you to the same site – posit.cloud. RStudio is in the process of rebranding to Posit. I have updated some, but not all, references here.\n\n\nSetting up Posit.cloud\n\nStart by going to Posit.cloud and create a free account.\nClick “Your Workspace”\nIn the top right corner, click on “New Project” and name it something like “EC242”\n\n\n\n\n\n\n\n\n\n\n\nThe “Files” tab in the lower-right pane shows your cloud project storage space. Let’s add a templates folder and store the two course assignment templates there.\n\n\nGo to assignments, scroll down, and right-click on the Weekly Writing template and select “Save As…” and save it to your desktop\nDo the same for the Lab Assignment template. Clicking on the link will open the text of the file in a browser window and you cannot just copy the text into an R file.\nWith the files on your computer, go back to RStudio.cloud and in the Files tab, click on “New Folder” and name it templates\nUpload the templates one at a time to the folder.\n\n\nUse the green up arrow to navigate the “Files” tab back to your main directory and create a folder for Labs and one for Weekly Writings.\nOpen the Lab Assignment template\nAt the top of the template in the upper-left pane, you’ll see a warning that RStudio needs to install some packages. Click “Install”\n\n\n\n\n\n\n\n\n\n\n\nAfter R finishes installing packages (less than a minute), click the “Knit” button on the toolbar.\nRMarkdown will need to install a few more packages. Click “Yes”.\n\n\n\n\n\n\n\n\n\n\n\nA pop-up window will open showing you the PDF of the rendered template. Congrats, you are ready to get to work!\n\n\n\n\n\n\n\n\n\n\nYour RStudio.cloud version of RStudio will work just like a “local” install on a computer. Make sure you “Save As…” when you do your Lab or Weekly Writing assignments so that you don’t have to re-upload the templates. Keep a separate folder for each Lab inside the Labs to keep things clean in your workspace.",
+    "text": "Due Date\n\n\n\nThis assignment is due on Monday, February 2nd\nAll assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.",
     "crumbs": [
-      "Syllabus",
-      "Getting Started in R",
-      "Using Posit (Rstudio) Cloud"
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "3: Applying ggplot2 to Real Data"
+    ]
+  },
+  {
+    "objectID": "assignment/03-assignment.html#preliminaries",
+    "href": "assignment/03-assignment.html#preliminaries",
+    "title": "3: Applying ggplot2 to Real Data",
+    "section": "Preliminaries",
+    "text": "Preliminaries\nAs always, we will first have to load ggplot2. To do this, we will load the tidyverse by running this code:\nlibrary(tidyverse)",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "3: Applying ggplot2 to Real Data"
+    ]
+  },
+  {
+    "objectID": "assignment/03-assignment.html#background",
+    "href": "assignment/03-assignment.html#background",
+    "title": "3: Applying ggplot2 to Real Data",
+    "section": "Background",
+    "text": "Background\nThe New York City Department of Buildings (DOB) maintains a list of construction sites that have been categorized as “essential” during the city’s shelter-in-place pandemic order. They’ve provided an interactive map here where you can see the different projects. There’s also a link there to download the complete dataset.\nFor this exercise, you’re going to use this data to visualize the amounts or proportions of different types of essential projects in the five boroughs of New York City (Brooklyn, Manhattan, the Bronx, Queens, and Staten Island).\nAs you hopefully figured out by now, you’ll be doing all your R work in R Markdown. You can use an RStudio Project to keep your files well organized (either on your computer or on RStudio.cloud), but this is optional. If you decide to do so, either create a new project for this exercise only, or make a project for all your work in this class.\nYou’ll need to download one CSV file and put it somewhere on your computer (or upload it to RStudio.cloud if you’ve gone that direction)—preferably in a folder named data in your project folder. You can download the data from the DOB’s map, or use this link to get it directly:\n\n EssentialConstruction.csv\n\n\nR Markdown\nWriting regular text with R Markdown follows the rules of Markdown. You can make lists; different-size headers, etc. This should be relatively straightfoward. We talked about a few Markdown features like bold and italics in class. See this resource for more formatting.\nYou’ll also need to insert your own code chunks where needed. Rather than typing them by hand (that’s tedious and you might miscount the number of backticks!), use the “Insert” button at the top of the editing window, or type ctrl + alt + i on Windows, or ⌘ + ⌥ + i on macOS.\n\n\n\n\n\n\n\n\n\n\n\nData Prep\nOnce you download the EssentialConstruction.csv file and save it in your project folder, you can open it and start cleaning. Loading in the basic data is straightforward:\n\nlibrary(tidyverse)\nessential = read_csv('pathTo/EssentialConstruction.csv')\n\nWhere the “pathTo” part is the path to your local folder. If you saved the data in the same folder as your template, then you can just use:\n\nessential = read_csv('EssentialConstruction.csv')\n\nOnce loaded, note that each row is an approved project (the JOB NUMBERS are approved projects, so each row is one approved project).\n\n\n\n\n\n\nExercise 1 of 2: Essential pandemic construction\n\n\n\nUh-oh! One of our columns has different capitalization. Use case_when (or any other method) to make sure you have consistent character strings for each borough.\nThen, assume that each row (observation) is an approved construction project.\nA. Show the count or proportion of approved projects by borough using a bar chart. Make sure all the elements of your plot (axes, legend, etc.) are labeled.\nB. Show the count or proportion of approved projects by category using a lollipop chart. Not sure of what a lollipop chart is? Google R ggplot lollipop. A huge portion of knowing how to code is knowing how to google, find examples, and figure out where to put your variables from your data! Make sure all the elements of your plot (axes, legend, etc.) are labeled. Make sure ticks are well-placed, numbers are properly formatted, etc. Everything should look professional. Grading will be very picky on this!\n\n\n\n\n\n\n\n\nExercise 2 of 2: Essential pandemic construction\n\n\n\nNow, use an apprpriate facet function (wrap or grid) to re-make this plot across each CATEGORY. Again, make sure everything is labeled well and properly formatted.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "3: Applying ggplot2 to Real Data"
+    ]
+  },
+  {
+    "objectID": "assignment/03-assignment.html#getting-help",
+    "href": "assignment/03-assignment.html#getting-help",
+    "title": "3: Applying ggplot2 to Real Data",
+    "section": "Getting help",
+    "text": "Getting help\nUse the EC242 Slack if you get stuck (click the Slack logo at the top right of this website header).",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "3: Applying ggplot2 to Real Data"
+    ]
+  },
+  {
+    "objectID": "assignment/03-assignment.html#turning-everything-in",
+    "href": "assignment/03-assignment.html#turning-everything-in",
+    "title": "3: Applying ggplot2 to Real Data",
+    "section": "Turning everything in",
+    "text": "Turning everything in\nWhen you’re all done, click on the “Knit” button at the top of the editing window and create a PDF. Upload the PDF file to D2L.",
+    "crumbs": [
+      "Assignments",
+      "Lab Assignments",
+      "Assignments",
+      "3: Applying ggplot2 to Real Data"
     ]
   },
   {
@@ -2608,11 +2608,11 @@
     ]
   },
   {
-    "objectID": "assignment/10-assignment.html#data-cleaning",
-    "href": "assignment/10-assignment.html#data-cleaning",
+    "objectID": "assignment/10-assignment.html#setup",
+    "href": "assignment/10-assignment.html#setup",
     "title": "10: Advanced Linear Model Building",
-    "section": "Data Cleaning",
-    "text": "Data Cleaning\nDo not skip this section. This isn’t your kitchen junk drawer – you can’t get away with not cleaning your data.\nOh, the Ames data yet again. It’s given us lots of trouble. Many of you have found a few variables (columns) that should be avoided. The main problem is that some columns have only one value in them, or they have only NA and one value, so once lm(...) drops the NA rows, they are left with only one value. Linear regression by OLS does not like variables that don’t vary! So, let’s be systematic about figuring out which columns in our data are to be avoided.\nThe skimr package is very helpful for seeing what our data contains. Install it, and then use skim(Ames) directly in the console (we’re just looking at data at the moment – do not put skim output into your RMarkdown output - it will give you an error). Take a look at the “complete rate” column - this tells us the fraction of observations in that column that are NA. If it’s very small (see Alley), then that variable will be problematic. The “n_unique” column tells us if there are few or many different values - a “1” in “n_unique” is definitely going to be a problem and you must drop that variable.\nYou can make a note of those columns that have extremely low “complete rates” and drop them to start off. Of course, we could keep them, and drop all observations where any of those columns are NA, but once we do that, there probably won’t be many rows left! There are about 6-7 of them that will drop so many that it will cause an error if we include them in a regression. Let’s drop those. (Note: the list of columns to drop in Lab 06 is a good start and should suffice, but feel free to drop others that have low complete rates).\n\nMany models do not like NA values\npredict has some unusual behavior that can give unexpected results. Thus far, we have mostly used predict(myOLS), which gives the predicted values from a model using the same data that estimated the model. When we ask lm (or, later, other machine learning models) to estimate a model, it will drop any rows of our data that contain a NA value for any of the variables used in the estimation. If your regression is SalePrice ~ GrLivArea, then it will check SalePrice and GrLivArea for NA’s. If you add another variable, then you add another possible set of NA values that can be dropped, and R will estimate the model on a subset of the data.\nThis will mess with your measure of \\(RMSE\\) for model comparison - if you compare two models that use different sets of the data, then you aren’t really comparing the fit very well. Because of that, we need to take a moment to check our data.\nAmes has a lot of variables, and in this assignment, you’re going to be asked to construct 15 regressions of increasing complexity. So we’re going to choose 15 variables to be explanatory plus SalePrice, which will be our target variable. That makes 16 variables.\nSelect your variables by making a character vector of the variables you think will best predict your chosen variable. Then, make a new version of Ames that contains only those 16 variables (you can use dplyr::select or any other method, make sure you include SalePrice). Once you’ve done that, use na.omit to make a new, clean version of Ames that has (1) no NA’s in it, and (2) 16 variables of your choice (as long as one is SalePrice). Use the help for na.omit to see how it works. This way, we know every model we make will have the same number of rows in it as none will be dropped due to NA values.",
+    "section": "Setup",
+    "text": "Setup\n\nMany models do not like NA values\nWe will be using predict to calculate our regression’s predicted values of SalePrice. predict has some unusual behavior that can give unexpected results. Thus far, we have mostly used predict(myOLS), which gives the predicted values from a model using the same data that estimated the model. When we ask lm (or, later, other machine learning models) to estimate a model, it will drop any rows of our data that contain a NA value for any of the variables used in the estimation. If your regression is SalePrice ~ GrLivArea, then it will check SalePrice and GrLivArea for NA’s. If you add another variable, then you add another possible set of NA values that can be dropped, and R will estimate the model on a subset of the data. And when you use predict it will give you predictions for the subset of NA-free data used in estimation\nThis will mess with your measure of \\(RMSE\\) for model comparison - if you compare two models that use different sets of the data, then you aren’t really comparing the fit very well. Because of that, we need to take a moment to check our data.\nAmes has a lot of variables, and in this assignment, you’re going to be asked to construct 15 regressions of increasing complexity. So we’re going to choose 15 variables to be explanatory plus SalePrice, which will be our target variable. That makes 16 variables.\nSelect your variables by making a character vector of the variables you think will best predict your chosen variable. Then, make a new version of Ames that contains only those 16 variables (you can use dplyr::select or any other method, make sure you include SalePrice). Once you’ve done that, use na.omit to make a new, clean version of Ames that has (1) no NA’s in it, and (2) 16 variables of your choice (as long as one is SalePrice). Use the help for na.omit to see how it works. This way, we know every model we make will have the same number of rows in it as none will be dropped due to NA values.",
     "crumbs": [
       "Assignments",
       "Lab Assignments",
