@@ -68,9 +68,9 @@ lm.fit = lm(SalePrice ~ GrLivArea + LotArea, data = Ames)
 ###  Data Cleaning
 **Do not skip this section. This isn't your kitchen junk drawer -- you can't get away with not cleaning your data.**
 
-Oh, the Ames data yet again. It's given us lots of trouble. Many of you have found a few variables (columns) that should be avoided. The main problem is that some columns have only one value in them, or they have only `NA` and one value, so once `lm(...)` drops the `NA` rows, they are left with only one value. Linear regression by OLS does not like variables that don't vary! So, let's be systematic about figuring out which columns in our data are to be avoided.
+Oh, the Ames data yet again. It's given us lots of trouble. Many of you have found a few variables (columns) that should be avoided. The main problem is that some columns are mostly `NA`, or have only one value in them, or they have only `NA` and one value, so once `lm(...)` drops the `NA` rows, they are left with only one value. Linear regression by OLS does not like variables that don't vary, and it doesn't know how to handle `NA`s (remember, regression coefficients are functions of sums and averages, and `NA` infects all those things)! So, let's be systematic about figuring out which columns in our data are to be avoided.
 
-The function `na.omit` takes a data.frame and drops all rows in which there is one or more `NA`. So if you have a lot of variables and they have lots of `NA`s, you may lose a lot of rows. Let's try it:
+The function `na.omit` takes a data.frame and drops all rows in which there is one or more `NA`. So if you have a lot of variables and they have lots of `NA`s, you may lose a lot of rows. The first thing `lm()` will do is run `na.omit`, so let's try it for ourselves:
 
 
 ::: {.callout-note}
