@@ -109,7 +109,7 @@ Do this, then check the number of rows that will be left for the regression usin
 ::: {.callout-note}
 ## Exercises 4-7
 
-4.Now that your data is clean, use `lm()` and the formula `SalePrice ~ .` to regress `SalePrice` on all of the explanatory variables in the data. Remember `~ .` tells R to use every variable that isn't the left hand side variable. Then, use the `summary()` or `tidy()` function on your `lm` object to print the results. Comment on the output. For instance:
+4. Now that your data is clean, use `lm()` and the formula `SalePrice ~ .` to regress `SalePrice` on all of the explanatory variables in the data. Remember `~ .` tells R to use every variable that isn't the left hand side variable. Then, use the `summary()` or `tidy()` function on your `lm` object to print the results. Comment on the output. For instance:
     - Is there a relationship between the predictors and the response?
     - Which predictors appear to have a statistically significant relationship to the response? (Hint: look for stars)
     - What does the coefficient for the year variable suggest?
