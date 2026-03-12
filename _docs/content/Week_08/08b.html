@@ -564,23 +564,24 @@ Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></
 </ul>
 <p>As we often do, we will start by plotting the data. We are interested in <code>mpg</code> as the response variable, and <code>hp</code> as a predictor.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mpg <span class="sc">~</span> hp, <span class="at">data =</span> mtcars, <span class="at">cex =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Since we are also interested in the transmission type, we could also label the points accordingly.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mpg <span class="sc">~</span> hp, <span class="at">data =</span> mtcars, <span class="at">col =</span> am <span class="sc">+</span> <span class="dv">1</span>, <span class="at">pch =</span> am <span class="sc">+</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"Automatic"</span>, <span class="st">"Manual"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg, <span class="at">shape =</span> <span class="fu">as.logical</span>(am), <span class="at">col =</span> <span class="fu">as.logical</span>(am))) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">guides</span>(<span class="at">shape =</span> F) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">col =</span> <span class="st">'Manual</span><span class="sc">\n</span><span class="st">Transmission'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -593,18 +594,18 @@ Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></
 </div>
 <p>We then re-plot the data and add the fitted line to the plot.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mpg <span class="sc">~</span> hp, <span class="at">data =</span> mtcars, <span class="at">col =</span> am <span class="sc">+</span> <span class="dv">1</span>, <span class="at">pch =</span> am <span class="sc">+</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mpg_hp_slr, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"grey"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"Automatic"</span>, <span class="st">"Manual"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg, <span class="at">shape =</span> <span class="fu">as.logical</span>(am), <span class="at">col =</span> <span class="fu">as.logical</span>(am))) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span><span class="fu">coef</span>(mpg_hp_slr)[<span class="st">'(Intercept)'</span>], <span class="at">slope =</span> <span class="fu">coef</span>(mpg_hp_slr)[<span class="st">'hp'</span>]) <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">guides</span>(<span class="at">shape =</span> F) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">col =</span> <span class="st">'Manual</span><span class="sc">\n</span><span class="st">Transmission'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We should notice a pattern here. The red, manual observations largely fall above the line, while the black, automatic observations are mostly below the line. This means our model underestimates the fuel efficiency of manual transmissions, and overestimates the fuel efficiency of automatic transmissions. To correct for this, we will add a predictor to our model, namely, <code>am</code> as <span class="math inline">\(x_2\)</span>.</p>
+<p>We should notice a pattern here. The blue, manual observations largely fall above the line, while the red, automatic observations are mostly below the line. This means our model underestimates the fuel efficiency of manual transmissions, and overestimates the fuel efficiency of automatic transmissions. To correct for this, we will add a predictor to our model, namely, <code>am</code> as <span class="math inline">\(x_2\)</span>.</p>
 <p>Our new model is</p>
 <p><span class="math display">\[
 Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \epsilon,
@@ -618,8 +619,31 @@ x_2 =
   \end{cases}.
 \]</span></p>
 <p>In this case, we call <span class="math inline">\(x_2\)</span> a <strong>dummy variable</strong>. A dummy variable (also called an “indicator” variable) is somewhat unfortunately named, as it is in no way “dumb”. In fact, it is actually somewhat clever. A dummy variable is a numerical variable that is used in a regression analysis to “code” for a binary categorical variable. Let’s see how this works.</p>
-<p>First, note that <code>am</code> is already a dummy variable, since it uses the values <code>0</code> and <code>1</code> to represent automatic and manual transmissions. Often, a variable like <code>am</code> would store the character values <code>auto</code> and <code>man</code> and we would either have to convert these to <code>0</code> and <code>1</code>, or, as we will see later, <code>R</code> will take care of creating dummy variables for us.</p>
-<p>So, to fit the above model, we do so like any other multiple regression model we have seen before.</p>
+<p>First, note that <code>am</code> is already a dummy variable, since it uses the values <code>0</code> and <code>1</code> to represent automatic and manual transmissions. Often, a variable like <code>am</code> would store the character values <code>auto</code> and <code>man</code> and we would either have to convert these to <code>0</code> and <code>1</code>, or, as we will see later, <code>R</code> will take care of creating dummy variables for us. In the plot above, we use <code>as.logical</code>, which takes 0/1 and makes the <code>FALSE/TRUE</code>, which are treated as factor variables for plotting.</p>
+<section id="its-just-a-dummy." class="level3">
+<h3 class="anchored" data-anchor-id="its-just-a-dummy.">Its just a dummy….</h3>
+<p>We’ve noticed that most of the blue dots (with manual transmission) have higher <code>mpg</code>. We have a dummy in our data. Let’s see what it does if we use it as our only variable:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+TRY IT
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>Calculate the mean mpg conditional on <code>am==1</code> and on <code>am==0</code>. This is our sample estimate of what <em>population</em> concept?</p></li>
+<li><p>Regress <code>mpg</code> on our dummy <code>am</code> (and only our dummy, <code>am</code>. Ignore <code>hp</code> for now.) What <em>population</em> concept are we estimating with the regression?</p></li>
+</ol>
+<p>Given your answers to (1) and (2), should we expect them to be the same?</p>
+</div>
+</div>
+</section>
+<section id="multivariate-with-a-dummy" class="level3">
+<h3 class="anchored" data-anchor-id="multivariate-with-a-dummy">Multivariate with a dummy</h3>
+<p>We’ve established what the dummy variable does on it’s own. Now we’ll use it in a multivariate regression. To fit a more complex model using the dummy and <code>hp</code>, we do so like any other multiple regression model we have seen before.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mpg_hp_add <span class="ot">=</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> am, <span class="at">data =</span> mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -662,19 +686,19 @@ Y = (\beta_0 + \beta_2) + \beta_1 x_1 + \epsilon.
 </div>
 <p>Re-plotting the data, we use these slopes and intercepts to add the “two” fitted models to the plot.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mpg <span class="sc">~</span> hp, <span class="at">data =</span> mtcars, <span class="at">col =</span> am <span class="sc">+</span> <span class="dv">1</span>, <span class="at">pch =</span> am <span class="sc">+</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(int_auto, slope_auto, <span class="at">col =</span> <span class="dv">1</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>) <span class="co"># add line for auto</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(int_manu, slope_manu, <span class="at">col =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>) <span class="co"># add line for manual</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"Automatic"</span>, <span class="st">"Manual"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg, <span class="at">shape =</span> <span class="fu">as.logical</span>(am), <span class="at">col =</span> <span class="fu">as.logical</span>(am))) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> int_auto, <span class="at">slope =</span> slope_auto, <span class="at">col =</span> <span class="st">'red'</span>) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> int_manu, <span class="at">slope =</span> slope_manu, <span class="at">col =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">guides</span>(<span class="at">shape =</span> F) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">col =</span> <span class="st">'Manual</span><span class="sc">\n</span><span class="st">Transmission'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We notice right away that the points are no longer systematically incorrect. The red, manual observations vary about the red line in no particular pattern without underestimating the observations as before. The black, automatic points vary about the black line, also without an obvious pattern.</p>
+<p>We notice right away that the points are no longer systematically incorrect. The blue, manual observations vary about the blue line in no particular pattern without underestimating the observations as before. The red, automatic points vary about the red line, also without an obvious pattern.</p>
 <p>They say a picture is worth a thousand words, but as a statistician, sometimes a picture is worth an entire analysis. The above picture makes it plainly obvious that <span class="math inline">\(\beta_2\)</span> is significant, but let’s verify mathematically. Essentially we would like to test:</p>
 <p><span class="math display">\[
 H_0: \beta_2 = 0 \quad \text{vs} \quad H_1: \beta_2 \neq 0.
@@ -717,6 +741,7 @@ Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \epsilon,
 \]</span></p>
 <p>we see <span class="math inline">\(\beta_1\)</span> is the average change in <span class="math inline">\(Y\)</span> for an increase in <span class="math inline">\(x_1\)</span>, <em>no matter</em> the value of <span class="math inline">\(x_2\)</span>. Also, <span class="math inline">\(\beta_2\)</span> is always the difference in the average of <span class="math inline">\(Y\)</span> for <em>any</em> value of <span class="math inline">\(x_1\)</span>. These are two restrictions we won’t always want, so we need a way to specify a more flexible model.</p>
 <p>Here we restricted ourselves to a single numerical predictor <span class="math inline">\(x_1\)</span> and one dummy variable <span class="math inline">\(x_2\)</span>. However, the concept of a dummy variable can be used with larger multiple regression models. We only use a single numerical predictor here for ease of visualization since we can think of the “two lines” interpretation. But in general, we can think of a dummy variable as creating “two models,” one for each category of a binary categorical variable.</p>
+</section>
 </section>
 <section id="interactions" class="level2">
 <h2 class="anchored" data-anchor-id="interactions">Interactions</h2>
@@ -795,7 +820,7 @@ x_2 =
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -901,7 +926,7 @@ H_0: \beta_3 = 0.
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1194,7 +1219,7 @@ Y = \beta_0 + \beta_1 x + \beta_2 v_2 + \beta_3 v_3 + \epsilon,
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1258,7 +1283,7 @@ Y = \beta_0 + \beta_1 x + \beta_2 v_2 + \beta_3 v_3 + \gamma_2 x v_2 + \gamma_3 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="08b_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="08b_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

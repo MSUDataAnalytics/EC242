@@ -37,15 +37,20 @@ We will be interested in three of the variables: `mpg `, `hp`, and `am`.
 
 As we often do, we will start by plotting the data. We are interested in `mpg` as the response variable, and `hp` as a predictor.
 
-```{r}
+```{r, include = F, eval=F}
 plot(mpg ~ hp, data = mtcars, cex = 2)
+```
+
+```{r}
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point(size = 4) + theme_minimal() 
 ```
 
 Since we are also interested in the transmission type, we could also label the points accordingly.
 
 ```{r}
-plot(mpg ~ hp, data = mtcars, col = am + 1, pch = am + 1, cex = 2)
-legend("topright", c("Automatic", "Manual"), col = c(1, 2), pch = c(1, 2))
+ggplot(mtcars, aes(x = hp, y = mpg, shape = as.logical(am), col = as.logical(am))) +
+  geom_point(size = 4) + theme_minimal() + guides(shape = F) + labs(col = 'Manual\nTransmission')
 ```
 
 We now fit the SLR model
@@ -62,12 +67,12 @@ mpg_hp_slr = lm(mpg ~ hp, data = mtcars)
 We then re-plot the data and add the fitted line to the plot.
 
 ```{r}
-plot(mpg ~ hp, data = mtcars, col = am + 1, pch = am + 1, cex = 2)
-abline(mpg_hp_slr, lwd = 3, col = "grey")
-legend("topright", c("Automatic", "Manual"), col = c(1, 2), pch = c(1, 2))
+ggplot(mtcars, aes(x = hp, y = mpg, shape = as.logical(am), col = as.logical(am))) +
+  geom_abline(intercept =coef(mpg_hp_slr)['(Intercept)'], slope = coef(mpg_hp_slr)['hp']) + 
+  geom_point(size = 4) + theme_minimal() + guides(shape = F) + labs(col = 'Manual\nTransmission')
 ```
 
-We should notice a pattern here. The red, manual observations largely fall above the line, while the black, automatic observations are mostly below the line. This means our model underestimates the fuel efficiency of manual transmissions, and overestimates the fuel efficiency of automatic transmissions. To correct for this, we will add a predictor to our model, namely, `am` as $x_2$.
+We should notice a pattern here. The blue, manual observations largely fall above the line, while the red, automatic observations are mostly below the line. This means our model underestimates the fuel efficiency of manual transmissions, and overestimates the fuel efficiency of automatic transmissions. To correct for this, we will add a predictor to our model, namely, `am` as $x_2$.
 
 Our new model is
 
@@ -87,9 +92,28 @@ $$
 
 In this case, we call $x_2$ a **dummy variable**. A dummy variable (also called an "indicator" variable) is somewhat unfortunately named, as it is in no way "dumb". In fact, it is actually somewhat clever. A dummy variable is a numerical variable that is used in a regression analysis to "code" for a binary categorical variable. Let's see how this works.
 
-First, note that `am` is already a dummy variable, since it uses the values `0` and `1` to represent automatic and manual transmissions. Often, a variable like `am` would store the character values `auto` and `man` and we would either have to convert these to `0` and `1`, or, as we will see later, `R` will take care of creating dummy variables for us.
+First, note that `am` is already a dummy variable, since it uses the values `0` and `1` to represent automatic and manual transmissions. Often, a variable like `am` would store the character values `auto` and `man` and we would either have to convert these to `0` and `1`, or, as we will see later, `R` will take care of creating dummy variables for us. In the plot above, we use `as.logical`, which takes 0/1 and makes the `FALSE/TRUE`, which are treated as factor variables for plotting.
 
-So, to fit the above model, we do so like any other multiple regression model we have seen before.
+
+### Its just a dummy....
+We've noticed that most of the blue dots (with manual transmission) have higher `mpg`. We have a dummy in our data. Let's see what it does if we use it as our only variable:
+
+::: {.callout-note}
+## TRY IT
+
+1. Calculate the mean mpg conditional on `am==1` and on `am==0`. This is our sample estimate of what *population* concept?
+
+2. Regress `mpg` on our dummy `am` (and only our dummy, `am`. Ignore `hp` for now.) What *population* concept are we estimating with the regression?
+
+
+Given your answers to (1) and (2), should we expect them to be the same?
+
+:::
+
+
+### Multivariate with a dummy
+
+We've established what the dummy variable does on it's own. Now we'll use it in a multivariate regression. To fit a more complex model using the dummy and `hp`, we do so like any other multiple regression model we have seen before.
 
 ```{r}
 mpg_hp_add = lm(mpg ~ hp + am, data = mtcars)
@@ -135,14 +159,21 @@ slope_manu = coef(mpg_hp_add)[2]
 
 Re-plotting the data, we use these slopes and intercepts to add the "two" fitted models to the plot.
 
-```{r}
+```{r, echo=F, eval=F, include=F}
 plot(mpg ~ hp, data = mtcars, col = am + 1, pch = am + 1, cex = 2)
 abline(int_auto, slope_auto, col = 1, lty = 1, lwd = 2) # add line for auto
 abline(int_manu, slope_manu, col = 2, lty = 2, lwd = 2) # add line for manual
 legend("topright", c("Automatic", "Manual"), col = c(1, 2), pch = c(1, 2))
 ```
 
-We notice right away that the points are no longer systematically incorrect. The red, manual observations vary about the red line in no particular pattern without underestimating the observations as before. The black, automatic points vary about the black line, also without an obvious pattern.
+```{r}
+ggplot(mtcars, aes(x = hp, y = mpg, shape = as.logical(am), col = as.logical(am))) +
+  geom_abline(intercept = int_auto, slope = slope_auto, col = 'red') + 
+  geom_abline(intercept = int_manu, slope = slope_manu, col = 'blue') +
+  geom_point(size = 4) + theme_minimal() + guides(shape = F) + labs(col = 'Manual\nTransmission')
+```
+
+We notice right away that the points are no longer systematically incorrect. The blue, manual observations vary about the blue line in no particular pattern without underestimating the observations as before. The red, automatic points vary about the red line, also without an obvious pattern.
 
 They say a picture is worth a thousand words, but as a statistician, sometimes a picture is worth an entire analysis. The above picture makes it plainly obvious that $\beta_2$ is significant, but let's verify mathematically. Essentially we would like to test:
 
