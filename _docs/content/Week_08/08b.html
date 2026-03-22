@@ -622,7 +622,7 @@ x_2 =
 <p>First, note that <code>am</code> is already a dummy variable, since it uses the values <code>0</code> and <code>1</code> to represent automatic and manual transmissions. Often, a variable like <code>am</code> would store the character values <code>auto</code> and <code>man</code> and we would either have to convert these to <code>0</code> and <code>1</code>, or, as we will see later, <code>R</code> will take care of creating dummy variables for us. In the plot above, we use <code>as.logical</code>, which takes 0/1 and makes the <code>FALSE/TRUE</code>, which are treated as factor variables for plotting.</p>
 <section id="its-just-a-dummy." class="level3">
 <h3 class="anchored" data-anchor-id="its-just-a-dummy.">Its just a dummy….</h3>
-<p>We’ve noticed that most of the blue dots (with manual transmission) have higher <code>mpg</code>. We have a dummy in our data. Let’s see what it does if we use it as our only variable:</p>
+<p>We’ve noticed that most of the blue dots (with manual transmission) have higher <code>mpg</code>. We have a dummy in our data. Taking a step back from using <code>hp</code> to explain variation in <code>mpg</code>, let’s look at how much <code>am</code> does on it’s own:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -634,7 +634,7 @@ TRY IT
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><p>Calculate the mean mpg conditional on <code>am==1</code> and on <code>am==0</code>. This is our sample estimate of what <em>population</em> concept?</p></li>
+<li><p>Calculate the mean mpg conditional on <code>am==1</code> and on <code>am==0</code>. Since <code>mpg</code> is a random variable – it changes from observation to observation – we can use our sample to learn something about this random variable. In this context, the conditional averages are our sample estimate of what <em>population</em> concept?</p></li>
 <li><p>Regress <code>mpg</code> on our dummy <code>am</code> (and only our dummy, <code>am</code>. Ignore <code>hp</code> for now.) What <em>population</em> concept are we estimating with the regression?</p></li>
 </ol>
 <p>Given your answers to (1) and (2), should we expect them to be the same?</p>

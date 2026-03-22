@@ -96,12 +96,12 @@ First, note that `am` is already a dummy variable, since it uses the values `0` 
 
 
 ### Its just a dummy....
-We've noticed that most of the blue dots (with manual transmission) have higher `mpg`. We have a dummy in our data. Let's see what it does if we use it as our only variable:
+We've noticed that most of the blue dots (with manual transmission) have higher `mpg`. We have a dummy in our data. Taking a step back from using `hp` to explain variation in `mpg`, let's look at how much `am` does on it's own:
 
 ::: {.callout-note}
 ## TRY IT
 
-1. Calculate the mean mpg conditional on `am==1` and on `am==0`. This is our sample estimate of what *population* concept?
+1. Calculate the mean mpg conditional on `am==1` and on `am==0`. Since `mpg` is a random variable -- it changes from observation to observation -- we can use our sample to learn something about this random variable. In this context, the conditional averages are our sample estimate of what *population* concept?
 
 2. Regress `mpg` on our dummy `am` (and only our dummy, `am`. Ignore `hp` for now.) What *population* concept are we estimating with the regression?
 
@@ -109,6 +109,7 @@ We've noticed that most of the blue dots (with manual transmission) have higher 
 Given your answers to (1) and (2), should we expect them to be the same?
 
 :::
+
 
 
 ### Multivariate with a dummy
