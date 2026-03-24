@@ -956,8 +956,75 @@ Multiple R-squared:  0.9306,    Adjusted R-squared:  0.9293
 F-statistic: 729.8 on 9 and 490 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<section id="how-well-does-this-model-predict" class="level3">
+<h3 class="anchored" data-anchor-id="how-well-does-this-model-predict">How well does this model predict?</h3>
+<p>Next time, we’ll formally cover defining our loss function (root mean squared error) and using it to tune a model. But for now, let’s compare the two models above – the “parsimonius” one where we let <span class="math inline">\(Z\)</span> be an intercept shift, and the more complex “flexible” model where we interact <span class="math inline">\(X\)</span> with <span class="math inline">\(Z\)</span> (treating <span class="math inline">\(Z\)</span> as a factor).</p>
+<p>First, we’ll re-estimate the models and get the residuals. We could use the difference between observed <span class="math inline">\(y\)</span> and the predicted <span class="math inline">\(y\)</span>, or just use <code>resid(...)</code> to get the same thing:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>parsimonius <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">as.factor</span>(z), <span class="at">data =</span> dat)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>pars.resid <span class="ot">=</span> dat<span class="sc">$</span>y <span class="sc">-</span>  <span class="fu">predict</span>(parsimonius)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>pars.resid <span class="ot">=</span> <span class="fu">resid</span>(parsimonius)  <span class="co"># same thing</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>flexible <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x<span class="sc">*</span><span class="fu">as.factor</span>(z), <span class="at">data =</span> dat)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>flex.resid <span class="ot">=</span> <span class="fu">resid</span>(flexible)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By construction, they will have mean = <span class="math inline">\(0\)</span>. Why?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pars.resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -8.186377e-18</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(flex.resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -9.919583e-18</code></pre>
+</div>
+</div>
+<p>Usually we’d subtract off the mean of the numbers to get to the dispersion of the errors around the mean. It’s already 0, so we skip that part.</p>
+<p>Now, we square them, sum them up, and then divide by the number of observations to get a <strong>mean squared error</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(pars.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">length</span>(pars.resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.670825</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(flex.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">length</span>(flex.resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6665031</code></pre>
+</div>
+</div>
+<p>And for root mean squared error, we finally take the square root. This looks an awful lot like the standard deviation of the residual, right? It just about it (aside from the sample <span class="math inline">\(\frac{1}{N-1}\)</span> difference).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(pars.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">length</span>(pars.resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8190391</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(flex.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">length</span>(flex.resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8163964</code></pre>
+</div>
+</div>
+<p>Which is smaller?</p>
+<p>Previously, we used <code>anova()</code> to test to see which nested model is better. But <strong>better</strong> is defined in a specific way: are the additional interactions doing anything in a statistical sense. Formally, <code>anova()</code> performs an F-test to statistically test whether or not the interactions are jointly zero. We can use it here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(parsimonius, flexible)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Model 1: y ~ x + as.factor(z)
+Model 2: y ~ x * as.factor(z)
+  Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+1    494 335.41                           
+2    490 333.25  4     2.161 0.7944 0.5292</code></pre>
+</div>
+</div>
+<p>We <strong>fail to reject the null that the interactions are jointly equal to zero</strong>.</p>
+</section>
+<section id="but." class="level3">
+<h3 class="anchored" data-anchor-id="but.">But….</h3>
+<p>What if we were only interested in the best prediction, not necessarily the best <em>model</em>? Then “<strong>better</strong>” is defined as “lower RMSE” and the more flexible model is “better”.</p>
+<p>Starting next time, we’ll look at what we can learn when we aim only for fitting an explanatory model rather than a theoretically valid model.</p>
 
 
+</section>
 </section>
 </section>
 

@@ -398,3 +398,63 @@ If we thought that the relationship between $Y$ and $X$ were *different* for eac
 ```{r simpsons-regression-slope, echo = TRUE}
 summary(lm(y ~ x*as.factor(z), data = dat))
 ```
+
+
+### How well does this model predict?
+
+Next time, we'll formally cover defining our loss function (root mean squared error) and using it to tune a model. But for now, let's compare the two models above -- the "parsimonius" one where we let $Z$ be an intercept shift, and the more complex "flexible" model where we interact $X$ with $Z$ (treating $Z$ as a factor). 
+
+First, we'll re-estimate the models and get the residuals. We could use the difference between observed $y$ and the predicted $y$, or just use `resid(...)` to get the same thing:
+
+```{r}
+parsimonius = lm(y ~ x + as.factor(z), data = dat)
+pars.resid = dat$y -  predict(parsimonius)
+pars.resid = resid(parsimonius)  # same thing
+
+flexible = lm(y ~ x*as.factor(z), data = dat)
+flex.resid = resid(flexible)
+
+```
+
+By construction, they will have mean = $0$. Why?
+
+```{r}
+mean(pars.resid)
+mean(flex.resid)
+```
+
+Usually we'd subtract off the mean of the numbers to get to the dispersion of the errors around the mean. It's already 0, so we skip that part.
+
+Now, we square them, sum them up, and then divide by the number of observations to get a **mean squared error**
+
+```{r, echo=T}
+sum(pars.resid^2)/length(pars.resid)
+
+sum(flex.resid^2)/length(flex.resid)
+```
+
+
+And for root mean squared error, we finally take the square root. This looks an awful lot like the standard deviation of the residual, right? It just about it (aside from the sample $\frac{1}{N-1}$ difference).
+
+```{r, echo=T}
+sqrt(sum(pars.resid^2)/length(pars.resid))
+sqrt(sum(flex.resid^2)/length(flex.resid))
+```
+
+Which is smaller?
+
+Previously, we used `anova()` to test to see which nested model is better. But **better** is defined in a specific way: are the additional interactions doing anything in a statistical sense. Formally, `anova()` performs an F-test to statistically test whether or not the interactions are jointly zero. We can use it here.
+
+```{r, echo=T}
+anova(parsimonius, flexible)
+```
+
+We **fail to reject the null that the interactions are jointly equal to zero**.
+
+### But....
+
+What if we were only interested in the best prediction, not necessarily the best *model*? Then "**better**" is defined as "lower RMSE" and the more flexible model is "better".
+
+Starting next time, we'll look at what we can learn when we aim only for fitting an explanatory model rather than a theoretically valid model.
+
+
