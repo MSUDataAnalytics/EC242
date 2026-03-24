@@ -23,7 +23,7 @@ knitr::opts_chunk$set(warning = FALSE, error = FALSE, message = FALSE)
 
 As with recent weeks, we will work with real data during the lecture. Please download the following dataset and load it into `R`.
 
-- [<i class="fas fa-file-csv"></i> `Ames.csv`](/projects/data/ames.csv)
+- [<i class="fas fa-file-csv"></i> `Ames.csv`](/data/ames.csv)
 
 ## A quick `R` note:
 We learned that we can run a regression with all variables in a dataset using, for example, `SalePrice ~ .`
