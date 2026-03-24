@@ -428,9 +428,13 @@ Usually we'd subtract off the mean of the numbers to get to the dispersion of th
 Now, we square them, sum them up, and then divide by the number of observations to get a **mean squared error**
 
 ```{r, echo=T}
-sum(pars.resid^2)/length(pars.resid)
+pars.RSS = sum(pars.resid^2)
+print(pars.RSS)
+pars.RSS/length(pars.resid)
 
-sum(flex.resid^2)/length(flex.resid)
+flex.RSS = sum(flex.resid^2)
+print(flex.RSS)
+flex.RSS/length(flex.resid)
 ```
 
 
