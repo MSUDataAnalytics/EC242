@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Nonparametric Regression – EC242</title>
+<title>Nonparametric Regression II – EC242</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,7 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11a.html">Week 11</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11b.html">Nonparametric Regression</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11a.html">Week 11</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11b.html">Nonparametric Regression II</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -439,7 +439,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/Week_11/11b.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Nonparametric Regression</span></a>
+ <span class="menu-text">Nonparametric Regression II</span></a>
   </div>
 </li>
       </ul>
@@ -532,9 +532,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11a.html">Week 11</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11b.html">Nonparametric Regression</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/index.html">Course Content</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11a.html">Week 11</a></li><li class="breadcrumb-item"><a href="../../content/Week_11/11b.html">Nonparametric Regression II</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Nonparametric Regression</h1>
+<h1 class="title">Nonparametric Regression II</h1>
 </div>
 
 
@@ -592,53 +592,10 @@ TRY IT
 </section>
 <section id="breakout-1-discussion" class="level3">
 <h3 class="anchored" data-anchor-id="breakout-1-discussion">Breakout #1 discussion</h3>
-<p>Let’s choose a group to share their plot and discuss the results. Use our sharing zoom link: <a href="https://bit.ly/EC242">bit.ly/EC242</a></p>
+<p>Let’s choose a group to share their plot and discuss the results. Use our sharing zoom link using the button up above.</p>
 </section>
 </div>
 </div>
-<!-- ## Automating models -->
-<!-- Let's talk about a little code shortcut that helps iterate through your model selection. -->
-<!-- First, before, we used `list()` to store all of our models. This is because `list()` can "hold" anything at all, unlike a `matrix`, which is only numeric, or a `data.frame` which needs all rows in a column to be the same data type. `list()` is also recursive, so each element in a list can be a list. Of lists. Of lists! -->
-<!-- Lists are also really easy to add to iteratively. We can initiate an empty list using `myList <- list()`, then we can add things to it. Note that we use the double `[` to index: -->
-<!-- ```{r, echo = T} -->
-<!-- myList <- list() -->
-<!-- myList[['first']] = 'This is the first thing on my list' -->
-<!-- print(myList) -->
-<!-- ``` -->
-<!-- Lists let you name the "containers" (much like you can name colums in a `data.frame`). Our first one is called "first". We can add more later, but they always have to be unique: -->
-<!-- ```{r, echo = T} -->
-<!-- myList[['second']] = c(1,2,3) -->
-<!-- print(myList) -->
-<!-- ``` -->
-<!-- And still more: -->
-<!-- ```{r, echo = T} -->
-<!-- myList[['third']] = data.frame(a = c(1,2,3), b = c('Albert','Alex','Alice')) -->
-<!-- print(myList) -->
-<!-- ``` -->
-<!-- Now we have a `data.frame` in there! We can use `lapply` to do something to every element in the list: -->
-<!-- ```{r, echo=T} -->
-<!-- lapply(myList, length) # the length() function with the first entry being the list element -->
-<!-- ``` -->
-<!-- We get back a list of equal length but each (still-named) container is now the length of the original list's contents. -->
-<!-- ### Loops -->
-<!-- R has a very useful looping function that takes the form: -->
-<!-- ```{r} -->
-<!-- for(i in c('first','second','third')){ -->
-<!-- print(i) -->
-<!-- } -->
-<!-- ``` -->
-<!-- Here, R is repeating the thing in the loop (`print(i)`) with a different value for `i` each time. R repeats only what is *inside the curly-brackets*, then when it reaches the close-curly-bracket, it goes back to the top, changes `i` to the next element, and repeats. -->
-<!-- We can use this to train our models. First, we clear our list object `myList` by setting it equal to an empty list. Then, we loop over some regression tree tuning parameters. First, we have to figure out how to use the loop to set a *unique* name for each list container. To do this, we'll use `paste0('Tuning',i)` which will result in a character string of `Tuning0` when `i=0`, `Tuning0.01` when `i=0.01`, etc. -->
-<!-- ```{r} -->
-<!-- myList <- list()   # resets the list. Otherwise, you'll just be adding to your old list! -->
-<!-- for(i in c(0, 0.01, 0.02)){ -->
-<!--   myList[[paste0('Tuning',i)]] = rpart(wage ~ ., data = wage_clean, cp = i) -->
-<!-- } -->
-<!-- ``` -->
-<!-- If you use `names(myList)` you'll see the result of our `paste0` naming. If you want to see the plotted results, you can use: -->
-<!-- ```{r} -->
-<!-- rpart.plot(myList[['Tuning0.01']]) -->
-<!-- ``` -->
 <section id="side-note-using-lapply-to-repeat-something" class="level3">
 <h3 class="anchored" data-anchor-id="side-note-using-lapply-to-repeat-something">Side note: using <code>lapply</code> to repeat something</h3>
 <p>As we did in the last two labs, we’ll use <code>lapply</code> to iterate over a wide range of “tuning parameters” to optimize our model (find the lowest test RMSE).</p>
@@ -705,7 +662,7 @@ TRY IT
 </section>
 <section id="breakout-2-discussion" class="level3">
 <h3 class="anchored" data-anchor-id="breakout-2-discussion">Breakout #2 discussion</h3>
-<p>We’ll ask someone to share (a few of) their group’s 10 regression trees using <code>rpart.plot</code>. Use <a href="bit.ly/KIRKPATRICK">bit.ly/KIRKPATRICK</a> to volunteer to share.</p>
+<p>We’ll ask someone to share (a few of) their group’s 10 regression trees using <code>rpart.plot</code>. Use our website zoom link to share.</p>
 </section>
 </div>
 </div>
