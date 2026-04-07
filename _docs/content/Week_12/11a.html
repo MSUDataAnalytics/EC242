@@ -468,7 +468,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/Week_11/11b.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Nonparametric Regression</span></a>
+ <span class="menu-text">Nonparametric Regression II</span></a>
   </div>
 </li>
       </ul>
@@ -564,7 +564,6 @@ window.Quarto = {
   <li><a href="#bias-variance-decomposition" id="toc-bias-variance-decomposition" class="nav-link" data-scroll-target="#bias-variance-decomposition">Bias-Variance Decomposition</a></li>
   <li><a href="#using-simulation-to-estimate-bias-and-variance" id="toc-using-simulation-to-estimate-bias-and-variance" class="nav-link" data-scroll-target="#using-simulation-to-estimate-bias-and-variance">Using Simulation to Estimate Bias and Variance</a></li>
   </ul></li>
-  <li><a href="#random-forests" id="toc-random-forests" class="nav-link" data-scroll-target="#random-forests">Random Forests</a></li>
   <li><a href="#more-examples-of-bias-variance-and-model-flexibility" id="toc-more-examples-of-bias-variance-and-model-flexibility" class="nav-link" data-scroll-target="#more-examples-of-bias-variance-and-model-flexibility">More examples of bias, variance, and model flexibility</a>
   <ul class="collapse">
   <li><a href="#model-flexibility" id="toc-model-flexibility" class="nav-link" data-scroll-target="#model-flexibility">Model Flexibility</a></li>
@@ -607,7 +606,6 @@ window.Quarto = {
 <li>What is the relationship between <strong>bias</strong>, <strong>variance</strong>, and <strong>mean squared error?</strong></li>
 <li>What is the relationship between <strong>model flexibility</strong> and training error?</li>
 <li>What is the relationship between <strong>model flexibility</strong> and validation (or test) error?</li>
-<li>What is a random forest?</li>
 </ul>
 </section>
 </section>
@@ -1049,35 +1047,6 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 </div>
 </div>
 <p>See <code>?all.equal()</code> for details.</p>
-</section>
-</section>
-<section id="random-forests" class="level1">
-<h1>Random Forests</h1>
-<p>The decision trees (or “regression trees”) from last week were an intuitive (hopefully) way of partitioning out the predictor variable space into prediction areas. By “partitioning”, I mean chopping up the predictor space in a way that explains the data best, then using the resulting regions as the prediction for any value of the predictors. From ISLR Chapter 8:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="11b_insertimage_1.png" class="img-fluid figure-img"></p>
-<figcaption>Source:ISLR</figcaption>
-</figure>
-</div>
-<p>We can change the two tuning parameters - <code>cp</code> and <code>minsplit</code> to make the partition more or less detailed (have more or fewer terminal nodes), and there are actually other parameters we can play with in regression trees, though we won’t address those here. If we tune those parameters by cross-validation, then we can generate a pretty good predictor with our chosen tree. But…we can still do better.</p>
-<p>Regression trees still have quite a bit of variance, and we’d love to reduce that variance. One way of doing this is by constructing a <strong>random forest</strong>. As the name indicates, a random forest is a whole bunch of trees put together. But how do we combine multiple trees? And how do we make multiple trees if we have one dataset that leads to one optimal tree?</p>
-<section id="multiple-trees-by-bootstrap" class="level3">
-<h3 class="anchored" data-anchor-id="multiple-trees-by-bootstrap">Multiple trees by <em>bootstrap</em></h3>
-<p>The “bootstrap” is a statistical term that means, essentially, randomly resampling. We can “bootstrap” our existing (training) data by randomly drawing observations from the data. Usually, if we have <span class="math inline">\(n\)</span> observations, we’ll draw <span class="math inline">\(n\)</span> observations <em>with replacement</em>, which gives us a slightly different dataset: some observations will not be in the bootstrapped sample, and some will be represented 2+ times. All of the bootstrapped samples follow the <em>same</em> distribution of the predictors, but are different realizations. It’s like getting more random samples for free!</p>
-<p>So let’s say you draw sample <span class="math inline">\(b=1\)</span> from the <span class="math inline">\(n\)</span> observations. It is also of size <span class="math inline">\(n\)</span>, but is different from the original sample. Then, you draw sample number <span class="math inline">\(b=2\)</span>, all the way to, say, <span class="math inline">\(B = 250\)</span>. Now you have 250 different samples of data, and each one will generate a <em>different</em> regression tree, even using the same tuning parameter values.</p>
-</section>
-<section id="combining-multiple-trees" class="level3">
-<h3 class="anchored" data-anchor-id="combining-multiple-trees">Combining multiple trees</h3>
-<p>We need a way of generating a RMSE for any given tuning parameter value, but now we have <span class="math inline">\(B\)</span> different trees. We can take our test data and put it into each of the <span class="math inline">\(B\)</span> trees and get a predicted value, right? And when the tree is different, then the prediction will be different. If we take the <em>average</em> over all <span class="math inline">\(B\)</span> predictions, we’ll get a prediction that has less variance, even when each tree has variance <span class="math inline">\(\sigma\)</span>, because variance of the mean scales to <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span>.</p>
-<p>So the rmse is:</p>
-<p><span class="math display">\[RMSE = \frac{1}{N} \sum_{i=1}^N \left(\frac{1}{B} \sum_{b=1}^B (\hat{f}_{b}(x_i) - y_i)^2\right)\]</span></p>
-<p>While it takes a bit longer to estimate this (especially when <span class="math inline">\(B\)</span> is large), you get much more stable results that often predict better on an evaluation hold-out sample.</p>
-</section>
-<section id="ok-technically-thats-bagging" class="level3">
-<h3 class="anchored" data-anchor-id="ok-technically-thats-bagging">OK, technically that’s “bagging”</h3>
-<p>Random Forest has one other wrinkle – when choosing amongst the candidate predictors for each split, the Random Forest method will choose from a randomly selected subset of the predictors. The reasoning for this given in ISLR is intuitive: if there is one predictor that predicts quite well for the sample, it will always be selected and little emphasis will be on predictors aside from this one. By randomly leaving it out, some trees are forced to fit without that predictor, so they won’t all look the same. When you don’t take the subset, you are <em>bagging</em>. When you do take a subset, you are estimating a <em>random forest</em></p>
-<p>You won’t need to use this on your Project 2, it’s purely for your own info. Random forests are common out in the world, and are useful to know especially since you already know the fundamental element of it – the tree.</p>
 </section>
 </section>
 <section id="more-examples-of-bias-variance-and-model-flexibility" class="level1">
