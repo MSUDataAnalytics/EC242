@@ -21,6 +21,7 @@ For this lab, you will need to make sure you set `echo = T` in the knitr options
 
 This lab is deceptively short. Regular expressions can take a while to learn, and can be very frustrating. Leave yourself ample time.
 
+In this lab, I set limits on lines of code you can use in order to force you to do this efficiently (and not, say, hand-code the results). The data entry lines don't count as lines of code, nor does the start of the pipe e.g. `df = c(1,2,3)` is not a line, nor is `df %>% `.
 
 
 ::: {.callout-note}
@@ -41,7 +42,7 @@ Sales2020 = c('$1,420,142',
 ```
 Students = c('Ali',' Meza','McEvoy', 'Mc Evoy', '.Donaldson','Kirkpatrick ')
 ```
-We would like to clean these student names and place them in alphabetical order. However, we note that "Mc Evoy" is a different name from "McEvoy" (the Irish are particular about that), so we need no more than two lines of code that can print these names in order (use `order` to place the cleaned names in order).
+We would like to clean these student names and place them in alphabetical order. However, we note that "Mc Evoy" is a different name from "McEvoy" (the Irish are particular about that), so we need no more than two lines of code that can print these names in order (use `sort` to place the cleaned names in order). 
 
 
 

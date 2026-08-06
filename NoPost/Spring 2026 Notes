@@ -5,7 +5,43 @@
 
 
 
-Focus more on data finding. Probably less on viz
+Focus more on data finding. Probably less on viz.
+-- That said, the students did *not* use the IPUMS or even much census data on their projects. Maybe we need
+to require they use those? Not sure why. Too early in semester?
+
+
+Students want a little more coding in class. I think this might be because itll force them to not use AI by doing it in class. It was really hard
+to get going on in-class coding as students kinda froze (except a small handful). Baby step them into the labs while in class. If I have well-written solutions
+to work from, its a lot easier.
+
+In LASSO unit, I probably need to make  my own materials instead of using Ed's. The cv.glmnet confusion was widespread.
+
+
+
+The 4.0 cutoff of 95 was far too high, especially since I also set the "usual" credit for WW to 5/6 (unless they did something extraordinary). The average was 2.88, so kinda low.
+
+FINAL PROJECT------
+one predictive model only please
+Do not use cv.glmnet as it does not have a train RMSE (it uses n-fold cv). Or, teach them how to use cv.glmnet.
+
+For data in final project, get most and most granular possible. So many people got state-level for one year. How about county for 5 years?
+
+Set a min # of variables/columns along with min N. Some good projects in the ~500's, but mostly they shot themselves in the foot by going with one state and all counties or something like that. Are your data at the most granular level possible?
+
+Maybe teach them how to make a markdown table and have them do that with all of their variables (or the X most relevant).
+
+Have them DEFINE THE OUTCOME in the memo clearly. Maybe in a table, too. Maybe we need a "summary statistics" section? The outcome should be a meaningful metric of some social thing. E.g. rates, not counts. Combine other parts (weighted types of crime, etc.). Something to get them thinking about the right LHS thing to think about.
+
+Min # of data sources (3?). Have to watch out for sports projects (though maybe I should forbid them? This is SOCIAL SCIENCE)).
+
+
+
+
+################
+## Notes from F25
+################
+
+
 
 Use libarary data viz person
 

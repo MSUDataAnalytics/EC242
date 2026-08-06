@@ -102,7 +102,7 @@ In this section, the memo writing will be quite brief. In one paragraph, discuss
 
 One person in the group will turn in the assignment to D2L no later than the time listed on the syllabus. **I allow you the maximum amount of time to complete the project. Grades are due 48 hours after the due date, and thus I cannot extend anyone's project for any reason**. 
 
-You must turn in **TWO** PDF's, properly rendered as per our usual course requirements. ONE copy will have all code output turned off (`echo=F`). The easiest way to do this is the set the global `knitr` option in the first code chunk (and set that first code chunk's echo to the appropriate setting), knitting to PDF, then turning the global `echo` setting on and knitting it again to a differently-named PDF file. You will turn in both PDF's, and I will use them both in grading.
+You must turn in **TWO** PDF's, properly rendered as per our usual course requirements. ONE copy will have all code output turned off (`echo=F`). Do this by setting the global `knitr` option in the first code chunk (and set that first code chunk's echo to the appropriate setting) to `echo=F`, knitting to PDF, then turning the global `echo` setting on using `echo=T` and knitting it again to a differently-named PDF file. You will turn in both PDF's, and I will use them both in grading. Both PDF's should be rendered from the same .rmd file, just with `echo` set differently.
 
 ### Scoring Rubric
 
