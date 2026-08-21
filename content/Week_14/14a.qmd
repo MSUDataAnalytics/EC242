@@ -227,7 +227,7 @@ $$
 \text{err}(\hat{C}, \text{Data}) = \frac{1}{n}\sum_{i = 1}^{n}I(y_i \neq \hat{C}(x_i))
 $$
 
-Here, $I$ is an indicator function, so we are essentially calculating the proportion of predicted classes that match the true class.
+Here, $I$ is an indicator function, so we are essentially calculating the proportion of predicted classes that do **not** match the true class.
 
 $$
 I(y_i \neq \hat{C}(x)) =
@@ -239,7 +239,7 @@ $$
 
 It is also common to discuss the **accuracy**, which is simply one minus the error.
 
-Like regression, we often split the data, and then consider Train (Classification) Error and Test (Classification) Error will be used as a measure of how well a classifier will work on unseen future data.
+Like regression, we often split the data and then consider Train (Classification) Error and Test (Classification) Error. The test error is our measure of how well a classifier will work on unseen future data.
 
 $$
 \text{err}_{\texttt{trn}}(\hat{C}, \text{Train Data}) = \frac{1}{n_{\texttt{trn}}}\sum_{i \in \texttt{trn}}^{}I(y_i \neq \hat{C}(x_i))
@@ -261,7 +261,7 @@ Accuracy values can be found by calling `confusionMatrix()`, or, if stored, can 
 # Note, R doesn't know to rename the result "err", so it keeps the name "Accuracy"
 ```
 
-We can go back to the `tst_con_mat` table (called `tst_tab`) before and hand-calculate accuracy
+We can go back to the `tst_con_mat` table (called `tst_tab`) before and hand-calculate the error rate
 ```{r}
 
 print(tst_tab)
@@ -291,7 +291,7 @@ $$
 
 ```{r, collapse = F}
 tst_con_mat$byClass["Sensitivity"]
-# 130/(130+28)
+# 137/(137+29)
 ```
 
 This is the *share of actually-"yes" observations that were predicted by the model to be "yes"*
@@ -302,7 +302,7 @@ $$
 
 ```{r, collapse = F}
 tst_con_mat$byClass["Specificity"]
-# 4319/(4319/523)
+# 4343/(4343+491)
 ```
 
 Specificity is the *share of actually-"no" observations that were predicted by the model to be "no"*
@@ -373,7 +373,7 @@ library(tibble)
 as_tibble(Default)
 ```
 
-We also repeat the test-train split from above (you need not repeat this step if you have this saved).
+We also re-split the data. Note the seed is different from the one we used above, so this is a *different* split -- run this chunk even if you still have the old `default_trn` and `default_tst` sitting around.
 
 ```{r}
 set.seed(42)
@@ -391,7 +391,7 @@ default_trn_lm = default_trn
 default_tst_lm = default_tst
 ```
 
-Since linear regression expects a numeric response variable, we coerce the response to be numeric. Although these look like character strings, they are factors, and if you recall, factors are actually saved as integers and then have a mapping (`levels`) from each number to a value. We can look at `str(default_trn_lm` to see what the factors and levels are.
+Since linear regression expects a numeric response variable, we coerce the response to be numeric. Although these look like character strings, they are factors, and if you recall, factors are actually saved as integers and then have a mapping (`levels`) from each number to a value. We can look at `str(default_trn_lm)` to see what the factors and levels are.
 
 ```{r}
 str(default_trn_lm)
@@ -477,7 +477,7 @@ $$
 \end{cases}
 $$
 
-This classifier is essentially estimating the Bayes Classifier - it takes the value of $x$, figures out which is larger, the $\hat{P}(Y=1|X=x)$ or $\hat{P}(Y=0 | X=x)$, and returns the classification $\hat{C}(x)$ as whichever probability is larger. Since there are only two values for $Y\in\{0,1\}$, the larger is always the one greater than $.50$. Thus, since this is a Bayes Classifier, it minimizes classification errors.
+This classifier is essentially estimating the Bayes Classifier - it takes the value of $x$, figures out which is larger, the $\hat{P}(Y=1|X=x)$ or $\hat{P}(Y=0 | X=x)$, and returns the classification $\hat{C}(x)$ as whichever probability is larger. Since there are only two values for $Y\in\{0,1\}$, the larger is always the one greater than $.50$. Thus, if our estimated probabilities are close to the truth, this gets us close to the Bayes Classifier, and close to minimizing classification errors.
 
 That doesn't mean it's good. Or even very useful (it's predicting "No" for everyone here.)
 
@@ -521,9 +521,9 @@ plot(logisticfun, from = -10, to = 10)
 
 The model is fit by numerically maximizing the likelihood, which we will let `R` take care of. Essentially, `R` is going to try a whole bunch of guesses for $\mathbf{\beta}$ and choose the one that best explains the data we have.
 
-We start with a single predictor example, again using `balance` as our single predictor. Note that `default_trn` has a factor variable for `default` (No/Yes). Since `R` represents factor variables as numbers (here, 1 and 2), but the order of those numbers and their mapping to the character string is arbitrary. `R` sets the first character string it sees as 1, the second as 2, etc., so if you read the data in a different order or re-make the factor variable, it can switch.
+We start with a single predictor example, again using `balance` as our single predictor. Note that `default_trn` has a factor variable for `default` (No/Yes). `R` represents factor variables as numbers (here, 1 and 2), but it is easy to lose track of which number is which string. By default `R` sorts the labels and assigns 1 to the first alphabetically, 2 to the second, etc., which is why `No` is 1 and `Yes` is 2 -- but re-make the factor with different labels, or with an explicit `levels =` argument, and that mapping can switch.
 
-It's best to be explicit. Let's set the `default` variable to be `Yes = 1` and `No = 0`. Then it's a true binary, and `mean(default_trn)` gives us the average default rate (in the training set). We *should* do this before we split the sample, but we can do it now to both samples as long as we do the exact same thing to each.
+It's best to be explicit. Let's set the `default` variable to be `Yes = 1` and `No = 0`. Then it's a true binary, and `mean(default_trn$default)` gives us the average default rate (in the training set). We *should* do this before we split the sample, but we can do it now to both samples as long as we do the exact same thing to each.
 
 ```{r, collapse = F}
 default_trn = default_trn %>%
@@ -575,7 +575,7 @@ $$
 \hat{p}(x) = \hat{P}(Y = 1 \mid X = x)
 $$
 
-We could do that, or we could use `type = "response"`
+we would have to run those link values through the sigmoid function ourselves. We could do that, or we could just use `type = "response"`
 
 ```{r}
 head(predict(model_glm, type = "response"))
@@ -736,7 +736,7 @@ test_errors  = sapply(model_list, get_logistic_error, data = default_tst,
 knitr::kable(cbind(train_errors, test_errors))
 ```
 
-Here we see the misclassification error rates for each model. The train (weakly) decreases, and the test decreases, until it starts to increases. Everything we learned about the bias-variance tradeoff for regression also applies here.
+Here we see the misclassification error rates for each model. The train (weakly) decreases, and the test decreases, until it starts to increase. Everything we learned about the bias-variance tradeoff for regression also applies here.
 
 ```{r}
 diff(train_errors)
@@ -754,7 +754,7 @@ Let's return to our simple model with only balance as a predictor.
 model_glm = glm(default ~ balance, data = default_trn, family = "binomial")
 ```
 
-We write a function which allows use to make predictions based on different probability cutoffs.
+We write a function which allows us to make predictions based on different probability cutoffs.
 
 ```{r}
 get_logistic_pred = function(mod, data, res = "y", pos = 1, neg = 0, cut = 0.5) {
@@ -815,7 +815,7 @@ rownames(metrics) = c("c = 0.10", "c = 0.50", "c = 0.90")
 metrics
 ```
 
-We see then sensitivity decreases as the cutoff is increased. Conversely, specificity increases as the cutoff increases. This is useful if we are more interested in a particular error, instead of giving them equal weight.
+We see that sensitivity decreases as the cutoff is increased. Conversely, specificity increases as the cutoff increases. This is useful if we are more interested in a particular error, instead of giving them equal weight.
 
 Note that usually the best accuracy will be seen near $c = 0.50$. This is not always true, and in your lab, you may need to change your cutoff.
 

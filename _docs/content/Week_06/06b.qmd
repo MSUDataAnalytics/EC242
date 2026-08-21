@@ -52,7 +52,7 @@ In this section, we introduce random variables and their properties starting wit
 
 ## Definition of Random variables
 
-Random variables are numeric outcomes resulting from random processes. We can easily generate random variables using some of the simple examples we have shown. For example, define `X` to be 1 if a bead is blue and red otherwise:
+Random variables are numeric outcomes resulting from random processes. We can easily generate random variables using some of the simple examples we have shown. For example, define `X` to be 1 if a bead is blue and 0 otherwise:
 
 ```{r,echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -178,7 +178,7 @@ However, if $X$ is defined by drawing from an urn with numbers or colors in it, 
 
 Another way to think about it that does not involve an urn is to run a Monte Carlo simulation and generate a very large list of outcomes of $X$. These outcomes are a list of numbers. The distribution of this list will be a very good approximation of the probability distribution of $X$. The longer the list, the better the approximation. But it will always be an approximation - the actual contents of the underlying distribution function may not be knowable. Still, the average and standard deviation of this list will approximate the expected value and standard error of the random variable.
 
-::: {.callout-info}
+::: {.callout-note}
 
 Often, we'd like to know about the probability distribution (the distribution function), but we only have a sample. This is the fundamental challenge of statistical inference: what can we learn about the true distribution function using only a sample? If we can't learn the distribution function itself, can we at least reject a hypothetical statement about the distribution function?
 
@@ -230,7 +230,7 @@ What is the expectation of a random variable defined as a roll of a (fair, stand
 
 To see this, notice that if there are $n$ beads in the urn, then we have $np$ $a$s and $n(1-p)$ $b$s and because the average is the sum, $n\times a \times p + n\times b \times (1-p)$, divided by the total $n$, we get that the average is $ap + b(1-p)$.
 
-Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of the sum of draws, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the *expected value of the sum of the draws* is $E[nX] = nE[X]$ when $n$ is a constant:
+Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of the sum of draws, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the *expected value of the sum of the draws* is $E[X_1 + X_2 + \dots + X_n] = nE[X]$ when the $n$ draws all come from the same urn:
 
 $$
 \mbox{}\mbox{number of draws } \times \mbox{ average of the numbers in the urn}
@@ -286,7 +286,7 @@ m <- mean(x)
 s <- sqrt(mean((x-m)^2))
 ```
 
-The SD is the the square root of the sample variance, and the sample variance is the square of the sample SD. Using mathematical notation we write:
+The SD is the square root of the variance, and the variance is the square of the SD. Using mathematical notation we write:
 
 $$
 \mu = \frac{1}{n} \sum_{i=1}^n x_i \\
@@ -303,7 +303,7 @@ identical(s, sd(x))
 s-sd(x)
 ```
 
-This is because the `sd` function R does not return the `sd` of the list, but rather uses a formula that estimates standard deviations of a population from a random sample $X_1, \dots, X_N$ which, for reasons not discussed here, divide the sum of squares by the $N-1$.
+This is because the `sd` function in R does not return the `sd` of the list, but rather uses a formula that estimates the standard deviation of a population from a random sample $X_1, \dots, X_N$ which, for reasons not discussed here, divides the sum of squares by $N-1$.
 
 
 $$
@@ -431,7 +431,7 @@ $$
 \mbox{SE}[X_1+X_2+\dots+X_n] = \sqrt{\mbox{SE}[X_1]^2 + \mbox{SE}[X_2]^2+\dots+\mbox{SE}[X_n]^2  }
 $$
 
-The square of the standard error is referred to as the _variance_ in statistical textbooks. Note that this particular property is not as intuitive as the previous three and more in depth explanations can be found in statistics textbooks.
+The square of the standard error is referred to as the _variance_ in statistical textbooks. Note that this particular property is not as intuitive as the previous two and more in depth explanations can be found in statistics textbooks.
 
 4\. The standard error of a non-random constant times a random variable is the non-random constant times the random variable's standard error. As with the expectation:
 $$
@@ -478,13 +478,13 @@ Probabilistic thinking is central in the human experience. How we describe that 
 
 > "Trump predicts 'very good chance' of China trade deal" – CNN
 
-Yet people don't have a good sense of what these things mean. Uncertainty is key to data analytics: if we were certain of things, A study in the 1960s explored the perception of probabilistic words like these among NATO officers. A more modern replication of this found the following basic pattern: 
+Yet people don't have a good sense of what these things mean. Uncertainty is key to data analytics: if we were certain of things, we wouldn't need any of this. A study in the 1960s explored the perception of probabilistic words like these among NATO officers. A more modern replication of this found the following basic pattern: 
 
 ```{r echo=FALSE, out.width="80%"}
 knitr::include_graphics(here('images','words.png'), error = FALSE)
 ```
 
-A deep, basic fact about humans is that we struggle to understand probabilities. But visualizing things can help. The graphic above shows the uncertainty about uncertainty (very meta). We can convey all manner of uncertainty with clever graphics. Today's practical example works through some of the myriad of ways to visualize variable data. We'll cover some territory that we've already hit, in hopes of locking in some key concepts.
+A deep, basic fact about humans is that we struggle to understand probabilities. But visualizing things can help. The graphic above shows the uncertainty about uncertainty (very meta). We can convey all manner of uncertainty with clever graphics. The rest of today's example is about where that uncertainty comes from and how we put a number on it. We'll cover some territory that we've already hit, in hopes of locking in some key concepts.
 
 # Part 2: Statistical Inference and Polls
 
@@ -531,7 +531,7 @@ if(knitr::is_html_output()){
 
 Although in the United States the popular vote does not determine the result of the presidential election, we will use it as an illustrative and simple example of how well polls work. Forecasting the election is a more complex process since it involves combining results from 50 states and DC and we will go into some detail on this later.
 
-Let's make some observations about the table above. First, note that different polls, all taken days before the election, report a different _spread_:  the estimated difference between support for the two candidates. Notice also that the reported spreads hover around what ended up being the actual result: Clinton won the popular vote by 2.1%. We also see a column titled **MoE** which stands for _margin of error_.
+Let's make some observations about the polls Real Clear Politics collected in the week before that election. First, note that different polls, all taken days before the election, report a different _spread_:  the estimated difference between support for the two candidates. Notice also that the reported spreads hover around what ended up being the actual result: Clinton won the popular vote by 2.1%. Each poll also reports a number labeled **MoE**, which stands for _margin of error_.
 
 In this example, we will show how the probability concepts we learned in the previous content can be applied to develop the statistical approaches that make polls an effective tool. We will learn the statistical concepts necessary to define _estimates_ and _margins of errors_, and show how we can use these to forecast final results relatively well and also provide an estimate of the precision of our forecast. Once we learn this, we will be able to understand two concepts that are ubiquitous in data science: _confidence intervals_ and _p-values_. Finally, to understand probabilistic statements about the probability of a candidate winning, we will have to learn about Bayesian modeling. In the final sections, we put it all together to recreate the simplified version of the FiveThirtyEight model and apply it to the 2016 election.
 
@@ -542,7 +542,7 @@ We start by connecting probability theory to the task of using polls to learn ab
 
 To help us understand the connection between polls and what we have learned, let's construct a similar situation to the one pollsters face. To mimic the challenge real pollsters face in terms of competing with other pollsters for media attention, we will use an urn full of beads to represent  voters and pretend we are competing for a \$25 dollar prize. The challenge is to guess the spread between the proportion of blue and red beads in this hypothetical urn.
  
-Before making a prediction, you can take a sample (with replacement) from the urn. To mimic the fact that running polls is expensive, it costs you 10 cents per each bead you sample. Therefore, if your sample size is 250, and you win, you will break even since you will pay \\$25 to collect your \\$25 prize. Your entry into the competition can be an interval. If the interval you submit contains the true proportion, you get half what you paid and pass to the second phase of the competition. In the second phase, the entry with the smallest interval is selected as the winner.
+Before making a prediction, you can take a sample (with replacement) from the urn. To mimic the fact that running polls is expensive, it costs you 10 cents per each bead you sample. Therefore, if your sample size is 250, and you win, you will break even since you will pay \$25 to collect your \$25 prize. Your entry into the competition can be an interval. If the interval you submit contains the true proportion, you get half what you paid and pass to the second phase of the competition. In the second phase, the entry with the smallest interval is selected as the winner.
 
 The __dslabs__ package includes a function that shows a random draw from this urn:
 
@@ -624,7 +624,7 @@ $$
 \mbox{E}(\bar{X}) = p
 $$
 
-We can also use what we learned to figure out the standard error: the standard error of the sum is $\sqrt{N} \times$ the standard deviation of the urn. Can we compute the standard error of the urn? We learned a formula that tells us that it is $(1-0) \sqrt{p (1-p)}$ = $\sqrt{p (1-p)}$. Because we are dividing the sum by $N$, we arrive at the following formula for the standard error of the average:
+We can also use what we learned to figure out the standard error: the standard error of the sum is $\sqrt{N} \times$ the standard deviation of the urn. Can we compute the standard deviation of the urn? We learned a formula that tells us that it is $(1-0) \sqrt{p (1-p)}$ = $\sqrt{p (1-p)}$. Because we are dividing the sum by $N$, we arrive at the following formula for the standard error of the average:
 
 $$
 \mbox{SE}(\bar{X}) = \sqrt{p(1-p)/N}
@@ -642,7 +642,7 @@ N <- 10^seq(1,5, len=100)
 data.frame(N=N, SE = sqrt(p*(1-p)/N)) %>% ggplot(aes(N, SE)) + geom_line() + scale_x_continuous(breaks = c(10,100,1000,10000), trans = "log10")
 ```
 
-From the plot we see that we would need a poll of over 10,000 people to get the standard error that low. We rarely see polls of this size due in part to costs. From the Real Clear Politics table, we learn that the sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and $p=0.51$, the standard error is:
+From the plot we see that we would need a poll of about 2,500 people to get the standard error that low -- and about 10,000 to get the *margin of error* (roughly two standard errors) down to 1%. We rarely see polls of that size due in part to costs. From the Real Clear Politics table, we learn that the sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and $p=0.51$, the standard error is:
 ```{r}
 sqrt(p*(1-p))/sqrt(1000)
 ```
@@ -731,7 +731,7 @@ Hence, there is a 95% probability that $\bar{X}$ will be within $1.96\times \hat
 
 In summary, the CLT tells us that our poll based on a sample size of $25$ is not very useful. We don't really learn much when the margin of error is this large. All we can really say is that the popular vote will not be won by a large margin. This is why pollsters tend to use larger sample sizes.
 
-From the table above, we see that typical sample sizes range from 700 to 3500. To see how this gives us a much more practical result, notice that if we had obtained a $\bar{X}$=0.48 with a sample size of 2,000, our standard error $\hat{\mbox{SE}}(\bar{X})$ would have been `r n<-2000;se<-sqrt(0.48*(1-0.48)/n);se`. So our result is an estimate of `48`% with a margin of error of `r round(2*se*100)`%. In this case, the result is much more informative and would make us think that there are more red balls than blue. Keep in mind, however, that this is hypothetical. We did not take a poll of 2,000 since we don't want to ruin the competition.
+As noted above, typical sample sizes range from 500 to 3,500. To see how this gives us a much more practical result, notice that if we had obtained a $\bar{X}$=0.48 with a sample size of 2,000, our standard error $\hat{\mbox{SE}}(\bar{X})$ would have been `r n<-2000;se<-sqrt(0.48*(1-0.48)/n);se`. So our result is an estimate of `48`% with a margin of error of `r round(2*se*100)`%. In this case, the result is much more informative and would make us think that there are more red balls than blue. Keep in mind, however, that this is hypothetical. We did not take a poll of 2,000 since we don't want to ruin the competition.
 
 
 ::: {.callout-tip}
@@ -759,7 +759,7 @@ x <- sample(c(0,1), size = N, replace = TRUE, prob = c(1-p, p))
 x_hat <- mean(x)
 ```
 
-In this particular sample, our estimate is `x_hat`. We can use that code to do a Monte Carlo simulation:
+In this particular sample, our estimate is `r x_hat`. We can use that code to do a Monte Carlo simulation:
 
 ```{r}
 B <- 10000

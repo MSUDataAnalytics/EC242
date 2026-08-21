@@ -599,7 +599,7 @@ Note
 </div>
 <section id="about-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="about-the-data">About the data</h3>
-<p>I’ve imported the data from the UCI source. Columns <code>PAY_0</code> through <code>PAY_6</code> show the last 6 months of payment status, where <code>-2</code> means “no payment required”, <code>-1</code> and <code>0</code> mean paid on time, and <code>1</code> and above mean 1 month behind, 2 months behind, etc. Bill and Payment amounts as labeled, with 1 being most recent, and 6 being six months ago.</p>
+<p>I’ve imported the data from the UCI source. Note that the first column is just a leftover row number from the export – <code>read_csv</code> will call it <code>...1</code> – so drop it before you fit anything with <code>default ~ .</code>. Columns <code>PAY_0</code>, <code>PAY_2</code>, <code>PAY_3</code>, <code>PAY_4</code>, <code>PAY_5</code>, and <code>PAY_6</code> show the last 6 months of payment status (there is no <code>PAY_1</code> – that’s how UCI shipped it; <code>PAY_0</code> is the most recent month), where <code>-2</code> means “no payment required”, <code>-1</code> and <code>0</code> mean paid on time, and <code>1</code> and above mean 1 month behind, 2 months behind, etc. Bill and Payment amounts as labeled, with 1 being most recent, and 6 being six months ago. All the dollar figures, <code>LIMIT_BAL</code> included, are New Taiwan dollars – so a <code>LIMIT_BAL</code> of 20000 is not a $20,000 credit line.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -611,8 +611,8 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <p>In our first breakout:</p>
-<p>1.Check to make sure the <code>default</code> column is a binary indicator for default. Check to make sure there are no surprise <code>NA</code> values (there are!). Then, construct any additional variables you might think useful (hint: the <code>PAY_X</code> variables don’t really have an intuitive numeric interpretation. Should we categorize some of them together?)</p>
-<ol start="2" type="1">
+<ol type="1">
+<li><p>Check to make sure the <code>default</code> column is a binary indicator for default. Check to make sure there are no surprise <code>NA</code> values (there are!). Then, construct any additional variables you might think useful (hint: the <code>PAY_X</code> variables don’t really have an intuitive numeric interpretation. Should we categorize some of them together?)</p></li>
 <li><p>Explore the data as we did on Tuesday to get an idea of useful predictors.</p></li>
 <li><p>Build a logistic model to predict <code>default</code> using any combination of variables and interactions in the data. For now, just use your best judgement for choosing the variables and interactions.</p></li>
 <li><p>Use a Bayes Classifier cutoff of .50 to generate your classifier output.</p></li>
@@ -632,7 +632,7 @@ Note
 <div class="callout-body-container callout-body">
 <p>In our second breakout, we will create a ROC curve manually. To do this</p>
 <ol type="1">
-<li><p>Take your model from the first breakout, and using a loop (or <code>sapply</code>), step through a large number of possible cutoffs for classification ranging from 0 to 1.</p></li>
+<li><p>Take your model from the first breakout, and using a loop (or <code>sapply</code>), step through a large number of possible cutoffs for classification ranging from 0 to 1. Careful at the ends: a cutoff below every fitted probability (or above every one) predicts a single class, so <code>table()</code> gives you a one-row table and <code>confusionMatrix()</code> won’t accept it – the same problem we ran into on Tuesday with the all-“No” classifier. Keep your cutoffs inside the range of your predicted probabilities.</p></li>
 <li><p>For each cutoff, generate a confusion matrix with <em>accuracy</em>, <em>sensitivity</em> and <em>specificity</em>.</p></li>
 <li><p>Combine the cutoff with the <em>sensitivity</em> and <em>specificity</em> results and make a ROC plot. Use <code>ggplot</code> for your plot and map the color aesthetic to the cutoff value.</p></li>
 <li><p>Calculate the AUC (the <em>area under the curve</em>). This is a little tricky but can be done with your data.</p></li>

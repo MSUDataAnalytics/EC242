@@ -142,7 +142,7 @@ test_1 <- as.numeric(test_1)
 
 The `stringr` function `str_replace_all` replaces all of the first argument's instances of `,` (the second argument) with `''` (the third argument). The first input for the function is the character vector on which you'd like to operate.
 
-We can then use `mutate_all` to apply this operation to each column, since it won't affect the columns without commas. You may notice the use of `mutate_all` and `summarize_all` here. These are versions of `mutate` and `summarize` that apply a given *function* to every column in the data. Above, the function we apply to every column is the `commas` function. Note that in using `summarize_all` we pipe the data in, but we *do not list the columns* we wish to create via `summarize`. To apply `as.numeric` to each column in `murders_raw`, we'd use: `murders_raw %>% mutate_all(str_replace_all, ',', '') %>% mutate_at(2:3, as.numeric)`. 
+We can then use `mutate_all` to apply this operation to each column, since it won't affect the columns without commas. You may notice the use of `mutate_all` and `summarize_all` here. These are versions of `mutate` and `summarize` that apply a given *function* to every column in the data. Above, the function we apply to every column is the `commas` function. Note that in using `summarize_all` we pipe the data in, but we *do not list the columns* we wish to create via `summarize`. To strip the commas out of every column and then coerce the two count columns to numbers, we'd use: `murders_raw %>% mutate_all(str_replace_all, ',', '') %>% mutate_at(2:3, as.numeric)`. 
 
 **Note, the `str_replace_all` function is NOT an analog to `mutate_all` that applies to each column in the data!**
 
@@ -207,7 +207,7 @@ We immediately see what is happening. Some of the students did not report their 
 
 A first step in this type of task is to survey the problematic entries and try to define specific patterns followed by a large groups of entries. The larger these groups, the more entries we can fix with a single programmatic approach. We want to find patterns that can be accurately described with a rule, such as "a digit, followed by a feet symbol, followed by one or two digits, followed by an inches symbol".
 
-To look for such patterns, it helps to remove the entries that are consistent with being in inches and to view only the problematic entries. We thus write a function to automatically do this. We keep entries that either result in `NA`s when applying `as.numeric` or are outside a range of plausible heights. We permit a range that covers about 99.9999% of the adult population. We also use `suppressWarnings` to avoid the warning message we know `as.numeric` will gives us.
+To look for such patterns, it helps to remove the entries that are consistent with being in inches and to view only the problematic entries. We thus write a function to automatically do this. We keep entries that either result in `NA`s when applying `as.numeric` or are outside a range of plausible heights. We permit a range that covers about 99.9999% of the adult population. We also use `suppressWarnings` to avoid the warning message we know `as.numeric` will give us.
 
 ```{r, echo=FALSE, eval=FALSE}
 alpha <- 1 / 10^6
@@ -416,7 +416,7 @@ pattern <- "\\d"
 str_detect(s, pattern)
 ```
 
-We take this opportunity to introduce the `str_view` function, which is helpful for troubleshooting as it shows us the first match for each string:
+We take this opportunity to introduce the `str_view` function, which is helpful for troubleshooting as it shows us where the matches are. Heads up: these figures were made with an older __stringr__. As of version 1.5.0, `str_view` marks _all_ the matches rather than just the first, prints in the console as `<5>'<1><0>` instead of as a highlighted box, and `str_view_all` is deprecated, so your screen will not look exactly like these pictures:
 
 ```{r, eval=FALSE}
 str_view(s, pattern)
@@ -428,7 +428,7 @@ include_graphics(here('images','str_view-1.png'))
 ```
 
 
-and `str_view_all` shows us all the matches, so `3'2` has two matches and `5'10` has three.
+and `str_view_all` shows us all the matches, so `5 feet` has one match and `5'10` has three.
 
 ```{r, eval=FALSE}
 str_view_all(s, pattern)
@@ -604,16 +604,16 @@ Another way to generate a pattern that searches for _everything except_ is to us
 
 _Groups_ are a powerful aspect of regex that permits the extraction of values. Groups are defined using parentheses. They don't affect the pattern matching per se. Instead, it permits tools to identify specific parts of the pattern so we can extract them.
 
-We want to change heights written like `5.6` to `5'6`.
+We want to change heights written like `5,6` to `5'6`.
 
-To avoid changing patterns such as `70.2`, we will require that the first digit be between 4 and 7 `[4-7]` and that the second be none or more digits `\\d*`.
+To avoid changing patterns such as `70,2`, we will require that the first digit be between 4 and 7 `[4-7]` and that the second be none or more digits `\\d*`.
 Let's start by defining a simple pattern that matches this:
 
 ```{r}
 pattern_without_groups <- "^[4-7],\\d*$"
 ```
 
-We want to extract the digits so we can then form the new version using a period. These are our two groups, so we encapsulate them with parentheses:
+We want to extract the digits so we can then form the new version using the feet symbol `'`. These are our two groups, so we encapsulate them with parentheses:
 
 ```{r}
 pattern_with_groups <-  "^([4-7]),(\\d*)$"
@@ -719,7 +719,7 @@ Our strategy will therefore be to search for a very specific pattern that assure
 
 Another powerful aspect of groups is that you can refer to the extracted values in a regex when searching and replacing.
 
-The regex special character for the `i`-th group is `\\i`. So `\\1` is the value extracted from the first group, `\\2` the value from the second and so on. As a simple example, note that the following code will replace a comma with period, but only if it is between two digits:
+The regex special character for the `i`-th group is `\\i`. So `\\1` is the value extracted from the first group, `\\2` the value from the second and so on. As a simple example, note that the following code will replace a comma with the feet symbol `'`, but only if the comma comes right after a digit between 4 and 7:
 
 ```{r}
 pattern_with_groups <-  "^([4-7]),(\\d*)$"
@@ -742,7 +742,7 @@ Let's break this one down:
   - `^` = start of the string
   - `[4-7]` = one digit, either 4, 5, 6, or 7
   - `\\s*` = none or more white space
-  - `[,\\.\\s+]` = feet symbol is either `,`, `.` or at least one space
+  - `[,\\.\\s+]` = the feet symbol: exactly one character, either a `,`, a `.`, or a space. (Watch out: inside the brackets that `+` is not a quantifier, it's a literal plus sign, which this class matches too.)
   - `\\s*` = none or more white space
   - `\\d*` = none or more digits
   - `$` = end of the string
@@ -814,7 +814,7 @@ Although not as common, we also see the following problems:
 
 It is not necessarily clear that it is worth writing code to handle these last three cases since they might be rare enough. However, some of them provide us with an opportunity to learn a few more regex techniques, so we will build a fix.
 
-For case 1, if we add a `'0` after the first digit, for example, convert all `6` to `6'0`, then our previously defined pattern will match. This can be done using groups:
+For case 2, if we add a `'0` after the first digit, for example, convert all `6` to `6'0`, then our previously defined pattern will match. This can be done using groups:
 
 ```{r}
 yes <- c("5", "6", "5")
@@ -825,7 +825,7 @@ str_replace(s, "^([4-7])$", "\\1'0")
 
 The pattern says it has to start (`^`) with a digit between 4 and 7 and end there (`$`). The parenthesis defines the group that we pass as `\\1` to generate the replacement regex string.
 
-We can adapt this code slightly to handle the case 2 as well, which covers the entry `5'`. Note `5'` is left untouched. This is because the extra `'` makes the pattern not match since we have to end with a 5 or 6. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add `'{0,1}` after the `'` to do this. However, we can use the none or once special character `?`. As we saw above, this is different from `*` which is none or more. We now see that the fourth case is also converted:
+We can adapt this code slightly to handle the case 1 as well, which covers the entry `5'`. Note `5'` is left untouched. This is because the extra `'` makes the pattern not match since we have to end with a 5 or 6. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add `'{0,1}` after the `'` to do this. However, we can use the none or once special character `?`. As we saw above, this is different from `*` which is none or more. We now see that the fourth case is also converted:
 
 ```{r}
 str_replace(s, "^([56])'?$", "\\1'0")
@@ -843,7 +843,7 @@ pattern <- "^[4-7]\\s*'\\s*(\\d+\\.?\\d*)$"
 ```
 
 
-Case 4, meters using commas, we can approach similarly to how we converted the `x.y` to `x'y`. A difference is that we require that the first digit be 1 or 2:
+Case 5, meters using commas, we can approach similarly to how we converted the `x.y` to `x'y`. A difference is that we require that the first digit be 1 or 2:
 
 ```{r}
 yes <- c("1,7", "1, 8", "2, " )
@@ -876,7 +876,7 @@ str_trim("5 ' 9 ")
 
 ## Changing lettercase
 
-Notice that regex is case sensitive. Often we want to match a word regardless of case. One approach to doing this is to first change everything to lower case and then proceeding ignoring case. As an example, note that one of the entries writes out numbers as words `Five foot eight inches`. Although not efficient, we could add 13 extra `str_replace` calls to convert `zero` to `0`, `one` to `1`, and so on. To avoid having to write two separate operations for `Zero` and `zero`, `One` and `one`, etc., we can use the `str_to_lower` function to make all works lower case first:
+Notice that regex is case sensitive. Often we want to match a word regardless of case. One approach to doing this is to first change everything to lower case and then proceeding ignoring case. As an example, note that one of the entries writes out numbers as words `Five foot eight inches`. Although not efficient, we could add 13 extra `str_replace` calls to convert `zero` to `0`, `one` to `1`, and so on. To avoid having to write two separate operations for `Zero` and `zero`, `One` and `one`, etc., we can use the `str_to_lower` function to make all words lower case first:
 
 ```{r}
 s <- c("Five feet eight inches")
@@ -964,7 +964,7 @@ and we only want the numbers, `separate` fails:
 tab %>% separate(x, c("feet","inches"), sep = "'", fill = "right")
 ```
 
-However, we can use `extract`. The regex here is a bit more complicated since we have to permit `'` with spaces and `feet`. We also do not want the `"` included in the value, so we do not include that in the group:
+However, we can use `extract`. The regex is the same one we used above: instead of splitting on the `'`, it looks for digits on each side of it, so whatever trails the inches -- the `"` or the word `inches` -- is simply left out of the groups:
 
 ```{r}
 tab %>% tidyr::extract(x, c("feet", "inches"), regex = "(\\d)'(\\d{1,2})")
@@ -1269,7 +1269,7 @@ gapminder %>% dplyr::filter(region=="Caribbean") %>%
   geom_line()
 ```
 
-There are other similar functions in other R packages, such as `recode_factor` and `fct_recoder` in the __forcats__ package.
+There are other similar functions in other R packages, such as `recode_factor` in __dplyr__ and `fct_recode` in the __forcats__ package.
 
 
 ::: {.callout-note}
@@ -1350,7 +1350,7 @@ Use the `str_which` function to find the rows with a header. Save these results 
 10. Notice that towards the end of the page you see a _totals_ row followed by rows with other summary statistics. Create an object called `tail_index` with the index of the _totals_ entry.
 
 
-11. Because our PDF page includes graphs with numbers, some of our rows have just one number (from the y-axis of the plot). Use the `str_count` function to create an object `n` with the number of numbers in each each row. Hint: you can write a regex for number like this `\\d+`.
+11. Because our PDF page includes graphs with numbers, some of our rows have just one number (from the y-axis of the plot). Use the `str_count` function to create an object `n` with the number of numbers in each row. Hint: you can write a regex for number like this `\\d+`.
 
 
 12. We are now ready to remove entries from rows that we know we don't need. The entry `header_index` and everything before it should be removed. Entries for which `n` is 1 should also be removed, and the entry `tail_index` and everything that comes after it should be removed as well.

@@ -906,7 +906,7 @@ predicted   No  Yes
 <p><span class="math display">\[
 \text{err}(\hat{C}, \text{Data}) = \frac{1}{n}\sum_{i = 1}^{n}I(y_i \neq \hat{C}(x_i))
 \]</span></p>
-<p>Here, <span class="math inline">\(I\)</span> is an indicator function, so we are essentially calculating the proportion of predicted classes that match the true class.</p>
+<p>Here, <span class="math inline">\(I\)</span> is an indicator function, so we are essentially calculating the proportion of predicted classes that do <strong>not</strong> match the true class.</p>
 <p><span class="math display">\[
 I(y_i \neq \hat{C}(x)) =
 \begin{cases}
@@ -915,7 +915,7 @@ I(y_i \neq \hat{C}(x)) =
 \end{cases}
 \]</span></p>
 <p>It is also common to discuss the <strong>accuracy</strong>, which is simply one minus the error.</p>
-<p>Like regression, we often split the data, and then consider Train (Classification) Error and Test (Classification) Error will be used as a measure of how well a classifier will work on unseen future data.</p>
+<p>Like regression, we often split the data and then consider Train (Classification) Error and Test (Classification) Error. The test error is our measure of how well a classifier will work on unseen future data.</p>
 <p><span class="math display">\[
 \text{err}_{\texttt{trn}}(\hat{C}, \text{Train Data}) = \frac{1}{n_{\texttt{trn}}}\sum_{i \in \texttt{trn}}^{}I(y_i \neq \hat{C}(x_i))
 \]</span></p>
@@ -939,7 +939,7 @@ I(y_i \neq \hat{C}(x)) =
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note, R doesn't know to rename the result "err", so it keeps the name "Accuracy"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We can go back to the <code>tst_con_mat</code> table (called <code>tst_tab</code>) before and hand-calculate accuracy</p>
+<p>We can go back to the <code>tst_con_mat</code> table (called <code>tst_tab</code>) before and hand-calculate the error rate</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tst_tab)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -976,7 +976,7 @@ predicted   No  Yes
 <pre><code>Sensitivity 
   0.8253012 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 130/(130+28)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 137/(137+29)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is the <em>share of actually-“yes” observations that were predicted by the model to be “yes”</em></p>
 <p><span class="math display">\[
@@ -988,7 +988,7 @@ predicted   No  Yes
 <pre><code>Specificity 
   0.8984278 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4319/(4319/523)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4343/(4343+491)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Specificity is the <em>share of actually-“no” observations that were predicted by the model to be “no”</em></p>
 <p>Like accuracy, these can easily be found using <code>confusionMatrix()</code>.</p>
@@ -1079,7 +1079,7 @@ predicted   No  Yes
 # ℹ 9,990 more rows</code></pre>
 </div>
 </div>
-<p>We also repeat the test-train split from above (you need not repeat this step if you have this saved).</p>
+<p>We also re-split the data. Note the seed is different from the one we used above, so this is a <em>different</em> split – run this chunk even if you still have the old <code>default_trn</code> and <code>default_tst</code> sitting around.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>default_idx <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(Default), <span class="dv">5000</span>)</span>
@@ -1093,7 +1093,7 @@ predicted   No  Yes
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>default_trn_lm <span class="ot">=</span> default_trn</span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>default_tst_lm <span class="ot">=</span> default_tst</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Since linear regression expects a numeric response variable, we coerce the response to be numeric. Although these look like character strings, they are factors, and if you recall, factors are actually saved as integers and then have a mapping (<code>levels</code>) from each number to a value. We can look at <code>str(default_trn_lm</code> to see what the factors and levels are.</p>
+<p>Since linear regression expects a numeric response variable, we coerce the response to be numeric. Although these look like character strings, they are factors, and if you recall, factors are actually saved as integers and then have a mapping (<code>levels</code>) from each number to a value. We can look at <code>str(default_trn_lm)</code> to see what the factors and levels are.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(default_trn_lm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1175,7 +1175,7 @@ C^B(x) = \underset{g}{\mathrm{argmax}} \ P(Y = g \mid  X = x)
       0 &amp; \hat{p}(x) \leq 0.5
 \end{cases}
 \]</span></p>
-<p>This classifier is essentially estimating the Bayes Classifier - it takes the value of <span class="math inline">\(x\)</span>, figures out which is larger, the <span class="math inline">\(\hat{P}(Y=1|X=x)\)</span> or <span class="math inline">\(\hat{P}(Y=0 | X=x)\)</span>, and returns the classification <span class="math inline">\(\hat{C}(x)\)</span> as whichever probability is larger. Since there are only two values for <span class="math inline">\(Y\in\{0,1\}\)</span>, the larger is always the one greater than <span class="math inline">\(.50\)</span>. Thus, since this is a Bayes Classifier, it minimizes classification errors.</p>
+<p>This classifier is essentially estimating the Bayes Classifier - it takes the value of <span class="math inline">\(x\)</span>, figures out which is larger, the <span class="math inline">\(\hat{P}(Y=1|X=x)\)</span> or <span class="math inline">\(\hat{P}(Y=0 | X=x)\)</span>, and returns the classification <span class="math inline">\(\hat{C}(x)\)</span> as whichever probability is larger. Since there are only two values for <span class="math inline">\(Y\in\{0,1\}\)</span>, the larger is always the one greater than <span class="math inline">\(.50\)</span>. Thus, if our estimated probabilities are close to the truth, this gets us close to the Bayes Classifier, and close to minimizing classification errors.</p>
 <p>That doesn’t mean it’s good. Or even very useful (it’s predicting “No” for everyone here.)</p>
 </section>
 <section id="logistic-regression-with-glm" class="level2">
@@ -1206,8 +1206,8 @@ p(x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p
 </div>
 </div>
 <p>The model is fit by numerically maximizing the likelihood, which we will let <code>R</code> take care of. Essentially, <code>R</code> is going to try a whole bunch of guesses for <span class="math inline">\(\mathbf{\beta}\)</span> and choose the one that best explains the data we have.</p>
-<p>We start with a single predictor example, again using <code>balance</code> as our single predictor. Note that <code>default_trn</code> has a factor variable for <code>default</code> (No/Yes). Since <code>R</code> represents factor variables as numbers (here, 1 and 2), but the order of those numbers and their mapping to the character string is arbitrary. <code>R</code> sets the first character string it sees as 1, the second as 2, etc., so if you read the data in a different order or re-make the factor variable, it can switch.</p>
-<p>It’s best to be explicit. Let’s set the <code>default</code> variable to be <code>Yes = 1</code> and <code>No = 0</code>. Then it’s a true binary, and <code>mean(default_trn)</code> gives us the average default rate (in the training set). We <em>should</em> do this before we split the sample, but we can do it now to both samples as long as we do the exact same thing to each.</p>
+<p>We start with a single predictor example, again using <code>balance</code> as our single predictor. Note that <code>default_trn</code> has a factor variable for <code>default</code> (No/Yes). <code>R</code> represents factor variables as numbers (here, 1 and 2), but it is easy to lose track of which number is which string. By default <code>R</code> sorts the labels and assigns 1 to the first alphabetically, 2 to the second, etc., which is why <code>No</code> is 1 and <code>Yes</code> is 2 – but re-make the factor with different labels, or with an explicit <code>levels =</code> argument, and that mapping can switch.</p>
+<p>It’s best to be explicit. Let’s set the <code>default</code> variable to be <code>Yes = 1</code> and <code>No = 0</code>. Then it’s a true binary, and <code>mean(default_trn$default)</code> gives us the average default rate (in the training set). We <em>should</em> do this before we split the sample, but we can do it now to both samples as long as we do the exact same thing to each.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>default_trn <span class="ot">=</span> default_trn <span class="sc">%&gt;%</span></span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">default =</span> <span class="fu">case_when</span>(default<span class="sc">==</span><span class="st">'No'</span> <span class="sc">~</span> <span class="fu">as.integer</span>(<span class="dv">0</span>),</span>
@@ -1254,7 +1254,7 @@ p(x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p
 <p><span class="math display">\[
 \hat{p}(x) = \hat{P}(Y = 1 \mid X = x)
 \]</span></p>
-<p>We could do that, or we could use <code>type = "response"</code></p>
+<p>we would have to run those link values through the sigmoid function ourselves. We could do that, or we could just use <code>type = "response"</code></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(model_glm, <span class="at">type =</span> <span class="st">"response"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1427,7 +1427,7 @@ x_1 = \frac{-\hat{\beta}_0}{\hat{\beta}_1}.
 </table>
 </div>
 </div>
-<p>Here we see the misclassification error rates for each model. The train (weakly) decreases, and the test decreases, until it starts to increases. Everything we learned about the bias-variance tradeoff for regression also applies here.</p>
+<p>Here we see the misclassification error rates for each model. The train (weakly) decreases, and the test decreases, until it starts to increase. Everything we learned about the bias-variance tradeoff for regression also applies here.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span>(train_errors)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1446,7 +1446,7 @@ x_1 = \frac{-\hat{\beta}_0}{\hat{\beta}_1}.
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>model_glm <span class="ot">=</span> <span class="fu">glm</span>(default <span class="sc">~</span> balance, <span class="at">data =</span> default_trn, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We write a function which allows use to make predictions based on different probability cutoffs.</p>
+<p>We write a function which allows us to make predictions based on different probability cutoffs.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>get_logistic_pred <span class="ot">=</span> <span class="cf">function</span>(mod, data, <span class="at">res =</span> <span class="st">"y"</span>, <span class="at">pos =</span> <span class="dv">1</span>, <span class="at">neg =</span> <span class="dv">0</span>, <span class="at">cut =</span> <span class="fl">0.5</span>) {</span>
 <span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  probs <span class="ot">=</span> <span class="fu">predict</span>(mod, <span class="at">newdata =</span> data, <span class="at">type =</span> <span class="st">"response"</span>)</span>
@@ -1505,7 +1505,7 @@ c = 0.50   0.9730  0.31288344   0.9952450
 c = 0.90   0.9688  0.04294479   1.0000000</code></pre>
 </div>
 </div>
-<p>We see then sensitivity decreases as the cutoff is increased. Conversely, specificity increases as the cutoff increases. This is useful if we are more interested in a particular error, instead of giving them equal weight.</p>
+<p>We see that sensitivity decreases as the cutoff is increased. Conversely, specificity increases as the cutoff increases. This is useful if we are more interested in a particular error, instead of giving them equal weight.</p>
 <p>Note that usually the best accuracy will be seen near <span class="math inline">\(c = 0.50\)</span>. This is not always true, and in your lab, you may need to change your cutoff.</p>
 <p>Instead of manually checking cutoffs, we can create an ROC curve (receiver operating characteristic curve) which will sweep through all possible cutoffs, and plot the sensitivity and specificity.</p>
 <ul>

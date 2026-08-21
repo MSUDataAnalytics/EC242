@@ -18,7 +18,7 @@ We will also use the Ames data again. Maybe some new data. Who knows. The Ames d
 :::
 
 ## Preliminaries
-So far in each of our analyses, we have only used numeric variables as predictors. We have also only used *additive models*, meaning the effect any predictor had on the response was not dependent on the other predictors. In this chapter, we will remove both of these restrictions. We will fit models with multiple predictors, categorical predictors, and use models that allow predictors to *interact*. Instead of a single variable, will use *multiple* linear regression. The mathematics of multiple regression will remain largely unchanging, however, we will pay close attention to interpretation, as well as some difference in `R` usage.
+So far in each of our analyses, we have only used numeric variables as predictors. We have also only used *additive models*, meaning the effect any predictor had on the response was not dependent on the other predictors. In this chapter, we will remove both of these restrictions. We will fit models with multiple predictors, categorical predictors, and use models that allow predictors to *interact*. Instead of a single variable, we will use *multiple* linear regression. The mathematics of multiple regression will remain largely unchanging, however, we will pay close attention to interpretation, as well as some difference in `R` usage.
 
 ## Dummy Variables
 
@@ -92,11 +92,11 @@ $$
 
 In this case, we call $x_2$ a **dummy variable**. A dummy variable (also called an "indicator" variable) is somewhat unfortunately named, as it is in no way "dumb". In fact, it is actually somewhat clever. A dummy variable is a numerical variable that is used in a regression analysis to "code" for a binary categorical variable. Let's see how this works.
 
-First, note that `am` is already a dummy variable, since it uses the values `0` and `1` to represent automatic and manual transmissions. Often, a variable like `am` would store the character values `auto` and `man` and we would either have to convert these to `0` and `1`, or, as we will see later, `R` will take care of creating dummy variables for us. In the plot above, we use `as.logical`, which takes 0/1 and makes the `FALSE/TRUE`, which are treated as factor variables for plotting.
+First, note that `am` is already a dummy variable, since it uses the values `0` and `1` to represent automatic and manual transmissions. Often, a variable like `am` would store the character values `auto` and `man` and we would either have to convert these to `0` and `1`, or, as we will see later, `R` will take care of creating dummy variables for us. In the plot above, we use `as.logical`, which takes 0/1 and makes them `FALSE`/`TRUE`, which are treated as factor variables for plotting.
 
 
-### Its just a dummy....
-We've noticed that most of the blue dots (with manual transmission) have higher `mpg`. We have a dummy in our data. Taking a step back from using `hp` to explain variation in `mpg`, let's look at how much `am` does on it's own:
+### It's just a dummy....
+We've noticed that most of the blue dots (with manual transmission) have higher `mpg`. We have a dummy in our data. Taking a step back from using `hp` to explain variation in `mpg`, let's look at how much `am` does on its own:
 
 ::: {.callout-note}
 ## TRY IT
@@ -114,7 +114,7 @@ Given your answers to (1) and (2), should we expect them to be the same?
 
 ### Multivariate with a dummy
 
-We've established what the dummy variable does on it's own. Now we'll use it in a multivariate regression. To fit a more complex model using the dummy and `hp`, we do so like any other multiple regression model we have seen before.
+We've established what the dummy variable does on its own. Now we'll use it in a multivariate regression. To fit a more complex model using the dummy and `hp`, we do so like any other multiple regression model we have seen before.
 
 ```{r}
 mpg_hp_add = lm(mpg ~ hp + am, data = mtcars)
@@ -244,7 +244,7 @@ autompg = autompg %>%
 str(autompg)
 ```
 
-We've removed cars with `3` and `5` cylinders , as well as created a new variable `domestic` which indicates whether or not a car was built in the United States. Removing the `3` and `5` cylinders is simply for ease of demonstration later in the chapter and would not be done in practice. The new variable `domestic` takes the value `1` if the car was built in the United States, and `0` otherwise, which we will refer to as "foreign." (We are arbitrarily using the United States as the reference point here.) We have also made `cyl` and `origin` into factor variables, which we will discuss later.
+We've removed cars with `3` and `5` cylinders , as well as created a new variable `domestic` which indicates whether or not a car was built in the United States. Removing the `3` and `5` cylinders is simply for ease of demonstration later in the chapter and would not be done in practice. The new variable `domestic` takes the value `1` if the car was built in the United States, and `0` otherwise, which we will refer to as "foreign." (We are arbitrarily using the United States as the reference point here.) We have also made `cyl` into a factor variable, which we will discuss later. (We'll build a factor version of `origin` further down.)
 
 We'll now be concerned with three variables: `mpg`, `disp`, and `domestic`. We will use `mpg` as the response. We can fit a model,
 
@@ -289,7 +289,7 @@ ggplot(autompg, aes(x = disp, y = mpg, col = as.factor(domestic))) +
 
 ```
 
-This is a model that allows for two *parallel* lines, meaning the `mpg` can be different on average between foreign and domestic cars of the same engine displacement, but the change in average `mpg` for an increase in displacement is the same for both. We can see this model isn't doing very well here. The red line fits the red points fairly well, but the black line isn't doing very well for the black points, it should clearly have a more negative slope. Essentially, we would like a model that allows for two different slopes.
+This is a model that allows for two *parallel* lines, meaning the `mpg` can be different on average between foreign and domestic cars of the same engine displacement, but the change in average `mpg` for an increase in displacement is the same for both. We can see this model isn't doing very well here. The blue line fits the blue points fairly well, but the red line isn't doing very well for the red points, it should clearly have a more negative slope. Essentially, we would like a model that allows for two different slopes.
 
 Consider the following model,
 
@@ -419,6 +419,7 @@ Since we're now working in three dimensions, this model can't be easily justifie
 mpg_disp_add_hp = lm(mpg ~ disp + hp, data = autompg)
 mpg_disp_int_hp = lm(mpg ~ disp * hp, data = autompg)
 summary(mpg_disp_int_hp)
+anova(mpg_disp_add_hp, mpg_disp_int_hp)
 ```
 
 Using `summary()` we focus on the row for `disp:hp` which tests,
@@ -540,7 +541,7 @@ Now let's try to do the same, but using our new factor variable.
 (mod_factor = lm(mpg ~ disp * origin, data = autompg))
 ```
 
-It seems that it doesn't produce the same results. Right away we notice that the intercept is different, as is the the coefficient in front of `disp`. We also notice that the remaining two coefficients are of the same magnitude as their respective counterparts using the domestic variable, but with a different sign. Why is this happening?
+It seems that it doesn't produce the same results. Right away we notice that the intercept is different, as is the coefficient in front of `disp`. We also notice that the remaining two coefficients are of the same magnitude as their respective counterparts using the domestic variable, but with a different sign. Why is this happening?
 
 It turns out, that by using a factor variable, `R` is automatically creating a dummy variable for us. However, it is not the dummy variable that we had originally used ourselves.
 
@@ -556,7 +557,7 @@ where
 - $x_1$ is `disp`, the displacement in cubic inches,
 - $x_2$ **is a dummy variable created by `R`.** It uses `1` to represent a **foreign car**.
 
-You may recall that we saw this in action in Assignment 05 when we used `model.matrix` on `GarageType`.
+If you want to see the dummy variables `R` builds, run `model.matrix(mpg ~ disp * origin, data = autompg)` and look at the column names.
 
 So now,
 
@@ -581,7 +582,7 @@ levels(autompg$cyl)
 
 Here the `cyl` variable has three possible levels: `4`, `6`, and `8`. You may wonder, why not simply use `cyl` as a numerical variable? You certainly could.
 
-However, that would force the difference in average `mpg` between `4` and `6` cylinders to be the same as the difference in average mpg between `6` and `8` cylinders. That usually make senses for a continuous variable, but not for a discrete variable with so few possible values. In the case of this variable, there is no such thing as a 7-cylinder engine or a 6.23-cylinder engine in personal vehicles. For these reasons, we will simply consider `cyl` to be categorical. This is a decision that will commonly need to be made with ordinal variables. Often, with a large number of categories, the decision to treat them as numerical variables is appropriate because, otherwise, a large number of dummy variables are then needed to represent these variables.
+However, that would force the difference in average `mpg` between `4` and `6` cylinders to be the same as the difference in average mpg between `6` and `8` cylinders. That usually makes sense for a continuous variable, but not for a discrete variable with so few possible values. In the case of this variable, there is no such thing as a 7-cylinder engine or a 6.23-cylinder engine in personal vehicles. For these reasons, we will simply consider `cyl` to be categorical. This is a decision that will commonly need to be made with ordinal variables. Often, with a large number of categories, the decision to treat them as numerical variables is appropriate because, otherwise, a large number of dummy variables are then needed to represent these variables.
 
 Let's define three dummy variables related to the `cyl` factor variable.
 
@@ -625,7 +626,7 @@ where
 
 - $Y$ is `mpg`, the fuel efficiency in miles per gallon,
 - $x$ is `disp`, the displacement in cubic inches,
-- $v_2$ and $v_3$ are the dummy variables define above.
+- $v_2$ and $v_3$ are the dummy variables defined above.
 
 Why doesn't `R` use $v_1$? Essentially because it doesn't need to. To create three lines, it only needs two dummy variables since it is using a reference level, which in this case is a 4 cylinder car. The three "sub models" are then:
 
@@ -963,7 +964,7 @@ anova(two_way_int_mod, big_model)
 
 We see the p-value is somewhat large, so we would fail to reject. We prefer the smaller, less flexible, null model, without the three-way interaction.
 
-A quick note here: the full model does still "fit better." Notice that it has a smaller RMSE than the null model, which means the full model makes smaller (squared) errors on average.
+A quick note here: the full model does still "fit better." Notice that it has a smaller mean squared error than the null model, which means the full model makes smaller (squared) errors on average.
 
 ```{r}
 mean(resid(big_model) ^ 2)

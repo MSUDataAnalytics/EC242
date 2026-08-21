@@ -626,7 +626,7 @@ window.Quarto = {
 <ul>
 <li>When can we make causal claims about the relationship between variables?</li>
 </ul>
-<p>As with recent weeks, we will work with real data during the lecture. Please download the following dataset and load it into <code>R</code>.</p>
+<p>Your lab this week uses the Ames housing data, so grab it now. The lecture itself runs on simulated data plus whatever ships with the <code>dslabs</code> and <code>HistData</code> packages, so there’s nothing else to download.</p>
 <ul>
 <li><a href="../../data/ames.csv"><i class="fas fa-file-csv"></i> <code>Ames.csv</code></a></li>
 </ul>
@@ -647,9 +647,9 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>varnames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'Y'</span>,<span class="st">'X1'</span>,<span class="st">'X2'</span>,<span class="st">'X3'</span>,<span class="st">'X1:X3'</span>,<span class="st">'X4*X5'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(varnames[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">collapse =</span> <span class="st">' + '</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(varnames[<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>], <span class="at">collapse =</span> <span class="st">' + '</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "X1 + X2 + X3"</code></pre>
+<pre><code>[1] "X1 + X2 + X3 + X1:X3 + X4*X5"</code></pre>
 </div>
 </div>
 <p>This will put all of the things in the vector together with <code>+</code> between them. Wisely pasting <code>Y ~</code> onto this, then using <code>as.formula()</code> lets you make a formula object from a character vector. Handy!</p>
@@ -839,11 +839,11 @@ window.Quarto = {
 2 son            0.499    0.0648      7.70 9.47e-13</code></pre>
 </div>
 </div>
-<p>The model fits the data very well. If we look at the mathematical formulation of the model above, it could easily be incorrectly interpreted so as to suggest that the son being tall caused the father to be tall. But given what we know about genetics and biology, we know it’s the other way around. The model is technically correct. The estimates and p-values were obtained correctly as well. What is wrong here is the interpretation.</p>
+<p>The estimates are precise and the p-value is tiny. If we look at the mathematical formulation of the model above, it could easily be incorrectly interpreted so as to suggest that the son being tall caused the father to be tall. But given what we know about genetics and biology, we know it’s the other way around. The model is technically correct. The estimates and p-values were obtained correctly as well. What is wrong here is the interpretation.</p>
 </section>
 <section id="confounders" class="level2">
 <h2 class="anchored" data-anchor-id="confounders">Confounders</h2>
-<p>Confounders are perhaps the most common reason that leads to associations begin misinterpreted.</p>
+<p>Confounders are perhaps the most common reason that leads to associations being misinterpreted.</p>
 <p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are correlated, we call <span class="math inline">\(Z\)</span> a <em>confounder</em> if changes in <span class="math inline">\(Z\)</span> causes changes in both <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. Earlier, when studying baseball data, we saw how Home Runs was a confounder that resulted in a higher correlation than expected when studying the relationship between Bases on Balls and Runs. In some cases, we can use linear models to account for confounders. However, this is not always the case.</p>
 <p>Incorrect interpretation due to confounders is ubiquitous in the lay press and they are often hard to detect. Here, we present a widely used example related to college admissions.</p>
 <section id="example-uc-berkeley-admissions" class="level3">
@@ -864,7 +864,7 @@ window.Quarto = {
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: "admitted" is PERCENT admitted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The chi-squared test compares two groups with binary outcomes (like “admit” and “nonadmit”). The null hypothesis is that the groups are not differently distributed between the outcomes. Here’s what the data looks like going in – its in counts of “admitted” and “not admitted”.</p>
+<p>The chi-squared test compares two groups with binary outcomes (like “admit” and “nonadmit”). The null hypothesis is that the groups are not differently distributed between the outcomes. Here’s what the data looks like going in – it’s in counts of “admitted” and “not admitted”.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>admissions <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_admitted =</span> <span class="fu">round</span>(<span class="fu">sum</span>(admitted <span class="sc">/</span> <span class="dv">100</span> <span class="sc">*</span> applicants)),</span>
@@ -904,7 +904,7 @@ window.Quarto = {
 6     F   6     7                   1</code></pre>
 </div>
 </div>
-<p>Four out of the six majors favor women. More importantly, all the differences are much smaller than the 14.2 difference that we see when examining the totals.</p>
+<p>Four out of the six majors favor women. The one big gap is major A, where women are admitted 20 points <em>more</em> often than men – which runs backwards from the headline. Every other difference is much smaller than the 14.2 difference that we see when examining the totals.</p>
 <p>The paradox is that analyzing the totals suggests a dependence between admission and gender, but when the data is grouped by major, this dependence seems to disappear. What’s going on? This actually can happen if an uncounted confounder is driving most of the variability.</p>
 <p>So let’s define three variables: <span class="math inline">\(X\)</span> is 1 for men and 0 for women, <span class="math inline">\(Y\)</span> is 1 for those admitted and 0 otherwise, and <span class="math inline">\(Z\)</span> quantifies the selectivity of the major. A gender bias claim would be based on the fact that <span class="math inline">\(\mbox{Pr}(Y=1 | X = x)\)</span> is higher for <span class="math inline">\(x=1\)</span> than <span class="math inline">\(x=0\)</span>. However, <span class="math inline">\(Z\)</span> is an important confounder to consider. Clearly <span class="math inline">\(Z\)</span> is associated with <span class="math inline">\(Y\)</span>, as the more selective a major, the lower <span class="math inline">\(\mbox{Pr}(Y=1 | Z = z)\)</span>. But is major selectivity <span class="math inline">\(Z\)</span> associated with gender <span class="math inline">\(X\)</span>?</p>
 <p>One way to see this is to plot the total percent admitted to a major versus the percent of women that made up the applicants:</p>
@@ -964,7 +964,7 @@ admissions %>%
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>admissions <span class="sc">%&gt;%</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(major, admitted, <span class="at">col =</span> gender, <span class="at">size =</span> applicants)) <span class="sc">+</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Percent Admitted'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">'Percent Admitted'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -989,7 +989,7 @@ admissions %>%
 </section>
 <section id="simpsons-paradox" class="level2">
 <h2 class="anchored" data-anchor-id="simpsons-paradox">Simpson’s paradox</h2>
-<p>The case we have just covered is an example of Simpson’s paradox. It is called a paradox because we see the sign of the correlation flip when comparing the entire publication and specific strata. As an illustrative example, suppose you have three random variables <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(Z\)</span> and that we observe realizations of these. Here is a plot of simulated observations for <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> along with the sample correlation:</p>
+<p>The case we have just covered is an example of Simpson’s paradox. It is called a paradox because we see the sign of the correlation flip when comparing the entire population and specific strata. As an illustrative example, suppose you have three random variables <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(Z\)</span> and that we observe realizations of these. Here is a plot of simulated observations for <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> along with the sample correlation:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1072,7 +1072,7 @@ F-statistic: 729.8 on 9 and 490 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <section id="how-well-does-this-model-predict" class="level3">
 <h3 class="anchored" data-anchor-id="how-well-does-this-model-predict">How well does this model predict?</h3>
-<p>Next time, we’ll formally cover defining our loss function (root mean squared error) and using it to tune a model. But for now, let’s compare the two models above – the “parsimonius” one where we let <span class="math inline">\(Z\)</span> be an intercept shift, and the more complex “flexible” model where we interact <span class="math inline">\(X\)</span> with <span class="math inline">\(Z\)</span> (treating <span class="math inline">\(Z\)</span> as a factor).</p>
+<p>Next time, we’ll formally cover defining our loss function (root mean squared error) and using it to tune a model. But for now, let’s compare the two models above – the “parsimonious” one where we let <span class="math inline">\(Z\)</span> be an intercept shift, and the more complex “flexible” model where we interact <span class="math inline">\(X\)</span> with <span class="math inline">\(Z\)</span> (treating <span class="math inline">\(Z\)</span> as a factor).</p>
 <p>First, we’ll re-estimate the models and get the residuals. We could use the difference between observed <span class="math inline">\(y\)</span> and the predicted <span class="math inline">\(y\)</span>, or just use <code>resid(...)</code> to get the same thing:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>parsimonius <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">as.factor</span>(z), <span class="at">data =</span> dat)</span>
@@ -1115,7 +1115,7 @@ F-statistic: 729.8 on 9 and 490 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre><code>[1] 0.6665031</code></pre>
 </div>
 </div>
-<p>And for root mean squared error, we finally take the square root. This looks an awful lot like the standard deviation of the residual, right? It just about it (aside from the sample <span class="math inline">\(\frac{1}{N-1}\)</span> difference).</p>
+<p>And for root mean squared error, we finally take the square root. This looks an awful lot like the standard deviation of the residual, right? It just about is (aside from the sample <span class="math inline">\(\frac{1}{N-1}\)</span> difference).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(pars.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">length</span>(pars.resid))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1145,7 +1145,7 @@ Model 2: y ~ x * as.factor(z)
 <section id="but." class="level3">
 <h3 class="anchored" data-anchor-id="but.">But….</h3>
 <p>What if we were only interested in the best prediction, not necessarily the best <em>model</em>? Then “<strong>better</strong>” is defined as “lower RMSE” and the more flexible model is “better”.</p>
-<p>Starting next time, we’ll look at what we can learn when we aim only for fitting an explanatory model rather than a theoretically valid model.</p>
+<p>Starting next time, we’ll look at what we can learn when we aim only for a predictive model rather than a theoretically valid, explanatory one.</p>
 
 
 </section>

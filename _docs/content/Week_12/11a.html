@@ -758,7 +758,7 @@ f(x) = \text{median}(Y \mid X = x)
 </ul>
 <p>So for us, to select a model that appropriately balances the tradeoff between bias and variance, and thus minimizes the reducible error, we need to select a model of the appropriate flexibility for the data.</p>
 <p>Recall that when fitting models, we’ve seen that train RMSE decreases as model flexibility is increasing. (Technically it is non-increasing.) For validation RMSE, we expect to see a U-shaped curve. Importantly, validation RMSE decreases, until a certain flexibility, then begins to increase.</p>
-<p>Now we can understand why this is happening. The expected test RMSE is essentially the expected prediction error, which we now known decomposes into (squared) bias, variance, and the irreducible Bayes error. The following plots show three examples of this.</p>
+<p>Now we can understand why this is happening. The expected test RMSE is essentially the expected prediction error, which we now know decomposes into (squared) bias, variance, and the irreducible Bayes error. The following plots show three examples of this.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -788,11 +788,11 @@ f(x) = \text{median}(Y \mid X = x)
 </div>
 </div>
 </div>
-<p>Tying this all together, the above image shows how we “expect” training and validation error to behavior in relation to model flexibility.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> In practice, we won’t always see such a nice “curve” in the validation error, but we expect to see the general trends.</p>
+<p>Tying this all together, the above image shows how we “expect” training and validation error to behave in relation to model flexibility.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> In practice, we won’t always see such a nice “curve” in the validation error, but we expect to see the general trends.</p>
 </section>
 <section id="using-simulation-to-estimate-bias-and-variance" class="level2">
 <h2 class="anchored" data-anchor-id="using-simulation-to-estimate-bias-and-variance">Using Simulation to Estimate Bias and Variance</h2>
-<p>We will illustrate these decompositions, most importantly the bias-variance tradeoff, through simulation. Suppose we would like to train a model to learn the true regression function function <span class="math inline">\(f(x) = x^2\)</span>.</p>
+<p>We will illustrate these decompositions, most importantly the bias-variance tradeoff, through simulation. Suppose we would like to train a model to learn the true regression function <span class="math inline">\(f(x) = x^2\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x) {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">^</span> <span class="dv">2</span></span>
@@ -858,7 +858,7 @@ Y \mid X \sim N(f(x), \sigma^2)
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>fit_9 <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">9</span>), <span class="at">data =</span> sim_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that technically we’re being lazy and using orthogonal polynomials, but the fitted values are the same, so this makes no difference for our purposes. These could be KNN, or decision trees just the same - the principle still applies.</p>
-<p>Plotting these four trained models, we see that the zero predictor model does very poorly. The first degree model is reasonable, but we can see that the second degree model fits much better. The ninth degree model seem rather wild.</p>
+<p>Plotting these four trained models, we see that the zero predictor model does very poorly. The first degree model is reasonable, but we can see that the second degree model fits much better. The ninth degree model seems rather wild.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -942,12 +942,12 @@ Y \mid X \sim N(f(x), \sigma^2)
 \underbrace{\left(\mathbb{E} \left[ \hat{f}_k(0.90) \right] - f(0.90) \right)^2}_{\text{bias}^2 \left(\hat{f}_k(0.90) \right)} +
 \underbrace{\mathbb{E} \left[ \left( \hat{f}_k(0.90) - \mathbb{E} \left[ \hat{f}_k(0.90) \right] \right)^2 \right]}_{\text{var} \left(\hat{f}_k(0.90) \right)}
 \]</span></p>
-<p>We’ll use the empirical results of our simulations to estimate these quantities. (Yes, we’re using estimation to justify facts about estimation.) Note that we’ve actually used a rather small number of simulations. In practice we should use more, but for the sake of computation time, we’ve performed just enough simulations to obtain the desired results. (Since we’re estimating estimation, the bigger the sample size, the better.)</p>
+<p>We’ll use the empirical results of our simulations to estimate these quantities. (Yes, we’re using estimation to justify facts about estimation.) Note that we’ve actually used a rather small number of simulations. In practice we should use more, but for the sake of computation time, we’ve performed just enough simulations to obtain the desired results. (Since we’re estimating estimation, the more simulations, the better.)</p>
 <p>To estimate the mean squared error of our predictions, we’ll use</p>
 <p><span class="math display">\[
 \widehat{\text{MSE}}\left(f(0.90), \hat{f}_k(0.90)\right) = \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}} \left(f(0.90) - \hat{f}_k^{[i]}(0.90) \right)^2
 \]</span></p>
-<p>where <span class="math inline">\(\hat{f}_k^{[i]}(0.90)\)</span> is the estimate of <span class="math inline">\(f(0.90)\)</span> using the <span class="math inline">\(i\)</span>-th from the polynomial degree <span class="math inline">\(k\)</span> model.</p>
+<p>where <span class="math inline">\(\hat{f}_k^{[i]}(0.90)\)</span> is the estimate of <span class="math inline">\(f(0.90)\)</span> from the polynomial degree <span class="math inline">\(k\)</span> model fit to the <span class="math inline">\(i\)</span>-th simulated dataset.</p>
 <p>We also write an accompanying <code>R</code> function.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>get_mse <span class="ot">=</span> <span class="cf">function</span>(truth, estimate) {</span>
@@ -968,7 +968,7 @@ Y \mid X \sim N(f(x), \sigma^2)
 <p><span class="math display">\[
 \widehat{\text{var}} \left(\hat{f}(0.90) \right) = \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}} \left(\hat{f}_k^{[i]}(0.90) - \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}}\hat{f}_k^{[i]}(0.90) \right)^2
 \]</span></p>
-<p>While there is already <code>R</code> function for variance, the following is more appropriate in this situation.</p>
+<p>While there is already an <code>R</code> function for variance, the following is more appropriate in this situation. (<code>var()</code> divides by <span class="math inline">\(n_{\texttt{sims}} - 1\)</span>; the formula above divides by <span class="math inline">\(n_{\texttt{sims}}\)</span>.)</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>get_var <span class="ot">=</span> <span class="cf">function</span>(estimate) {</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>((estimate <span class="sc">-</span> <span class="fu">mean</span>(estimate)) <span class="sc">^</span> <span class="dv">2</span>)</span>
@@ -1065,7 +1065,7 @@ Y \mid X \sim N(f(x), \sigma^2)
 FALSE FALSE  TRUE  TRUE </code></pre>
 </div>
 </div>
-<p>But wait, this says it isn’t true, except for the degree 9 model? It turns out, this is simply a computational issue. If we allow for some very small error tolerance, we see that the bias-variance decomposition is indeed true for predictions from these for models.</p>
+<p>But wait, this says it isn’t true for the degree 0 and degree 1 models? It turns out, this is simply a computational issue. If we allow for some very small error tolerance, we see that the bias-variance decomposition is indeed true for predictions from these four models.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(bias <span class="sc">^</span> <span class="dv">2</span> <span class="sc">+</span> variance, mse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1080,7 +1080,7 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 <p>If we have time, we can dive back into a little more about model flexibility, bias, and variance….</p>
 <section id="model-flexibility" class="level2">
 <h2 class="anchored" data-anchor-id="model-flexibility">Model Flexibility</h2>
-<p>Let’s return to the simulated dataset we used occaisionally in the linear regression content. Recall there was a single feature <span class="math inline">\(x\)</span> with the following properties:</p>
+<p>Let’s return to the simulated dataset we used occasionally in the linear regression content. Recall there was a single feature <span class="math inline">\(x\)</span> with the following properties:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define regression function</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>cubic_mean <span class="ot">=</span> <span class="cf">function</span>(x) {</span>
@@ -1181,8 +1181,8 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 <li>The training error <em>decreases</em>.</li>
 <li>The validation error <em>decreases</em>, then <em>increases</em>.</li>
 </ul>
-<p>This more of less matches the idealized version above, but the validation “curve” is much more jagged. This is something that we can expect in practice.</p>
-<p>We have previously noted that training error isn’t particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we known that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>This more or less matches the idealized version above, but the validation “curve” is much more jagged. This is something that we can expect in practice.</p>
+<p>We have previously noted that training error isn’t particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we know that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 </section>
 <section id="k-nearest-neighbors" class="level3">
 <h3 class="anchored" data-anchor-id="k-nearest-neighbors">k-Nearest Neighbors</h3>
@@ -1215,11 +1215,11 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 <li>The training error <em>increases</em>.</li>
 <li>The validation error <em>decreases</em>, then <em>increases</em>.</li>
 </ul>
-<p>Important to note here: the pattern above only holds “in general,” that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selection the data for the validate set.</p>
+<p>Important to note here: the pattern above only holds “in general,” that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selecting the data for the validation set.</p>
 </section>
 <section id="decision-trees" class="level3">
 <h3 class="anchored" data-anchor-id="decision-trees">Decision Trees</h3>
-<p>Lastly, we evaluate some decision tree models. We choose some arbitrary values of <code>cp</code> to evaluate, while holding <code>minsplit</code> constant at <code>5</code>. There are arbitrary choices that produce a plot that is useful for discussion.</p>
+<p>Lastly, we evaluate some decision tree models. We choose some arbitrary values of <code>cp</code> to evaluate, while holding <code>minsplit</code> constant at <code>5</code>. These are arbitrary choices that produce a plot that is useful for discussion.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for fitting decision tree models</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>tree_knn_mod <span class="ot">=</span> <span class="cf">function</span>(flex) {</span>

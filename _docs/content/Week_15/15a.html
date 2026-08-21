@@ -608,7 +608,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>As you can see, we get some counties that extend into the Great Lakes. That’s OK - we can use <code>st_intersect</code> with a map of the Great Lakes to clean that up, but I won’t do that here.</p>
+<p>As you can see, we get some counties that extend into the Great Lakes. That’s OK - we can use <code>st_intersection</code> with a map of the Great Lakes to clean that up, but I won’t do that here.</p>
 <p>Now, the census tracts for Ingham County. We can use <code>str_detect</code> to find the County FIPS for Ingham:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Ingham_FIPS <span class="ot">=</span> MI.counties <span class="sc">%&gt;%</span></span>
@@ -657,28 +657,29 @@ First 10 features:
 <section id="tidycensus" class="level2">
 <h2 class="anchored" data-anchor-id="tidycensus">Tidycensus</h2>
 <p>Tidycensus takes some getting used to because census data is very complicated, has many geographies, and many subsets (e.g.&nbsp;you could be asking about the age of a specific combination of race and income). Here, we’re going to learn two things: how to find some basic census data by tract, and how to extract it with <code>tidycensus</code>.</p>
-<p>First, we can use the <code>tidyverse</code> author’s “basic usage” page as a guide: <a href="https://walker-data.com/tidycensus/articles/basic-usage.html">https://walker-data.com/tidycensus/articles/basic-usage.html</a>. <strong>There are important directions for getting a Census API key, which must be added to your system</strong>. <code>tidycensus</code> makes it easy - once you get your key (free from the US census, see the link for instructions), you just add it to your system using the <code>census_api_key</code> function. You only have to do it once, it records the API key in your system files, and will find it automatically on subsequent projects.</p>
+<p>First, we can use the <code>tidycensus</code> author’s “basic usage” page as a guide: <a href="https://walker-data.com/tidycensus/articles/basic-usage.html">https://walker-data.com/tidycensus/articles/basic-usage.html</a>. <strong>There are important directions for getting a Census API key, which must be added to your system</strong>. <code>tidycensus</code> makes it easy - once you get your key (free from the US census, see the link for instructions), you just add it to your system using the <code>census_api_key</code> function: <code>census_api_key("YOUR KEY HERE", install = TRUE)</code>. Don’t skip the <code>install = TRUE</code> – without it the key only lives for the current session. With it, you only have to do it once: it writes the key to your <code>.Renviron</code>, and R will find it automatically on subsequent projects (restart R once after you install it).</p>
 <section id="finding-variables" class="level3">
 <h3 class="anchored" data-anchor-id="finding-variables">Finding variables</h3>
-<p>This is actually pretty tricky. The census asks many questions about demographics and other topics (house characteristics, earnings, health, etc.) and it can be hard to find exactly what you’re looking for. We’re going to seek some simple data: the average income, and the average “tenure” (how long someone has lived in their current residence) in each tract in Ingham County.</p>
+<p>This is actually pretty tricky. The census asks many questions about demographics and other topics (house characteristics, earnings, health, etc.) and it can be hard to find exactly what you’re looking for. We’re going to seek some simple data: the median income, and a measure of “tenure” (how long someone has lived in their current residence) in each tract in Ingham County.</p>
 <p><code>tidycensus</code> has some useful functions for finding variables, especially when combined with <code>str_detect</code>, which helps us find certain words or phrases (our RegExp skills come in handy!) in the census variable names. Variables are identified by an ID, not by name. “P013001”, for instance, is the median age in a given geography. All variables are not available at all geographic units: “P013001” is available for all state, county, tract, and block group, but not block. The link above shows all of the geographies available.</p>
-<p>To make things even more complicated, there is more than the decennial census. The American Community Survey (ACS) samples 1-5% of the population each year, and reports yearly but on a limited number of variables. We’ll use the ACS five-year (acs5) as it has more easily available data, even if it asks fewer questions. We’ll use the 2019 data, the most recently available.</p>
+<p>To make things even more complicated, there is more than the decennial census. The American Community Survey (ACS) samples 1-5% of the population each year, and reports yearly but on a limited number of variables. We’ll use the ACS five-year (acs5), which pools five years of that sample: the estimates are less current, but the one-year ACS isn’t published for anything as small as a census tract, so for our purposes it’s acs5 or nothing. (<code>get_acs</code> uses <code>survey = 'acs5'</code> by default, which is why you won’t see it in the calls below.) We’ll use the 2019 data, which is old enough that the numbers here won’t move under you.</p>
 <p>Let’s start by finding all variables that contain “income”. Variable descriptions have the variable name as well as the “concept”. We want to use “concept” to search for our term. Each concept has multiple variables with it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>allvars <span class="ot">=</span> <span class="fu">load_variables</span>(<span class="dv">2019</span>, <span class="st">'acs5'</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>incvars <span class="ot">=</span> allvars <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">str_detect</span>(concept, <span class="st">'MEDIAN INCOME'</span>))</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>incvars[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">str_detect</span>(concept, <span class="st">'MEDIAN INCOME'</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                <span class="sc">!</span><span class="fu">str_detect</span>(name, <span class="st">'PR_'</span>))  <span class="co"># skip the Puerto Rico copies</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>incvars[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 4
-  name         label                                           concept geography
-  &lt;chr&gt;        &lt;chr&gt;                                           &lt;chr&gt;   &lt;chr&gt;    
-1 B06011PR_001 Estimate!!Median income in the past 12 months … MEDIAN… &lt;NA&gt;     
-2 B06011PR_002 Estimate!!Median income in the past 12 months … MEDIAN… &lt;NA&gt;     
-3 B06011PR_003 Estimate!!Median income in the past 12 months … MEDIAN… &lt;NA&gt;     
-4 B06011PR_004 Estimate!!Median income in the past 12 months … MEDIAN… &lt;NA&gt;     
-5 B06011PR_005 Estimate!!Median income in the past 12 months … MEDIAN… &lt;NA&gt;     </code></pre>
+  name       label                                             concept geography
+  &lt;chr&gt;      &lt;chr&gt;                                             &lt;chr&gt;   &lt;chr&gt;    
+1 B06011_001 Estimate!!Median income in the past 12 months --… MEDIAN… tract    
+2 B06011_002 Estimate!!Median income in the past 12 months --… MEDIAN… tract    
+3 B06011_003 Estimate!!Median income in the past 12 months --… MEDIAN… tract    
+4 B06011_004 Estimate!!Median income in the past 12 months --… MEDIAN… tract    
+5 B06011_005 Estimate!!Median income in the past 12 months --… MEDIAN… tract    </code></pre>
 </div>
 </div>
 <p>We got lucky - the first <code>concept</code> is “MEDIAN INCOME IN THE PAST 12 MONTHS (IN 2019 INFLATION-ADJUSTED DOLLARS) BY PLACE OF BIRTH”. Now, we didn’t want the “place of birth” part (though…sounds interesting), but look at the first <code>label</code>. It is the <code>!!Total:</code>, meaning it is the median income when you combine all places of birth. The second label is <code>!!Total:!!Born in state of residence</code>, which is a <em>subset</em> of the total. Same with the next. <strong>We do not need to use the subsets in order to use the <code>!!Total</code> value</strong>. Note the <code>name</code> is <code>B06011_001</code>.</p>
@@ -687,18 +688,18 @@ First 10 features:
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>incvars[<span class="dv">6</span><span class="sc">:</span><span class="dv">15</span>,]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 4
-   name         label                                          concept geography
-   &lt;chr&gt;        &lt;chr&gt;                                          &lt;chr&gt;   &lt;chr&gt;    
- 1 B06011_001   Estimate!!Median income in the past 12 months… MEDIAN… tract    
- 2 B06011_002   Estimate!!Median income in the past 12 months… MEDIAN… tract    
- 3 B06011_003   Estimate!!Median income in the past 12 months… MEDIAN… tract    
- 4 B06011_004   Estimate!!Median income in the past 12 months… MEDIAN… tract    
- 5 B06011_005   Estimate!!Median income in the past 12 months… MEDIAN… tract    
- 6 B07011PR_001 Estimate!!Median income in the past 12 months… MEDIAN… &lt;NA&gt;     
- 7 B07011PR_002 Estimate!!Median income in the past 12 months… MEDIAN… &lt;NA&gt;     
- 8 B07011PR_003 Estimate!!Median income in the past 12 months… MEDIAN… &lt;NA&gt;     
- 9 B07011PR_004 Estimate!!Median income in the past 12 months… MEDIAN… &lt;NA&gt;     
-10 B07011PR_005 Estimate!!Median income in the past 12 months… MEDIAN… &lt;NA&gt;     </code></pre>
+   name       label                                            concept geography
+   &lt;chr&gt;      &lt;chr&gt;                                            &lt;chr&gt;   &lt;chr&gt;    
+ 1 B07011_001 Estimate!!Median income in the past 12 months -… MEDIAN… tract    
+ 2 B07011_002 Estimate!!Median income in the past 12 months -… MEDIAN… tract    
+ 3 B07011_003 Estimate!!Median income in the past 12 months -… MEDIAN… tract    
+ 4 B07011_004 Estimate!!Median income in the past 12 months -… MEDIAN… tract    
+ 5 B07011_005 Estimate!!Median income in the past 12 months -… MEDIAN… tract    
+ 6 B07011_006 Estimate!!Median income in the past 12 months -… MEDIAN… tract    
+ 7 B07411_001 Estimate!!Median income in the past 12 months -… MEDIAN… county   
+ 8 B07411_002 Estimate!!Median income in the past 12 months -… MEDIAN… county   
+ 9 B07411_003 Estimate!!Median income in the past 12 months -… MEDIAN… county   
+10 B07411_004 Estimate!!Median income in the past 12 months -… MEDIAN… county   </code></pre>
 </div>
 </div>
 <p>While the values of the subsets will be different, the <code>!!Total:</code> variable will be the same. So, we can really choose any <code>!!Total:</code> variable for any set of variables in a <code>concept</code> that fits our search.</p>
@@ -721,7 +722,7 @@ First 10 features:
 6 26065001000 Census Tract 10, Ingham County, Michigan medincome    30704  1982</code></pre>
 </div>
 </div>
-<p>Since the ACS is a sample, the variable is returned as the <code>estimate</code> along with a margin of error, which we’ll ignore for now. Note that the data is “tidy” for now - each row is one observation of one variable. If we have multiple variables, we’ll have to keep it tidy. We’ll compare the <code>B06011_001</code> with <code>B007011_001</code>:</p>
+<p>Since the ACS is a sample, the variable is returned as the <code>estimate</code> along with a margin of error, which we’ll ignore for now. Note that the data is “tidy” for now - each row is one observation of one variable. If we have multiple variables, we’ll have to keep it tidy. We’ll compare the <code>B06011_001</code> with <code>B07011_001</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ing.medincome <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">'tract'</span>,</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">county =</span> <span class="st">'065'</span>, <span class="at">state =</span> <span class="st">'MI'</span>,</span>
@@ -763,29 +764,30 @@ First 10 features:
 6 26065001000 Census Tract 10, In…      30704       1982       30704        1982</code></pre>
 </div>
 </div>
-<p>We still get to name the variables (so name wisely!). We get an <strong>E</strong>stimate and w <strong>M</strong>argin of error for each variable. We’ll mostly stick with the estimate and ignore the MoE.</p>
+<p>We still get to name the variables (so name wisely!). We get an <strong>E</strong>stimate and a <strong>M</strong>argin of error for each variable. We’ll mostly stick with the estimate and ignore the MoE.</p>
 </section>
 <section id="tidycensus-and-geographies" class="level3">
 <h3 class="anchored" data-anchor-id="tidycensus-and-geographies">Tidycensus and geographies</h3>
 <p>Now, let’s find the other variable we’re interested in - housing tenure. We’ll keep it simple and calculate the percentage of people in a tract who lived in the same house last year.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tenvars <span class="ot">=</span> allvars <span class="sc">%&gt;%</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">str_detect</span>(concept, <span class="st">'TENURE'</span>))</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>tenvars[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">str_detect</span>(concept, <span class="st">'TENURE'</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                <span class="sc">!</span><span class="fu">str_detect</span>(name, <span class="st">'PR_'</span>))  <span class="co"># skip the Puerto Rico copies</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>tenvars[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 4
-  name         label                                           concept geography
-  &lt;chr&gt;        &lt;chr&gt;                                           &lt;chr&gt;   &lt;chr&gt;    
-1 B07013PR_001 Estimate!!Total:                                GEOGRA… &lt;NA&gt;     
-2 B07013PR_002 Estimate!!Total:!!Householder lived in owner-o… GEOGRA… &lt;NA&gt;     
-3 B07013PR_003 Estimate!!Total:!!Householder lived in renter-… GEOGRA… &lt;NA&gt;     
-4 B07013PR_004 Estimate!!Total:!!Same house 1 year ago:        GEOGRA… &lt;NA&gt;     
-5 B07013PR_005 Estimate!!Total:!!Same house 1 year ago:!!Hous… GEOGRA… &lt;NA&gt;     </code></pre>
+  name       label                                             concept geography
+  &lt;chr&gt;      &lt;chr&gt;                                             &lt;chr&gt;   &lt;chr&gt;    
+1 B07013_001 Estimate!!Total:                                  GEOGRA… tract    
+2 B07013_002 Estimate!!Total:!!Householder lived in owner-occ… GEOGRA… tract    
+3 B07013_003 Estimate!!Total:!!Householder lived in renter-oc… GEOGRA… tract    
+4 B07013_004 Estimate!!Total:!!Same house 1 year ago:          GEOGRA… tract    
+5 B07013_005 Estimate!!Total:!!Same house 1 year ago:!!Househ… GEOGRA… tract    </code></pre>
 </div>
 </div>
-<p>Here, we get <code>B07013_001</code>, which is the total number of households, and <code>B07014_004</code>, which is the total number of households that lived in the same house a year ago. The ratio of these two tells us what percent didn’t move in the last year, which is what we want. We’re going to take the output in <code>wide</code> format so that we can calculate this ratio.</p>
-<p>Now, with variable numbers in hand, we can pretty easily get the attached geography of interest. We just add <code>geometry = TRUE</code> to the <code>get_acs</code> call. We’re also going to ask for <code>wide</code> format, which gives us on row per tract and a column for each variable.</p>
+<p>Here, we get <code>B07013_001</code>, which is the total number of people age 1 and over, and <code>B07013_004</code>, which is the number of those people who lived in the same house a year ago. The ratio of these two tells us what percent didn’t move in the last year, which is what we want. We’re going to take the output in <code>wide</code> format so that we can calculate this ratio.</p>
+<p>Now, with variable numbers in hand, we can pretty easily get the attached geography of interest. We just add <code>geometry = TRUE</code> to the <code>get_acs</code> call. We’re also going to ask for <code>wide</code> format, which gives us one row per tract and a column for each variable.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ing.tenure <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">'tract'</span>,</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">county =</span> <span class="st">'065'</span>, <span class="at">state =</span> <span class="st">'MI'</span>,</span>
@@ -883,7 +885,7 @@ First 10 features:
 <p>With the tract(s) set on geography, go up to the search box and type in the topic you’re interested in. It’ll draw from decennial census, the ACS, and more. You can view the data (for the set of selected geographies) by clicking on the results to make sure the numbers look like you’d expect. That will also let you see the crosstabs – some data will have further breakdowns (by race, by tenure, etc.) and the crosstabs will show you what those breakdowns are, and if there is a “topline” number that serves your purpose.</p>
 <p>Once you find the series you want, you’re getting close to being done. The variable code will be on the results (you’ll see “B….” or “H…” or “S….”). Note that <strong>and</strong> the source (ACS, decennial) and the year(s) you want. What’s missing, though? The <code>_001</code> suffix! Frustrating, I know.</p>
 <p>To find the exact variable you need, you’ll need what’s called a “table shell”. You can <a href="https://www.census.gov/programs-surveys/acs/technical-documentation/table-shells.html">find them all here</a>. Download the “table shells for all detailed data” for the data series and year you need (ACS 2021, decennial 2020, etc.) and search using your variable name. That’ll take you to the complete crosstabs available for that variable. Those are the variables (<a href="https://www.census.gov/programs-surveys/acs/data/data-tables/table-ids-explained.html">“table ID’s” in census terms</a>) you’ll need to feed to <code>tidycensus</code>.</p>
-<p>Reading the table shells and translating them to the table ID for <code>tidycensus</code> is actually easy. The table number will tell you the start (so something like <code>S2504</code>), then an underscore <code>_</code>, then the column number prefixed with <code>C</code>, then another <code>_</code>, then the line number. The column number refers to which set of columns you want to download (the estimate and the margin count as one), and the line number refers to which crosstab you want. So, <code>S2504_C04_034</code> gives you table <code>S2504</code> (“PHYSICAL HOUSING CHARACTERISTICS FOR OCCUPIED HOUSING UNITS”), the 4th set of columns (Percent, owner-occupied housing units), and the 33rd line (uses electricity for heating). Use the table ID in <code>tidycensus</code>, you can name each of them as you see fit, take whichever ones you need (just the topline, or all of the crosstabs – it’s up to you).</p>
+<p>Reading the table shells and translating them to the table ID for <code>tidycensus</code> is actually easy. The table number will tell you the start (so something like <code>S2504</code>), then an underscore <code>_</code>, then the column number prefixed with <code>C</code>, then another <code>_</code>, then the line number. The column number refers to which set of columns you want to download (the estimate and the margin count as one), and the line number refers to which crosstab you want. So, <code>S2504_C04_034</code> gives you table <code>S2504</code> (“PHYSICAL HOUSING CHARACTERISTICS FOR OCCUPIED HOUSING UNITS”), the 4th set of columns (Percent, owner-occupied housing units), and the 34th line (uses electricity for heating). Use the table ID in <code>tidycensus</code>, you can name each of them as you see fit, take whichever ones you need (just the topline, or all of the crosstabs – it’s up to you).</p>
 <p>The tables on <a href="https://data.census.gov">data.census.gov</a> are the same as the table shells, so you can use that as well, but it doesn’t tell you the line numbers.</p>
 </section>
 </section>

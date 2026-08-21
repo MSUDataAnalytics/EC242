@@ -582,6 +582,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We want to use the <code>wooldridge::wage2</code> data on wages to generate and tune a non-parametric model of wages using a regression tree (or decision tree, same thing). Use <code>?wage2</code> (after you’ve loaded the <code>wooldridge</code> package) to see the data dictionary.</p>
 <p>We’ve learned that our RMSE calculations have a hard time with <code>NA</code>s in the data. So let’s use the <code>skim</code> output to tell us which variables have too many <code>NA</code> (see <code>n_missing</code>) values and should be dropped. Let’s set a high bar here, and drop anything that isn’t 100% complete. Of course, there are other things we can do (impute the <code>NA</code>s, or make dummies for them), but for now, it’s easiest to drop them.</p>
 <p>Remember, <code>skim()</code> is for your own exploration, it’s not something that you should include in your output.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(wage2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The only three variables that aren’t 100% complete are <code>brthord</code>, <code>meduc</code>, and <code>feduc</code>, so those are the ones we drop:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wage_clean <span class="ot">=</span> wage2 <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>brthord, <span class="sc">-</span>meduc, <span class="sc">-</span>feduc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>Once cleaned, we should be able to use <code>rpart(wage ~ ., data = wage_clean)</code> and not have any <code>NA</code>s in our prediction. That’s what we’ll do in our first Breakout.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -595,22 +603,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <section id="predicting-wage" class="level3">
 <h3 class="anchored" data-anchor-id="predicting-wage">Predicting wage</h3>
-<p>I’m going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (<code>caret</code>, <code>rpart</code>, and <code>rpart.plot</code>, plus <code>skimr</code>). Copy the <code>rmse</code> and <code>get_rmse</code> code into a blank R script (you don’t have to use RMarkdown, just use a blank R script and run from there). You’ll also want to have these functions from last week loaded:</p>
+<p>I’m going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (<code>rpart</code> and <code>rpart.plot</code>, plus <code>dplyr</code> and <code>skimr</code>). Copy the <code>rmse</code> and <code>get_rmse</code> code into a blank R script (you don’t have to use RMarkdown, just use a blank R script and run from there). You’ll also want to have these functions from last week loaded:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">=</span> <span class="cf">function</span>(actual, predicted) {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((actual <span class="sc">-</span> predicted) <span class="sc">^</span> <span class="dv">2</span>))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">=</span> <span class="cf">function</span>(actual, predicted) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((actual <span class="sc">-</span> predicted) <span class="sc">^</span> <span class="dv">2</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>get_rmse <span class="ot">=</span> <span class="cf">function</span>(model, data, response) {</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rmse</span>(<span class="at">actual =</span> <span class="fu">subset</span>(data, <span class="at">select =</span> response, <span class="at">drop =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">predicted =</span> <span class="fu">predict</span>(model, data))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>get_rmse <span class="ot">=</span> <span class="cf">function</span>(model, data, response) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rmse</span>(<span class="at">actual =</span> <span class="fu">subset</span>(data, <span class="at">select =</span> response, <span class="at">drop =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">predicted =</span> <span class="fu">predict</span>(model, data))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For the first breakout, all I want you to do is the following. We are trying to predict <code>wage</code> for this exercise:</p>
 <ul>
 <li>Estimate a default regression tree on <code>wage_clean</code> using the default parameters (use the whole dataset for now, we’ll train-test on the problem set).</li>
-<li>Use <code>rpart.plot</code> to vizualize your regression tree, and <em>talk through the interpretation</em> with each other.</li>
+<li>Use <code>rpart.plot</code> to visualize your regression tree, and <em>talk through the interpretation</em> with each other.</li>
 <li>Calculate the RMSE for your regression tree.</li>
 </ul>
 <p>We’ll spend about 5 minutes on this. Remember, you can use <code>?wage2</code> to see the variable names. Make sure you know what variables are showing up in the plot and explaining <code>wage</code> in your model. You may find something odd at first and may need to drop more variables…</p>
@@ -618,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="breakout-1-discussion" class="level3">
 <h3 class="anchored" data-anchor-id="breakout-1-discussion">Breakout #1 discussion</h3>
-<p>Let’s choose a group to share their plot and discuss the results. Use our sharing zoom link using the button up above.</p>
+<p>Let’s choose a group to share their plot and discuss the results. Use our sharing zoom link using the button up above. The odd thing you should have hit: <code>lwage</code> is just the log of <code>wage</code>, so the tree splits on it and nothing else, and predicts <code>wage</code> nearly perfectly. Drop it (<code>wage_clean$lwage = NULL</code>) and re-run before we move on – we’ll keep using <code>wage_clean</code> for the rest of today.</p>
 </section>
 </div>
 </div>
@@ -628,14 +636,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Once we have a list of things we want to iterate on, <code>lapply</code> lets us do something to each element of the list, and then returns a list of results (of the same length as the input). The arguments of <code>lapply</code> are (1) the list we want to iterate over, (2) the function we want to use, and, when needed, (3) other arguments to pass to the function (that are the same for every element in the list). The list we want to iterate over might be a list of models (as we do when we want to use <code>get_rmse</code> on each model), or it might be a list (or a vector that can be coerced to a list) of tuning parameters.</p>
 <p>Let’s say we wanted to repeat our <strong>TRY IT</strong> with the <code>cp</code> values of <code>c(0, .01, .02, .03)</code>. We could make a list of those values, and use <code>lapply</code> to run <code>rpart()</code> and use each of the 4 values of <code>cp</code>. One way we could try doing this would be something like:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">03</span>), rpart, <span class="at">formula =</span> wage <span class="sc">~</span> ., <span class="at">data =</span> wage_clean, <span class="at">cp =</span> ???)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">03</span>), rpart, <span class="at">formula =</span> wage <span class="sc">~</span> ., <span class="at">data =</span> wage_clean, <span class="at">cp =</span> ???)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The only problem here is that the first argument of <code>rpart</code> is not the <code>cp</code> parameter, so we can’t just pass it in additional arguments.</p>
 <p>Instead, we previously introduced the <em>anonymous function</em> in <code>lapply</code> as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, <span class="dv">03</span>), <span class="cf">function</span>(x){</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(wage <span class="sc">~</span> ., <span class="at">data =</span> wage_clean, <span class="at">cp =</span> x)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">03</span>), <span class="cf">function</span>(x){</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(wage <span class="sc">~</span> ., <span class="at">data =</span> wage_clean, <span class="at">cp =</span> x)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Well, it gets us the right answer, but whaaaaaat is going on? Curly brackets? <code>x</code>?</p>
 <p>This is an “anonymous function”, or a function created on the fly. Here’s how it works in <code>lapply</code>:</p>
@@ -643,12 +651,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>The first argument is the list you want to do something to (same as before)</li>
 <li>The second argument would usually be the function you want to apply, like <code>get_rmse</code></li>
 <li>Here, we’re going to ask R to <em>temporarily</em> create a function that takes one argument, <code>x</code>.</li>
-<li><code>x</code> is going to be each list element in <code>myList</code>.</li>
+<li><code>x</code> is going to be each element of the vector you’re iterating over — here, each value of <code>cp</code>. (<code>myList</code> is what comes <em>out</em> of <code>lapply</code>, not what goes in.)</li>
 <li>Think of it as a loop:
 <ul>
-<li>Take the first element of <code>myList</code> and refer to it as <code>x</code>. Run the function’s code.</li>
-<li>Then it’ll take the second element of <code>myList</code> and refer to it as <code>x</code> and run the function’s code.</li>
-<li>Repeat until all elements of <code>x</code> have been used.</li>
+<li>Take the first element of <code>c(0, .01, .02, .03)</code> and refer to it as <code>x</code>. Run the function’s code.</li>
+<li>Then it’ll take the second element and refer to it as <code>x</code> and run the function’s code.</li>
+<li>Repeat until every element has been used.</li>
 </ul></li>
 <li>Once the anonymous function has been applied to <code>x</code>, the result is passed back and saved as the new element of the list output, always in the same position from where the <code>x</code> was taken.</li>
 </ul>
@@ -662,14 +670,14 @@ myList[[2]] = rpart(wage ~ ., data = wage_clean, cp = x)
 
 x = 0.02
 myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)</code></pre>
-<p>As long as every entry in <code>myList</code> is a valid value of <code>cp</code>, then you’ll get the results in a list. Then, <code>unlist</code> just coerces the list to a vector. This is also the same way we get the RMSE, but instead of the anonymous function, we write one out and use that.</p>
+<p>As long as every entry in the vector you iterate over is a valid value of <code>cp</code>, then you’ll get the results in a list — here, a list of four fitted trees, not a list of <code>cp</code> values. When the list holds single numbers instead of models, <code>unlist</code> coerces it to a vector. This is also the same way we get the RMSE, but instead of the anonymous function, we write one out and use that.</p>
 <p>If you had a list of <code>rpart</code> objects and wanted to, say, extract the <code>cp</code> tuning parameter from each, you could also use an anonymous function. Each <code>rpart</code> object has a list called <code>control</code> that includes all of the control (tuning) parameters used in its estimation:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cpList <span class="ot">=</span> <span class="fu">lapply</span>(myList, <span class="cf">function</span>(y){</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  y<span class="sc">$</span>control<span class="sc">$</span>cp</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(cpList)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cpList <span class="ot">=</span> <span class="fu">lapply</span>(myList, <span class="cf">function</span>(y){</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  y<span class="sc">$</span>control<span class="sc">$</span>cp</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(cpList)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -683,7 +691,7 @@ myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)</code></pre>
 <div class="callout-body-container callout-body">
 <section id="breakout-2" class="level3">
 <h3 class="anchored" data-anchor-id="breakout-2">Breakout #2</h3>
-<p>Using the loop method or the <code>lapply</code> method, generate 10 regression trees to explain <code>wage</code> in <code>wage_clean</code>. You can iterate through values of <code>cp</code>, the complexity parameter, <strong>or</strong> <code>minsplit</code>, the minimum # of points that have to be in each split.</p>
+<p>Using the loop method or the <code>lapply</code> method, generate 10 regression trees to explain <code>wage</code> in <code>wage_clean</code>. You can iterate through values of <code>cp</code>, the complexity parameter, <strong>or</strong> <code>minsplit</code>, the minimum # of points a node has to have before <code>rpart</code> will even try to split it.</p>
 <p><strong>10 minutes</strong></p>
 </section>
 <section id="breakout-2-discussion" class="level3">
@@ -703,8 +711,8 @@ myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)</code></pre>
 </div>
 <section id="breakout-3-if-time" class="level3 callout-body-container callout-body">
 <h3 class="anchored" data-anchor-id="breakout-3-if-time">Breakout #3 (if time)</h3>
-<p>Use <code>lapply</code> to get a list of your RMSE’s (one for each of your models). The anonymous function may come in handy here (though it’s not necessary). Note that we are not yet splitting into <code>test</code> and <code>train</code> (which you <strong>will</strong> need to do on your lab assignment).</p>
-<p>Once you have your list, <strong>create the plot of RMSEs</strong> similar to the one we looked at in Content this week. Note: you can use <code>unlist(myRMSE)</code> to get a numeric vector of the RMSE’s (as long as all of the elements in <code>myRMSE</code> are numeric). Then, it’s a matter of plotting either with base <code>plot</code> or with <code>ggplot</code> (if you use <code>ggplot</code> you’ll have to <code>tidy</code> the RMSE by adding the index column or naming the x-axis).</p>
+<p>Use <code>lapply</code> to get a list of your RMSE’s (one for each of your models). The anonymous function may come in handy here (though it’s not necessary). Note that we are not yet splitting into <code>test</code> and <code>train</code> (which you <strong>will</strong> need to do on your lab assignment). That matters for what the plot looks like: because these are RMSEs on the same data we fit, they’ll keep falling as the trees get bigger (as <code>cp</code> goes to zero, or as <code>minsplit</code> shrinks), so there’s no bottom of the U to find here. The U only shows up once the RMSE is calculated on data the tree hasn’t seen.</p>
+<p>Once you have your list, <strong>create the plot of RMSEs</strong> similar to the one we looked at in Content this week. Note: you can use <code>unlist(myRMSE)</code> to get a numeric vector of the RMSE’s (as long as all of the elements in <code>myRMSE</code> are numeric). Then, it’s a matter of plotting either with base <code>plot</code> or with <code>ggplot</code> (if you use <code>ggplot</code> you’ll have to put the RMSEs in a data frame first, with a second column holding the <code>cp</code> or <code>minsplit</code> value that goes on the x-axis).</p>
 </section>
 </div>
 

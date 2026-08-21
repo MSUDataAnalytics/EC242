@@ -642,7 +642,7 @@ window.Quarto = {
 <p>In this section, we introduce random variables and their properties starting with their application to games of chance. We then describe some of the events surrounding the financial crisis of 2007-2008<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> using probability theory. This financial crisis was in part caused by underestimating the risk of certain securities<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> sold by financial institutions. Specifically, the risks of mortgage-backed securities (MBS) and collateralized debt obligations (CDO) were grossly underestimated. These assets were sold at prices that assumed most homeowners would make their monthly payments, and the probability of this not occurring was calculated as being low. A combination of factors resulted in many more defaults than were expected, which led to a price crash of these securities. As a consequence, banks lost so much money that they needed government bailouts to avoid closing down completely.</p>
 <section id="definition-of-random-variables" class="level2">
 <h2 class="anchored" data-anchor-id="definition-of-random-variables">Definition of Random variables</h2>
-<p>Random variables are numeric outcomes resulting from random processes. We can easily generate random variables using some of the simple examples we have shown. For example, define <code>X</code> to be 1 if a bead is blue and red otherwise:</p>
+<p>Random variables are numeric outcomes resulting from random processes. We can easily generate random variables using some of the simple examples we have shown. For example, define <code>X</code> to be 1 if a bead is blue and 0 otherwise:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>beads <span class="ot">&lt;-</span> <span class="fu">rep</span>( <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">sample</span>(beads, <span class="dv">1</span>) <span class="sc">==</span> <span class="st">"blue"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -745,8 +745,18 @@ window.Quarto = {
 <p>A random variable <span class="math inline">\(X\)</span> has a distribution <strong>function</strong>. To define this, we do not need a list of numbers. It is a theoretical concept. In this case, we define the distribution as the <span class="math inline">\(F(a)\)</span> that answers the question: what is the probability that <span class="math inline">\(X\)</span> is less than or equal to <span class="math inline">\(a\)</span>? There is no list of numbers.</p>
 <p>However, if <span class="math inline">\(X\)</span> is defined by drawing from an urn with numbers or colors in it, then there is a list: the list of numbers or colors inside the urn. In this case, the distribution of that list (of numbers or colors inside the urn) is the probability distribution of <span class="math inline">\(X\)</span> and the average and standard deviation of that list are the expected value and standard error of the random variable.</p>
 <p>Another way to think about it that does not involve an urn is to run a Monte Carlo simulation and generate a very large list of outcomes of <span class="math inline">\(X\)</span>. These outcomes are a list of numbers. The distribution of this list will be a very good approximation of the probability distribution of <span class="math inline">\(X\)</span>. The longer the list, the better the approximation. But it will always be an approximation - the actual contents of the underlying distribution function may not be knowable. Still, the average and standard deviation of this list will approximate the expected value and standard error of the random variable.</p>
-<div class="callout-info">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Often, we’d like to know about the probability distribution (the distribution function), but we only have a sample. This is the fundamental challenge of statistical inference: what can we learn about the true distribution function using only a sample? If we can’t learn the distribution function itself, can we at least reject a hypothetical statement about the distribution function?</p>
+</div>
 </div>
 </section>
 <section id="notation-for-random-variables" class="level2">
@@ -790,7 +800,7 @@ window.Quarto = {
 </div>
 </div>
 <p>To see this, notice that if there are <span class="math inline">\(n\)</span> beads in the urn, then we have <span class="math inline">\(np\)</span> <span class="math inline">\(a\)</span>s and <span class="math inline">\(n(1-p)\)</span> <span class="math inline">\(b\)</span>s and because the average is the sum, <span class="math inline">\(n\times a \times p + n\times b \times (1-p)\)</span>, divided by the total <span class="math inline">\(n\)</span>, we get that the average is <span class="math inline">\(ap + b(1-p)\)</span>.</p>
-<p>Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of the sum of draws, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the <em>expected value of the sum of the draws</em> is <span class="math inline">\(E[nX] = nE[X]\)</span> when <span class="math inline">\(n\)</span> is a constant:</p>
+<p>Now the reason we define the expected value is because this mathematical definition turns out to be useful for approximating the probability distributions of the sum of draws, which then is useful for describing the distribution of averages and proportions. The first useful fact is that the <em>expected value of the sum of the draws</em> is <span class="math inline">\(E[X_1 + X_2 + \dots + X_n] = nE[X]\)</span> when the <span class="math inline">\(n\)</span> draws all come from the same urn:</p>
 <p><span class="math display">\[
 \mbox{}\mbox{number of draws } \times \mbox{ average of the numbers in the urn}
 \]</span></p>
@@ -833,7 +843,7 @@ window.Quarto = {
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((x<span class="sc">-</span>m)<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The SD is the the square root of the sample variance, and the sample variance is the square of the sample SD. Using mathematical notation we write:</p>
+<p>The SD is the square root of the variance, and the variance is the square of the SD. Using mathematical notation we write:</p>
 <p><span class="math display">\[
 \mu = \frac{1}{n} \sum_{i=1}^n x_i \\
 \]</span> and <span class="math display">\[
@@ -850,7 +860,7 @@ window.Quarto = {
 <pre><code>[1] -0.001942661</code></pre>
 </div>
 </div>
-<p>This is because the <code>sd</code> function R does not return the <code>sd</code> of the list, but rather uses a formula that estimates standard deviations of a population from a random sample <span class="math inline">\(X_1, \dots, X_N\)</span> which, for reasons not discussed here, divide the sum of squares by the <span class="math inline">\(N-1\)</span>.</p>
+<p>This is because the <code>sd</code> function in R does not return the <code>sd</code> of the list, but rather uses a formula that estimates the standard deviation of a population from a random sample <span class="math inline">\(X_1, \dots, X_N\)</span> which, for reasons not discussed here, divides the sum of squares by <span class="math inline">\(N-1\)</span>.</p>
 <p><span class="math display">\[
 \bar{X} = \frac{1}{N} \sum_{i=1}^N X_i, \,\,\,\,
 s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
@@ -860,7 +870,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>s<span class="sc">-</span><span class="fu">sd</span>(x)<span class="sc">*</span><span class="fu">sqrt</span>((n<span class="dv">-1</span>) <span class="sc">/</span> n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 5.329071e-15</code></pre>
 </div>
 </div>
 <p>For all the theory applications discussed here, you need to compute the actual standard deviation as defined:</p>
@@ -963,7 +973,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <p><span class="math display">\[
 \mbox{SE}[X_1+X_2+\dots+X_n] = \sqrt{\mbox{SE}[X_1]^2 + \mbox{SE}[X_2]^2+\dots+\mbox{SE}[X_n]^2  }
 \]</span></p>
-<p>The square of the standard error is referred to as the <em>variance</em> in statistical textbooks. Note that this particular property is not as intuitive as the previous three and more in depth explanations can be found in statistics textbooks.</p>
+<p>The square of the standard error is referred to as the <em>variance</em> in statistical textbooks. Note that this particular property is not as intuitive as the previous two and more in depth explanations can be found in statistics textbooks.</p>
 <p>4. The standard error of a non-random constant times a random variable is the non-random constant times the random variable’s standard error. As with the expectation: <span class="math display">\[
 \mbox{SE}[aX] =  a \times \mbox{SE}[X]
 \]</span></p>
@@ -998,7 +1008,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <blockquote class="blockquote">
 <p>“Trump predicts ‘very good chance’ of China trade deal” – CNN</p>
 </blockquote>
-<p>Yet people don’t have a good sense of what these things mean. Uncertainty is key to data analytics: if we were certain of things, A study in the 1960s explored the perception of probabilistic words like these among NATO officers. A more modern replication of this found the following basic pattern:</p>
+<p>Yet people don’t have a good sense of what these things mean. Uncertainty is key to data analytics: if we were certain of things, we wouldn’t need any of this. A study in the 1960s explored the perception of probabilistic words like these among NATO officers. A more modern replication of this found the following basic pattern:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1008,7 +1018,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 </div>
 </div>
-<p>A deep, basic fact about humans is that we struggle to understand probabilities. But visualizing things can help. The graphic above shows the uncertainty about uncertainty (very meta). We can convey all manner of uncertainty with clever graphics. Today’s practical example works through some of the myriad of ways to visualize variable data. We’ll cover some territory that we’ve already hit, in hopes of locking in some key concepts.</p>
+<p>A deep, basic fact about humans is that we struggle to understand probabilities. But visualizing things can help. The graphic above shows the uncertainty about uncertainty (very meta). We can convey all manner of uncertainty with clever graphics. The rest of today’s example is about where that uncertainty comes from and how we put a number on it. We’ll cover some territory that we’ve already hit, in hopes of locking in some key concepts.</p>
 </section>
 </section>
 </section>
@@ -1024,13 +1034,13 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <p>Real Clear Politics<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> is an example of a news aggregator that organizes and publishes poll results. For example, they present the following poll results reporting estimates of the popular vote for the 2016 presidential election<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>:</p>
 <!-- (Source: [Real Clear Politics](https://www.realclearpolitics.com/epolls/2016/president/us/general_election_trump_vs_clinton-5491.html)) -->
 <p>Although in the United States the popular vote does not determine the result of the presidential election, we will use it as an illustrative and simple example of how well polls work. Forecasting the election is a more complex process since it involves combining results from 50 states and DC and we will go into some detail on this later.</p>
-<p>Let’s make some observations about the table above. First, note that different polls, all taken days before the election, report a different <em>spread</em>: the estimated difference between support for the two candidates. Notice also that the reported spreads hover around what ended up being the actual result: Clinton won the popular vote by 2.1%. We also see a column titled <strong>MoE</strong> which stands for <em>margin of error</em>.</p>
+<p>Let’s make some observations about the polls Real Clear Politics collected in the week before that election. First, note that different polls, all taken days before the election, report a different <em>spread</em>: the estimated difference between support for the two candidates. Notice also that the reported spreads hover around what ended up being the actual result: Clinton won the popular vote by 2.1%. Each poll also reports a number labeled <strong>MoE</strong>, which stands for <em>margin of error</em>.</p>
 <p>In this example, we will show how the probability concepts we learned in the previous content can be applied to develop the statistical approaches that make polls an effective tool. We will learn the statistical concepts necessary to define <em>estimates</em> and <em>margins of errors</em>, and show how we can use these to forecast final results relatively well and also provide an estimate of the precision of our forecast. Once we learn this, we will be able to understand two concepts that are ubiquitous in data science: <em>confidence intervals</em> and <em>p-values</em>. Finally, to understand probabilistic statements about the probability of a candidate winning, we will have to learn about Bayesian modeling. In the final sections, we put it all together to recreate the simplified version of the FiveThirtyEight model and apply it to the 2016 election.</p>
 <p>We start by connecting probability theory to the task of using polls to learn about a population.</p>
 <section id="the-sampling-model-for-polls" class="level3">
 <h3 class="anchored" data-anchor-id="the-sampling-model-for-polls">The sampling model for polls</h3>
 <p>To help us understand the connection between polls and what we have learned, let’s construct a similar situation to the one pollsters face. To mimic the challenge real pollsters face in terms of competing with other pollsters for media attention, we will use an urn full of beads to represent voters and pretend we are competing for a $25 dollar prize. The challenge is to guess the spread between the proportion of blue and red beads in this hypothetical urn.</p>
-<p>Before making a prediction, you can take a sample (with replacement) from the urn. To mimic the fact that running polls is expensive, it costs you 10 cents per each bead you sample. Therefore, if your sample size is 250, and you win, you will break even since you will pay \$25 to collect your \$25 prize. Your entry into the competition can be an interval. If the interval you submit contains the true proportion, you get half what you paid and pass to the second phase of the competition. In the second phase, the entry with the smallest interval is selected as the winner.</p>
+<p>Before making a prediction, you can take a sample (with replacement) from the urn. To mimic the fact that running polls is expensive, it costs you 10 cents per each bead you sample. Therefore, if your sample size is 250, and you win, you will break even since you will pay $25 to collect your $25 prize. Your entry into the competition can be an interval. If the interval you submit contains the true proportion, you get half what you paid and pass to the second phase of the competition. In the second phase, the entry with the smallest interval is selected as the winner.</p>
 <p>The <strong>dslabs</strong> package includes a function that shows a random draw from this urn:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -1102,7 +1112,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <p><span class="math display">\[
 \mbox{E}(\bar{X}) = p
 \]</span></p>
-<p>We can also use what we learned to figure out the standard error: the standard error of the sum is <span class="math inline">\(\sqrt{N} \times\)</span> the standard deviation of the urn. Can we compute the standard error of the urn? We learned a formula that tells us that it is <span class="math inline">\((1-0) \sqrt{p (1-p)}\)</span> = <span class="math inline">\(\sqrt{p (1-p)}\)</span>. Because we are dividing the sum by <span class="math inline">\(N\)</span>, we arrive at the following formula for the standard error of the average:</p>
+<p>We can also use what we learned to figure out the standard error: the standard error of the sum is <span class="math inline">\(\sqrt{N} \times\)</span> the standard deviation of the urn. Can we compute the standard deviation of the urn? We learned a formula that tells us that it is <span class="math inline">\((1-0) \sqrt{p (1-p)}\)</span> = <span class="math inline">\(\sqrt{p (1-p)}\)</span>. Because we are dividing the sum by <span class="math inline">\(N\)</span>, we arrive at the following formula for the standard error of the average:</p>
 <p><span class="math display">\[
 \mbox{SE}(\bar{X}) = \sqrt{p(1-p)/N}
 \]</span></p>
@@ -1118,7 +1128,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 </div>
 </div>
-<p>From the plot we see that we would need a poll of over 10,000 people to get the standard error that low. We rarely see polls of this size due in part to costs. From the Real Clear Politics table, we learn that the sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and <span class="math inline">\(p=0.51\)</span>, the standard error is:</p>
+<p>From the plot we see that we would need a poll of about 2,500 people to get the standard error that low – and about 10,000 to get the <em>margin of error</em> (roughly two standard errors) down to 1%. We rarely see polls of that size due in part to costs. From the Real Clear Politics table, we learn that the sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and <span class="math inline">\(p=0.51\)</span>, the standard error is:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1201,7 +1211,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 <p>Hence, there is a 95% probability that <span class="math inline">\(\bar{X}\)</span> will be within <span class="math inline">\(1.96\times \hat{SE}(\bar{X})\)</span>, in our case within about 0.2, of <span class="math inline">\(p\)</span>. Note that 95% is somewhat of an arbitrary choice and sometimes other percentages are used, but it is the most commonly used value to define margin of error. We often round 1.96 up to 2 for simplicity of presentation.</p>
 <p>In summary, the CLT tells us that our poll based on a sample size of <span class="math inline">\(25\)</span> is not very useful. We don’t really learn much when the margin of error is this large. All we can really say is that the popular vote will not be won by a large margin. This is why pollsters tend to use larger sample sizes.</p>
-<p>From the table above, we see that typical sample sizes range from 700 to 3500. To see how this gives us a much more practical result, notice that if we had obtained a <span class="math inline">\(\bar{X}\)</span>=0.48 with a sample size of 2,000, our standard error <span class="math inline">\(\hat{\mbox{SE}}(\bar{X})\)</span> would have been 0.0111714. So our result is an estimate of <code>48</code>% with a margin of error of 2%. In this case, the result is much more informative and would make us think that there are more red balls than blue. Keep in mind, however, that this is hypothetical. We did not take a poll of 2,000 since we don’t want to ruin the competition.</p>
+<p>As noted above, typical sample sizes range from 500 to 3,500. To see how this gives us a much more practical result, notice that if we had obtained a <span class="math inline">\(\bar{X}\)</span>=0.48 with a sample size of 2,000, our standard error <span class="math inline">\(\hat{\mbox{SE}}(\bar{X})\)</span> would have been 0.0111714. So our result is an estimate of <code>48</code>% with a margin of error of 2%. In this case, the result is much more informative and would make us think that there are more red balls than blue. Keep in mind, however, that this is hypothetical. We did not take a poll of 2,000 since we don’t want to ruin the competition.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1230,7 +1240,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">size =</span> N, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">-</span>p, p))</span>
 <span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>x_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>In this particular sample, our estimate is <code>x_hat</code>. We can use that code to do a Monte Carlo simulation:</p>
+<p>In this particular sample, our estimate is 0.431. We can use that code to do a Monte Carlo simulation:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>x_hat <span class="ot">&lt;-</span> <span class="fu">replicate</span>(B, {</span>

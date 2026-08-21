@@ -24,7 +24,13 @@ We've learned that our RMSE calculations have a hard time with `NA`s in the data
 
 Remember, `skim()` is for your own exploration, it's not something that you should include in your output. 
 
-```{r, echo=F, include=T}
+```{r, eval=F}
+skim(wage2)
+```
+
+The only three variables that aren't 100% complete are `brthord`, `meduc`, and `feduc`, so those are the ones we drop:
+
+```{r, echo=T, include=T}
 wage_clean = wage2 %>%
   dplyr::select(-brthord, -meduc, -feduc)
 ```
@@ -37,7 +43,7 @@ Once cleaned, we should be able to use `rpart(wage ~ ., data = wage_clean)` and 
 
 ### Predicting wage
 
-I'm going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (`caret`, `rpart`, and `rpart.plot`, plus `skimr`). Copy the `rmse` and `get_rmse` code into a blank R script (you don't have to use RMarkdown, just use a blank R script and run from there). You'll also want to have these functions from last week loaded:
+I'm going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (`rpart` and `rpart.plot`, plus `dplyr` and `skimr`). Copy the `rmse` and `get_rmse` code into a blank R script (you don't have to use RMarkdown, just use a blank R script and run from there). You'll also want to have these functions from last week loaded:
 
 ```{r}
 rmse = function(actual, predicted) {
@@ -56,7 +62,7 @@ get_rmse = function(model, data, response) {
 For the first breakout, all I want you to do is the following. We are trying to predict `wage` for this exercise:
 
 - Estimate a default regression tree on `wage_clean` using the default parameters (use the whole dataset for now, we'll train-test on the problem set). 
-- Use `rpart.plot` to vizualize your regression tree, and *talk through the interpretation* with each other. 
+- Use `rpart.plot` to visualize your regression tree, and *talk through the interpretation* with each other. 
 - Calculate the RMSE for your regression tree.
 
 We'll spend about 5 minutes on this. Remember, you can use `?wage2` to see the variable names. Make sure you know what variables are showing up in the plot and explaining `wage` in your model. You may find something odd at first and may need to drop more variables...
@@ -73,7 +79,7 @@ predict(onetree, newdata = data.frame(
 **5 minutes**
 
 ### Breakout #1 discussion
-Let's choose a group to share their plot and discuss the results. Use our sharing zoom link using the button up above.
+Let's choose a group to share their plot and discuss the results. Use our sharing zoom link using the button up above. The odd thing you should have hit: `lwage` is just the log of `wage`, so the tree splits on it and nothing else, and predicts `wage` nearly perfectly. Drop it (`wage_clean$lwage = NULL`) and re-run before we move on -- we'll keep using `wage_clean` for the rest of today.
 
 :::
 
@@ -95,7 +101,7 @@ The only problem here is that the first argument of `rpart` is not the `cp` para
 Instead, we previously introduced the *anonymous function* in `lapply` as follows:
 
 ```{r, eval = F}
-myList = lapply(c(0, .01, .02, 03), function(x){
+myList = lapply(c(0, .01, .02, .03), function(x){
   rpart(wage ~ ., data = wage_clean, cp = x)
 })
 ```
@@ -107,11 +113,11 @@ This is an "anonymous function", or a function created on the fly. Here's how it
 - The first argument is the list you want to do something to (same as before)
 - The second argument would usually be the function you want to apply, like `get_rmse`
 - Here, we're going to ask R to *temporarily* create a function that takes one argument, `x`.
-- `x` is going to be each list element in `myList`. 
+- `x` is going to be each element of the vector you're iterating over — here, each value of `cp`. (`myList` is what comes *out* of `lapply`, not what goes in.)
 - Think of it as a loop: 
-  - Take the first element of `myList` and refer to it as `x`. Run the function's code.
-  - Then it'll take the second element of `myList` and refer to it as `x` and run the function's code.
-  - Repeat until all elements of `x` have been used.
+  - Take the first element of `c(0, .01, .02, .03)` and refer to it as `x`. Run the function's code.
+  - Then it'll take the second element and refer to it as `x` and run the function's code.
+  - Repeat until every element has been used.
 - Once the anonymous function has been applied to `x`, the result is passed back and saved as the new element of the list output, always in the same position from where the `x` was taken.
 
 The curly brackets are the temporary function you want to create.
@@ -130,7 +136,7 @@ x = 0.02
 myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)
 ````
 
-As long as every entry in `myList` is a valid value of `cp`, then you'll get the results in a list.  Then, `unlist` just coerces the list to a vector. This is also the same way we get the RMSE, but instead of the anonymous function, we write one out and use that.
+As long as every entry in the vector you iterate over is a valid value of `cp`, then you'll get the results in a list — here, a list of four fitted trees, not a list of `cp` values.  When the list holds single numbers instead of models, `unlist` coerces it to a vector. This is also the same way we get the RMSE, but instead of the anonymous function, we write one out and use that.
 
 If you had a list of `rpart` objects and wanted to, say, extract the `cp` tuning parameter from each, you could also use an anonymous function. Each `rpart` object has a list called `control` that includes all of the control (tuning) parameters used in its estimation:
 
@@ -148,7 +154,7 @@ unlist(cpList)
 ## TRY IT
 
 ### Breakout #2
-Using the loop method or the `lapply` method, generate 10 regression trees to explain `wage` in `wage_clean`. You can iterate through values of `cp`, the complexity parameter, **or** `minsplit`, the minimum # of points that have to be in each split.
+Using the loop method or the `lapply` method, generate 10 regression trees to explain `wage` in `wage_clean`. You can iterate through values of `cp`, the complexity parameter, **or** `minsplit`, the minimum # of points a node has to have before `rpart` will even try to split it.
 
 **10 minutes**
 
@@ -161,9 +167,9 @@ We'll ask someone to share (a few of) their group's 10 regression trees using `r
 ## TRY IT
 
 ### Breakout #3 (if time)
-Use `lapply` to get a list of your RMSE's (one for each of your models). The anonymous function may come in handy here (though it's not necessary). Note that we are not yet splitting into `test` and `train` (which you **will** need to do on your lab assignment). 
+Use `lapply` to get a list of your RMSE's (one for each of your models). The anonymous function may come in handy here (though it's not necessary). Note that we are not yet splitting into `test` and `train` (which you **will** need to do on your lab assignment). That matters for what the plot looks like: because these are RMSEs on the same data we fit, they'll keep falling as the trees get bigger (as `cp` goes to zero, or as `minsplit` shrinks), so there's no bottom of the U to find here. The U only shows up once the RMSE is calculated on data the tree hasn't seen. 
 
-Once you have your list, **create the plot of RMSEs** similar to the one we looked at in Content this week. Note: you can use `unlist(myRMSE)` to get a numeric vector of the RMSE's (as long as all of the elements in `myRMSE` are numeric). Then, it's a matter of plotting either with base `plot` or with `ggplot` (if you use `ggplot` you'll have to `tidy` the RMSE by adding the index column or naming the x-axis).
+Once you have your list, **create the plot of RMSEs** similar to the one we looked at in Content this week. Note: you can use `unlist(myRMSE)` to get a numeric vector of the RMSE's (as long as all of the elements in `myRMSE` are numeric). Then, it's a matter of plotting either with base `plot` or with `ggplot` (if you use `ggplot` you'll have to put the RMSEs in a data frame first, with a second column holding the `cp` or `minsplit` value that goes on the x-axis).
 
 
 :::

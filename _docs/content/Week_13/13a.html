@@ -903,7 +903,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>test_1 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(test_1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>stringr</code> function <code>str_replace_all</code> replaces all of the first argument’s instances of <code>,</code> (the second argument) with <code>''</code> (the third argument). The first input for the function is the character vector on which you’d like to operate.</p>
-<p>We can then use <code>mutate_all</code> to apply this operation to each column, since it won’t affect the columns without commas. You may notice the use of <code>mutate_all</code> and <code>summarize_all</code> here. These are versions of <code>mutate</code> and <code>summarize</code> that apply a given <em>function</em> to every column in the data. Above, the function we apply to every column is the <code>commas</code> function. Note that in using <code>summarize_all</code> we pipe the data in, but we <em>do not list the columns</em> we wish to create via <code>summarize</code>. To apply <code>as.numeric</code> to each column in <code>murders_raw</code>, we’d use: <code>murders_raw %&gt;% mutate_all(str_replace_all, ',', '') %&gt;% mutate_at(2:3, as.numeric)</code>.</p>
+<p>We can then use <code>mutate_all</code> to apply this operation to each column, since it won’t affect the columns without commas. You may notice the use of <code>mutate_all</code> and <code>summarize_all</code> here. These are versions of <code>mutate</code> and <code>summarize</code> that apply a given <em>function</em> to every column in the data. Above, the function we apply to every column is the <code>commas</code> function. Note that in using <code>summarize_all</code> we pipe the data in, but we <em>do not list the columns</em> we wish to create via <code>summarize</code>. To strip the commas out of every column and then coerce the two count columns to numbers, we’d use: <code>murders_raw %&gt;% mutate_all(str_replace_all, ',', '') %&gt;% mutate_at(2:3, as.numeric)</code>.</p>
 <p><strong>Note, the <code>str_replace_all</code> function is NOT an analog to <code>mutate_all</code> that applies to each column in the data!</strong></p>
 <p>It turns out that this operation is so common that <code>readr</code> includes the function <code>parse_number</code> specifically meant to remove non-numeric characters before coercing:</p>
 <div class="cell">
@@ -984,7 +984,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We immediately see what is happening. Some of the students did not report their heights in inches as requested. We could discard these data and continue. However, many of the entries follow patterns that, in principle, we can easily convert to inches. For example, in the output above, we see various cases that use the format <code>x'y''</code> with <code>x</code> and <code>y</code> representing feet and inches, respectively. Each one of these cases can be read and converted to inches by a human, for example <code>5'4''</code> is <code>5*12 + 4 = 64</code>. So we could fix all the problematic entries <em>by hand</em>. However, humans are prone to making mistakes, so an automated approach is preferable. Also, because we plan on continuing to collect data, it will be convenient to write code that automatically does this.</p>
 <p>A first step in this type of task is to survey the problematic entries and try to define specific patterns followed by a large groups of entries. The larger these groups, the more entries we can fix with a single programmatic approach. We want to find patterns that can be accurately described with a rule, such as “a digit, followed by a feet symbol, followed by one or two digits, followed by an inches symbol”.</p>
-<p>To look for such patterns, it helps to remove the entries that are consistent with being in inches and to view only the problematic entries. We thus write a function to automatically do this. We keep entries that either result in <code>NA</code>s when applying <code>as.numeric</code> or are outside a range of plausible heights. We permit a range that covers about 99.9999% of the adult population. We also use <code>suppressWarnings</code> to avoid the warning message we know <code>as.numeric</code> will gives us.</p>
+<p>To look for such patterns, it helps to remove the entries that are consistent with being in inches and to view only the problematic entries. We thus write a function to automatically do this. We keep entries that either result in <code>NA</code>s when applying <code>as.numeric</code> or are outside a range of plausible heights. We permit a range that covers about 99.9999% of the adult population. We also use <code>suppressWarnings</code> to avoid the warning message we know <code>as.numeric</code> will give us.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>not_inches <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">smallest =</span> <span class="dv">50</span>, <span class="at">tallest =</span> <span class="dv">84</span>){</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  inches <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(x))</span>
@@ -1156,7 +1156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE</code></pre>
 </div>
 </div>
-<p>We take this opportunity to introduce the <code>str_view</code> function, which is helpful for troubleshooting as it shows us the first match for each string:</p>
+<p>We take this opportunity to introduce the <code>str_view</code> function, which is helpful for troubleshooting as it shows us where the matches are. Heads up: these figures were made with an older <strong>stringr</strong>. As of version 1.5.0, <code>str_view</code> marks <em>all</em> the matches rather than just the first, prints in the console as <code>&lt;5&gt;'&lt;1&gt;&lt;0&gt;</code> instead of as a highlighted box, and <code>str_view_all</code> is deprecated, so your screen will not look exactly like these pictures:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(s, pattern)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1169,7 +1169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>and <code>str_view_all</code> shows us all the matches, so <code>3'2</code> has two matches and <code>5'10</code> has three.</p>
+<p>and <code>str_view_all</code> shows us all the matches, so <code>5 feet</code> has one match and <code>5'10</code> has three.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(s, pattern)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1354,12 +1354,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="groups" class="level3">
 <h3 class="anchored" data-anchor-id="groups">Groups</h3>
 <p><em>Groups</em> are a powerful aspect of regex that permits the extraction of values. Groups are defined using parentheses. They don’t affect the pattern matching per se. Instead, it permits tools to identify specific parts of the pattern so we can extract them.</p>
-<p>We want to change heights written like <code>5.6</code> to <code>5'6</code>.</p>
-<p>To avoid changing patterns such as <code>70.2</code>, we will require that the first digit be between 4 and 7 <code>[4-7]</code> and that the second be none or more digits <code>\\d*</code>. Let’s start by defining a simple pattern that matches this:</p>
+<p>We want to change heights written like <code>5,6</code> to <code>5'6</code>.</p>
+<p>To avoid changing patterns such as <code>70,2</code>, we will require that the first digit be between 4 and 7 <code>[4-7]</code> and that the second be none or more digits <code>\\d*</code>. Let’s start by defining a simple pattern that matches this:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>pattern_without_groups <span class="ot">&lt;-</span> <span class="st">"^[4-7],</span><span class="sc">\\</span><span class="st">d*$"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We want to extract the digits so we can then form the new version using a period. These are our two groups, so we encapsulate them with parentheses:</p>
+<p>We want to extract the digits so we can then form the new version using the feet symbol <code>'</code>. These are our two groups, so we encapsulate them with parentheses:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span>  <span class="st">"^([4-7]),(</span><span class="sc">\\</span><span class="st">d*)$"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1475,7 +1475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="search-and-replace-using-groups" class="level3">
 <h3 class="anchored" data-anchor-id="search-and-replace-using-groups">Search and replace using groups</h3>
 <p>Another powerful aspect of groups is that you can refer to the extracted values in a regex when searching and replacing.</p>
-<p>The regex special character for the <code>i</code>-th group is <code>\\i</code>. So <code>\\1</code> is the value extracted from the first group, <code>\\2</code> the value from the second and so on. As a simple example, note that the following code will replace a comma with period, but only if it is between two digits:</p>
+<p>The regex special character for the <code>i</code>-th group is <code>\\i</code>. So <code>\\1</code> is the value extracted from the first group, <code>\\2</code> the value from the second and so on. As a simple example, note that the following code will replace a comma with the feet symbol <code>'</code>, but only if the comma comes right after a digit between 4 and 7:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span>  <span class="st">"^([4-7]),(</span><span class="sc">\\</span><span class="st">d*)$"</span></span>
 <span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5,9"</span>, <span class="st">"5,11"</span>, <span class="st">"6,"</span>, <span class="st">"6,1"</span>)</span>
@@ -1496,7 +1496,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>^</code> = start of the string</li>
 <li><code>[4-7]</code> = one digit, either 4, 5, 6, or 7</li>
 <li><code>\\s*</code> = none or more white space</li>
-<li><code>[,\\.\\s+]</code> = feet symbol is either <code>,</code>, <code>.</code> or at least one space</li>
+<li><code>[,\\.\\s+]</code> = the feet symbol: exactly one character, either a <code>,</code>, a <code>.</code>, or a space. (Watch out: inside the brackets that <code>+</code> is not a quantifier, it’s a literal plus sign, which this class matches too.)</li>
 <li><code>\\s*</code> = none or more white space</li>
 <li><code>\\d*</code> = none or more digits</li>
 <li><code>$</code> = end of the string</li>
@@ -1593,7 +1593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>A student spelled out the numbers: <code>Five foot eight inches</code>.</li>
 </ol>
 <p>It is not necessarily clear that it is worth writing code to handle these last three cases since they might be rare enough. However, some of them provide us with an opportunity to learn a few more regex techniques, so we will build a fix.</p>
-<p>For case 1, if we add a <code>'0</code> after the first digit, for example, convert all <code>6</code> to <code>6'0</code>, then our previously defined pattern will match. This can be done using groups:</p>
+<p>For case 2, if we add a <code>'0</code> after the first digit, for example, convert all <code>6</code> to <code>6'0</code>, then our previously defined pattern will match. This can be done using groups:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"5"</span>)</span>
 <span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5'"</span>, <span class="st">"5''"</span>, <span class="st">"5'4"</span>)</span>
@@ -1604,7 +1604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The pattern says it has to start (<code>^</code>) with a digit between 4 and 7 and end there (<code>$</code>). The parenthesis defines the group that we pass as <code>\\1</code> to generate the replacement regex string.</p>
-<p>We can adapt this code slightly to handle the case 2 as well, which covers the entry <code>5'</code>. Note <code>5'</code> is left untouched. This is because the extra <code>'</code> makes the pattern not match since we have to end with a 5 or 6. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add <code>'{0,1}</code> after the <code>'</code> to do this. However, we can use the none or once special character <code>?</code>. As we saw above, this is different from <code>*</code> which is none or more. We now see that the fourth case is also converted:</p>
+<p>We can adapt this code slightly to handle the case 1 as well, which covers the entry <code>5'</code>. Note <code>5'</code> is left untouched. This is because the extra <code>'</code> makes the pattern not match since we have to end with a 5 or 6. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add <code>'{0,1}</code> after the <code>'</code> to do this. However, we can use the none or once special character <code>?</code>. As we saw above, this is different from <code>*</code> which is none or more. We now see that the fourth case is also converted:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_replace</span>(s, <span class="st">"^([56])'?$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1'0"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1617,7 +1617,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[4-7]</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.?</span><span class="sc">\\</span><span class="st">d*)$"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Case 4, meters using commas, we can approach similarly to how we converted the <code>x.y</code> to <code>x'y</code>. A difference is that we require that the first digit be 1 or 2:</p>
+<p>Case 5, meters using commas, we can approach similarly to how we converted the <code>x.y</code> to <code>x'y</code>. A difference is that we require that the first digit be 1 or 2:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1,7"</span>, <span class="st">"1, 8"</span>, <span class="st">"2, "</span> )</span>
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5,8"</span>, <span class="st">"5,3,2"</span>, <span class="st">"1.7"</span>)</span>
@@ -1653,7 +1653,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="changing-lettercase" class="level2">
 <h2 class="anchored" data-anchor-id="changing-lettercase">Changing lettercase</h2>
-<p>Notice that regex is case sensitive. Often we want to match a word regardless of case. One approach to doing this is to first change everything to lower case and then proceeding ignoring case. As an example, note that one of the entries writes out numbers as words <code>Five foot eight inches</code>. Although not efficient, we could add 13 extra <code>str_replace</code> calls to convert <code>zero</code> to <code>0</code>, <code>one</code> to <code>1</code>, and so on. To avoid having to write two separate operations for <code>Zero</code> and <code>zero</code>, <code>One</code> and <code>one</code>, etc., we can use the <code>str_to_lower</code> function to make all works lower case first:</p>
+<p>Notice that regex is case sensitive. Often we want to match a word regardless of case. One approach to doing this is to first change everything to lower case and then proceeding ignoring case. As an example, note that one of the entries writes out numbers as words <code>Five foot eight inches</code>. Although not efficient, we could add 13 extra <code>str_replace</code> calls to convert <code>zero</code> to <code>0</code>, <code>one</code> to <code>1</code>, and so on. To avoid having to write two separate operations for <code>Zero</code> and <code>zero</code>, <code>One</code> and <code>one</code>, etc., we can use the <code>str_to_lower</code> function to make all words lower case first:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Five feet eight inches"</span>)</span>
 <span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_to_lower</span>(s)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1748,7 +1748,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 3    5 8inches</code></pre>
 </div>
 </div>
-<p>However, we can use <code>extract</code>. The regex here is a bit more complicated since we have to permit <code>'</code> with spaces and <code>feet</code>. We also do not want the <code>"</code> included in the value, so we do not include that in the group:</p>
+<p>However, we can use <code>extract</code>. The regex is the same one we used above: instead of splitting on the <code>'</code>, it looks for digits on each side of it, so whatever trails the inches – the <code>"</code> or the word <code>inches</code> – is simply left out of the groups:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>tab <span class="sc">%&gt;%</span> tidyr<span class="sc">::</span><span class="fu">extract</span>(x, <span class="fu">c</span>(<span class="st">"feet"</span>, <span class="st">"inches"</span>), <span class="at">regex =</span> <span class="st">"(</span><span class="sc">\\</span><span class="st">d)'(</span><span class="sc">\\</span><span class="st">d{1,2})"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2131,7 +2131,7 @@ gapminder %>%
 </div>
 </div>
 </div>
-<p>There are other similar functions in other R packages, such as <code>recode_factor</code> and <code>fct_recoder</code> in the <strong>forcats</strong> package.</p>
+<p>There are other similar functions in other R packages, such as <code>recode_factor</code> in <strong>dplyr</strong> and <code>fct_recode</code> in the <strong>forcats</strong> package.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2195,7 +2195,7 @@ gapminder %>%
 <li><p>We want to extract the numbers from the strings stored in <code>s</code>. However, there are many non-numeric characters that will get in the way. We can remove these, but before doing this we want to preserve the string with the column header, which includes the month abbreviation. Use the <code>str_which</code> function to find the rows with a header. Save these results to <code>header_index</code>. Hint: find the first string that matches the pattern <code>2015</code> using the <code>str_which</code> function.</p></li>
 <li><p>Now we are going to define two objects: <code>month</code> will store the month and <code>header</code> will store the column names. Identify which row contains the header of the table. Save the content of the row into an object called <code>header</code>, then use <code>str_split</code> to help define the two objects we need. Hints: the separator here is one or more spaces. Also, consider using the <code>simplify</code> argument.</p></li>
 <li><p>Notice that towards the end of the page you see a <em>totals</em> row followed by rows with other summary statistics. Create an object called <code>tail_index</code> with the index of the <em>totals</em> entry.</p></li>
-<li><p>Because our PDF page includes graphs with numbers, some of our rows have just one number (from the y-axis of the plot). Use the <code>str_count</code> function to create an object <code>n</code> with the number of numbers in each each row. Hint: you can write a regex for number like this <code>\\d+</code>.</p></li>
+<li><p>Because our PDF page includes graphs with numbers, some of our rows have just one number (from the y-axis of the plot). Use the <code>str_count</code> function to create an object <code>n</code> with the number of numbers in each row. Hint: you can write a regex for number like this <code>\\d+</code>.</p></li>
 <li><p>We are now ready to remove entries from rows that we know we don’t need. The entry <code>header_index</code> and everything before it should be removed. Entries for which <code>n</code> is 1 should also be removed, and the entry <code>tail_index</code> and everything that comes after it should be removed as well.</p></li>
 <li><p>Now we are ready to remove all the non-numeric entries. Do this using regex and the <code>str_remove_all</code> function. Hint: remember that in regex, using the upper case version of a special character usually means the opposite. So <code>\\D</code> means “not a digit”. Remember you also want to keep spaces.</p></li>
 <li><p>To convert the strings into a table, use the <code>str_split_fixed</code> function. Convert <code>s</code> into a data matrix with just the day and death count data. Hints: note that the separator is one or more spaces. Make the argument <code>n</code> a value that limits the number of columns to the values in the 4 columns and the last column captures all the extra stuff. Then keep only the first four columns.</p></li>

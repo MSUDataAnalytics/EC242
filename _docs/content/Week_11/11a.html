@@ -628,7 +628,7 @@ window.Quarto = {
 <li>How to use <strong>decision trees</strong> for regression through the use of the <code>rpart()</code> function from the <code>rpart</code> package.</li>
 <li>How “making predictions” can be thought of as <strong>estimating the regression function</strong>, that is, the conditional mean of the response given values of the features.</li>
 <li>The difference between <strong>parametric</strong> and <strong>nonparametric</strong> methods.</li>
-<li>The difference between <strong>model parameters</strong> and <strong>tuning parameters</strong> methods.</li>
+<li>The difference between <strong>model parameters</strong> and <strong>tuning parameters</strong>.</li>
 <li>How these nonparametric methods deal with <strong>categorical variables</strong> and <strong>interactions</strong>.</li>
 <li>What is <strong>model flexibility</strong>?</li>
 <li>What is <strong>overfitting</strong> and how do we avoid it?</li>
@@ -732,7 +732,7 @@ Coefficients:
 <p><span class="math display">\[
 \hat{\mu}_k(x) = \frac{1}{k} \sum_{ \{i \ : \ x_i \in \mathcal{N}_k(x, \mathcal{D}) \} } y_i
 \]</span></p>
-<p>as our estimate of the regression function at <span class="math inline">\(x\)</span>. While this looks complicated, it is actually very simple. Here, we are using an average of the <span class="math inline">\(y_i\)</span> values of for the <span class="math inline">\(k\)</span> nearest neighbors to <span class="math inline">\(x\)</span>.</p>
+<p>as our estimate of the regression function at <span class="math inline">\(x\)</span>. While this looks complicated, it is actually very simple. Here, we are using an average of the <span class="math inline">\(y_i\)</span> values for the <span class="math inline">\(k\)</span> nearest neighbors to <span class="math inline">\(x\)</span>.</p>
 <p>The <span class="math inline">\(k\)</span> “nearest” neighbors are the <span class="math inline">\(k\)</span> data points <span class="math inline">\((x_i, y_i)\)</span> that have <span class="math inline">\(x_i\)</span> values that are nearest to <span class="math inline">\(x\)</span>. We can define “nearest” using any distance we like, but unless otherwise noted, we are referring to euclidean distance.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> We are using the notation <span class="math inline">\(\{i \ : \ x_i \in \mathcal{N}_k(x, \mathcal{D}) \}\)</span> to define the <span class="math inline">\(k\)</span> observations that have <span class="math inline">\(x_i\)</span> values that are nearest to the value <span class="math inline">\(x\)</span> in a dataset <span class="math inline">\(\mathcal{D}\)</span>, in other words, the <span class="math inline">\(k\)</span> nearest neighbors.</p>
 <p>The plots below begin to illustrate this idea.</p>
 <div class="cell" data-layout-align="center">
@@ -764,8 +764,8 @@ Coefficients:
 <p>For each plot, the black dashed curve is the true mean function.</p>
 <ul>
 <li>In the left plot we use <span class="math inline">\(k = 25\)</span>. The red “curve” is the estimate of the mean function for each <span class="math inline">\(x\)</span> shown in the plot.</li>
-<li>In the left plot we use <span class="math inline">\(k = 5\)</span>. The blue “curve” is the estimate of the mean function for each <span class="math inline">\(x\)</span> shown in the plot.</li>
-<li>In the left plot we use <span class="math inline">\(k = 1\)</span>. The green “curve” is the estimate of the mean function for each <span class="math inline">\(x\)</span> shown in the plot.</li>
+<li>In the middle plot we use <span class="math inline">\(k = 5\)</span>. The blue “curve” is the estimate of the mean function for each <span class="math inline">\(x\)</span> shown in the plot.</li>
+<li>In the right plot we use <span class="math inline">\(k = 1\)</span>. The green “curve” is the estimate of the mean function for each <span class="math inline">\(x\)</span> shown in the plot.</li>
 </ul>
 <p>Some things to notice here:</p>
 <ul>
@@ -865,7 +865,7 @@ Coefficients:
 </div>
 </div>
 <p>The above “tree”<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> shows the splits that were made. It informs us of the variable used, the cutoff value, and some summary of the resulting neighborhood. In “tree” terminology the resulting neighborhoods are “terminal nodes” of the tree. In contrast, “internal nodes” are neighborhoods that are created, but then further split.</p>
-<p>The “root node” is the neighborhood contains all observations, before any splitting, and can be seen at the top of the image above. We see that this node represents 100% of the data. The other number, 0.21, is the mean of the response variable, in this case, <span class="math inline">\(y_i\)</span>.</p>
+<p>The “root node” is the neighborhood that contains all observations, before any splitting, and can be seen at the top of the image above. We see that this node represents 100% of the data. The other number, 0.21, is the mean of the response variable, in this case, <span class="math inline">\(y_i\)</span>.</p>
 <p>Looking at a terminal node, for example the bottom left node, we see that 23% of the data is in this node. The average value of the <span class="math inline">\(y_i\)</span> in this node is -1, which can be seen in the plot above.</p>
 <p>We also see that the first split is based on the <span class="math inline">\(x\)</span> variable, and a cutoff of <span class="math inline">\(x = -0.52\)</span>. Note that because there is only one variable here, all splits are based on <span class="math inline">\(x\)</span>, but in the future, we will have multiple features that can be split and neighborhoods will no longer be one-dimensional. However, this is hard to plot.</p>
 <p>Let’s build a bigger, more flexible tree.</p>
@@ -890,9 +890,9 @@ Coefficients:
 <p>There are two tuning parameters at play here which we will call by their names in R which we will see soon:</p>
 <ul>
 <li><code>cp</code> or the “complexity parameter” as it is called.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This parameter determines which splits are accepted. A split must improve the performance of the tree by more than <code>cp</code> in order to be used. When we get to R, we will see that the default value is 0.01.</li>
-<li><code>minsplit</code>, the minimum number of observations in a node (neighborhood) in order to consider splitting within a neighborhood.</li>
+<li><code>minsplit</code>, the minimum number of observations in a node (neighborhood) in order to consider splitting within a neighborhood. The default value is 20.</li>
 </ul>
-<p>There are actually many more possible tuning parameters for trees, possibly differing depending on who wrote the code you’re using. We will limit discussion to these two.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Note that they effect each other, and they effect other parameters which we are not discussing. The main takeaway should be how they effect model flexibility.</p>
+<p>There are actually many more possible tuning parameters for trees, possibly differing depending on who wrote the code you’re using. We will limit discussion to these two.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Note that they affect each other, and they affect other parameters which we are not discussing. The main takeaway should be how they affect model flexibility.</p>
 <p>First let’s look at what happens for a fixed <code>minsplit</code> by variable <code>cp</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -924,7 +924,7 @@ Coefficients:
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data, coerce to tibble</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>crdt <span class="ot">=</span> <span class="fu">as_tibble</span>(ISLR<span class="sc">::</span>Credit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Again, we are using the <code>Credit</code> data form the <code>ISLR</code> package. Note: <strong>this is not real data.</strong> It has been simulated.</p>
+<p>Again, we are using the <code>Credit</code> data from the <code>ISLR</code> package. Note: <strong>this is not real data.</strong> It has been simulated.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data prep</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>crdt <span class="ot">=</span> crdt <span class="sc">%&gt;%</span></span>
@@ -939,7 +939,7 @@ Coefficients:
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>crdt_trn <span class="ot">=</span> crdt[crdt_trn_idx, ]</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>crdt_tst <span class="ot">=</span> crdt[<span class="sc">-</span>crdt_trn_idx, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>After train-test (with 80% of the data) and estimation-validation splitting the data, we look at the train data.</p>
+<p>After the train-test split (with 80% of the data going to train), we look at the train data.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check data</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(crdt_trn, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -968,7 +968,7 @@ Coefficients:
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>crdt_knn_25 <span class="ot">=</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">25</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>crdt_knn_75 <span class="ot">=</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">75</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Here, we fit three models to the estimation data. We supply the variables that will be used as features as we would with <code>lm()</code>. We also specify how many neighbors to consider via the <code>k</code> argument.</p>
+<p>Here, we fit four models to the training data. We supply the variables that will be used as features as we would with <code>lm()</code>. We also specify how many neighbors to consider via the <code>k</code> argument.</p>
 <p>But wait a second, what is the distance from non-student to student? From male to female? In other words, how does KNN handle categorical variables? It doesn’t! Like <code>lm()</code> it creates dummy variables under the hood.</p>
 <p><strong>Note:</strong> To this point, and until we specify otherwise, we will always coerce categorical variables to be factor variables in R. We will then let modeling functions such as <code>lm()</code> or <code>knnreg()</code> deal with the creation of dummy variables internally.</p>
 <div class="cell" data-layout-align="center">
@@ -1002,7 +1002,7 @@ Coefficients:
 </div>
 </div>
 <p>What about interactions? Basically, you’d have to create them the same way as you do for linear models. We only mention this to contrast with trees in a bit.</p>
-<p>OK, so of these three models, which one performs best? (Where for now, “best” is obtaining the lowest validation RMSE.)</p>
+<p>OK, so of these four models, which one performs best? (Where for now, “best” is obtaining the lowest validation RMSE.)</p>
 <p>First, note that we return to the <code>predict()</code> function as we did with <code>lm()</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(crdt_knn_10, crdt_tst[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1035,9 +1035,9 @@ Coefficients:
    163.9868    142.2242    135.3838    142.6786 </code></pre>
 </div>
 </div>
-<p>So, of these three values of <span class="math inline">\(k\)</span>, the model with <span class="math inline">\(k = 25\)</span> achieves the lowest validation (test) RMSE.</p>
+<p>So, of these four values of <span class="math inline">\(k\)</span>, the model with <span class="math inline">\(k = 25\)</span> achieves the lowest validation (test) RMSE.</p>
 <p>This process, fitting a number of models with different values of the <em>tuning parameter</em>, in this case <span class="math inline">\(k\)</span>, and then finding the “best” tuning parameter value based on performance on the validation (test) data is called <strong>tuning</strong>. In practice, we would likely consider more values of <span class="math inline">\(k\)</span>, but this should illustrate the point.</p>
-<p>In the next lectures, we will discuss the details of model flexibility and model tuning, and how these concepts are tied together. However, even though we will present some theory behind this relationship, in practice, <strong>you must tune and validate your models</strong>. There is no theory that will inform you ahead of tuning and validation which model will be the best. By teaching you <em>how</em> to fit KNN models in R and how to calculate validation RMSE, you already have all a set of tools you can use to find a good model.</p>
+<p>In the next lectures, we will discuss the details of model flexibility and model tuning, and how these concepts are tied together. However, even though we will present some theory behind this relationship, in practice, <strong>you must tune and validate your models</strong>. There is no theory that will inform you ahead of tuning and validation which model will be the best. By teaching you <em>how</em> to fit KNN models in R and how to calculate validation RMSE, you already have a set of tools you can use to find a good model.</p>
 <p>Tuning isn’t necessarily something we’ve never done before – in our linear regression section, we fit our model using more and more variables (and transformations of those variables), which allowed more <em>flexibility</em> but, as we saw, resulted in over-fitting. The same principle applies to KNN when we allow <span class="math inline">\(k\)</span> to decrease towards 1.</p>
 </section>
 <section id="example-decision-tree-credit-card-data" class="level3">
@@ -1182,7 +1182,7 @@ node), split, n, deviance, yval
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>We chose to start with linear regression because most students the social sciences should already be familiar with the basic notion.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>We chose to start with linear regression because most students in the social sciences should already be familiar with the basic notion.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The usual distance when you hear distance. That is, unless you drive a <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">taxicab</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>For this reason, KNN is often not used in practice, but it is very useful learning tool.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Many texts use the term complex instead of flexible. We feel this is confusing as complex is often associated with difficult. KNN with <span class="math inline">\(k = 1\)</span> is actually a very simple model to understand, but it is very flexible as defined here.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

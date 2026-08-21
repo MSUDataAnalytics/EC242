@@ -200,7 +200,7 @@ legend("bottomleft", c("(Expected) Test", "Train"), lty = c(6, 1), lwd = 3,
        col = c("dodgerblue", "darkorange"))
 ```
 
-Now we can understand why this is happening. The expected test RMSE is essentially the expected prediction error, which we now known decomposes into (squared) bias, variance, and the irreducible Bayes error. The following plots show three examples of this.
+Now we can understand why this is happening. The expected test RMSE is essentially the expected prediction error, which we now know decomposes into (squared) bias, variance, and the irreducible Bayes error. The following plots show three examples of this.
 
 ```{r, fig.height = 4, fig.width = 12, echo = FALSE}
 x = seq(0.01, 0.99, length.out = 1000)
@@ -306,11 +306,11 @@ legend("bottomleft", c("Validation", "Train"), lty = c(6, 1), lwd = 3,
        col = c("dodgerblue", "darkorange"))
 ```
 
-Tying this all together, the above image shows how we "expect" training and validation error to behavior in relation to model flexibility.^[Someday, someone will tell you this is a lie. They aren't wrong. In modern deep learning, there is a concept called [Deep Double Descent](https://openai.com/blog/deep-double-descent/). See also @belkin2018reconciling.] In practice, we won't always see such a nice "curve" in the validation error, but we expect to see the general trends.
+Tying this all together, the above image shows how we "expect" training and validation error to behave in relation to model flexibility.^[Someday, someone will tell you this is a lie. They aren't wrong. In modern deep learning, there is a concept called [Deep Double Descent](https://openai.com/blog/deep-double-descent/). See also @belkin2018reconciling.] In practice, we won't always see such a nice "curve" in the validation error, but we expect to see the general trends.
 
 ## Using Simulation to Estimate Bias and Variance
 
-We will illustrate these decompositions, most importantly the bias-variance tradeoff, through simulation. Suppose we would like to train a model to learn the true regression function function $f(x) = x^2$.
+We will illustrate these decompositions, most importantly the bias-variance tradeoff, through simulation. Suppose we would like to train a model to learn the true regression function $f(x) = x^2$.
 
 ```{r}
 f = function(x) {
@@ -396,7 +396,7 @@ fit_9 = lm(y ~ poly(x, degree = 9), data = sim_data)
 
 Note that technically we're being lazy and using orthogonal polynomials, but the fitted values are the same, so this makes no difference for our purposes. These could be KNN, or decision trees just the same - the principle still applies.
 
-Plotting these four trained models, we see that the zero predictor model does very poorly. The first degree model is reasonable, but we can see that the second degree model fits much better. The ninth degree model seem rather wild.
+Plotting these four trained models, we see that the zero predictor model does very poorly. The first degree model is reasonable, but we can see that the second degree model fits much better. The ninth degree model seems rather wild.
 
 ```{r, fig.height = 6, fig.width = 9, echo = FALSE}
 set.seed(42)
@@ -598,7 +598,7 @@ $$
 \underbrace{\mathbb{E} \left[ \left( \hat{f}_k(0.90) - \mathbb{E} \left[ \hat{f}_k(0.90) \right] \right)^2 \right]}_{\text{var} \left(\hat{f}_k(0.90) \right)}
 $$
 
-We'll use the empirical results of our simulations to estimate these quantities. (Yes, we're using estimation to justify facts about estimation.) Note that we've actually used a rather small number of simulations. In practice we should use more, but for the sake of computation time, we've performed just enough simulations to obtain the desired results. (Since we're estimating estimation, the bigger the sample size, the better.)
+We'll use the empirical results of our simulations to estimate these quantities. (Yes, we're using estimation to justify facts about estimation.) Note that we've actually used a rather small number of simulations. In practice we should use more, but for the sake of computation time, we've performed just enough simulations to obtain the desired results. (Since we're estimating estimation, the more simulations, the better.)
 
 To estimate the mean squared error of our predictions, we'll use
 
@@ -606,7 +606,7 @@ $$
 \widehat{\text{MSE}}\left(f(0.90), \hat{f}_k(0.90)\right) = \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}} \left(f(0.90) - \hat{f}_k^{[i]}(0.90) \right)^2
 $$
 
-where $\hat{f}_k^{[i]}(0.90)$ is the estimate of $f(0.90)$ using the $i$-th from the polynomial degree $k$ model.
+where $\hat{f}_k^{[i]}(0.90)$ is the estimate of $f(0.90)$ from the polynomial degree $k$ model fit to the $i$-th simulated dataset.
 
 We also write an accompanying `R` function.
 
@@ -636,7 +636,7 @@ $$
 \widehat{\text{var}} \left(\hat{f}(0.90) \right) = \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}} \left(\hat{f}_k^{[i]}(0.90) - \frac{1}{n_{\texttt{sims}}}\sum_{i = 1}^{n_{\texttt{sims}}}\hat{f}_k^{[i]}(0.90) \right)^2
 $$
 
-While there is already `R` function for variance, the following is more appropriate in this situation.
+While there is already an `R` function for variance, the following is more appropriate in this situation. (`var()` divides by $n_{\texttt{sims}} - 1$; the formula above divides by $n_{\texttt{sims}}$.)
 
 ```{r}
 get_var = function(estimate) {
@@ -707,7 +707,7 @@ Now we can finally verify the bias-variance decomposition.
 bias ^ 2 + variance == mse
 ```
 
-But wait, this says it isn't true, except for the degree 9 model? It turns out, this is simply a computational issue. If we allow for some very small error tolerance, we see that the bias-variance decomposition is indeed true for predictions from these for models.
+But wait, this says it isn't true for the degree 0 and degree 1 models? It turns out, this is simply a computational issue. If we allow for some very small error tolerance, we see that the bias-variance decomposition is indeed true for predictions from these four models.
 
 ```{r}
 all.equal(bias ^ 2 + variance, mse)
@@ -724,7 +724,7 @@ If we have time, we can dive back into a little more about model flexibility, bi
 
 ## Model Flexibility
 
-Let's return to the simulated dataset we used occaisionally in the linear regression content. Recall there was a single feature $x$ with the following properties:
+Let's return to the simulated dataset we used occasionally in the linear regression content. Recall there was a single feature $x$ with the following properties:
 
 ```{r}
 # define regression function
@@ -837,9 +837,9 @@ What do we see here? As the polynomial degree *increases*:
 - The training error *decreases*.
 - The validation error *decreases*, then *increases*.
 
-This more of less matches the idealized version above, but the validation "curve" is much more jagged. This is something that we can expect in practice.
+This more or less matches the idealized version above, but the validation "curve" is much more jagged. This is something that we can expect in practice.
 
-We have previously noted that training error isn't particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we known that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.^[In practice, if you already know how your model's flexibility works, by checking that the training error goes down as you increase flexibility, you can check that you have done your coding and model training correctly.]
+We have previously noted that training error isn't particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we know that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.^[In practice, if you already know how your model's flexibility works, by checking that the training error goes down as you increase flexibility, you can check that you have done your coding and model training correctly.]
 
 ### k-Nearest Neighbors
 
@@ -895,11 +895,11 @@ Here we see the "opposite" of the usual plot. Why? Because with k-nearest neighb
 - The training error *increases*.
 - The validation error *decreases*, then *increases*.
 
-Important to note here: the pattern above only holds "in general," that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selection the data for the validate set.
+Important to note here: the pattern above only holds "in general," that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selecting the data for the validation set.
 
 ### Decision Trees
 
-Lastly, we evaluate some decision tree models. We choose some arbitrary values of `cp` to evaluate, while holding `minsplit` constant at `5`. There are arbitrary choices that produce a plot that is useful for discussion.
+Lastly, we evaluate some decision tree models. We choose some arbitrary values of `cp` to evaluate, while holding `minsplit` constant at `5`. These are arbitrary choices that produce a plot that is useful for discussion.
 
 ```{r}
 # helper function for fitting decision tree models

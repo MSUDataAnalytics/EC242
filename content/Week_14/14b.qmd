@@ -59,7 +59,7 @@ Default = read_csv('https://ec242.netlify.app/data/UCI_credit.csv')
 ```
 
 ### About the data
-I've imported the data from the UCI source. Columns `PAY_0` through `PAY_6` show the last 6 months of payment status, where `-2` means "no payment required", `-1` and `0` mean paid on  time, and `1` and above mean 1 month behind, 2 months behind, etc. Bill and Payment amounts as labeled, with 1 being most recent, and 6 being six months ago.
+I've imported the data from the UCI source. Note that the first column is just a leftover row number from the export -- `read_csv` will call it `...1` -- so drop it before you fit anything with `default ~ .`. Columns `PAY_0`, `PAY_2`, `PAY_3`, `PAY_4`, `PAY_5`, and `PAY_6` show the last 6 months of payment status (there is no `PAY_1` -- that's how UCI shipped it; `PAY_0` is the most recent month), where `-2` means "no payment required", `-1` and `0` mean paid on time, and `1` and above mean 1 month behind, 2 months behind, etc. Bill and Payment amounts as labeled, with 1 being most recent, and 6 being six months ago. All the dollar figures, `LIMIT_BAL` included, are New Taiwan dollars -- so a `LIMIT_BAL` of 20000 is not a \$20,000 credit line.
 
 
 
@@ -67,13 +67,13 @@ I've imported the data from the UCI source. Columns `PAY_0` through `PAY_6` show
 ::: {.callout-note}
 In our first breakout:
 
-1.Check to make sure the `default` column is a binary indicator for default. Check to make sure there are no surprise `NA` values (there are!). Then, construct any additional variables you might think useful (hint: the `PAY_X` variables don't really have an intuitive numeric interpretation. Should we categorize some of them together?)
+1. Check to make sure the `default` column is a binary indicator for default. Check to make sure there are no surprise `NA` values (there are!). Then, construct any additional variables you might think useful (hint: the `PAY_X` variables don't really have an intuitive numeric interpretation. Should we categorize some of them together?)
 
 2. Explore the data as we did on Tuesday to get an idea of useful predictors.
 
-2. Build a logistic model to predict `default` using any combination of variables and interactions in the data. For now, just use your best judgement for choosing the variables and interactions.
+3. Build a logistic model to predict `default` using any combination of variables and interactions in the data. For now, just use your best judgement for choosing the variables and interactions.
 
-3. Use a Bayes Classifier cutoff of .50 to generate your classifier output.
+4. Use a Bayes Classifier cutoff of .50 to generate your classifier output.
 
 :::
 
@@ -84,7 +84,7 @@ Let's look at how we did. What variables were most useful in explaining `default
 ::: {.callout-note}
 In our second breakout, we will create a ROC curve manually. To do this
 
-1. Take your model from the first breakout, and using a loop (or `sapply`), step through a large number of possible cutoffs for classification ranging from 0 to 1.
+1. Take your model from the first breakout, and using a loop (or `sapply`), step through a large number of possible cutoffs for classification ranging from 0 to 1. Careful at the ends: a cutoff below every fitted probability (or above every one) predicts a single class, so `table()` gives you a one-row table and `confusionMatrix()` won't accept it -- the same problem we ran into on Tuesday with the all-"No" classifier. Keep your cutoffs inside the range of your predicted probabilities.
 
 2. For each cutoff, generate a confusion matrix with *accuracy*, *sensitivity* and *specificity*.
 
@@ -125,6 +125,11 @@ results_compiled = bind_rows(results)
 ggplot(results_compiled, aes(x = Specificity, y = Sensitivity)) + geom_line() +
   scale_x_reverse()
 
-sum(results_compiled$Specificity*(1/NROW(results_compiled)))
+# AUC = area under Sensitivity plotted against FPR = 1 - Specificity
+fpr = 1 - results_compiled$Specificity
+tpr = results_compiled$Sensitivity
+o = order(fpr)
+fpr = fpr[o]; tpr = tpr[o]
+sum(diff(fpr) * (head(tpr, -1) + tail(tpr, -1)) / 2)
 
 ```

@@ -625,7 +625,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="guiding-questions">Guiding Questions</h3>
 <ul>
 <li>What is <em>shrinkage</em>?</li>
-<li>What do we do with too may right-hand-side variables?</li>
+<li>What do we do with too many right-hand-side variables?</li>
 <li>What is LASSO?</li>
 </ul>
 </section>
@@ -657,14 +657,14 @@ window.Quarto = {
 6    1151</code></pre>
 </div>
 </div>
-<p>We will also need to load the <code>caret</code> package (which you’re used before), as well as the <code>glmnet</code> package, which is new for us.</p>
+<p>We will also need to load the <code>caret</code> package (which you’ve used before), as well as the <code>glmnet</code> package, which is new for us.</p>
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
 <p>I used to have this lecture at the end of our semester, but I think the intuition behind LASSO and ridge regression helps understand our “overfitting” problem. There are two terms I want to cover before we dive into the slides:</p>
 <ol type="1">
 <li><p><strong>Bias vs.&nbsp;Variance</strong>: We saw that super-overfit polynomial last week (where we took 20 observations and fit a 16th-degree polynomial). The model we fit was very flexible and bendy, but it did get most of the data points right. It had low <em>bias</em> as it was generally right, but had huge <em>variance</em> – it was all over the place, even within a small range of advertising mode spending. <strong>Bias vs.&nbsp;variance</strong> refers to the innate tradeoff between these two things. When we used the train and test samples to get the best <em>out</em> of sample fit, we were balancing bias and variance</p></li>
-<li><p><strong>Cross validation</strong>: This is the term for using two (or more) different subsets of sample data (e.g.&nbsp;test and train) to fit a model.</p></li>
+<li><p><strong>Cross validation</strong>: This is the term for splitting your sample into two (or more) different subsets (e.g.&nbsp;train and test), fitting the model on one and checking how it does on the other – and then rotating, so every chunk of the data gets a turn being held out.</p></li>
 </ol>
 <p>Now, back to the <a href="https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#5"><strong>lecture notes for today</strong></a></p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -680,20 +680,20 @@ Note
 <p>Try it! Use the <code>wooldridge::wage2</code> dataset and LASSO to predict <code>wage</code>. Since these shrinkage methods (LASSO, ridge) work well with many right-hand-side variables, we can create some additional variables. A good candidate would be squared versions of all of the numeric variables. To do this, we’ll use <code>mutate_if</code> along with <code>is.numeric</code>. The function <code>mutate_if</code>, when used in a pipe <code>%&gt;%</code>, will check each column to see if the given function is true, then will add a new mutation of that column when true. We need this because we don’t want to try to add a squared term for things like factor variables. It will look something like this:</p>
 <pre><code>data %&gt;%
   mutate_if(is.numeric, list(squared = function(x) x^2))</code></pre>
-<p>We pass a list with potentially many functions, but only one here in the example. For each passed function, <code>mutate_if</code> will create a copy of each existing column, square the data, and call name it by appending the name (here, ‘squared’) to the original column name.</p>
-<p>This will results in some columns we don’t want to keep – <code>wage_squared</code> should be dropped since <code>wage</code> is the outcome we want to predict. We should also drop <code>lwage</code> and <code>lwage_squared</code> since those are transformations of our outcome. We want our data to only have the outcome and all the possible predictors so we can simply pass everything but <code>wage</code> for our X’s and <code>wage</code> for our <code>y</code>.</p>
+<p>We pass a list with potentially many functions, but only one here in the example. For each passed function, <code>mutate_if</code> will create a copy of each existing column, square the data, and name it by appending the name (here, ‘squared’) to the original column name.</p>
+<p>This will result in some columns we don’t want to keep – <code>wage_squared</code> should be dropped since <code>wage</code> is the outcome we want to predict. We should also drop <code>lwage</code> and <code>lwage_squared</code> since those are transformations of our outcome. We want our data to only have the outcome and all the possible predictors so we can simply pass everything but <code>wage</code> for our X’s and <code>wage</code> for our <code>y</code>. One warning before you start: <code>wage2</code> has missing values in <code>brthord</code>, <code>meduc</code>, and <code>feduc</code>, and <code>glmnet</code> flatly refuses an <code>x</code> matrix with <code>NA</code>s in it. Drop the incomplete rows with <code>na.omit()</code> before you build your matrix – or drop those three columns <em>before</em> you create the squared terms, since otherwise <code>brthord_squared</code> and friends carry the <code>NA</code>s right along.</p>
 <ol type="1">
 <li><p>Drop all of the copies of the outcome variable and transformations of the outcome variable. Also, drop any of the squared terms of binary variables – if a variable is <span class="math inline">\(\{0,1\}\)</span>, then the squared term is exactly the same. For instance, <code>married</code> and <code>married_squared</code> are exactly the same.</p></li>
-<li><p>How many predictors (right-side variabes) do we have?</p></li>
+<li><p>How many predictors (right-side variables) do we have?</p></li>
 <li><p>Use <code>glmnet</code> from the <code>glmnet</code> package to run a LASSO (<code>alpha=1</code>) using all of the data you’ve assembled in the <code>wage2</code> dataset. Select a wide range of values for <code>lambda</code>. You can use <code>cv.glmnet</code> to do the cross-validation for you (see the Rubin lecture notes), or you can do it manually.</p></li>
-<li><p>Find the <code>lambda</code> that minimizes RMSE in the test data. You can extract the optimal lambda from a <code>cv.glmnet</code> object by referring to <code>object$lambda</code>, and the RMSE using <code>sqrt(object$cvm)</code>. These can be used to make the plots in the Rubin lecture notes, and to find the <code>lambda</code> that minimizes RMSE. <code>object$lambda.min</code> will also tell you the optimal <code>lambda</code>.</p></li>
+<li><p>Find the <code>lambda</code> that minimizes RMSE in the held-out data. You can extract the whole <em>sequence</em> of lambdas that <code>cv.glmnet</code> tried by referring to <code>object$lambda</code>, and the cross-validated RMSE at each of them using <code>sqrt(object$cvm)</code>. These can be used to make the plots in the Rubin lecture notes, and to find the <code>lambda</code> that minimizes RMSE. <code>object$lambda.min</code> will also tell you the optimal <code>lambda</code>.</p></li>
 <li><p>Using the optimal <code>lambda</code>, run a final LASSO model.</p></li>
 <li><p>Use <code>coef</code> to extract the coefficients from the optimal model. Coefficients that are zeroed out by the LASSO are shown as ‘.’</p></li>
 </ol>
 <ul>
 <li>Which variables were “kept” in the model?</li>
 <li>Which variables were eliminated from the model at the optimal <code>lambda</code>?</li>
-<li>Is the train RMSE lower than it would be if we just ran OLS with all of the variables?</li>
+<li>Is the cross-validated RMSE lower than it would be if we just ran OLS with all of the variables? (If your <code>lambda</code> grid runs down near zero, the RMSE at the smallest <code>lambda</code> is basically OLS’s. Don’t ask this of the <em>train</em> RMSE – train RMSE is exactly the thing OLS minimizes, so shrinking anything can only make it worse.)</li>
 </ul>
 </div>
 </div>
@@ -717,7 +717,7 @@ Note
 </section>
 <section id="combining-multiple-trees" class="level3">
 <h3 class="anchored" data-anchor-id="combining-multiple-trees">Combining multiple trees</h3>
-<p>We need a way of generating a RMSE for any given tuning parameter value, but now we have <span class="math inline">\(B\)</span> different trees. We can take our test data and put it into each of the <span class="math inline">\(B\)</span> trees and get a predicted value, right? And when the tree is different, then the prediction will be different. If we take the <em>average</em> over all <span class="math inline">\(B\)</span> predictions, we’ll get a prediction that has less variance, even when each tree has variance <span class="math inline">\(\sigma\)</span>, because variance of the mean scales to <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span>.</p>
+<p>We need a way of generating a RMSE for any given tuning parameter value, but now we have <span class="math inline">\(B\)</span> different trees. We can take our test data and put it into each of the <span class="math inline">\(B\)</span> trees and get a predicted value, right? And when the tree is different, then the prediction will be different. If we take the <em>average</em> over all <span class="math inline">\(B\)</span> predictions, we’ll get a prediction that has less variance, even when each tree has variance <span class="math inline">\(\sigma^2\)</span>, because averaging <span class="math inline">\(B\)</span> independent trees cuts the variance to <span class="math inline">\(\frac{\sigma^2}{B}\)</span>. (The trees aren’t quite independent – they’re grown on overlapping bootstrap samples – so you never get the full <span class="math inline">\(1/B\)</span> reduction.)</p>
 <p>So the rmse is:</p>
 <p><span class="math display">\[RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^N \left(y_i - \frac{1}{B} \sum_{b=1}^B \hat{f}_{b}(x_i)\right)^2}\]</span></p>
 <p>While it takes a bit longer to estimate this (especially when <span class="math inline">\(B\)</span> is large), you get much more stable results that often predict better on an evaluation hold-out sample.</p>
@@ -791,6 +791,15 @@ Note
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s check how linear, k-nearest neighbors, and decision tree models fit to this data make errors, while paying attention to their flexibility.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11b_files/figure-html/error-vs-flex-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>This picture is an idealized version of what we expect to see, but we’ll illustrate the sorts of validate “curves” that we might see in practice.</p>
 <p>Note that in the following three sub-sections, a significant portion of the code is suppressed for visual clarity. See the source document for full details.</p>
 <section id="linear-models" class="level3">
@@ -826,7 +835,7 @@ Note
 <li>The validation error <em>decreases</em>, then <em>increases</em>.</li>
 </ul>
 <p>This more of less matches the idealized version above, but the validation “curve” is much more jagged. This is something that we can expect in practice.</p>
-<p>We have previously noted that training error isn’t particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we known that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>We have previously noted that training error isn’t particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we know that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 </section>
 <section id="k-nearest-neighbors" class="level3">
 <h3 class="anchored" data-anchor-id="k-nearest-neighbors">k-Nearest Neighbors</h3>
@@ -860,7 +869,7 @@ Note
 <li>The training error <em>increases</em>.</li>
 <li>The validation error <em>decreases</em>, then <em>increases</em>.</li>
 </ul>
-<p>Important to note here: the pattern above only holds “in general,” that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selection the data for the validate set.</p>
+<p>Important to note here: the pattern above only holds “in general,” that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selecting the data for the validation set.</p>
 </section>
 <section id="decision-trees" class="level3">
 <h3 class="anchored" data-anchor-id="decision-trees">Decision Trees</h3>

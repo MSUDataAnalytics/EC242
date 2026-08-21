@@ -21,7 +21,7 @@ knitr::opts_chunk$set(warning = FALSE, error = FALSE, message = FALSE)
 
 - When can we make causal claims about the relationship between variables?
 
-As with recent weeks, we will work with real data during the lecture. Please download the following dataset and load it into `R`.
+Your lab this week uses the Ames housing data, so grab it now. The lecture itself runs on simulated data plus whatever ships with the `dslabs` and `HistData` packages, so there's nothing else to download.
 
 - [<i class="fas fa-file-csv"></i> `Ames.csv`](/data/ames.csv)
 
@@ -51,7 +51,7 @@ Another handy tip is using `paste` with `collapse = '+'`. **This will let you in
 ```{r pastevar, echo = T}
 varnames = c('Y','X1','X2','X3','X1:X3','X4*X5')
 
-paste(varnames[2:4], collapse = ' + ')
+paste(varnames[2:6], collapse = ' + ')
 
 ```
 
@@ -221,12 +221,12 @@ GaltonFamilies %>%
   do(tidy(lm(father ~ son, data = .)))
 ```
 
-The model fits the data very well. If we look at the mathematical formulation of the model above, it could easily be incorrectly interpreted so as to suggest that the son being tall caused the father to be tall. But given what we know about genetics and biology, we know it's the other way around. The model is technically correct. The estimates and p-values were obtained correctly as well. What is wrong here is the interpretation.
+The estimates are precise and the p-value is tiny. If we look at the mathematical formulation of the model above, it could easily be incorrectly interpreted so as to suggest that the son being tall caused the father to be tall. But given what we know about genetics and biology, we know it's the other way around. The model is technically correct. The estimates and p-values were obtained correctly as well. What is wrong here is the interpretation.
 
 
 ## Confounders
 
-Confounders are perhaps the most common reason that leads to associations begin misinterpreted.
+Confounders are perhaps the most common reason that leads to associations being misinterpreted.
 
 If $X$ and $Y$ are correlated, we call $Z$ a _confounder_ if changes in $Z$ causes changes in both $X$ and $Y$. Earlier, when studying baseball data, we saw how Home Runs was a confounder that resulted in a higher correlation than expected when studying the relationship between Bases on Balls and Runs. In some cases, we can use linear models to account for confounders. However, this is not always the case.
 
@@ -245,7 +245,7 @@ admissions %>% group_by(gender) %>%
 # Note: "admitted" is PERCENT admitted
 ```
 
-The chi-squared test compares two groups with binary outcomes (like "admit" and "nonadmit"). The null hypothesis is that the groups are not differently distributed between the outcomes. Here's what the data looks like going in -- its in counts of "admitted" and "not admitted".
+The chi-squared test compares two groups with binary outcomes (like "admit" and "nonadmit"). The null hypothesis is that the groups are not differently distributed between the outcomes. Here's what the data looks like going in -- it's in counts of "admitted" and "not admitted".
 
 ```{r}
 
@@ -275,7 +275,7 @@ admissions %>% select(major, gender, admitted) %>%
   mutate(women_minus_men_pct = women - men)
 ```
 
-Four out of the six majors favor women. More importantly, all the differences are much smaller than the 14.2 difference that we see when examining the totals.
+Four out of the six majors favor women. The one big gap is major A, where women are admitted 20 points *more* often than men -- which runs backwards from the headline. Every other difference is much smaller than the 14.2 difference that we see when examining the totals.
 
 The paradox is that analyzing the totals suggests a dependence between admission and gender, but when the data is grouped by major, this dependence seems to disappear.  What's going on? This actually can happen if an uncounted confounder is driving most of the variability.
 
@@ -329,7 +329,7 @@ In this plot, we can see that if we condition or stratify by major, and then loo
 admissions %>%
   ggplot(aes(major, admitted, col = gender, size = applicants)) +
   geom_point() + 
-  labs(x = 'Percent Admitted')
+  labs(y = 'Percent Admitted')
 ```
 
 Now we see that major by major, there is not much difference. The size of the dot represents the number of applicants, and explains the paradox: we see large red dots and small blue dots for the easiest (least selective) majors, A and B.
@@ -343,7 +343,7 @@ admissions %>%  group_by(gender) %>% summarize(average = mean(admitted))
 
 ## Simpson's paradox
 
-The case we have just covered is an example of Simpson's paradox. It is called a paradox because we see the sign of the correlation flip when comparing the entire publication and specific strata. As an illustrative example, suppose you have three random variables $X$, $Y$, and $Z$ and that we observe realizations of these. Here is a plot of simulated observations for $X$ and $Y$ along with the sample correlation:
+The case we have just covered is an example of Simpson's paradox. It is called a paradox because we see the sign of the correlation flip when comparing the entire population and specific strata. As an illustrative example, suppose you have three random variables $X$, $Y$, and $Z$ and that we observe realizations of these. Here is a plot of simulated observations for $X$ and $Y$ along with the sample correlation:
 
 ```{r simpsons-paradox, echo=FALSE}
 N <- 100
@@ -402,7 +402,7 @@ summary(lm(y ~ x*as.factor(z), data = dat))
 
 ### How well does this model predict?
 
-Next time, we'll formally cover defining our loss function (root mean squared error) and using it to tune a model. But for now, let's compare the two models above -- the "parsimonius" one where we let $Z$ be an intercept shift, and the more complex "flexible" model where we interact $X$ with $Z$ (treating $Z$ as a factor). 
+Next time, we'll formally cover defining our loss function (root mean squared error) and using it to tune a model. But for now, let's compare the two models above -- the "parsimonious" one where we let $Z$ be an intercept shift, and the more complex "flexible" model where we interact $X$ with $Z$ (treating $Z$ as a factor). 
 
 First, we'll re-estimate the models and get the residuals. We could use the difference between observed $y$ and the predicted $y$, or just use `resid(...)` to get the same thing:
 
@@ -438,7 +438,7 @@ flex.RSS/length(flex.resid)
 ```
 
 
-And for root mean squared error, we finally take the square root. This looks an awful lot like the standard deviation of the residual, right? It just about it (aside from the sample $\frac{1}{N-1}$ difference).
+And for root mean squared error, we finally take the square root. This looks an awful lot like the standard deviation of the residual, right? It just about is (aside from the sample $\frac{1}{N-1}$ difference).
 
 ```{r, echo=T}
 sqrt(sum(pars.resid^2)/length(pars.resid))
@@ -459,6 +459,6 @@ We **fail to reject the null that the interactions are jointly equal to zero**.
 
 What if we were only interested in the best prediction, not necessarily the best *model*? Then "**better**" is defined as "lower RMSE" and the more flexible model is "better".
 
-Starting next time, we'll look at what we can learn when we aim only for fitting an explanatory model rather than a theoretically valid model.
+Starting next time, we'll look at what we can learn when we aim only for a predictive model rather than a theoretically valid, explanatory one.
 
 

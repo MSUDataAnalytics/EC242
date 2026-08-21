@@ -12,7 +12,7 @@ output:
 ### Guiding Questions
 
 - What is *shrinkage*?
-- What do we do with too may right-hand-side variables?
+- What do we do with too many right-hand-side variables?
 - What is LASSO?
 
 # This week is a little different
@@ -29,14 +29,14 @@ head(credit)
 
 ```
 
-We will also need to load the `caret` package (which you're used before), as well as the `glmnet` package, which is new for us.
+We will also need to load the `caret` package (which you've used before), as well as the `glmnet` package, which is new for us.
 
 ## Terminology
 I used to have this lecture at the end of our semester, but I think the intuition behind LASSO and ridge regression helps understand our "overfitting" problem. There are two terms I want to cover before we dive into the slides:
 
 1. **Bias vs. Variance**: We saw that super-overfit polynomial last week (where we took 20 observations and fit a 16th-degree polynomial). The model we fit was very flexible and bendy, but it did get most of the data points right. It had low *bias* as it was generally right, but had huge *variance* -- it was all over the place, even within a small range of advertising mode spending. **Bias vs. variance** refers to the innate tradeoff between these two things. When we used the train and test samples to get the best *out* of sample fit, we were balancing bias and variance
 
-2. **Cross validation**: This is the term for using two (or more) different subsets of sample data (e.g. test and train) to fit a model. 
+2. **Cross validation**: This is the term for splitting your sample into two (or more) different subsets (e.g. train and test), fitting the model on one and checking how it does on the other -- and then rotating, so every chunk of the data gets a turn being held out. 
 
 Now, back to the [**lecture notes for today**](https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#5)
 
@@ -53,24 +53,24 @@ data %>%
 ```
 
 
-We pass a list with potentially many functions, but only one here in the example. For each passed function, `mutate_if` will create a copy of each existing column, square the data, and call name it by appending the name (here, 'squared') to the original column name.
+We pass a list with potentially many functions, but only one here in the example. For each passed function, `mutate_if` will create a copy of each existing column, square the data, and name it by appending the name (here, 'squared') to the original column name.
 
-This will results in some columns we don't want to keep -- `wage_squared` should be dropped since `wage` is the outcome we want to predict. We should also drop `lwage` and `lwage_squared` since those are transformations of our outcome. We want our data to only have the outcome and all the possible predictors so we can simply pass everything but `wage` for our X's and `wage` for our `y`. 
+This will result in some columns we don't want to keep -- `wage_squared` should be dropped since `wage` is the outcome we want to predict. We should also drop `lwage` and `lwage_squared` since those are transformations of our outcome. We want our data to only have the outcome and all the possible predictors so we can simply pass everything but `wage` for our X's and `wage` for our `y`. One warning before you start: `wage2` has missing values in `brthord`, `meduc`, and `feduc`, and `glmnet` flatly refuses an `x` matrix with `NA`s in it. Drop the incomplete rows with `na.omit()` before you build your matrix -- or drop those three columns *before* you create the squared terms, since otherwise `brthord_squared` and friends carry the `NA`s right along. 
 
 1. Drop all of the copies of the outcome variable and transformations of the outcome variable. Also, drop any of the squared terms of binary variables -- if a variable is $\{0,1\}$, then the squared term is exactly the same. For instance, `married` and `married_squared` are exactly the same.
 
-2. How many predictors (right-side variabes) do we have?
+2. How many predictors (right-side variables) do we have?
 
 3. Use `glmnet` from the `glmnet` package to run a LASSO (`alpha=1`) using all of the data you've assembled in the `wage2` dataset. Select a wide range of values for `lambda`. You can use `cv.glmnet` to do the cross-validation for you (see the Rubin lecture notes), or you can do it manually.
 
-4. Find the `lambda` that minimizes RMSE in the test data. You can extract the optimal lambda from a `cv.glmnet` object by referring to `object$lambda`, and the RMSE using `sqrt(object$cvm)`. These can be used to make the plots in the Rubin lecture notes, and to find the `lambda` that minimizes RMSE. `object$lambda.min` will also tell you the optimal `lambda`.
+4. Find the `lambda` that minimizes RMSE in the held-out data. You can extract the whole *sequence* of lambdas that `cv.glmnet` tried by referring to `object$lambda`, and the cross-validated RMSE at each of them using `sqrt(object$cvm)`. These can be used to make the plots in the Rubin lecture notes, and to find the `lambda` that minimizes RMSE. `object$lambda.min` will also tell you the optimal `lambda`.
 
 5. Using the optimal `lambda`, run a final LASSO model.
 
 6. Use `coef` to extract the coefficients from the optimal model. Coefficients that are zeroed out by the LASSO are shown as '.'
 - Which variables were "kept" in the model?
 - Which variables were eliminated from the model at the optimal `lambda`?
-- Is the train RMSE lower than it would be if we just ran OLS with all of the variables?
+- Is the cross-validated RMSE lower than it would be if we just ran OLS with all of the variables? (If your `lambda` grid runs down near zero, the RMSE at the smallest `lambda` is basically OLS's. Don't ask this of the *train* RMSE -- train RMSE is exactly the thing OLS minimizes, so shrinking anything can only make it worse.)
 
 :::
 
@@ -147,7 +147,7 @@ So let's say you draw sample $b=1$ from the $n$ observations. It is also of size
 
 ### Combining multiple trees
 
-We need a way of generating a RMSE for any given tuning parameter value, but now we have $B$ different trees. We can take our test data and put it into each of the $B$ trees and get a predicted value, right? And when the tree is different, then the prediction will be different. If we take the *average* over all $B$ predictions, we'll get a prediction that has less variance, even when each tree has variance $\sigma$, because variance of the mean scales to $\frac{\sigma}{\sqrt{n}}$. 
+We need a way of generating a RMSE for any given tuning parameter value, but now we have $B$ different trees. We can take our test data and put it into each of the $B$ trees and get a predicted value, right? And when the tree is different, then the prediction will be different. If we take the *average* over all $B$ predictions, we'll get a prediction that has less variance, even when each tree has variance $\sigma^2$, because averaging $B$ independent trees cuts the variance to $\frac{\sigma^2}{B}$. (The trees aren't quite independent -- they're grown on overlapping bootstrap samples -- so you never get the full $1/B$ reduction.) 
 
 So the rmse is:
 
@@ -222,6 +222,30 @@ calc_rmse = function(actual, predicted) {
 Let's check how linear, k-nearest neighbors, and decision tree models fit to this data make errors, while paying attention to their flexibility.
 
 ```{r error-vs-flex, fig.height = 6, fig.width = 10, echo = FALSE}
+x = seq(0, 100, by = 0.001)
+f = function(x) {
+  ((x - 50) / 50) ^ 2 + 2
+}
+g = function(x) {
+  1 - ((x - 50) / 50)
+}
+
+par(mgp = c(1.5, 1.5, 0))
+plot(x, g(x), ylim = c(0, 3), type = "l", lwd = 2,
+     ylab = "Error", xlab = "",
+     main = "Error versus Model Flexibility", col = "darkorange",
+     axes = FALSE)
+grid()
+axis(1, labels = FALSE)
+axis(2, labels = FALSE)
+box()
+ylabels = list(bquote("Low" %<-% "Flexibility" %->% "High"),
+               bquote("High" %<-% "Bias" %->% "Low"),
+               bquote("Low" %<-% "Variance" %->% "High"))
+mtext(do.call(expression, ylabels), side = 1, line = 2:4)
+curve(f, lty = 6, col = "dodgerblue", lwd = 3, add = TRUE)
+legend("bottomleft", c("Validation", "Train"), lty = c(6, 1), lwd = 3,
+       col = c("dodgerblue", "darkorange"))
 ```
 
 This picture is an idealized version of what we expect to see, but we'll illustrate the sorts of validate "curves" that we might see in practice.
@@ -284,7 +308,7 @@ What do we see here? As the polynomial degree *increases*:
 
 This more of less matches the idealized version above, but the validation "curve" is much more jagged. This is something that we can expect in practice.
 
-We have previously noted that training error isn't particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we known that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.^[In practice, if you already know how your model's flexibility works, by checking that the training error goes down as you increase flexibility, you can check that you have done your coding and model training correctly.]
+We have previously noted that training error isn't particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we know that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.^[In practice, if you already know how your model's flexibility works, by checking that the training error goes down as you increase flexibility, you can check that you have done your coding and model training correctly.]
 
 ### k-Nearest Neighbors
 
@@ -341,7 +365,7 @@ Here we see the "opposite" of the usual plot. Why? Because with k-nearest neighb
 - The training error *increases*.
 - The validation error *decreases*, then *increases*.
 
-Important to note here: the pattern above only holds "in general," that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selection the data for the validate set.
+Important to note here: the pattern above only holds "in general," that is, there can be minor deviations in the validation pattern along the way. This is due to the random nature of selecting the data for the validation set.
 
 ### Decision Trees
 

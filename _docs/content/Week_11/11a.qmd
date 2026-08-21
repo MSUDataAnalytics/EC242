@@ -15,7 +15,7 @@ output:
 - How to use **decision trees** for regression through the use of the `rpart()` function from the `rpart` package.
 - How "making predictions" can be thought of as **estimating the regression function**, that is, the conditional mean of the response given values of the features.
 - The difference between **parametric** and **nonparametric** methods.
-- The difference between **model parameters** and **tuning parameters** methods.
+- The difference between **model parameters** and **tuning parameters**.
 - How these nonparametric methods deal with **categorical variables** and **interactions**.
 - What is **model flexibility**?
 - What is **overfitting** and how do we avoid it?
@@ -133,7 +133,7 @@ Enter **nonparametric** models. We will consider two examples: **k-nearest neigh
 
 ## k-Nearest Neighbors
 
-We'll start with **k-nearest neighbors** which is possibly a more intuitive procedure than linear models.^[We chose to start with linear regression because most students the social sciences should already be familiar with the basic notion.]
+We'll start with **k-nearest neighbors** which is possibly a more intuitive procedure than linear models.^[We chose to start with linear regression because most students in the social sciences should already be familiar with the basic notion.]
 
 If our goal is to estimate the mean function,
 
@@ -165,7 +165,7 @@ $$
 \hat{\mu}_k(x) = \frac{1}{k} \sum_{ \{i \ : \ x_i \in \mathcal{N}_k(x, \mathcal{D}) \} } y_i
 $$
 
-as our estimate of the regression function at $x$. While this looks complicated, it is actually very simple. Here, we are using an average of the $y_i$ values of for the $k$ nearest neighbors to $x$.
+as our estimate of the regression function at $x$. While this looks complicated, it is actually very simple. Here, we are using an average of the $y_i$ values for the $k$ nearest neighbors to $x$.
 
 The $k$ "nearest" neighbors are the $k$ data points $(x_i, y_i)$ that have $x_i$ values that are nearest to $x$. We can define "nearest" using any distance we like, but unless otherwise noted, we are referring to euclidean distance.^[The usual distance when you hear distance. That is, unless you drive a [taxicab](https://en.wikipedia.org/wiki/Taxicab_geometry).] We are using the notation $\{i \ : \ x_i \in \mathcal{N}_k(x, \mathcal{D}) \}$ to define the $k$ observations that have $x_i$ values that are nearest to the value $x$ in a dataset $\mathcal{D}$, in other words, the $k$ nearest neighbors.
 
@@ -235,8 +235,8 @@ grid()
 For each plot, the black dashed curve is the true mean function.
 
 - In the left plot we use $k = 25$. The red "curve" is the estimate of the mean function for each $x$ shown in the plot.
-- In the left plot we use $k = 5$. The blue "curve" is the estimate of the mean function for each $x$ shown in the plot.
-- In the left plot we use $k = 1$. The green "curve" is the estimate of the mean function for each $x$ shown in the plot.
+- In the middle plot we use $k = 5$. The blue "curve" is the estimate of the mean function for each $x$ shown in the plot.
+- In the right plot we use $k = 1$. The green "curve" is the estimate of the mean function for each $x$ shown in the plot.
 
 Some things to notice here:
 
@@ -350,7 +350,7 @@ rpart.plot::rpart.plot(tree_slr)
 
 The above "tree"^[It's really an upside tree isn't it?] shows the splits that were made. It informs us of the variable used, the cutoff value, and some summary of the resulting neighborhood. In "tree" terminology the resulting neighborhoods are "terminal nodes" of the tree. In contrast, "internal nodes" are neighborhoods that are created, but then further split.
 
-The "root node" is the neighborhood contains all observations, before any splitting, and can be seen at the top of the image above. We see that this node represents 100% of the data. The other number, 0.21, is the mean of the response variable, in this case, $y_i$.
+The "root node" is the neighborhood that contains all observations, before any splitting, and can be seen at the top of the image above. We see that this node represents 100% of the data. The other number, 0.21, is the mean of the response variable, in this case, $y_i$.
 
 Looking at a terminal node, for example the bottom left node, we see that 23% of the data is in this node. The average value of the $y_i$ in this node is -1, which can be seen in the plot above.
 
@@ -378,9 +378,9 @@ rpart.plot::rpart.plot(tree_slr)
 There are two tuning parameters at play here which we will call by their names in R which we will see soon:
 
 - `cp` or the "complexity parameter" as it is called.^[Flexibility parameter would be a better name.] This parameter determines which splits are accepted. A split must improve the performance of the tree by more than `cp` in order to be used. When we get to R, we will see that the default value is 0.01.
-- `minsplit`, the minimum number of observations in a node (neighborhood) in order to consider splitting within a neighborhood.
+- `minsplit`, the minimum number of observations in a node (neighborhood) in order to consider splitting within a neighborhood. The default value is 20.
 
-There are actually many more possible tuning parameters for trees, possibly differing depending on who wrote the code you're using. We will limit discussion to these two.^[The `rpart` function in R would allow us to use others, but we will always just leave their values as the default values.] Note that they effect each other, and they effect other parameters which we are not discussing. The main takeaway should be how they effect model flexibility.
+There are actually many more possible tuning parameters for trees, possibly differing depending on who wrote the code you're using. We will limit discussion to these two.^[The `rpart` function in R would allow us to use others, but we will always just leave their values as the default values.] Note that they affect each other, and they affect other parameters which we are not discussing. The main takeaway should be how they affect model flexibility.
 
 First let's look at what happens for a fixed `minsplit` by variable `cp`.
 
@@ -461,7 +461,7 @@ We see that as `minsplit` *decreases*, model flexibility **increases**. By allow
 crdt = as_tibble(ISLR::Credit)
 ```
 
-Again, we are using the `Credit` data form the `ISLR` package. Note: **this is not real data.** It has been simulated.
+Again, we are using the `Credit` data from the `ISLR` package. Note: **this is not real data.** It has been simulated.
 
 ```{r}
 # data prep
@@ -487,7 +487,7 @@ crdt_est = crdt_trn[crdt_est_idx, ]
 crdt_val = crdt_trn[-crdt_est_idx, ]
 ```
 
-After train-test (with 80% of the data) and estimation-validation splitting the data, we look at the train data.
+After the train-test split (with 80% of the data going to train), we look at the train data.
 
 ```{r}
 # check data
@@ -505,7 +505,7 @@ crdt_knn_25 = knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 25)
 crdt_knn_75 = knnreg(Rating ~ Age + Gender + Student, data = crdt_trn, k = 75)
 ```
 
-Here, we fit three models to the estimation data. We supply the variables that will be used as features as we would with `lm()`. We also specify how many neighbors to consider via the `k` argument.
+Here, we fit four models to the training data. We supply the variables that will be used as features as we would with `lm()`. We also specify how many neighbors to consider via the `k` argument.
 
 But wait a second, what is the distance from non-student to student? From male to female? In other words, how does KNN handle categorical variables? It doesn't! Like `lm()` it creates dummy variables under the hood.
 
@@ -527,7 +527,7 @@ sqrt(sum((crdt_knn_10$learn$X[3, ] - crdt_knn_10$learn$X[4, ]) ^ 2))
 
 What about interactions? Basically, you'd have to create them the same way as you do for linear models. We only mention this to contrast with trees in a bit.
 
-OK, so of these three models, which one performs best? (Where for now, "best" is obtaining the lowest validation RMSE.)
+OK, so of these four models, which one performs best? (Where for now, "best" is obtaining the lowest validation RMSE.)
 
 First, note that we return to the `predict()` function as we did with `lm()`.
 
@@ -562,11 +562,11 @@ calc_rmse = function(actual, predicted) {
 sapply(knn_tst_pred, calc_rmse, crdt_tst$Rating)
 ```
 
-So, of these three values of $k$, the model with $k = 25$ achieves the lowest validation (test) RMSE.
+So, of these four values of $k$, the model with $k = 25$ achieves the lowest validation (test) RMSE.
 
 This process, fitting a number of models with different values of the *tuning parameter*, in this case $k$, and then finding the "best" tuning parameter value based on performance on the validation (test) data is called **tuning**. In practice, we would likely consider more values of $k$, but this should illustrate the point.
 
-In the next lectures, we will discuss the details of model flexibility and model tuning, and how these concepts are tied together. However, even though we will present some theory behind this relationship, in practice, **you must tune and validate your models**. There is no theory that will inform you ahead of tuning and validation which model will be the best. By teaching you *how* to fit KNN models in R and how to calculate validation RMSE, you already have all a set of tools you can use to find a good model.
+In the next lectures, we will discuss the details of model flexibility and model tuning, and how these concepts are tied together. However, even though we will present some theory behind this relationship, in practice, **you must tune and validate your models**. There is no theory that will inform you ahead of tuning and validation which model will be the best. By teaching you *how* to fit KNN models in R and how to calculate validation RMSE, you already have a set of tools you can use to find a good model.
 
 Tuning isn't necessarily something we've never done before -- in our linear regression section, we fit our model using more and more variables (and transformations of those variables), which allowed more *flexibility* but, as we saw, resulted in over-fitting. The same principle applies to KNN when we allow $k$ to decrease towards 1.
 
