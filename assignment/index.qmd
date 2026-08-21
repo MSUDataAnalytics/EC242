@@ -35,7 +35,7 @@ You can do a lot of different things with this memo: discuss something you learn
 
 The course content for each day will also include a set of questions specific to that topic. *You do not have to answer all (or any) of these questions*. That would be impossible. They exist to guide your thinking and to make complex reading more digestible. The specific topic for each week will be assigned **in class**. (We can't emphasize this enough.)
 
-The TA will grade these mini-exercises using a very simple system:
+These mini-exercises are graded using a very simple system:
 
 - ✔+: (*6 points (100%) in gradebook*) Work is thoughtful, well-written, and shows engagement with the course content. This is the expected level of performance.
 - ✔: (*5 points (83%) in gradebook*) Work shows bare minimum of thought and engagement. Disappointing, but excusable occasionally.

@@ -61,12 +61,12 @@ execute:
 
 website:
   title: "EC242"
-  # announcement:
-  #   icon: info-circle
-  #   dismissable: true
-  #   content: "Welcome to Fall Semester 2025"
-  #   type: primary
-  #   position: below-navbar
+  announcement:
+    icon: info-circle
+    dismissable: true
+    content: "Welcome to Fall Semester 2026!"
+    type: primary
+    position: below-navbar
   search: 
     show-item-context: tree
     location: navbar

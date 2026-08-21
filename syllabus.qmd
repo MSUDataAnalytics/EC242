@@ -96,30 +96,22 @@ The Great State of Michigan subsidizes every MSU student by approximately $6,354
 
 - {{< var names.instructor >}} office hours: **{{< var officehours.instructor >}}** 
 
-- {{< var names.instructor >}} office hours Zoom link: {{< var officehours.instructorzoom >}}. 
 
-My office hours start immediately following class on Thursday, so I will stay in the classroom and answer questions, or we can walk-and-talk back to my office if you have a longer question. If you prefer to meet at my office located at {{< var officehours.instructoroffice >}}, allow a little time for me to return from class. If you wish to attend office hours remotely but did not attend class (hmmm....), email me and I will log onto Zoom.
+Office hours are held in my office at {{< var officehours.instructoroffice >}}. If you have a quick question right after class, grab me on the way out and we can walk-and-talk; otherwise come by during the scheduled hours.
 
-I also hold dedicated Sunday evening office hours via Slack between 6:30 PM until about 7:30 PM. In addition, I will check Slack throughout the week and use it as an always-on avenue of communication and help. 
+I will check Slack throughout the week and use it as an always-on avenue of communication and help. 
 
 It would be remarkable if you didn’t need some assistance with the material, and I am here to help.  One of the benefits of open office hours is to accommodate many students at once; if fellow students are in my office, please join in and feel very free to show up in groups. As a general rule, please first seek course-related help from the course website. However, if my scheduled office hours do not work for you please let me know. I may encourage you to make appointments with me. I ask that you schedule your studying so that you are prepared to ask questions during office hours – office hours are not a lecture and if you’re not prepared with questions we will end up awkwardly staring at each other for an hour until you leave.
 
 Some gentle requests regarding office hours and on contacting me. First, my office hours end sharply at the end, so don’t arrive 10 minutes before the scheduled end and expect a full session. Please arrive early if you have lengthy questions, or if you don’t want to risk not having time due to others’ questions. You are free to ask me some stuff by e-mail, (e.g. a typo or something on a handout), but please know e-mail sucks for answering many types of questions. “How do I do this lab?” or “What’s wrong with my `R` setup?” are short questions with long answers. Come to office hours or ask on Slack.
 
-### Office Hours - Teaching Assistant
-- {{< var names.TA >}}: {{< var email.TA >}}
-
-- TA Office Hours via **Zoom**: **{{< var officehours.TA >}}**
-
-- TA Office Hours Zoom link: {{< var officehours.TAzoom >}}
-
 ### Slack
-We will use Slack as a forum for asking questions about the course, including course policies and, primarily, help questions with `R`. Students are encouraged to help answer each others' questions, and to use the forum as a first-step for seeking help. Myself and the TA will monitor slack and answer questions regularly. You must join our Slack channel with this link: {{< var slack.invite >}} by the end of Week 2 -- it counts for 1 point of participation and is mandatory. Once you have joined, bookmark our {{< var slack.link >}}.
+We will use Slack as a forum for asking questions about the course, including course policies and, primarily, help questions with `R`. Students are encouraged to help answer each others' questions, and to use the forum as a first-step for seeking help. I will monitor Slack and answer questions regularly. You must join our Slack channel with this link: {{< var slack.invite >}} by the end of Week 2 -- it counts for 1 point of participation and is mandatory. Once you have joined, bookmark our {{< var slack.link >}}.
 
 One of the biggest advantages of using Slack is that you can take screenshots and paste them directly into your post (using *screenshot* on mac or *snipping tool* on Windows, set it to capture to your "clipboard").
 
 ::: {.callout-tip title="My DM's are closed"}
-Please ask your question in one of the coursewide channels so that our TA can answer when I am unavailable. You will receive a faster reply that way.
+Please ask your question in one of the coursewide channels so that your classmates can also see the answer and chime in. You will receive a faster reply that way.
 :::
 
 
@@ -279,7 +271,7 @@ Learning `R` can be difficult at first. Like learning a new language---Spanish, 
 
 > It's easy when you start out programming to get really frustrated and think, "Oh it's me, I'm really stupid," or, "I'm not made out to program." But, that is absolutely not the case. Everyone gets frustrated. I still get frustrated occasionally when writing R code. It's just a natural part of programming. So, it happens to everyone and gets less and less over time. Don't blame yourself. Just take a break, do something fun, and then come back and try again later.
 
-Even experienced programmers (like me) find themselves bashing their heads against seemingly intractable errors.^[By the end of the course, you will realize that 1) I make many many many errors; 2) that I frequently cannot remember a command or the correct syntax; and 3) that none of this matters too much in the big picture because I know the broad approaches I'm trying to take and I know how to Google stuff. Learn from my idiocy.] If you're finding yourself bashing your head against a wall and not making progress, try the following. First, take a break. Sometimes you just need space to see an error. Next, talk to classmates. Finally, if you genuinely cannot see the solution, e-mail the TA. But, honestly, it's probably just a typo.
+Even experienced programmers (like me) find themselves bashing their heads against seemingly intractable errors.^[By the end of the course, you will realize that 1) I make many many many errors; 2) that I frequently cannot remember a command or the correct syntax; and 3) that none of this matters too much in the big picture because I know the broad approaches I'm trying to take and I know how to Google stuff. Learn from my idiocy.] If you're finding yourself bashing your head against a wall and not making progress, try the following. First, take a break. Sometimes you just need space to see an error. Next, talk to classmates. Finally, if you genuinely cannot see the solution, ask on Slack or e-mail me. But, honestly, it's probably just a typo.
 
 ```{r echo=FALSE, out.width="60%"}
 knitr::include_graphics(here('images','gator_error.jpg'), error=F)

@@ -14,7 +14,7 @@ PLS202 also teaches two important areas that we will build on rather than review
 
 ::: {.callout-tip}
 # Keys to success
-The course content below should be considered a prerequisite for success. For those concerned about basics of `R`, you absolutely must read this content and attempt the coding exercises. If you struggle to follow the content, please contact the professor or TA.
+The course content below should be considered a prerequisite for success. For those concerned about basics of `R`, you absolutely must read this content and attempt the coding exercises. If you struggle to follow the content, please come to office hours or ask on Slack.
 :::
 
 

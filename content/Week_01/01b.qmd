@@ -830,7 +830,7 @@ If we get all the way to the end of Week 01b, we will likely start on Week 02a -
 :::
 
 ## Further help with `R`
-  If you are not comfortable with `R`, the earlier you seek out help, the better. Quietly letting the course pass by you because you don't know how to fix an error will do nobody any good. Attend TA office hours or attend TA or {{< var names.instructor >}}'s office hours [see Syllabus](/syllabus.html) for times and Zoom links. Also, join the course Slack (see the front page of our course website for a link) and post questions there.
+  If you are not comfortable with `R`, the earlier you seek out help, the better. Quietly letting the course pass by you because you don't know how to fix an error will do nobody any good. Attend {{< var names.instructor >}}'s office hours [see Syllabus](/syllabus.html) for times. Also, join the course Slack (see the front page of our course website for a link) and post questions there.
 
 Finally, there are also primers on [Rstudio.cloud](https://rstudio.cloud/learn/primers) that can be useful. There are many ways we can help you get used to `R`, but only if you reach out.
 
