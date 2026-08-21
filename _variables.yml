@@ -69,6 +69,6 @@ duedates:
   lab11: "Monday, November 16th"
   lab12: "Monday, November 23rd"
   project3: "Saturday, November 21st, 11:59PM"
-  lab14: "Monday, November 30th"         # Text as Data -- taught week of 11/24
-  lab13: "Monday, December 7th"          # Classification -- taught week of 12/1
+  lab13: "Monday, November 30th"         # Text as Data (week 13)
+  lab14: "Monday, December 7th"          # Classification (week 14)
   finalproject: "Thursday, December 17th, 11:59PM"   # finals week 12/14-12/18
