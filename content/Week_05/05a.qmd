@@ -456,7 +456,7 @@ ourDistance
 ```
 We get a `units` matrix, which has extra properties that allow us to convert the units. The units will be in whatever the CRS of the objects is in - `st_crs(ourCities.spatial)` tells us the units are meters.
 
-What if we wanted to find the closest gas plant to each city? That is akin to looking at each row, and finding the column that is the smallest, right? We will use `apply`, and we will note that the order of the columns is the same as the order in `MI.gasplants.small`, so we can use `MI.gasplants.small$name` to tell us the name of the closest gas plant. We will `apply` over each row (`MAR=1`) and use the `which.min` function, which returns the *index* number of the maximum column.
+What if we wanted to find the closest gas plant to each city? That is akin to looking at each row, and finding the column that is the smallest, right? We will use `apply`, and we will note that the order of the columns is the same as the order in `MI.gasplants.small`, so we can use `MI.gasplants.small$name` to tell us the name of the closest gas plant. We will `apply` over each row (`MAR=1`) and use the `which.min` function, which returns the *index* number of the minimum column.
 
 ```{r}
 max.index = apply(ourDistance, MAR = 1, which.min)

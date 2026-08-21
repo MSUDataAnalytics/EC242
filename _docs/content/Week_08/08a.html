@@ -1185,14 +1185,23 @@ father       0.7198756  0.1693834 4.249977 0.0000979167</code></pre>
 <p>The <strong>broom</strong> package has three main functions, all of which extract information from the object returned by <code>lm</code> and return it in a <strong>tidyverse</strong> friendly data frame. These functions are <code>tidy</code>, <code>glance</code>, and <code>augment</code>. The <code>tidy</code> function returns estimates and related information as a data frame:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(R <span class="sc">~</span> BB, <span class="at">data =</span> dat)</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Rebuild the HR strata here: the most recent `dat` above was the BB-strata</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># subset, and this section is about the slope of runs on BBs within HR strata.</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> Teams <span class="sc">%&gt;%</span> <span class="fu">filter</span>(yearID <span class="sc">%in%</span> <span class="dv">1961</span><span class="sc">:</span><span class="dv">2001</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">HR_strata =</span> <span class="fu">round</span>(HR<span class="sc">/</span>G, <span class="dv">1</span>),</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">BB_per_game =</span> BB <span class="sc">/</span> G,</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">R_per_game =</span> R <span class="sc">/</span> G) <span class="sc">%&gt;%</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(HR_strata <span class="sc">&gt;=</span> <span class="fl">0.4</span> <span class="sc">&amp;</span> HR_strata <span class="sc">&lt;=</span> <span class="fl">1.2</span>)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(R_per_game <span class="sc">~</span> BB_per_game, <span class="at">data =</span> dat)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)  214.      23.5         9.10 6.46e-19
-2 BB             0.910    0.0447     20.3  5.30e-75</code></pre>
+1 (Intercept)    2.20     0.113       19.4 1.12e-70
+2 BB_per_game    0.638    0.0344      18.5 1.35e-65</code></pre>
 </div>
 </div>
 <p>We can add other important summaries, such as confidence intervals:</p>
@@ -1202,18 +1211,18 @@ father       0.7198756  0.1693834 4.249977 0.0000979167</code></pre>
 <pre><code># A tibble: 2 × 7
   term        estimate std.error statistic  p.value conf.low conf.high
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)  214.      23.5         9.10 6.46e-19  168.      260.   
-2 BB             0.910    0.0447     20.3  5.30e-75    0.822     0.998</code></pre>
+1 (Intercept)    2.20     0.113       19.4 1.12e-70    1.98      2.42 
+2 BB_per_game    0.638    0.0344      18.5 1.35e-65    0.570     0.705</code></pre>
 </div>
 </div>
 <p>Because the outcome is a data frame, we can immediately use it with <code>do</code> to string together the commands that produce the table we are after. Because a data frame is returned, we can filter and select the rows and columns we want, which facilitates working with <strong>ggplot2</strong>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(HR) <span class="sc">%&gt;%</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do</span>(<span class="fu">tidy</span>(<span class="fu">lm</span>(R <span class="sc">~</span> BB, <span class="at">data =</span> .), <span class="at">conf.int =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"BB"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(HR, estimate, conf.low, conf.high) <span class="sc">%&gt;%</span></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(HR, <span class="at">y =</span> estimate, <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high)) <span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(HR_strata) <span class="sc">%&gt;%</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do</span>(<span class="fu">tidy</span>(<span class="fu">lm</span>(R_per_game <span class="sc">~</span> BB_per_game, <span class="at">data =</span> .), <span class="at">conf.int =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"BB_per_game"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(HR_strata, estimate, conf.low, conf.high) <span class="sc">%&gt;%</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(HR_strata, <span class="at">y =</span> estimate, <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high)) <span class="sc">+</span></span>
 <span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>() <span class="sc">+</span></span>
 <span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1232,7 +1241,7 @@ father       0.7198756  0.1693834 4.249977 0.0000979167</code></pre>
 <pre><code># A tibble: 1 × 12
   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1     0.331         0.330  79.9      413. 5.30e-75     1 -4865. 9735. 9750.
+1     0.266         0.265 0.454      343. 1.35e-65     1  -596. 1199. 1214.
 # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
 </div>
 </div>
@@ -1482,8 +1491,6 @@ Y_i = \beta_0 + \beta_1 x_{i,1} + \beta_2 x_{i,2} + \beta_3 x_{i,3}+ \beta_4 x_{
 
 Here we remake plot without players that debuted before 1998. We use the __lubridate__ function `year`.
 
-
-
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -1498,8 +1505,6 @@ players %>% filter(year(debut) < 1998) %>%
 ![](08a_files/figure-html/predicted-runs-vs-salary-no-rookies-1.png){width=672}
 :::
 :::
-
-
 
 -->
 <p>We can search for good deals by looking at players who produce many more runs than others with similar salaries. We can use this table to decide what players to pick and keep our total salary below the 40 million dollars Billy Beane had to work with. This can be done using what computer scientists call linear programming. This is not something we teach, but here are the position players selected with this approach:</p>
@@ -1766,7 +1771,7 @@ Finally, we will use the `spread` function to have one column for the rookie and
 </table>
 </div>
 </div>
-<p>In fact, the proportion of players that have a lower batting average their sophomore year is 0.7090909.</p>
+<p>In fact, the proportion of players that have a lower batting average their sophomore year is 0.7053571.</p>
 <p>So is it “jitters” or “jinx”? To answer this question, let’s turn our attention to all players that played the 2013 and 2014 seasons and batted more than 130 times (minimum to win Rookie of the Year).</p>
 <!--We perform similar operations to what we did above: -->
 <p>The same pattern arises when we look at the top performers: batting averages go down for most of the top performers.</p>

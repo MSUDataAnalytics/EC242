@@ -23,7 +23,6 @@ library(tidyverse)
 library(patchwork)
 weather_atl <- read_csv(here::here("data", "atl-weather-2019.csv"))
 ```
-```
 
 To use **patchwork**, we need to (1) save our plots as objects and (2) add them together with `+`.
 

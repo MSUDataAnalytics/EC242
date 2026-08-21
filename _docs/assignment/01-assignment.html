@@ -858,7 +858,7 @@ lines(n, n*(n+1)/2)
 <ol start="8" type="1">
 <li><p>Write a function <code>compute_s_n</code> that for any given <span class="math inline">\(n\)</span> computes the sum <span class="math inline">\(S_n = 1^2 + 2^2 + 3^2 + \dots n^2\)</span>. Report the value of the sum when <span class="math inline">\(n=10\)</span>.</p></li>
 <li><p>Define an empty numerical vector <code>s_n</code> of size 25 using <code>s_n &lt;- vector("numeric", 25)</code> and store in it the results of <span class="math inline">\(S_1, S_2, \dots S_{25}\)</span> using a for-loop.</p></li>
-<li><p>Repeat exercise 8, but this time use <code>sapply</code>.</p></li>
+<li><p>Repeat exercise 9, but this time use <code>sapply</code>.</p></li>
 <li><p>Repeat exercise 8, but this time use <code>map_dbl</code>.</p></li>
 <li><p>Create a data.frame holding <span class="math inline">\(n\)</span> and <span class="math inline">\(s_n\)</span> (from either 9, 10, or 11). Plot <span class="math inline">\(s_n\)</span> versus <span class="math inline">\(n\)</span>. Use points defined by <span class="math inline">\(n=1,\dots,25\)</span>.</p></li>
 <li><p>Confirm that the equivalent formula for this sum is <span class="math inline">\(S_n= n(n+1)(2n+1)/6\)</span>. To do so, compare whether <code>compute_s_n</code> gives the same result for the vector <code>s_n</code> as the equivalent formula for the sum.</p></li>

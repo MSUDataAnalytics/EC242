@@ -401,7 +401,7 @@ my_func <- function(y){
 
 9. Define an empty numerical vector `s_n` of size 25 using `s_n <- vector("numeric", 25)` and store in it the results of $S_1, S_2, \dots S_{25}$ using a for-loop.
 
-10. Repeat exercise 8, but this time use `sapply`.
+10. Repeat exercise 9, but this time use `sapply`.
 
 11. Repeat exercise 8, but this time use `map_dbl`.
 

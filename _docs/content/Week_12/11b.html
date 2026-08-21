@@ -702,7 +702,7 @@ Note
 <h3 class="anchored" data-anchor-id="combining-multiple-trees">Combining multiple trees</h3>
 <p>We need a way of generating a RMSE for any given tuning parameter value, but now we have <span class="math inline">\(B\)</span> different trees. We can take our test data and put it into each of the <span class="math inline">\(B\)</span> trees and get a predicted value, right? And when the tree is different, then the prediction will be different. If we take the <em>average</em> over all <span class="math inline">\(B\)</span> predictions, we’ll get a prediction that has less variance, even when each tree has variance <span class="math inline">\(\sigma\)</span>, because variance of the mean scales to <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span>.</p>
 <p>So the rmse is:</p>
-<p><span class="math display">\[RMSE = \frac{1}{N} \sum_{i=1}^N \left(\frac{1}{B} \sum_{b=1}^B (\hat{f}_{b}(x_i) - y_i)^2\right)\]</span></p>
+<p><span class="math display">\[RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^N \left(y_i - \frac{1}{B} \sum_{b=1}^B \hat{f}_{b}(x_i)\right)^2}\]</span></p>
 <p>While it takes a bit longer to estimate this (especially when <span class="math inline">\(B\)</span> is large), you get much more stable results that often predict better on an evaluation hold-out sample.</p>
 </section>
 <section id="ok-technically-thats-bagging" class="level3">

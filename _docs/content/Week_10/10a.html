@@ -664,7 +664,7 @@ window.Quarto = {
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">x =</span> <span class="fu">rnorm</span>(N <span class="sc">*</span> g),</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> <span class="fu">rnorm</span>(N <span class="sc">*</span> g))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The first column denotes group. We created groups and for each one we generated a pair of independent vectors, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, with 25 observations each, stored in the second and third columns. Because we constructed the simulation, we know that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are not correlated.</p>
+<p>The first column denotes group. We created 1,000,000 groups and for each one we generated a pair of independent vectors, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, with 25 observations each, stored in the second and third columns. Because we constructed the simulation, we know that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are not correlated.</p>
 <p>Next, we compute the correlation between <code>X</code> and <code>Y</code> for each group and look at the max:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> sim_data <span class="sc">%&gt;%</span></span>
@@ -676,20 +676,20 @@ window.Quarto = {
 <pre><code># A tibble: 1,000,000 × 2
     group     r
     &lt;int&gt; &lt;dbl&gt;
- 1  93770 0.789
- 2  15927 0.787
- 3 187304 0.775
- 4 747983 0.774
- 5 205316 0.767
- 6 818867 0.762
- 7 716011 0.752
- 8 528908 0.751
- 9 285604 0.745
-10 742450 0.742
+ 1 649306 0.838
+ 2 657874 0.781
+ 3 670539 0.761
+ 4 951006 0.752
+ 5  79041 0.751
+ 6 669224 0.750
+ 7 940473 0.747
+ 8 557406 0.746
+ 9 355758 0.745
+10 758776 0.744
 # ℹ 999,990 more rows</code></pre>
 </div>
 </div>
-<p>We see a maximum correlation of 0.789 and if you just plot the data from the group achieving this correlation, it shows a convincing plot that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are in fact correlated:</p>
+<p>We see a maximum correlation of 0.838 and if you just plot the data from the group achieving this correlation, it shows a convincing plot that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are in fact correlated:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(group <span class="sc">==</span> res<span class="sc">$</span>group[<span class="fu">which.max</span>(res<span class="sc">$</span>r)]) <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
@@ -714,7 +714,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>It’s just a mathematical fact that if we observe random correlations that are expected to be 0, but have a standard error of 0.2041773, the largest one will be close to 1.</p>
+<p>It’s just a mathematical fact that if we observe 1,000,000 random correlations that are expected to be 0, but have a standard error of 0.2040457, the largest one will be close to 1.</p>
 <p>If we performed regression on this group and interpreted the p-value, we would incorrectly claim this was a statistically significant relation:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
@@ -724,9 +724,9 @@ window.Quarto = {
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"x"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 5
-  term  estimate std.error statistic    p.value
-  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
-1 x        0.749     0.122      6.16 0.00000279</code></pre>
+  term  estimate std.error statistic     p.value
+  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+1 x         1.38     0.187      7.35 0.000000177</code></pre>
 </div>
 </div>
 <p>Now, imagine that instead of a whole lot of simulated data, you had a whole lot of actual data and waded through enough of it to find two unrelated variables that happened to show up as correlated (like divorce rates and pounds of margarine consumed). This particular form of data dredging is referred to as <em>p-hacking</em>. P-hacking is a topic of much discussion because it is a problem in scientific publications. Because publishers tend to reward statistically significant results over negative results, there is an incentive to report significant results. In epidemiology and the social sciences, for example, researchers may look for associations between an adverse outcome and a lot of different variables that represent exposures and report only the one exposure that resulted in a small p-value. Furthermore, they might try fitting several different models to account for confounding and pick the one that yields the smallest p-value. In experimental disciplines, an experiment might be repeated more than once, yet only the results of the one experiment with a small p-value reported. This does not necessarily happen due to unethical behavior, but rather as a result of statistical ignorance or wishful thinking. In advanced statistics courses, you can learn methods to adjust for these multiple comparisons.</p>
@@ -923,8 +923,6 @@ window.Quarto = {
 </div>
 <!--
 
-
-
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -938,8 +936,6 @@ admissions %>%
 ![](10a_files/figure-html/confounding-2-1.png){width=672}
 :::
 :::
-
-
 
 -->
 <p>It also breaks down the acceptances by major. This breakdown allows us to see that the majority of accepted men came from two majors: A and B. It also lets us see that few women applied to these majors.</p>
@@ -1073,11 +1069,11 @@ F-statistic: 729.8 on 9 and 490 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pars.resid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -8.186377e-18</code></pre>
+<pre><code>[1] -3.019807e-17</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(flex.resid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -9.919583e-18</code></pre>
+<pre><code>[1] 3.108624e-17</code></pre>
 </div>
 </div>
 <p>Usually we’d subtract off the mean of the numbers to get to the dispersion of the errors around the mean. It’s already 0, so we skip that part.</p>

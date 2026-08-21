@@ -405,24 +405,18 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)  <span class="co"># For combining ggplot plots</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>weather_atl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"/data/atl-weather-2019.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<pre><code>
-To use **patchwork**, we need to (1) save our plots as objects and (2) add them together with `+`.
-
-For instance, is there a relationship between temperature and humidity in Atlanta? We can plot both:
-
-
-::: {.cell}
-
-```{.r .cell-code}
-# Temperature in Atlanta
-temp_plot &lt;- ggplot(weather_atl, aes(x = time, y = temperatureHigh)) +
-  geom_line() +
-  geom_smooth() +
-  scale_y_continuous(sec.axis = sec_axis(trans = ~ (32 - .) * -5/9,
-                                         name = "Celsius")) +
-  labs(x = NULL, y = "Fahrenheit") +
-  theme_minimal()
-temp_plot</code></pre>
+<p>To use <strong>patchwork</strong>, we need to (1) save our plots as objects and (2) add them together with <code>+</code>.</p>
+<p>For instance, is there a relationship between temperature and humidity in Atlanta? We can plot both:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Temperature in Atlanta</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>temp_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(weather_atl, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> temperatureHigh)) <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="at">trans =</span> <span class="sc">~</span> (<span class="dv">32</span> <span class="sc">-</span> .) <span class="sc">*</span> <span class="sc">-</span><span class="dv">5</span><span class="sc">/</span><span class="dv">9</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">name =</span> <span class="st">"Celsius"</span>)) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Fahrenheit"</span>) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>temp_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -444,7 +438,7 @@ temp_plot</code></pre>
 </figure>
 </div>
 </div>
-<p>:::</p>
+</div>
 <p>Right now, these are two separate plots, but we can combine them with <code>+</code> if we load <strong>patchwork</strong>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>

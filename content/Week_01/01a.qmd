@@ -402,7 +402,7 @@ I encourage measured feedback and thoughtful responses to questions. If I call o
 
 ### Things To Remember (tl;dr)
 
-Do your weekly writing due **Saturday**. Begin working on Lab 1 as it is due Monday.
+Do your weekly writing due **Saturday**. Begin working on Lab 1 as it is due **{{< var duedates.lab1 >}}**.
 
 Keys from the [syllabus](/syllabus.html):
 

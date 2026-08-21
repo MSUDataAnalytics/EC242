@@ -99,7 +99,7 @@ sim_data <- tibble(group = rep(1:g, each=N),
                    y = rnorm(N * g))
 ```
 
-The first column denotes group. We created `r cat(prettyNum(g, big.mark=",",scientific=FALSE))` groups and for each one we generated a pair of independent vectors, $X$ and $Y$, with `r N` observations each, stored in the second and third columns. Because we constructed the simulation, we know that $X$ and $Y$ are not correlated.
+The first column denotes group. We created `r prettyNum(g, big.mark=",", scientific=FALSE)` groups and for each one we generated a pair of independent vectors, $X$ and $Y$, with `r N` observations each, stored in the second and third columns. Because we constructed the simulation, we know that $X$ and $Y$ are not correlated.
 
 Next, we compute the correlation between `X` and `Y` for each group and look at the max:
 
@@ -126,7 +126,7 @@ Remember that the correlation summary is a random variable. Here is the distribu
 res %>% ggplot(aes(x=r)) + geom_histogram(binwidth = 0.1, color = "black")
 ```
 
-It's just a mathematical fact that if we observe `r cat(prettyNum(g, big.mark=",",scientific=FALSE))` random correlations that are expected to be 0, but have a standard error of `r sd(res$r)`, the largest one will be close to 1.
+It's just a mathematical fact that if we observe `r prettyNum(g, big.mark=",", scientific=FALSE)` random correlations that are expected to be 0, but have a standard error of `r sd(res$r)`, the largest one will be close to 1.
 
 If we performed regression on this group and interpreted the p-value, we would incorrectly claim this was a statistically significant relation:
 

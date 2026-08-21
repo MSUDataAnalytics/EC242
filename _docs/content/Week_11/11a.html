@@ -872,7 +872,7 @@ Coefficients:
 </div>
 <p>There are two tuning parameters at play here which we will call by their names in R which we will see soon:</p>
 <ul>
-<li><code>cp</code> or the “complexity parameter” as it is called.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This parameter determines which splits are accepted. A split must improve the performance of the tree by more than <code>cp</code> in order to be used. When we get to R, we will see that the default value is 0.1.</li>
+<li><code>cp</code> or the “complexity parameter” as it is called.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This parameter determines which splits are accepted. A split must improve the performance of the tree by more than <code>cp</code> in order to be used. When we get to R, we will see that the default value is 0.01.</li>
 <li><code>minsplit</code>, the minimum number of observations in a node (neighborhood) in order to consider splitting within a neighborhood.</li>
 </ul>
 <p>There are actually many more possible tuning parameters for trees, possibly differing depending on who wrote the code you’re using. We will limit discussion to these two.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Note that they effect each other, and they effect other parameters which we are not discussing. The main takeaway should be how they effect model flexibility.</p>
@@ -949,7 +949,7 @@ Coefficients:
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>crdt_knn_01 <span class="ot">=</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">1</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>crdt_knn_10 <span class="ot">=</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">10</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>crdt_knn_25 <span class="ot">=</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">25</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>crdt_knn_100<span class="ot">=</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">75</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>crdt_knn_75 <span class="ot">=</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">75</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Here, we fit three models to the estimation data. We supply the variables that will be used as features as we would with <code>lm()</code>. We also specify how many neighbors to consider via the <code>k</code> argument.</p>
 <p>But wait a second, what is the distance from non-student to student? From male to female? In other words, how does KNN handle categorical variables? It doesn’t! Like <code>lm()</code> it creates dummy variables under the hood.</p>
@@ -1000,7 +1000,7 @@ Coefficients:
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">crdt_knn_01 =</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">1</span>),</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">crdt_knn_10 =</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">10</span>),</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">crdt_knn_25 =</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">25</span>),</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">crdt_knn_100=</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">75</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">crdt_knn_75 =</span> <span class="fu">knnreg</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">k =</span> <span class="dv">75</span>)</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -1014,8 +1014,8 @@ Coefficients:
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(knn_tst_pred, calc_rmse, crdt_tst<span class="sc">$</span>Rating)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> crdt_knn_01  crdt_knn_10  crdt_knn_25 crdt_knn_100 
-    163.9868     142.2242     135.3838     142.6786 </code></pre>
+<pre><code>crdt_knn_01 crdt_knn_10 crdt_knn_25 crdt_knn_75 
+   163.9868    142.2242    135.3838    142.6786 </code></pre>
 </div>
 </div>
 <p>So, of these three values of <span class="math inline">\(k\)</span>, the model with <span class="math inline">\(k = 25\)</span> achieves the lowest validation (test) RMSE.</p>
@@ -1068,8 +1068,8 @@ node), split, n, deviance, yval
 </div>
 </div>
 </div>
-<p>At each split, the variable used to split is listed together with a condition. If the condition is true for a data point, send it to the left neighborhood. Although the <code>Gender</code> available for creating splits, we only see splits based on <code>Age</code> and <code>Student</code>. This hints at the relative importance of these variables for prediction. More on this much later.</p>
-<p>Categorical variables are split based on potential categories! This is <em>excellent</em>. This means that trees naturally handle categorical features without needing to convert to numeric under the hood. We see a split that puts students into one neighborhood, and non-students into another.</p>
+<p>At each split, the variable used to split is listed together with a condition. If the condition is true for a data point, send it to the left neighborhood. Although <code>Student</code> is available for creating splits, we only see splits based on <code>Age</code> and <code>Gender</code>. This hints at the relative importance of these variables for prediction. More on this much later.</p>
+<p>Categorical variables are split based on potential categories! This is <em>excellent</em>. This means that trees naturally handle categorical features without needing to convert to numeric under the hood. We see a split that puts men into one neighborhood, and women into another.</p>
 <p>Notice that the splits happen in order. So for example, the third terminal node (with an average rating of 316) is based on splits of:</p>
 <ul>
 <li><code>Age &lt; 83</code></li>
@@ -1078,14 +1078,14 @@ node), split, n, deviance, yval
 <li><code>Age &gt; 78</code></li>
 <li><code>Gender = Male</code></li>
 </ul>
-<p>In other words, individuals in this terminal node are students who are between the ages of 78 and 83. (Only 3% of the data is represented here.) This is basically an interaction between <code>Age</code> and <code>Student</code> without any need to directly specify it! What a great feature of trees.</p>
+<p>In other words, individuals in this terminal node are men who are between the ages of 78 and 83. (Only 3% of the data is represented here.) This is basically an interaction between <code>Age</code> and <code>Gender</code> without any need to directly specify it! What a great feature of trees.</p>
 <p>To recap:</p>
 <ul>
 <li>Trees do not make assumptions about the form of the regression function.</li>
 <li>Trees automatically handle categorical features.</li>
 <li>Trees naturally incorporate interaction.</li>
 </ul>
-<p>Now let’s fit another tree that is more flexible by relaxing some tuning parameters. Recall that by default, <code>cp = 0.1</code> and <code>minsplit = 20</code>.</p>
+<p>Now let’s fit another tree that is more flexible by relaxing some tuning parameters. Recall that by default, <code>cp = 0.01</code> and <code>minsplit = 20</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>crdt_tree_big <span class="ot">=</span> <span class="fu">rpart</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn,</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">cp =</span> <span class="fl">0.0</span>, <span class="at">minsplit =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

@@ -87,7 +87,7 @@ Once we have a list of things we want to iterate on, `lapply` lets us do somethi
 Let's say we wanted to repeat our **TRY IT** with the `cp` values of `c(0, .01, .02, .03)`. We could make a list of those values, and use `lapply` to run `rpart()` and use each of the 4 values of `cp`. One way we could try doing this would be something like:
 
 ```{r, eval = F}
-myList = lapply(c(0, .01, .02, 03), rpart, formula = wage ~ ., data = wage_clean, cp = ???)
+myList = lapply(c(0, .01, .02, .03), rpart, formula = wage ~ ., data = wage_clean, cp = ???)
 ```
 
 The only problem here is that the first argument of `rpart` is not the `cp` parameter, so we can't just pass it in additional arguments.

@@ -151,7 +151,7 @@ We need a way of generating a RMSE for any given tuning parameter value, but now
 
 So the rmse is:
 
-$$RMSE = \frac{1}{N} \sum_{i=1}^N \left(\frac{1}{B} \sum_{b=1}^B (\hat{f}_{b}(x_i) - y_i)^2\right)$$
+$$RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^N \left(y_i - \frac{1}{B} \sum_{b=1}^B \hat{f}_{b}(x_i)\right)^2}$$
 
 While it takes a bit longer to estimate this (especially when $B$ is large), you get much more stable results that often predict better on an evaluation hold-out sample.
 
