@@ -12,3 +12,8 @@ NoPost/
 
 # macOS cruft
 .DS_Store
+
+**/*.quarto_ipynb
+
+# Quarto copies these into the output dir; never publish or track them
+_docs/renv/
