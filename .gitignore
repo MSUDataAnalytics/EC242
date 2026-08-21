@@ -5,3 +5,10 @@
 /.quarto/
 EC242.Rproj
 *_cache/
+
+# Never commit student work or private course material.
+# NoPost/ held 73 graded student PDFs on the public repo (Jan-Aug 2026).
+NoPost/
+
+# macOS cruft
+.DS_Store
