@@ -14,7 +14,8 @@ We'll be using `tmaptools` geocoder today, so you'll need to install that packag
 library(sf)
 library(tmaptools)
 library(tigris)
-
+library(tidyverse)
+library(here)
 ```
 
 # Reading spatial data
@@ -482,7 +483,7 @@ max.index
 we want to select from our distance matrix the 1st row, 3rd column; the 2nd row, 3rd column; 3rd row, 1st column; 4th row, 3rd column; 5th row, 4th column; and 6th row, 4th column. This means the row index and column index are not ranges, but are paired. Using `cbind(1:6, max.index)` makes them paired entries, and we can select specific row x column combinations that way.
 
 ### st_nearest_feature
-As is common in R, there is a function that will get the closest points between to spatial objects. `st_nearest_points` takes two geometries, and returns  the neaarest point in `y` for every point in `x`, which is what we did with the MI gas plants.
+As is common in R, there is a function that will get the closest points between to spatial objects. `st_nearest_feature` takes two geometries, and returns  the neaarest point in `y` for every point in `x`, which is what we did with the MI gas plants.
 
 ```{r}
 st_nearest_feature(x = ourCities.spatial, y = MI.gasplants.small)

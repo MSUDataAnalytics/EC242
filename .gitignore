@@ -27,3 +27,7 @@ _docs/renv/
 * [0-9].xlsx
 * [0-9].Rmd
 * [0-9]/
+
+# API keys live in ~/.Renviron, never in the project
+.Renviron
+.Rprofile.local

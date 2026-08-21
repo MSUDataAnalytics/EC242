@@ -301,7 +301,7 @@ head(AL.heat.proc)
 
 The second lines uses a `tidyselect` shortcut to select anything that does NOT (!) end with "M" (so that we lose the "margin of error" columns). Similarly, the last line selects the GEOID, NAME and the two new variables I just created. 
 
-We can grab the census tract polygons for Alabama and plot these. **Or**, we could change `geography=TRUE` to our `get_acs` call, and we'll get the `tigris` polygons already attached for this county.
+We can grab the census tract polygons for Alabama and plot these. **Or**, we could add `geometry = TRUE` to our `get_acs` call, and we'll get the `tigris` polygons already attached for this county.
 
 Not all tables have just the "Estimate" and "Margin of Error" column. Some, like "S1101" (Households and Families) have cross-tabs across the columns (AND cross-tabs down the rows!). That's super helpful if we have a very narrowly defined population we're interested in, but also makes things harder. Let's find the S1101 data and look at it's table layout:
 
@@ -432,7 +432,7 @@ Census data products are core resources in socio-economic research. But they are
 - Government open data portals
   - Many state and local governments have open data portals with maps you can view and explore (see [Michigan's here: https://gis-michigan.opendata.arcgis.com](https://gis-michigan.opendata.arcgis.com).
   - Many municipalities have something similar as well.
-  - However, many times they do not have the "download all data" ability turned on. Fear not - [see below](#extractingGIS) for instructions to extract from ArcGIS online hosted maps (a large majority of hosted maps).
+  - However, many times they do not have the "download all data" ability turned on. Fear not - [see below](#extracting-from-arcgis-online) for instructions to extract from ArcGIS online hosted maps (a large majority of hosted maps).
   
   
 - Google has a [dataset search page](https://datasetsearch.research.google.com)
@@ -447,7 +447,7 @@ Here's how most (but not all) ArcGIS-hosted spatial data can be obtained.
 
 1. Install the `arcgis` and `arcgislayers` packages.
 
-2. Find the map you want to extract. I'm going to go to the MI open data link at [https://gis-michigan.opendata.arcgis.com](https://gis-michigan.opendata.arcgis.com) and pull up a map of Michigan EGLE (Environment, Great Lakes, and Energy) conservation easements [see here]('https://gis-michigan.opendata.arcgis.com/datasets/f3ae9b93f8264699a5a5a1b51a4a46c8_1/explore?location=42.739688%2C-84.422098%2C15').
+2. Find the map you want to extract. I'm going to go to the MI open data link at [https://gis-michigan.opendata.arcgis.com](https://gis-michigan.opendata.arcgis.com) and pull up a map of Michigan EGLE (Environment, Great Lakes, and Energy) conservation easements [see here](https://gis-michigan.opendata.arcgis.com/datasets/f3ae9b93f8264699a5a5a1b51a4a46c8_1/explore?location=42.739688%2C-84.422098%2C15).
 
 3. Click on the map to highlight some feature -- it doesn't matter which, we just want our browser to query the map.
 
