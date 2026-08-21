@@ -18,7 +18,7 @@ project:
     #- "!Week_12/"
     #- "!Week_13/"
     #- "!Week_14/"
-    - "!Week_15/"
+    #- "!Week_15/"
     #- "!*/01-assignment.qmd"
     #- "!*/02-assignment.qmd"
     #- "!*/03-assignment.qmd"
