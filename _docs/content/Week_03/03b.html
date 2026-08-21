@@ -669,7 +669,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>This avoids using <code>scale_x_continuous</code> or it’s child function <code>scale_x_log10</code>. One advantage to using <code>scale_x...</code> is that the axes are correctly labeled. When we transform the data directly, the axis labels only show the transformed values, so 7,000,000 becomes 7.0. This could be confusing! We could update the axis labels to say “total murders (log base 10)” and “total population (log base 10)”, but that’s cumbersome. Using <code>scale_x...</code> is a lot more refined and easy.</p>
+<p>This avoids using <code>scale_x_continuous</code> or its child function <code>scale_x_log10</code>. One advantage to using <code>scale_x...</code> is that the axes are correctly labeled. When we transform the data directly, the axis labels only show the transformed values, so 10,000,000 becomes 7.0. This could be confusing! We could update the axis labels to say “total murders (log base 10)” and “total population (log base 10)”, but that’s cumbersome. Using <code>scale_x...</code> is a lot more refined and easy.</p>
 </section>
 </section>
 <section id="axis-labels-legends-and-titles" class="level1">
@@ -747,7 +747,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="axis-ticks" class="level2">
 <h2 class="anchored" data-anchor-id="axis-ticks">Axis ticks</h2>
 <p>In addition to the axis labels, we may want to format or change the axis tick labels (like “1e+06” above) or even where the tick marks and lines are drawn. If we don’t specify anything, the axis labels and tick marks are drawn as best as <code>ggplot</code> can do, but we can change this. This might be especially useful if our data has some meaningful cutoffs that aren’t found by the default, or we just don’t like where the marks fall or how they are labeled. This is easy to fix with <code>ggplot</code>.</p>
-<p>To change the tick mark labels, we have to set the tick mark locations. Then we can set a label for each tick mark. Let’s go back to our <code>murders</code> data and, for simplicity, take the log transformation off the Y axis. We’ll use <code>scale_y_continuous</code> to tell R <em>where</em> to put the breaks (<code>breaks =</code>) and <em>what to label</em> the breaks. We have to give it one label for every break. Let’s say we just want a line at the 500’s and let’s say we want to (absurdly) use written numerics for each of the Y-axis lines. Since <code>scale_y_log10</code> <strong>inherits from</strong> <code>scale_y_continuous</code>, we can just use that and add the breaks and labels:</p>
+<p>To change the tick mark labels, we have to set the tick mark locations. Then we can set a label for each tick mark. Let’s go back to our <code>murders</code> data and take control of the Y-axis tick marks. We’ll use <code>scale_y_continuous</code> to tell R <em>where</em> to put the breaks (<code>breaks =</code>) and <em>what to label</em> the breaks. We have to give it one label for every break. Let’s say we just want a line at the 500’s and let’s say we want to (absurdly) use written numerics for each of the Y-axis lines. Since <code>scale_y_log10</code> <strong>inherits from</strong> <code>scale_y_continuous</code>, we can just use that and add the breaks and labels:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> region), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">nudge_x =</span> .<span class="dv">05</span>) <span class="sc">+</span></span>
@@ -784,7 +784,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="flexible-axis-tick-labels" class="level3">
 <h3 class="anchored" data-anchor-id="flexible-axis-tick-labels">Flexible axis tick labels</h3>
 <p>Anyone else annoyed by the scientific <code>1e+06</code>-style x-axis labels? If you’re not familiar, <code>1e+06</code> means <code>1 * 10^6</code> or <code>1,000,000</code>. Of course, we could manually make the labels (and the breaks) like we did above, but that might be tedious, and what if we have different ranges of data? We’d end up forcing tick marks in areas that are far out of the support of the data (off the plot).</p>
-<p>We can also use a <code>labeler</code> function. The most common ones are in the <code>scales</code> package, so you’ll want to install that and load it up using <code>library(scales)</code>. Each labeler is a function that takes as it’s first argument a vector of numbers (or some expected format, like dates) and returns a formatted character vector of labels.</p>
+<p>We can also use a <code>labeler</code> function. The most common ones are in the <code>scales</code> package, so you’ll want to install that and load it up using <code>library(scales)</code>. Each labeler is a function that takes as its first argument a vector of numbers (or some expected format, like dates) and returns a formatted character vector of labels.</p>
 <p>So the following will happen:</p>
 <ul>
 <li><code>scales::comma_format</code></li>
@@ -801,8 +801,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         style_positive = style_positive, style_negative = style_negative, 
         scale_cut = scale_cut, trim = trim, ...)
 }
-&lt;bytecode: 0x00000151016e8bc0&gt;
-&lt;environment: 0x00000151016e9e90&gt;</code></pre>
+&lt;bytecode: 0x9252aea50&gt;
+&lt;environment: 0x9252b3b28&gt;</code></pre>
 </div>
 </div>
 <p>Wha? That looks like the output…is a function?</p>
@@ -871,11 +871,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Of course, we could also transform the <code>Population</code> and <code>total</code> variables, dividing by 1,000,000 or 1,000, then add “Thousands” or “Millions” to the label. But this way is cleaner. Also, notice on the Y-axis that the suffix “K” is only used when necessary – we don’t have “.01K” on there.</p>
 <p>There is also a <code>cut_si()</code> function that takes as an input a scientific unit (like “g” for grams). It’ll use the full scientific notation for larger quantites, so <code>cut_si("g")</code> would have “g”, then “kg”, then “Mg” where needed on the axis.</p>
-<p>There are other lots of neat tricks for axis labels on the tidyverse <a href="https://tidyverse.org/blog/2022/04/scales-1-2-0/">scales vignette</a></p>
+<p>There are lots of other neat tricks for axis labels on the tidyverse <a href="https://tidyverse.org/blog/2022/04/scales-1-2-0/">scales vignette</a></p>
 </section>
 <section id="axis-tick-label-orientation" class="level2">
 <h2 class="anchored" data-anchor-id="axis-tick-label-orientation">Axis tick label orientation</h2>
-<p>While the <code>label_comma</code> kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the <code>theme()</code> call since it adjusts the layout or styling of the plot. Here, I’ve put in a bunch of breaks at 1 million to 40 million, and then asked <code>ggplot</code> to rotate and adjust the x-axis tick labels. <code>hjust</code> and <code>vjust</code> move the orientation of the output. <code>angle</code> changes the orientation.</p>
+<p>While the <code>label_comma</code> kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the <code>theme()</code> call since it adjusts the layout or styling of the plot. Here, I’ve put in a bunch of breaks at 1 million to 40 million, and then asked <code>ggplot</code> to rotate and adjust the x-axis tick labels. <code>hjust</code> and <code>vjust</code> move the horizontal and vertical justification of the label – where the text sits relative to its tick mark. <code>angle</code> changes the orientation.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> region), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">nudge_x =</span> .<span class="dv">05</span>) <span class="sc">+</span></span>
@@ -898,11 +898,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="additional-geometries" class="level2">
 <h2 class="anchored" data-anchor-id="additional-geometries">Additional geometries</h2>
 <p>Let’s say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) becuase we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).</p>
-<p><code>geom_vline</code> lets us add a single vertical line (without aesthetic mappings). If we look at <code>?geom_vline</code> we see that it requires ones aesthetic:<code>xintercept</code>. It also takes aesthetics like color and size, and introduces the <code>linetype</code> aesthetic:</p>
+<p><code>geom_vline</code> lets us add a single vertical line (without aesthetic mappings). If we look at <code>?geom_vline</code> we see that it requires one aesthetic: <code>xintercept</code>. It also takes aesthetics like color and size, and introduces the <code>linetype</code> aesthetic:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> region), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">nudge_x =</span> .<span class="dv">05</span>) <span class="sc">+</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">1000000</span>), <span class="at">col =</span> <span class="st">'red'</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">1000000</span>), <span class="at">col =</span> <span class="st">'red'</span>, <span class="at">linewidth =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">721</span>, <span class="dv">1000</span>,<span class="dv">1500</span>), </span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Zero'</span>,<span class="st">'Fifty'</span>,<span class="st">'One hundred'</span>,<span class="st">'Seven hundred twenty one'</span>,<span class="st">'One thousand'</span>,<span class="st">'Fifteen hundred'</span>),</span>
@@ -919,7 +919,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Combining geometries is as easy as adding the layers with <code>+</code>.</p>
 <section id="geom_line" class="level3">
 <h3 class="anchored" data-anchor-id="geom_line"><code>geom_line</code></h3>
-<p>For a good old line plot, we use the line geometry at <code>geom_line</code>. The help for <code>?geom_line</code> tells us that we need an x and a y aesthetic (much like <code>geom_points</code>). Since our <code>murders</code> data isn’t really suited to a line graph, we’ll use a daily stock price. We’ll get this using <code>tidyquant</code>, which pulls stock prices from Yahoo Finance and maintains the “tidy” format. You’ll need to <code>install.packages('tidyquant')</code> before you run this the first time.</p>
+<p>For a good old line plot, we use the line geometry at <code>geom_line</code>. The help for <code>?geom_line</code> tells us that we need an x and a y aesthetic (much like <code>geom_point</code>). Since our <code>murders</code> data isn’t really suited to a line graph, we’ll use a daily stock price. We’ll get this using <code>tidyquant</code>, which pulls stock prices from Yahoo Finance and maintains the “tidy” format. You’ll need to <code>install.packages('tidyquant')</code> before you run this the first time.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyquant)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>AAPL <span class="ot">=</span> <span class="fu">tq_get</span>(<span class="st">"AAPL"</span>, <span class="at">from =</span> <span class="st">'2009-01-01'</span>, <span class="at">to =</span> <span class="st">'2021-08-01'</span>, <span class="at">get =</span> <span class="st">'stock.prices'</span>)</span>
@@ -928,12 +928,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 6 × 8
   symbol date        open  high   low close     volume adjusted
   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 AAPL   2009-01-02  3.07  3.25  3.04  3.24  746015200     2.72
-2 AAPL   2009-01-05  3.33  3.43  3.31  3.38 1181608400     2.84
-3 AAPL   2009-01-06  3.43  3.47  3.30  3.32 1289310400     2.79
-4 AAPL   2009-01-07  3.28  3.30  3.22  3.25  753048800     2.73
-5 AAPL   2009-01-08  3.23  3.33  3.22  3.31  673500800     2.78
-6 AAPL   2009-01-09  3.33  3.34  3.22  3.23  546845600     2.72</code></pre>
+1 AAPL   2009-01-02  3.07  3.25  3.04  3.24  746015200     2.71
+2 AAPL   2009-01-05  3.33  3.43  3.31  3.38 1181608400     2.83
+3 AAPL   2009-01-06  3.43  3.47  3.30  3.32 1289310400     2.78
+4 AAPL   2009-01-07  3.28  3.30  3.22  3.25  753048800     2.72
+5 AAPL   2009-01-08  3.23  3.33  3.22  3.31  673500800     2.77
+6 AAPL   2009-01-09  3.33  3.34  3.22  3.23  546845600     2.71</code></pre>
 </div>
 </div>
 <p>Now, we can plot a line graph of the Apple closing stock price over the requested date range. We want this to be a time series, so the x-axis will be the date and the y-axis will be the closing price.</p>
@@ -992,7 +992,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Similar result as <code>geom_line</code>, but without the color difference (which makes it rather hard to tell what you’re looking at). But if we add labels using <code>geom_label</code>, we’ll get one label for every point, which will be overwhelming. The solution? Use some filtered data so that there is only one point for each label. But that means replacing the <code>data</code> in <code>ggplot</code>. Here’s how.</p>
+<p>Similar result as mapping <code>color</code>, but without the color difference (which makes it rather hard to tell what you’re looking at). But if we add labels using <code>geom_label</code>, we’ll get one label for every point, which will be overwhelming. The solution? Use some filtered data so that there is only one point for each label. But that means replacing the <code>data</code> in <code>ggplot</code>. Here’s how.</p>
 </section>
 </section>
 </section>
@@ -1035,7 +1035,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now, we don’t lose a lot of space to a legend, and we haven’t had to use color to separate the stock symbols.</p>
 <section id="summarizing-data-and-including-in-ggplot" class="level2">
 <h2 class="anchored" data-anchor-id="summarizing-data-and-including-in-ggplot">Summarizing data and including in ggplot</h2>
-<p>Often, we’ll want to have lines or highlights in places that are derived from the data. In the above example from <code>murders</code>, we added a line at an arbitrary x-value (population) of 1,000,000. Often, though, <strong>we’ll want to show some summary of the data</strong> on the plot. That alos requires using a second dataset (derived from the first).</p>
+<p>Often, we’ll want to have lines or highlights in places that are derived from the data. In the above example from <code>murders</code>, we added a line at an arbitrary x-value (population) of 1,000,000. Often, though, <strong>we’ll want to show some summary of the data</strong> on the plot. That also requires using a second dataset (derived from the first).</p>
 <p>Let’s say we want to show the average state population for each region. We’ll need to use two different data objects, one for the original, one for the summary. Create the summary first:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>murders.summary <span class="ot">=</span> murders <span class="sc">%&gt;%</span></span>
@@ -1055,7 +1055,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 4 West          5534273.    147      2.66</code></pre>
 </div>
 </div>
-<p>The, use both <code>murders</code> and <code>murders.summary</code> in the plot:</p>
+<p>Then, use both <code>murders</code> and <code>murders.summary</code> in the plot:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> region), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">nudge_x =</span> .<span class="dv">05</span>) <span class="sc">+</span></span>
@@ -1072,7 +1072,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Note that we get the same color mapping – this isn’t necessarily automatic. Rather, it’s because the order in which R encounters each region is <em>the exact same order</em> in both <code>murders</code> and <code>murders.summary</code>. If it weren’t, we’d have to set the factor levels using <code>factor</code> and overwriting our old <code>region</code> column:</p>
+<p>Note that we get the same color mapping – this isn’t necessarily automatic. Rather, it’s because <code>region</code> is a factor with <em>the exact same levels</em> in both <code>murders</code> and <code>murders.summary</code>, and <code>ggplot</code> assigns colors in level order – not in the order the rows happen to show up. If the levels didn’t match, we’d have to set them using <code>factor</code> and overwriting our old <code>region</code> column:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>murders.summary <span class="ot">=</span> murders <span class="sc">%&gt;%</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span></span>
@@ -1176,7 +1176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>You are tasked with two different things:</p>
 <p>A: Explore and visualize the discrepancies between polls and actual results using <code>combined_data</code>. How do you want to go about representing the data? How many observations do you have per state? What about per region?</p>
-<p>You might find these code bits to be useful for this (hint: use them with <code>case_when</code>):</p>
+<p>You might find the region definitions above to be useful for this (hint: use them with <code>case_when</code>).</p>
 <p>B: Visualize the relationship between the actual results and the poll results <em>over time</em> for the following states: <code>c('MI','WI','IA','FL','NC','GA')</code>. <em>Does this relationship change over time?</em> Or, put another way, <em>were early polls or later polls more accurate</em>? To do this, you’ll need to merge the final <code>Obama</code> and <code>McCain</code> results from <code>electoral_votes</code> into the original <code>polling_data</code>. Both contain <code>state</code> columns!</p>
 <p><strong>Make sure you label your axes, legends, and other elements correctly.</strong> You may work in groups of up to three.</p>
 <p>Use <a href="https://bit.ly/EC242b">bit.ly/EC242</a> to share. Happy visualizing!</p>

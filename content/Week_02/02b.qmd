@@ -207,7 +207,7 @@ Turning tables into graphs. The American Statistician 56:121-130.
 
 There are a number of resources for data visualization design, including MSU Library offerings, plus catalogs of graph types [in our resources](/resource/visualization.html#datavis-resources).
 
-We also do not cover interactive graphics, a topic that is both too advanced for this course and too unweildy. Some useful resources for those interested in learning more can be found below, and you are encouraged to draw inspiration from those websites in your projects:
+We also do not cover interactive graphics, a topic that is both too advanced for this course and too unwieldy. Some useful resources for those interested in learning more can be found below, and you are encouraged to draw inspiration from those websites in your projects:
 
 - [https://shiny.rstudio.com/](https://shiny.rstudio.com/)
 - [https://d3js.org/](https://d3js.org/)
@@ -215,7 +215,7 @@ We also do not cover interactive graphics, a topic that is both too advanced for
 
 # ggplot2 {#ggplot2}
 
-PLS202, a prerequisite for EC242, includes extensive coding in `R`, including the use of `ggplot2` (which I'll just call `ggplot` from now on). Therefore, we don't review the basics here. Ask questions if you're unsure. Posit (the maker of RStudio) has a nice tutorial [here](https://solutions.posit.co/connections/db/best-practices/visualization/) and a cheat sheeet / tutorial [available here](https://rstudio.github.io/cheatsheets/html/data-visualization.html)
+PLS202, a prerequisite for EC242, includes extensive coding in `R`, including the use of `ggplot2` (which I'll just call `ggplot` from now on). Therefore, we don't review the basics here. Ask questions if you're unsure. Posit (the maker of RStudio) has a nice tutorial [here](https://solutions.posit.co/connections/db/best-practices/visualization/) and a cheat sheet / tutorial [available here](https://rstudio.github.io/cheatsheets/html/data-visualization.html)
 
 We'll cover the necessary elements of this here.
 
@@ -261,7 +261,7 @@ __geometry__ component. Other possible geometries are barplot, histogram, smooth
 
 * __Annotations__: These are things like axis labels, axis ticks (the lines along the axis at regular intervals or specific points of interest), axis scales (e.g. log-scale), titles, legends, etc.
 
-* __Style__: An overall appearance of the graph determined by fonts, color palattes, layout, blank spaces, and more.
+* __Style__: An overall appearance of the graph determined by fonts, color palettes, layout, blank spaces, and more.
 
 We also note that:
 
@@ -337,7 +337,7 @@ Geometry function names follow the pattern: `geom_X` where X is the name of some
 
 For `geom_point` to run properly we need to provide data and an __aesthetic mapping__. The simplest mapping for a scatter plot is to say we want one variable on the X-axis, and a different one on the Y-axis, so each point is an {X,Y} pair. That is an __aesthetic mapping__ because X and Y are __aesthetics__ in a `geom_point` scatterplot.
 
-We have already connected the object `p` with the `murders` data table, and if we add the layer `geom_point` it defaults to using this data. To find out what mappings are expected, we read the __Aesthetics__ section of the help file `?geom_point` help file:
+We have already connected the object `p` with the `murders` data table, and if we add the layer `geom_point` it defaults to using this data. To find out what mappings are expected, we read the __Aesthetics__ section of the `?geom_point` help file:
 
 ```
 > Aesthetics
@@ -388,9 +388,9 @@ Note that we did some rescaling within the `aes()` call - we can do simple thing
 The __aesthetic mappings__ are very powerful - changing the variable in `x=` or `y=` changes the meaning of the plot entirely. We'll come back to additional __aesthetic mappings__ once we talk about aesthetics in general.
 
 ### Aesthetics in general
-Even without mappings, a plots aesthetics can be useful. Things like color, fill, alpha, and size are aesthetics that can be changed. 
+Even without mappings, a plot's aesthetics can be useful. Things like color, fill, alpha, and size are aesthetics that can be changed. 
 
-Let's say we want larger points in our scatterplot. The `size` aesthetic can be used to set the size. The scale of `size` is "multiples of the defaults" (so `size = 1` is the default)
+Let's say we want larger points in our scatterplot. The `size` aesthetic can be used to set the size. The scale of `size` is in millimeters, and the default for points is `size = 1.5`---so the `size = 3` below is twice as big as the default
 
 ```{r ggplot-example-5}
 p + geom_point(aes(x = population/10^6, y = total), size = 3)
@@ -432,7 +432,7 @@ p + geom_point(aes(x = population/10^6, y = total, color = region), size = 3)
 ```
 
 
-::: {.callout-info}
+::: {.callout-note}
 ## Aesthetics vs. Aesthetic mappings
 Lots of features are aesthetics (color, size, etc.) but if we want to have them change according to the data, we have to use an aesthetic mapping. 
 :::
@@ -442,7 +442,7 @@ We include `color=region` **inside** the `aes` call, which tells R to find a var
 Let's see a useful example of a continuous aesthetic mapping to `color`. In our data, we are making a scatterplot of population and total murders, which really just shows that states with higher populations have higher murders. What we really want is murders per capita (I think COVID taught us a lot about rates vs. levels like "cases" and "cases per 100,000 people"). We can create a variable of "murders per capita" on the fly. Since "murders per capita" is a very small number and hard to read, we'll multiply by 100 so that we get "percent of population murdered per year":
 
 ```{r ggplot-example-colfill}
-p + geom_point(aes(x = population/10^5, y = total, color = 100*total/population), size = 3)
+p + geom_point(aes(x = population/10^6, y = total, color = 100*total/population), size = 3)
 ```
 
 While the clear pattern of "more population means more murders" is still there, look at the outlier in light blue in the bottom left. With the color ramp, see how easy it is to see here that there is one location where murders per capita is quite high? 
@@ -495,6 +495,8 @@ p + geom_point(aes(x = population/10^6, y = total)) +
   geom_text(aes(population/10^6, total), label = 'abb')
 ```
 
+Because `label` is *set* rather than *mapped*, every state gets the same three characters---`abb`---instead of its own abbreviation. That's the tell.
+
 
 ### Global versus local aesthetic mappings
 
@@ -510,7 +512,7 @@ If we define a mapping in `ggplot`, all the geometries that are added as layers 
 p <- murders %>% ggplot(aes(x = population/10^6, y = total, label = abb))
 ```
 
-and then we can simply write the following code to produce the previous plot:
+and then we can produce our labeled scatterplot with a lot less typing:
 
 ```{r ggplot-example-7, eval=FALSE}
 p + geom_point(size = 3) +
@@ -572,7 +574,7 @@ p + geom_point(aes(x = population/10^6, y = total)) +
         - Does the `color` aesthetic mapping help present the data here?
 
 5. `geom_label` and the `fill` aesthetic
-    a. Looking at `?geom_label` (which is the same help as `geom_text`), we note that "The `fill` aesthetic controls the backgreound colour of the label".
+    a. Looking at `?geom_label` (which is the same help as `geom_text`), we note that "The `fill` aesthetic controls the background colour of the label".
     b. Set the `fill` aesthetic mapping to `total/population` in `geom_label` (replacing `geom_text` but still using `nudge_x=1.5`)
     c. Set the `fill` aesthetic (not mapping) to the color of your choice.
     d. Be able to explain the plots.

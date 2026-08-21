@@ -74,13 +74,13 @@ The correlation coefficient is defined for a list of pairs $(x_1, y_1), \dots, (
 $$
 \rho = \frac{1}{n} \sum_{i=1}^n \left( \frac{x_i-\mu_x}{\sigma_x} \right)\left( \frac{y_i-\mu_y}{\sigma_y} \right)
 $$
-with $\mu_x, \mu_y$ the averages of $x_1,\dots, x_n$ and $y_1, \dots, y_n$, respectively, and $\sigma_x, \sigma_y$ the standard deviations. The Greek letter $\rho$ is commonly used in statistics books to denote the correlation. The Greek letter for $r$, $\rho$, because it is the first letter of regression. Soon we learn about the connection between correlation and regression. We can represent the formula above with R code using:
+with $\mu_x, \mu_y$ the averages of $x_1,\dots, x_n$ and $y_1, \dots, y_n$, respectively, and $\sigma_x, \sigma_y$ the standard deviations. The Greek letter $\rho$ is commonly used in statistics books to denote the correlation. The Greek letter for $r$ is $\rho$, and we use $r$ because it is the first letter of regression. Soon we learn about the connection between correlation and regression. We can represent the formula above with R code using:
 
 ```{r, eval=FALSE}
 rho <- mean(scale(x) * scale(y))
 ```
 
-To understand why this equation does in fact summarize how two variables move together, consider the $i$-th entry of $x$ is  $\left( \frac{x_i-\mu_x}{\sigma_x} \right)$ SDs away from the average. Similarly, the $y_i$ that is paired with $x_i$, is $\left( \frac{y_1-\mu_y}{\sigma_y} \right)$ SDs away from the average $y$. If $x$ and $y$ are unrelated, the product $\left( \frac{x_i-\mu_x}{\sigma_x} \right)\left( \frac{y_i-\mu_y}{\sigma_y} \right)$ will be positive ( $+ \times +$ and $- \times -$ ) as often as negative ($+ \times -$ and $- \times +$) and will average out to about 0. This correlation is the average and therefore unrelated variables will have 0 correlation. If instead the quantities vary together, then we are averaging mostly positive products ( $+ \times +$ and $- \times -$) and we get a positive correlation. If they vary in opposite directions, we get a negative correlation.
+To understand why this equation does in fact summarize how two variables move together, consider the $i$-th entry of $x$ is  $\left( \frac{x_i-\mu_x}{\sigma_x} \right)$ SDs away from the average. Similarly, the $y_i$ that is paired with $x_i$, is $\left( \frac{y_i-\mu_y}{\sigma_y} \right)$ SDs away from the average $y$. If $x$ and $y$ are unrelated, the product $\left( \frac{x_i-\mu_x}{\sigma_x} \right)\left( \frac{y_i-\mu_y}{\sigma_y} \right)$ will be positive ( $+ \times +$ and $- \times -$ ) as often as negative ($+ \times -$ and $- \times +$) and will average out to about 0. This correlation is the average and therefore unrelated variables will have 0 correlation. If instead the quantities vary together, then we are averaging mostly positive products ( $+ \times +$ and $- \times -$) and we get a positive correlation. If they vary in opposite directions, we get a negative correlation.
 
 The correlation coefficient is always between -1 and 1. We can show this mathematically: consider that we can't have higher correlation than when we compare a list to itself (perfect correlation) and in this case the correlation is:
 
@@ -93,7 +93,7 @@ $$
 
 A similar derivation, but with $x$ and its exact opposite, proves the correlation has to be bigger or equal to -1.
 
-For other pairs, the correlation is in between -1 and 1. The correlation between father and son's heights is about 0.5:
+For other pairs, the correlation is in between -1 and 1. The correlation between father and son's heights is about 0.43:
 
 ```{r}
 galton_heights %>% summarize(r = cor(father, son)) %>% pull(r)
@@ -169,7 +169,7 @@ ggplot(aes(sample=R), data = data.frame(R)) +
 
 ::: {.callout-tip collapse="true"}
 ## QQ plots
-The above plot is called a `qq plot`. It compares two things: the quantiles of the numeric variable, and the quantiles that one would get from a normal distribution with the same mean and standard deviation as the numeric variable. Points on the 45 degree line indicate ranges of the data where the empirical quantile is equal to the theoretical (normal) quantile. Points off the line indicate ranges where the numeric variable is not normal. Small samples will be very noisy, but you should be able to see systematic deviations.
+The above plot is called a `qq plot`. It compares two things: the quantiles of the numeric variable, and the quantiles that one would get from a normal distribution. Points on the reference line indicate ranges of the data where the empirical quantile is equal to the theoretical (normal) quantile. Points off the line indicate ranges where the numeric variable is not normal. Note that `stat_qq` puts *standard* normal quantiles on the horizontal axis, which is why the line we drew above has intercept `mean(R)` and slope equal to the theoretical standard error rather than being a 45 degree line. Small samples will be very noisy, but you should be able to see systematic deviations.
 :::
 
 If you increase $N$, you will see the distribution converging to normal.
@@ -224,7 +224,7 @@ fathers that are exactly 72-inches. If we change the number to 72.5, we get even
 sum(galton_heights$father == 72.5)
 ```
 
-A practical way to improve these estimates of the conditional expectations, is to define strata of with similar values of $x$. In our example, we can round father heights to the nearest inch and assume that they are all 72 inches. If we do this, we end up with the following prediction for the son of a father that is 72 inches tall:
+A practical way to improve these estimates of the conditional expectations, is to define strata with similar values of $x$. In our example, we can round father heights to the nearest inch and assume that they are all 72 inches. If we do this, we end up with the following prediction for the son of a father that is 72 inches tall:
 
 ```{r}
 conditional_avg <- galton_heights %>%
@@ -235,8 +235,8 @@ conditional_avg
 ```
 
 
-Note that a 72-inch father is taller than average -- specifically, 72 - `r round( mean(galton_heights$father),1)`/`r round(sd(galton_heights$father),1)` =
-`r round((72 -mean(galton_heights$father))/sd(galton_heights$father), 1)` standard deviations taller than the average father. Our prediction `r conditional_avg` is also taller than average, but only `r round((conditional_avg - mean(galton_heights$son)) /sd(galton_heights$son),2)` standard deviations larger than the average son. The sons of 72-inch fathers have _regressed_ some to the average height. We notice that the reduction in how many SDs taller is about 0.5, which happens to be the correlation. As we will see in a later lecture, this is not a coincidence.
+Note that a 72-inch father is taller than average -- specifically, (72 - `r round( mean(galton_heights$father),1)`)/`r round(sd(galton_heights$father),1)` =
+`r round((72 -mean(galton_heights$father))/sd(galton_heights$father), 1)` standard deviations taller than the average father. Our prediction `r conditional_avg` is also taller than average, but only `r round((conditional_avg - mean(galton_heights$son)) /sd(galton_heights$son),2)` standard deviations larger than the average son. The sons of 72-inch fathers have _regressed_ some to the average height. We notice that the number of SDs shrinks by a factor of about 0.43, which happens to be the correlation. As we will see in a later lecture, this is not a coincidence.
 
 If we want to make a prediction of any height, not just 72, we could apply the same approach to each strata. Stratification followed by boxplots lets us see the distribution of each group:
 
@@ -362,7 +362,7 @@ So why not always use the regression for prediction? Because it is not always ap
 
 ### Bivariate normal distribution (advanced)
 
-Correlation and the regression slope are a widely used summary statistic, but they are often misused or misinterpreted. Anscombe's examples provide over-simplified cases of dataset in which summarizing with correlation would be a mistake. But there are many more real-life examples.
+Correlation and the regression slope are widely used summary statistics, but they are often misused or misinterpreted. Anscombe's examples provide over-simplified cases of datasets in which summarizing with correlation would be a mistake. But there are many more real-life examples.
 
 The main way we motivate the use of correlation involves what is called the _bivariate normal distribution_.
 
@@ -396,17 +396,17 @@ galton_heights %>%
 Now we come back to defining correlation. Galton used mathematical statistics to demonstrate that, when two variables follow a bivariate normal distribution, computing the regression line is equivalent to computing conditional expectations. We don't show the derivation here, but we can show that under this assumption, for any given value of $x$, the expected value of the $Y$ in pairs for which $X=x$ is:
 
 $$
-\mbox{E}(Y | X=x) = \mu_Y +  \rho \frac{X-\mu_X}{\sigma_X}\sigma_Y
+\mbox{E}(Y | X=x) = \mu_Y +  \rho \frac{x-\mu_X}{\sigma_X}\sigma_Y
 $$
 
-This is the regression line, with slope $$\rho \frac{\sigma_Y}{\sigma_X}$$ and intercept $\mu_y - m\mu_X$. It is equivalent to the regression equation we showed earlier which can be written like this:
+This is the regression line, with slope $m = \rho \frac{\sigma_Y}{\sigma_X}$ and intercept $\mu_Y - m\mu_X$. It is equivalent to the regression equation we showed earlier which can be written like this:
 
 
 $$
 \frac{\mbox{E}(Y \mid X=x)  - \mu_Y}{\sigma_Y} = \rho \frac{x-\mu_X}{\sigma_X}
 $$
 
-This implies that, if our data is approximately bivariate, the regression line gives the conditional probability. Therefore, we can obtain a much more stable estimate of the conditional expectation by finding the regression line and using it to predict.
+This implies that, if our data is approximately bivariate normal, the regression line gives the conditional expectation. Therefore, we can obtain a much more stable estimate of the conditional expectation by finding the regression line and using it to predict.
 
 In summary, if our data is approximately bivariate, then the conditional expectation, the best prediction of $Y$ given we know the value of $X$, is given by the regression line.
 
@@ -420,9 +420,9 @@ $$
 
 To see why this is intuitive, notice that without conditioning, $\mbox{SD}(Y) = \sigma_Y$, we are looking at the variability of all the sons. But once we condition, we are only looking at the variability of the sons with a tall, 72-inch, father. This group will all tend to be somewhat tall so the standard deviation is reduced.
 
-Specifically, it is reduced to $\sqrt{1-\rho^2} = \sqrt{1 - 0.25}$ = 0.87 of what it was originally. We could say that father heights "explain" 13% of the variability observed in son heights.
+Specifically, it is reduced to $\sqrt{1-\rho^2} = \sqrt{1 - 0.19}$ = 0.90 of what it was originally. We could say that father heights "explain" 10% of the variability observed in son heights.
 
-The statement "$X$ explains such and such percent of the variability" is commonly used in academic papers. In this case, this percent actually refers to the variance (the SD squared). So if the data is bivariate normal, the variance is reduced by $1-\rho^2$, so we say that $X$ explains $1- (1-\rho^2)=\rho^2$ (the correlation squared) of the variance.
+The statement "$X$ explains such and such percent of the variability" is commonly used in academic papers. In this case, this percent actually refers to the variance (the SD squared). So if the data is bivariate normal, the variance is reduced to $1-\rho^2$ of what it was, so we say that $X$ explains $1- (1-\rho^2)=\rho^2$ (the correlation squared) of the variance.
 
 But it is important to remember that the "variance explained" statement only makes sense when the data is approximated by a bivariate normal distribution.
 
@@ -472,7 +472,7 @@ galton_heights %>%
 
 1. Load the `GaltonFamilies` data from the __HistData__. The children in each family are listed by gender and then by height. Create a dataset called `galton_heights` by picking a male and female at random from each family (hint: `group_by` appropriately and use `sample_n`).
 
-2. Make a scatterplot for heights between mothers and daughters, mothers and sons, fathers and daughters, and fathers and sons. You may have to use `gridExtra` or `patchwork`)
+2. Make a scatterplot for heights between mothers and daughters, mothers and sons, fathers and daughters, and fathers and sons. You may have to use `gridExtra` or `patchwork`.
 
 3. Compute the correlation in heights between mothers and daughters, mothers and sons, fathers and daughters, and fathers and sons.
 

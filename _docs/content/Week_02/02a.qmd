@@ -418,7 +418,7 @@ heights %>%
   summarize(range = quantile(height, c(0, 0.5, 1)))
 ```
 
-we will receive an error: `Error: expecting result of length one, got : 2`. With the function `summarize`, we can only call functions that return a single value. In later sections, we will learn how to deal with functions that return more than one value.
+we will receive an error telling us that `range` must be size 1, not 3 (dplyr also suggests `reframe()` as the fix). With the function `summarize`, we can only call functions that return a single value. In later sections, we will learn how to deal with functions that return more than one value.
 
 For another example of how we can use the `summarize` function, let's compute the average murder rate for the United States. Remember our data table includes total murders and population size for each state and we have already used __dplyr__ to add a murder rate column:
 
@@ -606,7 +606,7 @@ Notice that there are no columns with this information. But, if you look closely
 murders %>% group_by(region) %>% class()
 ```
 
-The `tbl`, pronounced tibble, is a special kind of data frame. The functions `group_by` and `summarize` always return this type of data frame. The `group_by` function returns a special kind of `tbl`, the `grouped_df`. We will say more about these later. For consistency, the __dplyr__ manipulation verbs (`select`, `filter`, `mutate`, and `arrange`) preserve the class of the input: if they receive a regular data frame they return a regular data frame, while if they receive a tibble they return a tibble. But tibbles are the preferred format in the tidyverse and as a result tidyverse functions that produce a data frame from scratch return a tibble. 
+The `tbl`, pronounced tibble, is a special kind of data frame. The `group_by` function always returns this type of data frame, and `summarize` returns one whenever its input is grouped. Handed an ungrouped regular data frame -- like `murders` above -- `summarize` gives a regular data frame back, which is why `class(us_murder_rate)` printed `data.frame` earlier. The `group_by` function returns a special kind of `tbl`, the `grouped_df`. We will say more about these later. For consistency, the __dplyr__ manipulation verbs (`select`, `filter`, `mutate`, and `arrange`) preserve the class of the input: if they receive a regular data frame they return a regular data frame, while if they receive a tibble they return a tibble. But tibbles are the preferred format in the tidyverse and as a result tidyverse functions that produce a data frame from scratch return a tibble. 
 
 Tibbles are very similar to data frames. In fact, you can think of them as a modern version of data frames. Nonetheless there are three important differences which we describe next.
 
@@ -638,7 +638,7 @@ grades <- tibble(names = c("John", "Juan", "Jean", "Yao"),
                      exam_2 = c(90, 85, 85, 90))
 ```
 
-Note that base R (without packages loaded) has a function with a very similar name, `data.frame`, that can be used to create a regular data frame rather than a tibble.  One other important difference is that by default `data.frame` coerces characters into factors without providing a warning or message:
+Note that base R (without packages loaded) has a function with a very similar name, `data.frame`, that can be used to create a regular data frame rather than a tibble.  One other important difference is historical, but you will meet it in old code: in R before version 4.0.0, `data.frame` silently coerced characters into factors. That default is gone, so today you get a character column:
 
 ```{r}
 grades <- data.frame(names = c("John", "Juan", "Jean", "Yao"),
@@ -647,7 +647,7 @@ grades <- data.frame(names = c("John", "Juan", "Jean", "Yao"),
 class(grades$names)
 ```
 
-To avoid this, we use the rather cumbersome argument `stringsAsFactors`:
+You will still see the old fix scattered around, the rather cumbersome argument `stringsAsFactors`, which these days is redundant:
 ```{r}
 grades <- data.frame(names = c("John", "Juan", "Jean", "Yao"),
                      exam_1 = c(95, 80, 90, 85),
@@ -795,7 +795,7 @@ class(s_n)
 
 This produces the same results as the `sapply` call shown above.
 
-A particularly useful __purrr__ function for interacting with the rest of the tidyverse is `map_df`, which always returns a tibble data frame. However, the function being called needs to return a vector, a tibble, or a list with names. For this reason, the following code would result in a `Argument 1 must have names` error:
+A particularly useful __purrr__ function for interacting with the rest of the tidyverse is `map_df`, which always returns a tibble data frame. However, the function being called needs to return a tibble, a named list, or a *named* vector. Since `compute_s_n` returns a bare unnamed number, the following code errors with `Argument 1 must be a data frame or a named atomic vector`:
 
 ```{r, eval=FALSE}
 s_n <- map_df(n, compute_s_n)
@@ -828,11 +828,11 @@ The __purrr__ package provides much more functionality not covered here. For mor
 
 # Tidyverse conditionals
 
-A typical data analysis will often involve one or more conditional operations. You should be familiar with the `ifelse` function, which we will use extensively in this course In this section we present two __dplyr__ functions that provide further functionality for performing conditional operations.
+A typical data analysis will often involve one or more conditional operations. You should be familiar with the `ifelse` function, which we will use extensively in this course. In this section we present two __dplyr__ functions that provide further functionality for performing conditional operations.
 
 ## `case_when`
 
-The `case_when` function is useful for vectorizing conditional statements. It is similar to `ifelse` but can output any number of values, as opposed to just `TRUE` or `FALSE`. This means we can avoid long nested `ifelse` functions. Here is an example splitting numbers into negative, positive, and 0:
+The `case_when` function is useful for vectorizing conditional statements. It is similar to `ifelse` but can output any number of values, as opposed to just the two branches `ifelse` gives you. This means we can avoid long nested `ifelse` functions. Here is an example splitting numbers into negative, positive, and 0:
 
 ```{r}
 x <- c(-2, -1, 0, 1, 2)
@@ -901,7 +901,7 @@ Write it using the pipe so that each function is called without arguments. Use t
 
 # Reshaping data {#reshaping}
 
-Your lab will require some reshaping of data, so make sure you read this section closesly.
+Your lab will require some reshaping of data, so make sure you read this section closely.
 
 Having data in _tidy_ format is what makes the tidyverse flow. After the first step in the data analysis process, importing data, a common next step is to reshape the data into a form that facilitates the rest of the analysis. The __tidyr__ package includes several functions that are useful for tidying data.
 
@@ -929,9 +929,9 @@ Here we want to reshape the `wide_data` dataset so that each row represents a co
 
 As with most tidyverse functions, the `pivot_longer` function's first argument is the data frame that will be converted. Easy enough.
 
-The second argument specifies the columns **containing observed values**; these are the columns that will be _pivot_longered_ (note: the original name of this function was `gather()`). The default (if we leave out the 2nd argument) is to pivot **all** columns so, in most cases, we have to specify the columns. In our example we want columns `1960`, `1961` up to `2015`. Since these are non-standard column names, we have to backtick them so R doesn't think they're to be treated as integers.
+The second argument specifies the columns **containing observed values**; these are the columns that will be _pivot_longered_ (note: the original name of this function was `gather()`). There is no default here: leave the 2nd argument out and `pivot_longer` stops with an error telling you that `cols` must select at least one column. You always have to say which columns you mean. In our example we want columns `1960`, `1961` up to `2015`. Since these are non-standard column names, we have to backtick them so R doesn't think they're to be treated as integers.
 
-The third and fourth arguments will tell `pivot_longer` the column names we want to assign to the columns containing the **current column names** (`names_to = `) and **the observed data** (`values_to = `), respectively. In this case a good choice for these two arguments would be something like `year` and `fertility`. These are not currenly column names in the data -- they are names we want to use to *hold* data currently located in the "wide" columns. We know this is fertility data only because we deciphered it from the file name.
+The third and fourth arguments will tell `pivot_longer` the column names we want to assign to the columns containing the **current column names** (`names_to = `) and **the observed data** (`values_to = `), respectively. In this case a good choice for these two arguments would be something like `year` and `fertility`. These are not currently column names in the data -- they are names we want to use to *hold* data currently located in the "wide" columns. We know this is fertility data only because we deciphered it from the file name.
 
 
 
@@ -953,7 +953,7 @@ We can see that the data have been converted to tidy format with columns `year` 
 head(new_tidy_data)
 ```
 
-We have the first column, which consists of "everything in the data that wasn't pivot_longered", the next two columns are named based on the arguments we gave. The second column, named by our argument above, contains the column names of the wide data. The third column, also named by our argument above, contains the value that was in each corresponding colum x country pair. What you leave *out* of the 2nd argument is important!
+We have the first column, which consists of "everything in the data that wasn't pivot_longered", the next two columns are named based on the arguments we gave. The second column, named by our argument above, contains the column names of the wide data. The third column, also named by our argument above, contains the value that was in each corresponding column x country pair. What you leave *out* of the 2nd argument is important!
 
 Note that each year resulted in two rows since we have two countries and this column was not pivot_longered.
 A somewhat quicker way to write this code is to specify in the 2nd argument which column will **not** be pivot_longered, rather than all the columns that will be pivot_longered:
@@ -1036,7 +1036,7 @@ dplyr::select(raw_dat, 1:5)
 
 First, note that the data is in wide format. Second, notice that this table includes values for two variables, fertility and life expectancy, with the column name encoding which column represents which variable. Encoding information in the column names is not recommended but, unfortunately, it is quite common. We will put our wrangling skills to work to extract this information and store it in a tidy fashion.
 
-We can start the data wrangling with the `pivot_longer` function, but we should no longer use the column name `year` for the new column since it also contains the variable type. We will call it `key`, the default, for now:
+We can start the data wrangling with the `pivot_longer` function, but we should no longer use the column name `year` for the new column since it also contains the variable type. We will call it `key` for now -- that was the default back when this function was called `gather()`; `pivot_longer` itself defaults to `name`:
 
 ```{r}
 dat <- raw_dat %>% pivot_longer(-country, names_to = 'key', values_to = 'value')
@@ -1057,7 +1057,7 @@ dat %>% separate(col = key, into = c("year", "variable_name"), sep = "_")
 
 
 
-The function does separate the values, but we run into a new problem. We receive the warning `Additional pieces discarded in 112 rows [3, 4, 7,...]`. (Earlier versions may give the error `Too many values at 112 locations:`) and that the `life_expectancy` variable is truncated to `life`. This is because the `_` is used to separate `life` and `expectancy`, not just year and variable name! We could add a third column to catch this and let the `separate` function know which column to _fill in_ with missing values, `NA`, when there is no third value. Here we tell it to fill the column on the right:
+The function does separate the values, but we run into a new problem. We receive the warning `Expected 2 pieces. Additional pieces discarded in 112 rows [2, 4, 6, 8, ...]`. (Earlier versions may give the error `Too many values at 112 locations:`) and that the `life_expectancy` variable is truncated to `life`. This is because the `_` is used to separate `life` and `expectancy`, not just year and variable name! We could add a third column to catch this and let the `separate` function know which column to _fill in_ with missing values, `NA`, when there is no third value. Here we tell it to fill the column on the right:
 
 ```{r}
 dat %>% separate(key, into = c("year", "first_variable_name", "second_variable_name"), fill = "right")

@@ -8,7 +8,7 @@ output:
 
 
 ### Some new packages
-We'll be using `tmaptools` geocoder today, so you'll need to install that package. And `tigris` if you didn't already.
+We'll be using `tmaptools` geocoder today, so you'll need to install that package. And `tigris` if you didn't already. And `mapview`, which shows up later on -- I can't embed its output in the website, so those chunks don't run here, but you'll want it installed if you're playing along at home.
 
 ```{r}
 library(sf)
@@ -102,7 +102,7 @@ Well, now we have a different problem. We want to have only the `gasplants` that
 
 ### Projections, briefly
 
-The *projection* for spatial data is the translation from a 3-D object (e.g. the globe) to a 2-D space (a map, or the cartesian x-y coordinates of our screen). This is no simple matter! There are entire PhD programs dedicated to forming and processing projections and datum (which refer to the shape of the globe, which is not actually round). It can all be a nightmare. Worst of all, projections determine the definition of your coordinates, so you may be at -81 latitude, +30 longitude, but in another projection, you might be 1245349m above some reference point, and -2452849m to the left of that point. Projections define the distance along the X and Y axis, the scale of the coordinates, and a lot of other stuff about your 2-D polygons.
+The *projection* for spatial data is the translation from a 3-D object (e.g. the globe) to a 2-D space (a map, or the cartesian x-y coordinates of our screen). This is no simple matter! There are entire PhD programs dedicated to forming and processing projections and datum (which refer to the shape of the globe, which is not actually round). It can all be a nightmare. Worst of all, projections determine the definition of your coordinates, so you may be at -81 longitude, +30 latitude, but in another projection, you might be 1245349m above some reference point, and -2452849m to the left of that point. Projections define the distance along the X and Y axis, the scale of the coordinates, and a lot of other stuff about your 2-D polygons.
 
 Luckily, over the last few years, very smart people have been working on regularizing "projections". Now, we really need to know three things:
 
@@ -111,9 +111,9 @@ Luckily, over the last few years, very smart people have been working on regular
 3. The *projection* of other spatial data you may want to combine.
 
 #### Importing projected data
-GEOJSON, shapefiles, and KML files usually come with embedded projections stored as **EPSG** numbers like '4326' (incidentally, '4326' is the usual projection for GPS coordinates). Thus, the first one is usually already taken care of. If your data doesnt have a PROJ4 or EPSG number but the coordinates are all between -180 and +180, it's likely in EPSG=4326. If none of those, then the data creator should have *metadata* stating the proejction. It might take some googling and some trial and error.
+GEOJSON, shapefiles, and KML files usually come with embedded projections stored as **EPSG** numbers like '4326' (incidentally, '4326' is the usual projection for GPS coordinates). Thus, the first one is usually already taken care of. If your data doesn't have a PROJ4 or EPSG number but the coordinates are all between -180 and +180, it's likely in EPSG=4326. If none of those, then the data creator should have *metadata* stating the projection. It might take some googling and some trial and error.
 
-For mapping, you might need to *transform* your data between projections (or "reproject" it, same thing). We use `st_transform` for this. We only need to give `R` the EPSG (Geodetic Parameter Dataset) of the projection you want to end up in. As long as it's already in a known projection, `R` can re-project it. The projection is refered to by the Coordinate Reference System (CRS). `st_crs` will tell us the projection (EPSG number and a lot more) of any spatial object. If they do not match, then `R` will give an error or, worse, plot them on totally different scales - sometimes you end up with points from the US landing in the middle of the Indian Ocean! In fact, look back at our map of gas plants and the US. 
+For mapping, you might need to *transform* your data between projections (or "reproject" it, same thing). We use `st_transform` for this. We only need to give `R` the EPSG (Geodetic Parameter Dataset) of the projection you want to end up in. As long as it's already in a known projection, `R` can re-project it. The projection is refered to by the Coordinate Reference System (CRS). `st_crs` will tell us the projection (EPSG number and a lot more) of any spatial object. If they do not match, then `R` will give an error or, worse, plot them on totally different scales - sometimes you end up with points from the US landing in the middle of the Indian Ocean! Look back at our map of gas plants and the US: that one came out fine anyway, because `ggplot` quietly re-projects every `geom_sf()` layer into the CRS of the first one. `st_join()` does no such favor -- it just errors. 
 
 
 ```{r}
@@ -121,7 +121,7 @@ st_crs(gasplants)
 st_crs(MI)
 ```
 
-`gasplants` from HIFLD is in EPSG: 4326, the map of MI is in EPSG: 4269. We can use `st_transform` on the `gasplants` data, which will reproject the points (and won't change the data at all). The data won't be any different, and the points won't look too much different
+`gasplants` from HIFLD is in EPSG: 3857 ("WGS 84 / Pseudo-Mercator" -- note the coordinates printed above are in meters, not degrees), the map of MI is in EPSG: 4269. We can use `st_transform` on the `gasplants` data, which will reproject the points (and won't change the data at all). The data won't be any different, and the points won't look too much different
 
 ```{r}
 gasplants = gasplants %>%
@@ -213,7 +213,7 @@ ggplot() +
 Huh. Most gas plants in Michigan are to the north of here. Interesting.
 
 ### Mapview
-Sometimes, we want to be able to zoom in and out. `ggplot` is static, so that won't work too well. Thanks to the `leaflet` engine, the `mapview` packages is stellar for exploration of spatial data. You can specify `zcol = Name` if you want to color by the `Name` field. I can't embed this in the website, but you can run this at home. It will appear in the "Viewer" pane, not in the "Plots" pane. Unlike the static image here, you will be able to zoom and pan.
+Sometimes, we want to be able to zoom in and out. `ggplot` is static, so that won't work too well. Thanks to the `leaflet` engine, the `mapview` package is stellar for exploration of spatial data. You can specify `zcol = 'NAME'` if you want to color by the `NAME` field -- `zcol` wants the column name in quotes. I can't embed this in the website, but you can run this at home. It will appear in the "Viewer" pane, not in the "Plots" pane. Unlike the static image here, you will be able to zoom and pan.
 
 ```
 mapview(MI.gasplants)
@@ -286,7 +286,7 @@ poly.merge.largest = HUC4 %>%
 
 head(poly.merge.largest)
 ```
-Now, there is only *one* observation per HUC-4, and it corresponds to the state that has the most overlap area-wise. For Lower Colorado, Arizona has the most overlap. There are lots of things besides `st_intersect` we can use to call two things "joined". `?st_join` tells you about them. For instance, we can use `join = st_covers` and we will only get a merge when HUC-4 completely covers the state.
+Now, there is only *one* observation per HUC-4, and it corresponds to the state that has the most overlap area-wise. For Lower Colorado, Arizona has the most overlap. There are lots of things besides `st_intersects` we can use to call two things "joined". `?st_join` tells you about them. For instance, we can use `join = st_covers` and we will only get a merge when HUC-4 completely covers the state.
 
 ```{r, message = F, warning = F}
 HUC4 %>%
@@ -455,9 +455,9 @@ MI.gasplants.small = MI.gasplants[1:4,]
 ourDistance = st_distance(x = ourCities.spatial, y = MI.gasplants.small)
 ourDistance
 ```
-We get a `units` matrix, which has extra properties that allow us to convert the units. The units will be in whatever the CRS of the objects is in - `st_crs(ourCities.spatial)` tells us the units are meters.
+We get a `units` matrix, which has extra properties that allow us to convert the units. For data in a projected CRS, the units are whatever linear unit that CRS uses. Here `st_crs(ourCities.spatial)` is NAD83, whose coordinates are *degrees* -- so `sf` measures the distance on the sphere and hands it back in meters.
 
-What if we wanted to find the closest gas plant to each city? That is akin to looking at each row, and finding the column that is the smallest, right? We will use `apply`, and we will note that the order of the columns is the same as the order in `MI.gasplants.small`, so we can use `MI.gasplants.small$name` to tell us the name of the closest gas plant. We will `apply` over each row (`MAR=1`) and use the `which.min` function, which returns the *index* number of the minimum column.
+What if we wanted to find the closest gas plant to each city? That is akin to looking at each row, and finding the column that is the smallest, right? We will use `apply`, and we will note that the order of the columns is the same as the order in `MI.gasplants.small`, so we can use `MI.gasplants.small$name` to tell us the name of the closest gas plant. We will `apply` over each row (`MAR=1`) and use the `which.min` function, which returns the *index* number of the minimum column. (Yes, I then store it in something called `max.index`. It holds the index of the *minimum* distance. Bad name, my fault, live with it.)
 
 ```{r}
 max.index = apply(ourDistance, MAR = 1, which.min)
@@ -480,10 +480,10 @@ ourDistance
 max.index
 ```
 
-we want to select from our distance matrix the 1st row, 3rd column; the 2nd row, 3rd column; 3rd row, 1st column; 4th row, 3rd column; 5th row, 4th column; and 6th row, 4th column. This means the row index and column index are not ranges, but are paired. Using `cbind(1:6, max.index)` makes them paired entries, and we can select specific row x column combinations that way.
+we want to select from our distance matrix the 1st row, 3rd column; the 2nd row, 3rd column; 3rd row, 4th column; 4th row, 4th column; 5th row, 2nd column; and 6th row, 1st column. This means the row index and column index are not ranges, but are paired. Using `cbind(1:6, max.index)` makes them paired entries, and we can select specific row x column combinations that way.
 
 ### st_nearest_feature
-As is common in R, there is a function that will get the closest points between to spatial objects. `st_nearest_feature` takes two geometries, and returns  the neaarest point in `y` for every point in `x`, which is what we did with the MI gas plants.
+As is common in R, there is a function that will get the closest points between two spatial objects. `st_nearest_feature` takes two geometries, and returns the *index* of the nearest feature in `y` for every point in `x`, which is what we did with the MI gas plants.
 
 ```{r}
 st_nearest_feature(x = ourCities.spatial, y = MI.gasplants.small)
@@ -504,10 +504,10 @@ ourCities %>% dplyr::mutate(Closest.GreatLake = GL$FEAT_NAME[closest.GL.index])
 ### Proximity-based merges
 What if we wanted to identify every polygon (or point) within some distance (say, "X km") of a gasplant rather than finding the closest gasplant? Of course, we could do the above steps, and then filter the distance matrix to keep only those within X km. Or, we could look for the polygons that intersect an X km circle around a gasplant. Doing this is easy in R.
 
-To do so, we use `st_buffer()` along with a projection that specifies distance in some linear measure (rather than degrees lat or lon. This is because a degree of longitude *changes* when we get closer to the poles. Let's find all counties in Michigan that are within 50 km of any Great Lake. To do so, we first buffer our Great Lakes by 50km. The `st_crs()` of the `GL` object is already stated in meters, so we can buffer by 50,000:
+To do so, we use `st_buffer()` along with a distance in some linear measure (meters, say, rather than degrees of lat or lon). This is because a degree of longitude *changes* when we get closer to the poles. Let's find all counties in Michigan that are within 50 km of any Great Lake. To do so, we first buffer our Great Lakes by 50km. `GL` is in EPSG:4269, whose *coordinates* are degrees -- but when the data are lon/lat, `sf` does the geometry on the sphere and takes `dist` in meters anyway, so we can buffer by 50,000:
 
 ```{r}
-st_crs(GL) # "LENGTHUNIT" is metre
+st_crs(GL) # NAD83 / EPSG:4269 -- the axes are in degrees
 GL.buffer = st_buffer(GL, dist = 50000)
 
 ggplot(GL.buffer) + geom_sf()
@@ -539,7 +539,7 @@ MI.lakeside.counties = MI.counties %>%
 NROW(MI.lakeside.counties)
 ```
 
-What happened? For each Great Lake within 50km, a county in the merged data got one row, so many counties got two (or more) rows:
+What happened? For each Great Lake *polygon* within 50km, a county in the merged data got one row, so many counties got two (or more) rows. Note that the `GL` file splits some lakes into several polygons, so a county can even end up with two rows for the *same* lake:
 
 ```{r}
 head(MI.lakeside.counties)

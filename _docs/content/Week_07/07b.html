@@ -636,7 +636,7 @@ window.Quarto = {
 </section>
 <section id="scatterplot-matrices" class="level3">
 <h3 class="anchored" data-anchor-id="scatterplot-matrices">Scatterplot matrices</h3>
-<p>The foundation of linear regression is corrleation. We can visualize the correlations between pairs of variables with the <code>ggpairs()</code> function in the <strong>GGally</strong> package. For instance, how correlated are high and low temperatures, humidity, wind speed, and the chance of precipitation? We first make a smaller dataset with just those columns, and then we feed that dataset into <code>ggpairs()</code> to see all the correlation information:</p>
+<p>The foundation of linear regression is correlation. We can visualize the correlations between pairs of variables with the <code>ggpairs()</code> function in the <strong>GGally</strong> package. For instance, how correlated are high and low temperatures, humidity, wind speed, and the chance of precipitation? We first make a smaller dataset with just those columns, and then we feed that dataset into <code>ggpairs()</code> to see all the correlation information:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -676,14 +676,15 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Here’s some code to load data from the Residential Energy Consumption Survey (RECS), a <a href="https://www.eia.gov/consumption/residential/data/2020/">once-a-decade survey of household energy consumption done by the Energy Information Administration.</a>. Use the code here to load the data. I’ve selected a few variables and renamed them to something intuitive. Each observation is a household surveyed by the EIA. The variable named <code>EnergyUsed</code> is the total BTU’s of energy consumed by that household.</p>
+<p>Here’s some code to load data from the Residential Energy Consumption Survey (RECS), a <a href="https://www.eia.gov/consumption/residential/data/2020/">once-a-decade survey of household energy consumption done by the Energy Information Administration.</a>. Use the code here to load the data. I’ve selected a few variables and renamed them to something intuitive. Each observation is a household surveyed by the EIA. The variable named <code>EnergyUsed</code> is the total energy consumed by that household, in thousands of BTUs.</p>
 <p>Most of the variables are self-explanatory except the following:</p>
 <ul>
-<li><p><code>AgeOfHome</code> is on a 1-9 scale where 1 is the oldest and 9 is the newest. This is “discretized” age.</p></li>
-<li><p><code>HeaterAge</code> is the age of the home’s heater from 1 to 6 where 6 is the oldest and 1 is the newest.</p></li>
-<li><p><code>TVSize</code> is on a scale of 1 (smallest) to 4 (largest)</p></li>
-<li><p><code>TempHome</code> tells us the home’s thermostat setting when home (in degrees farenheit)</p></li>
+<li><p><code>AgeOfHome</code> is on a 1-8 scale where 1 is the oldest (built before 1950) and 8 is the newest (built 2005-2009). This is “discretized” age.</p></li>
+<li><p><code>HeaterAge</code> is the age of the home’s main heating equipment, and EIA’s codes are <strong>not</strong> in numeric order: 1 = less than 2 years old, 2 = 2-4 years, 3 = 5-9 years, 41 = 10-14 years, 42 = 15-19 years, and 5 = 20 years or older. Recode it before treating it as a number, or the 41s and 42s will wreck your correlation.</p></li>
+<li><p><code>TVSize</code> is on a scale of 1 (smallest) to 3 (largest)</p></li>
+<li><p><code>TempHome</code> tells us the home’s winter thermostat setting when someone is home (in degrees Fahrenheit)</p></li>
 </ul>
+<p>One warning about the codes: <code>CarsGarage</code> and <code>TVSize</code> also use <code>-2</code> for “not applicable” (no attached garage, no TV), and the filter below only drops the <code>-2</code>s in <code>HeaterAge</code> and <code>TempHome</code>. Almost 60% of households have <code>CarsGarage == -2</code>, so if you correlate that variable as-is you are mostly measuring “has a garage at all.”</p>
 <p>Your task is to make a ggpairs plot for <code>EnergyUsed</code> and five of the variables in the RECS data. What variables do you think are correlated with total energy use <code>EnergyUsed</code>? And <strong>what can we learn about energy consumption from these correlations?</strong></p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>RECS <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://www.eia.gov/consumption/residential/data/2009/csv/recs2009_public.csv'</span>, <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span></span>
@@ -732,7 +733,7 @@ windSpeed                      NA             NA       NA     1.000             
 precipProbability              NA             NA       NA        NA             1.000</code></pre>
 </div>
 </div>
-<p>Finally, in order to plot this, the data needs to be in tidy (or long) format. Here we convert the <code>things_to_correlate</code> matrix into a data frame, add a column for the row names, take all the columns and put them into a single column named <code>measure1</code>, and take all the correlation numbers and put them in a column named <code>cor</code> In the end, we make sure the measure variables are ordered by their order of appearance (otherwise they plot alphabetically and don’t make a triangle)</p>
+<p>Finally, in order to plot this, the data needs to be in tidy (or long) format. Here we convert the <code>things_to_correlate</code> matrix into a data frame, add a column for the row names, take all the columns and put them into a single column named <code>measure1</code>, and take all the correlation numbers and put them in a column named <code>cor</code>. In the end, we make sure the measure variables are ordered by their order of appearance (otherwise they plot alphabetically and don’t make a triangle)</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>things_to_correlate_long <span class="ot">&lt;-</span> things_to_correlate <span class="sc">%&gt;%</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert from a matrix to a data frame</span></span>
@@ -793,7 +794,7 @@ precipProbability              NA             NA       NA        NA             
 </div>
 </div>
 </div>
-<p>Instead of using a heatmap, we can also use points, which encode the correlation information both as color <em>and</em> as size. To do that, we just need to switch <code>geom_tile()</code> to <code>geom_point()</code> and set the <code>size = cor</code> mapping (note the use of the absolute value function):</p>
+<p>Instead of using a heatmap, we can also use points, which encode the correlation information both as color <em>and</em> as size. To do that, we switch <code>geom_tile()</code> to <code>geom_point()</code>, switch the <code>fill</code> aesthetic to <code>color</code> (and <code>scale_fill_gradient2()</code> to <code>scale_color_gradient2()</code>), and set the <code>size = abs(cor)</code> mapping (note the use of the absolute value function):</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(things_to_correlate_long,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> measure2, <span class="at">y =</span> measure1, <span class="at">color =</span> cor)) <span class="sc">+</span></span>
@@ -829,11 +830,11 @@ precipProbability              NA             NA       NA        NA             
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">cloudCover_scaled =</span> cloudCover <span class="sc">*</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Then we can build a simple, single-variable regression model for the high temperature “regressed on” humidity. We would write this regression as:</p>
-<p><span class="math display">\[HighTempScaled_i = \beta_0 + \beta_1 HumidityScaled_i + \varepsilon_i\]</span></p>
+<p><span class="math display">\[HighTemp_i = \beta_0 + \beta_1 HumidityScaled_i + \varepsilon_i\]</span></p>
 <p>Each of our 153 observations is indexed by <span class="math inline">\(i\)</span>. Since it will almost never be the case that <span class="math inline">\(\beta_0 + \beta_1 HumidityScaled_i = HighTempScaled\)</span>, we include the error term <span class="math inline">\(\varepsilon_i\)</span> to account for things that aren’t in our regression.</p>
 <p>Our estimated parameters <span class="math inline">\(\beta_0, \beta_1\)</span> define the line of best fit, or the “regression line”. That regression line is our conditional expectation function:</p>
 <p><span class="math display">\[E[HighTempScaled|HumidityScaled] = \beta_0 + \beta_1 HumidityScaled\]</span></p>
-<p>Note that we do not have an error term here – the <span class="math inline">\(E[]\)</span> doesn’t have an error term in it, only the regression function does.</p>
+<p>Note that we do not have an error term here – the <span class="math inline">\(E[]\)</span> doesn’t have an error term in it, only the equation for an individual observation <span class="math inline">\(i\)</span> does.</p>
 <p>To do this in R, we’ll first use the formula from <a href="../../content/Week_07/07a.html#the-regression-line">Week 07a</a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>weather_atl_results <span class="ot">=</span> weather_atl_summer <span class="sc">%&gt;%</span></span>
@@ -860,12 +861,12 @@ precipProbability              NA             NA       NA        NA             
 <p>Our estimates of the <span class="math inline">\(\beta_0, \beta_1\)</span> are our “coefficients”. It’s important we interpret them correctly. We can interpret these coefficients like so:</p>
 <ul>
 <li><p><code>beta_0</code> (or <span class="math inline">\(\beta_0\)</span>) is the intercept. By definition of an intercept, it shows that the average temperature when there’s <strong>0% humidity</strong> is 104°. There are no days with 0% humidity though, so we can ignore the intercept—it’s really just here so that we can draw the line.</p></li>
-<li><p><code>beta_1</code> (or <span class="math inline">\(\beta_1\)</span>) is the coefficient for <code>HumidityScaled</code>. It is the slope of the regression line, and thus the change in E[HighTempScaled] per 1-unit increase in <span class="math inline">\(HumidityScaled\)</span>. It shows that a one percent increase in humidity is <strong>associated with</strong> a 0.241° decrease in temperature, on average.</p>
+<li><p><code>beta_1</code> (or <span class="math inline">\(\beta_1\)</span>) is the coefficient for <code>HumidityScaled</code>. It is the slope of the regression line, and thus the change in E[HighTempScaled] per 1-unit increase in <span class="math inline">\(HumidityScaled\)</span>. It shows that a one percentage point increase in humidity is <strong>associated with</strong> a 0.241° decrease in the high temperature, on average.</p>
 <ul>
 <li>This (and <span class="math inline">\(\beta_0\)</span>) are random variables – if we re-draw the sample, we’ll see a slightly different relationship. We’ll talk about the standard error of this (and how to see it) in a little bit.</li>
 </ul></li>
 </ul>
-<p>Visualizing this model is simple, since there are only two variables. We visualized the regression line in the Galton Heights data during Content 05, so let’s just use that code.</p>
+<p>Visualizing this model is simple, since there are only two variables. We visualized the regression line in the Galton Heights data during <a href="../../content/Week_07/07a.html#the-regression-line">Week 07a</a>, so let’s just use that code.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(weather_atl_summer, <span class="fu">aes</span>(<span class="at">x =</span> humidity_scaled, <span class="at">y =</span> temperatureHigh)) <span class="sc">+</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>

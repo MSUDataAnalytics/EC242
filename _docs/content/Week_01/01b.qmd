@@ -45,7 +45,7 @@ The Assignments page has all of our weekly lab assignments (including Week 1, du
 
 If you have not yet installed R and RStudio, and if you have not yet successfully rendered the "weekly writing" template, then please make sure you do so today. Use the [resources](/resource/) page for instructions on installation of R, RStudio, and `tinytex` for rendering to latex pdfs, as is required in this class.
 
-Pre-requisites for EC242 include PLS202, which covers the basics of using R and RStudio. Thus, we do not spend any class time on the workings of R. It is assumed you already know how to run a script, the basics of "object oriented programming" (how R refers to and manpiulates data like vectors or data.frames, etc.), and how to put together a code file that runs an analysis. 
+Pre-requisites for EC242 include PLS202, which covers the basics of using R and RStudio. Thus, we do not spend any class time on the workings of R. It is assumed you already know how to run a script, the basics of "object oriented programming" (how R refers to and manipulates data like vectors or data.frames, etc.), and how to put together a code file that runs an analysis. 
 
 
 If you are still unsure of the basic workings of `R`, I have created a review *resource* for you here: [Using R](/resource/usingR.qmd)
@@ -56,7 +56,7 @@ If you are still unsure of the basic workings of `R`, I have created a review *r
 
 Rmarkdown lets us combine the processing and output from R code with text and headers written in plain english, which lets us *do something* in code and then *show it and discuss it* in one place.
 
-An .Rmd (Rmarkdown document) like your [lab and weekly writing templates](/assignment/) has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, "code chunks" that are processed by R. And third, markdown text that is processed as normal text (via markdown langugage). You do work in code chunks, the output is included in the document, and you discuss the results in-line. When you render your document using the "knit" button, R will construct the final PDF output by running code chunks in order, and merging their output with your text. Make sure you read [using Rmarkdown](/resource/rmarkdown.html) and [using markdown](/resource/markdown.html) before you do your first weekly reading.
+An .Rmd (Rmarkdown document) like your [lab and weekly writing templates](/assignment/) has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, "code chunks" that are processed by R. And third, markdown text that is processed as normal text (via markdown language). You do work in code chunks, the output is included in the document, and you discuss the results in-line. When you render your document using the "knit" button, R will construct the final PDF output by running code chunks in order, and merging their output with your text. Make sure you read [using Rmarkdown](/resource/rmarkdown.html) and [using markdown](/resource/markdown.html) before you do your first weekly reading.
 
 The header on the code chunk tells Rstudio what language to use to run the chunk (`r`), and can take some settings for displaying output. The one you want to know now is `echo=T`. When this is `TRUE` (the document's default), then knitting will include a copy of your code along with the output. Don't change this to `FALSE` or I can't see your work when grading.
 
@@ -68,7 +68,7 @@ This is very useful when you are iterating through steps to develop your code. R
 
 **Code Flow**: Your script needs to contain all the steps you have taken to complete the assignment (or create your group project, etc.). For each assignment, you will have a single script that can run "from the top" and generate your results. You will be primarily working with an Rmarkdown file, so all your R progress, from loading packages and data to the final plot or output, will be in code chunks with your written answers in between.
 
-It is important to get a grasp on this paradigm -- all code chunks are processed in order (a "flow"), and early code chunks influence later code chunks. All work has to be in the code, and it has to be in sequential order -- if you refer to an object in the 3rd code chunk from the 2nd chunk, you'll get an error, even though your local environment may have that object in it. 
+It is important to get a grasp on this paradigm -- all code chunks are processed in order (a "flow"), and early code chunks influence later code chunks. All work has to be in the code, and it has to be in sequential order -- if your 2nd code chunk uses an object that isn't created until the 3rd chunk, you'll get an error, even though your local environment may have that object in it. 
 
 When you "knit" your script, it runs from a fresh, clean, empty state, and your environment is not accessible to it. Any work you do directly into the console will not apply when you run your code from the top. You can work in the console, but it's absolutely **vital** that you then copy your work to a code chunk. This will be a source of frustration while you get used to the paradigm of **code flow**.
 
@@ -91,7 +91,7 @@ For a full review of data types, see [the usingR resource](/resource/usingR.qmd)
 Once you define variables, the data analysis process can usually be described as a series of *functions* applied to the data. `R` includes several zillion predefined functions and most of the analysis pipelines we construct make extensive use of the built-in functions. But `R`'s power comes from its scalability. We have access to (nearly) infinite functions via `install.packages` and `library`. As we go through the course, we will carefully note new functions we bring to each problem. For now, though, we will stick to the basics.
 
 
-In general, we need to use parentheses to evaluate a function. If you type `ls`, the function is not evaluated and instead `R` shows you the code that defines the function. If you type `ls()` the function is evaluated and, as seen above, we see objects in the workspace.
+In general, we need to use parentheses to evaluate a function. If you type `ls`, the function is not evaluated and instead `R` shows you the code that defines the function. If you type `ls()` the function is evaluated and we see the objects currently sitting in the workspace.
 
 Unlike `ls`, most functions require one or more _arguments_. Below is an example of how we assign an object to the argument of the function `log`.:
 
@@ -198,7 +198,7 @@ This shows you the object name for these datasets. These datasets are objects th
 co2
 ```
 
-`R` will show you Mauna Loa atmospheric $CO^2$ concentration data.
+`R` will show you Mauna Loa atmospheric $CO_2$ concentration data.
 
 Other prebuilt objects are mathematical quantities, such as the constant $\pi$ and $\infty$:
   
@@ -245,7 +245,7 @@ Based on the result, what do you think the functions `seq` and `sum` do?  You ca
 
 ## Commenting your code
 
-If a line of `R` code starts with the symbol `#`, it is not evaluated. We can use this to write reminders of why we wrote particular code. For example, in the script above we could add:
+If a line of `R` code starts with the symbol `#`, it is not evaluated. We can use this to write reminders of why we wrote particular code. For example, in a script that solves a quadratic equation we could add:
   
   
 ```{r, eval=FALSE}
@@ -282,9 +282,9 @@ class(murders)
 
 ### Data From Packages
 
-Woah, there -- `data(murders)` gave me an error! Well, the data, like many functions, are part of a package. Here, it's the `dslabs` package. We need to load up the package first (or install it first, as the case may be).
+Woah, there -- drop that first line and `data(murders)` fails! Well, the data, like many functions, are part of a package. Here, it's the `dslabs` package. We need to load up the package first (or install it first, as the case may be).
 
-We can usually also refer to data in a package by referring to the package's *namespace*, which is name of the package from which the data originates. So `dslabs::murders` is an object (from the `dslabs` namespace) that can be accessed that way, too. We can use a simple line of code to create the object in our environment: `myMurders = dslabs::murders`. Now, we have a copy of the object in our environment that we can work with.
+We can usually also refer to data in a package by referring to the package's *namespace*, which is the name of the package from which the data originates. So `dslabs::murders` is an object (from the `dslabs` namespace) that can be accessed that way, too. We can use a simple line of code to create the object in our environment: `myMurders = dslabs::murders`. Now, we have a copy of the object in our environment that we can work with.
 
 
 
@@ -398,7 +398,7 @@ x
 class(x)
 ```
 
-R _coerced_ the data into characters. It guessed that because you put a character string in the vector, you meant the 1 and 3 to actually be character strings `"1"` and "`3`". The fact that not even a warning is issued is an example of how coercion can cause many unnoticed errors in `R`. 
+R _coerced_ the data into characters. It guessed that because you put a character string in the vector, you meant the 1 and 3 to actually be character strings `"1"` and `"3"`. The fact that not even a warning is issued is an example of how coercion can cause many unnoticed errors in `R`. 
 
 R also offers functions to change from one type to another. For example, you can turn numbers into characters with:
 
@@ -486,7 +486,7 @@ ind <- order(murders$total)
 murders$abb[ind]
 ```
 
-According to the above, California had the most murders.
+According to the above, California had the most murders -- note that it's the *last* entry, since we've ordered from smallest to largest.
 
 If we wanted to re-order the whole data.frame based on the `murders$total` index, and **write it with the new order**:
 
@@ -545,7 +545,7 @@ if(knitr::is_html_output()){
 
 ## Beware of recycling
 
-Another common source of unnoticed errors in `R` is the use of _recycling_. We saw that vectors are added elementwise. So if the vectors don't match in length, it is natural to assume that we should get an error. But we don't. Notice what happens:
+Another common source of unnoticed errors in `R` is the use of _recycling_. Vectors are added elementwise (see *Vector arithmetics*, below). So if the vectors don't match in length, it is natural to assume that we should get an error. But we don't. Notice what happens:
   
 ```{r, warning=TRUE}
 x <- c(1,2,3)
@@ -703,7 +703,7 @@ Remake the data frame using the code above, but add a line that converts the tem
 
 2. Write code to compute the following sum $1+1/2^2 + 1/3^2 + \dots 1/100^2$? *Hint:* thanks to Euler, we know it should be close to $\pi^2/6$.
 
-3. Compute the per 100,000 murder rate for each state and store it in a new column called `murder_rate`. Then compute the average murder rate for the US using the function `mean`. What is the average?
+3. Compute the per 100,000 murder rate for each state and store it in a new column called `murder_rate`. Then compute the average of those state murder rates using the function `mean`. What is the average? (Careful: that's the average of the 51 state rates, not the murder rate for the US as a whole -- the latter weights each state by its population.)
 :::
   
   
@@ -779,6 +779,16 @@ murders$rate[ind]
 
 
 
+### `match`
+
+Sometimes we want to look up several entries at once. The function `match` takes two vectors and, for each element of the first, returns the index where it turns up in the second. So to find the rows for New York, Florida, and Texas:
+
+```{r}
+ind <- match(c("New York", "Florida", "Texas"), murders$state)
+ind
+murders$rate[ind]
+```
+
 ### `%in%`
 
 
@@ -802,7 +812,7 @@ Start by loading the library and data.
 library(dslabs)
 data(murders)
 ```
-Note that every time you run this, you replace `murder` in your environment. So if you had created the `murders$rate` column, it's gone. But if you created the free-floating object `murder_rate`, that still exists (but can be overwritten).
+Note that every time you run this, you replace `murders` in your environment. So if you had created the `murders$rate` column, it's gone. But if you created the free-floating object `murder_rate`, that still exists (but can be overwritten).
 
 1. Compute the per 100,000 murder rate for each state and store it in an object called `murder_rate`. Then use logical operators to create a logical vector named `low` that tells us which entries of `murder_rate` are lower than 1.
 

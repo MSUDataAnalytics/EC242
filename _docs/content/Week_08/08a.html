@@ -775,7 +775,7 @@ window.Quarto = {
 </section>
 <section id="regression-applied-to-baseball-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="regression-applied-to-baseball-statistics">Regression applied to baseball statistics</h3>
-<p>Can we use regression with these data? First, notice that the HR and Run data appear to be bivariate normal. We may have skipped the bivariate normal from before, but it just means that two variables share a joint normal distribution – each has it’s own mean, but conditional on some value of one, the other is normally distributed around it’s conditional value. We save the plot into the object <code>p</code> as we will use it again later.</p>
+<p>Can we use regression with these data? First, notice that the HR and Run data appear to be bivariate normal. We may have skipped the bivariate normal from before, but it just means that two variables share a joint normal distribution – each has its own mean, but conditional on some value of one, the other is normally distributed around its conditional value. We save the plot into the object <code>p</code> as we will use it again later.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Lahman)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> Teams <span class="sc">%&gt;%</span> <span class="fu">filter</span>(yearID <span class="sc">%in%</span> <span class="dv">1961</span><span class="sc">:</span><span class="dv">2001</span> ) <span class="sc">%&gt;%</span></span>
@@ -824,7 +824,7 @@ window.Quarto = {
 1 0.8547104 0.2429707 4.355262 0.5885791 0.7615597</code></pre>
 </div>
 </div>
-<p>and use the formulas given above to create the regression lines, as we did in Week 5’s Content, and adding the line to our plot <code>p</code> created earlier:</p>
+<p>and use the formulas given above to create the regression lines, as we did in Week 7’s Content, and adding the line to our plot <code>p</code> created earlier:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>reg_line <span class="ot">&lt;-</span> summary_stats <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">slope =</span> r<span class="sc">*</span>s_R<span class="sc">/</span>s_HR,</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">intercept =</span> avg_R <span class="sc">-</span> slope<span class="sc">*</span>avg_HR)</span>
@@ -872,7 +872,7 @@ window.Quarto = {
 </div>
 </div>
 <p>So does this mean that if we go and hire low salary players with many BB, and who therefore increase the number of walks per game by 2, our team will score 1.5 more runs per game?</p>
-<p>We are again reminded that association is not causation. The data does provide strong evidence that a team with two more BB per game than the average team, scores 1.5 runs per game. But this does not mean that BB are the cause.</p>
+<p>We are again reminded that association is not causation. The data does provide strong evidence that a team with two more BB per game than the average team, scores 1.5 more runs per game than the average team. But this does not mean that BB are the cause.</p>
 <p>Note that if we compute the regression line slope for singles we get:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>singles_slope <span class="ot">&lt;-</span> Teams <span class="sc">%&gt;%</span></span>
@@ -901,7 +901,7 @@ window.Quarto = {
 <p>It turns out that pitchers, afraid of HRs, will sometimes avoid throwing strikes to HR hitters. As a result, HR hitters tend to have more BBs and a team with many HRs will also have more BBs. Although it may appear that BBs cause runs, it is actually the HRs that cause most of these runs. We say that BBs are <em>confounded</em> with HRs. Nonetheless, could it be that BBs still help? To find out, we somehow have to adjust for the HR effect. Regression can help with this as well.</p>
 <section id="understanding-confounding-through-stratification" class="level3">
 <h3 class="anchored" data-anchor-id="understanding-confounding-through-stratification">Understanding confounding through stratification</h3>
-<p>A first approach is to keep HRs fixed at a certain value and then examine the relationship between BB and runs. As we did when we stratified fathers by rounding to the closest inch, here we can stratify HR per game to the closest ten. We filter out the strata with few points to avoid highly variable estimates:</p>
+<p>A first approach is to keep HRs fixed at a certain value and then examine the relationship between BB and runs. As we did when we stratified fathers by rounding to the closest inch, here we can stratify HR per game to the closest tenth. We filter out the strata with few points to avoid highly variable estimates:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> Teams <span class="sc">%&gt;%</span> <span class="fu">filter</span>(yearID <span class="sc">%in%</span> <span class="dv">1961</span><span class="sc">:</span><span class="dv">2001</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">HR_strata =</span> <span class="fu">round</span>(HR<span class="sc">/</span>G, <span class="dv">1</span>),</span>
@@ -995,7 +995,7 @@ window.Quarto = {
 1 1.844824</code></pre>
 </div>
 </div>
-<p>Regardless, it seems that if we stratify by HR, we have bivariate distributions for runs versus BB. Similarly, if we stratify by BB, we have approximate bivariate normal distributions for HR versus runs.</p>
+<p>Regardless, it seems that if we stratify by HR, we have approximate bivariate normal distributions for runs versus BB. Similarly, if we stratify by BB, we have approximate bivariate normal distributions for HR versus runs.</p>
 </section>
 <section id="multivariate-regression" class="level3">
 <h3 class="anchored" data-anchor-id="multivariate-regression">Multivariate regression</h3>
@@ -1008,7 +1008,7 @@ window.Quarto = {
 <p><span class="math display">\[
 \mbox{E}[R \mid BB = x_1, \, HR = x_2] = \beta_0 + \beta_1 x_1 + \beta_2 x_2
 \]</span></p>
-<p>This model suggests that if the number of HR is fixed at <span class="math inline">\(x_2\)</span>, we observe a linear relationship between runs and BB with an intercept of <span class="math inline">\(\beta_0 + \beta_2 x_2\)</span>. Our exploratory data analysis suggested this. The model also suggests that as the number of HR grows, the intercept growth is linear as well and determined by <span class="math inline">\(\beta_1 x_1\)</span>.</p>
+<p>This model suggests that if the number of HR is fixed at <span class="math inline">\(x_2\)</span>, we observe a linear relationship between runs and BB with an intercept of <span class="math inline">\(\beta_0 + \beta_2 x_2\)</span>. Our exploratory data analysis suggested this. The model also suggests that as the number of HR grows, the intercept growth is linear as well and determined by <span class="math inline">\(\beta_2 x_2\)</span>.</p>
 <p>In this analysis, referred to as <em>multivariate regression</em>, you will often hear people say that the BB slope <span class="math inline">\(\beta_1\)</span> is <em>adjusted</em> for the HR effect. If the model is correct then confounding has been accounted for. But how do we estimate <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> from the data? For this, we learn about linear models and least squares estimates.</p>
 </section>
 </section>
@@ -1074,7 +1074,7 @@ RSS = \sum_{i=1}^n \left\{  y_i - \left(\beta_0 + \beta_1 x_i \right)\right\}^2
 </div>
 </div>
 <p>We can see a clear minimum for <span class="math inline">\(\beta_1\)</span> at around 0.65. However, this minimum for <span class="math inline">\(\beta_1\)</span> is for when <span class="math inline">\(\beta_0 = 25\)</span>, a value we arbitrarily picked. We don’t know if (25, 0.65) is the pair that minimizes the equation across all possible pairs.</p>
-<p>Trial and error is not going to work in this case. We could search for a minimum within a fine grid of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> values, but this is unnecessarily time-consuming since we can use calculus: take the partial derivatives, set them to 0 and solve for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span>. Of course, if we have many parameters, these equations can get rather complex. But there are functions in R that do these calculations for us. We will learn these next. To learn the mathematics behind this, you can consult a book on linear models.</p>
+<p>Trial and error is not going to work in this case. We could search for a minimum within a fine grid of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> values, but this is unnecessarily time-consuming since we can use calculus: take the partial derivatives, set them to 0 and solve for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. Of course, if we have many parameters, these equations can get rather complex. But there are functions in R that do these calculations for us. We will learn these next. To learn the mathematics behind this, you can consult a book on linear models.</p>
 </section>
 <section id="the-lm-function" class="level3">
 <h3 class="anchored" data-anchor-id="the-lm-function">The <code>lm</code> function</h3>
@@ -1092,7 +1092,7 @@ Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
 </div>
 </div>
 <p>There are two arguments here. The first is specifying the regression formula. We use the character <code>~</code> to let <code>lm</code> know which is the variable we are predicting (left of <code>~</code>) and which we are using to predict (right of <code>~</code>). The intercept is added <em>automatically</em> to the model that will be fit. Note that we just use the column names here – <code>son</code> not <code>galton_heights$son</code>. And note that we aren’t putting quotes around the names, even though R doesn’t have an object called <code>son</code> or <code>father</code> in its memory (it does have <code>galton_heights$son</code> and <code>galton_heights$father</code> of course).</p>
-<p>The second argument is the key here. It is the <code>data=</code> argoument. Here, you’re telling R where to find the variables <code>son</code> and <code>father</code>.</p>
+<p>The second argument is the key here. It is the <code>data=</code> argument. Here, you’re telling R where to find the variables <code>son</code> and <code>father</code>.</p>
 <p>Note that while <code>lm(galton_heights$son ~ galton_heights$father)</code> will work, it will cause problems later when we try to predict using our model. Do not write your regressions like this. Use the formula and <code>data =</code> notation.</p>
 <p>The object we named <code>fit</code> here is a “lm” object. Not a data frame or a tibble. It includes more information about the fit and lots of other stuff. We can use the function <code>summary</code> to extract more of this information. <code>summary</code> is usually how we’ll look at regression results:</p>
 <div class="cell">
@@ -1173,7 +1173,7 @@ father       0.7198756  0.1693834 4.249977 0.0000979167</code></pre>
 <p>When we plot <span class="math inline">\(\hat{Y}\)</span> versus <span class="math inline">\(x\)</span>, we see the regression line.</p>
 <p>Keep in mind that the prediction <span class="math inline">\(\hat{Y}\)</span> is also a random variable and mathematical theory tells us what the standard errors are. If we assume the errors are normal, or have a large enough sample size, we can use theory to construct confidence intervals as well. In fact, the <strong>ggplot2</strong> layer <code>geom_smooth(method = "lm")</code> that we previously used plots <span class="math inline">\(\hat{Y}\)</span> and surrounds it by confidence intervals:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>galton_heights <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(son, father)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>galton_heights <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(father, son)) <span class="sc">+</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1263,7 +1263,7 @@ father       0.7198756  0.1693834 4.249977 0.0000979167</code></pre>
 </div>
 </div>
 <p>You can learn more about these summaries in any regression text book.</p>
-<p>We will see an example of <code>augment</code> in the next section (and you used it already to predict values in an earlier assignment).</p>
+<p>We won’t work through <code>augment</code> here (though you used it already to predict values in an earlier assignment); it returns the original data plus fitted values and residuals.</p>
 </section>
 </section>
 <section id="case-study-multiple-regression-and-moneyball-continued" class="level2">
@@ -1276,7 +1276,7 @@ father       0.7198756  0.1693834 4.249977 0.0000979167</code></pre>
 <p><span class="math display">\[
 Y_i = \beta_0 + \beta_1 x_{i,1} + \beta_2 x_{i,2} + \varepsilon_i
 \]</span></p>
-<p>with <span class="math inline">\(Y_i\)</span> runs per game for team <span class="math inline">\(i\)</span>, <span class="math inline">\(x_{i,1}\)</span> walks per game, and <span class="math inline">\(x_{i,2}\)</span>. To use <code>lm</code> here, we need to let the function know we have two predictor variables. So we use the <code>+</code> symbol as follows:</p>
+<p>with <span class="math inline">\(Y_i\)</span> runs per game for team <span class="math inline">\(i\)</span>, <span class="math inline">\(x_{i,1}\)</span> walks per game, and <span class="math inline">\(x_{i,2}\)</span> home runs per game. To use <code>lm</code> here, we need to let the function know we have two predictor variables. So we use the <code>+</code> symbol as follows:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> Teams <span class="sc">%&gt;%</span></span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(yearID <span class="sc">%in%</span> <span class="dv">1961</span><span class="sc">:</span><span class="dv">2001</span>) <span class="sc">%&gt;%</span></span>
@@ -1371,7 +1371,7 @@ Y_i = \beta_0 + \beta_1 x_{i,1} + \beta_2 x_{i,2} + \beta_3 x_{i,3}+ \beta_4 x_{
 <span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(pa_per_game) <span class="sc">%&gt;%</span></span>
 <span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  mean</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We compute the per-plate-appearance rates for players available in 2002 on data from 1997-2001. To avoid small sample artifacts, we filter players with less than 1,000 plate appearances per year. Here is the entire calculation in one line:</p>
+<p>We compute the per-plate-appearance rates for players available in 2002 on data from 1997-2001. To avoid small sample artifacts, we filter players with less than 1,000 plate appearances total over those five years. Here is the entire calculation in one line:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>players <span class="ot">&lt;-</span> Batting <span class="sc">%&gt;%</span> <span class="fu">filter</span>(yearID <span class="sc">%in%</span> <span class="dv">1997</span><span class="sc">:</span><span class="dv">2001</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(playerID) <span class="sc">%&gt;%</span></span>
@@ -1442,7 +1442,7 @@ Y_i = \beta_0 + \beta_1 x_{i,1} + \beta_2 x_{i,2} + \beta_3 x_{i,3}+ \beta_4 x_{
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(playerID, salary) <span class="sc">%&gt;%</span></span>
 <span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(players, <span class="at">by=</span><span class="st">"playerID"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Next, we add their defensive position. This is a somewhat complicated task because players play more than one position each year. The <strong>Lahman</strong> package table <code>Appearances</code> tells how many games each player played in each position, so we can pick the position that was most played using <code>which.max</code> on each row. We use <code>apply</code> to do this. However, because some players are traded, they appear more than once on the table, so we first sum their appearances across teams. Here, we pick the one position the player most played using the <code>top_n</code> function. To make sure we only pick one position, in the case of ties, we pick the first row of the resulting data frame. We also remove the <code>OF</code> position which stands for outfielder, a generalization of three positions: left field (LF), center field (CF), and right field (RF). We also remove pitchers since they don’t bat in the league in which the A’s play.</p>
+<p>Next, we add their defensive position. This is a somewhat complicated task because players play more than one position each year. The <strong>Lahman</strong> package table <code>Appearances</code> tells how many games each player played in each position, so we can pick the position that was most played using <code>which.max</code> on each row. We use <code>apply</code> to do this. However, because some players are traded, they appear more than once on the table, so we first sum their appearances across teams. Here, <code>which.max</code> picks the one position the player most played, and in the case of ties it just returns the first position listed. We also remove the <code>OF</code> position which stands for outfielder, a generalization of three positions: left field (LF), center field (CF), and right field (RF). We also remove pitchers since they don’t bat in the league in which the A’s play.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>position_names <span class="ot">&lt;-</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">"G_"</span>, <span class="fu">c</span>(<span class="st">"p"</span>,<span class="st">"c"</span>,<span class="st">"1b"</span>,<span class="st">"2b"</span>,<span class="st">"3b"</span>,<span class="st">"ss"</span>,<span class="st">"lf"</span>,<span class="st">"cf"</span>,<span class="st">"rf"</span>, <span class="st">"dh"</span>))</span>
@@ -1896,7 +1896,7 @@ Finally, we will use the `spread` function to have one column for the rookie and
 </div>
 </div>
 <p>The correlation is 0.460254 and the data look very much like a bivariate normal distribution, which means we predict a 2014 batting average <span class="math inline">\(Y\)</span> for any given player that had a 2013 batting average <span class="math inline">\(X\)</span> with:</p>
-<p><span class="math display">\[ \frac{Y - .255}{.032} = 0.46 \left( \frac{X - .261}{.023}\right) \]</span></p>
+<p><span class="math display">\[ \frac{Y - .255}{.033} = 0.46 \left( \frac{X - .261}{.032}\right) \]</span></p>
 <p>Because the correlation is not perfect, regression tells us that, on average, expect high performers from 2013 to do a bit worse in 2014. It’s not a jinx; it’s just due to chance. The ROY are selected from the top values of <span class="math inline">\(X\)</span> so it is expected that <span class="math inline">\(Y\)</span> will regress to the mean.</p>
 
 

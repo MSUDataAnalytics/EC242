@@ -182,7 +182,7 @@ p2 <-browsers %>%
 grid.arrange(p1, p2, nrow = 2)
 ```
 
-Notice how much easier it is to see the differences in the barplot. In fact, we can now determine the actual percentages by following a horizontal line to the x-axis.
+Notice how much easier it is to see the differences in the barplot. In fact, we can now determine the actual percentages by following a horizontal line from the top of each bar over to the y-axis.
 
 If for some reason you need to make a pie chart, label each pie slice with its respective percentage so viewers do not have to infer them from the angles or area:
 
@@ -405,7 +405,7 @@ gdp_data %>%
   filter(y == "Area") %>%
   ggplot(aes(Country, GDP)) +
   geom_bar(stat = "identity", width = 0.5) +
-  labs(y = "GDP in trillions of US dollars")
+  labs(y = "GDP relative to France")
 ```
 
 ## Show what you mean to show
@@ -415,7 +415,7 @@ Part of a visual cue is making sure you've set a glide path for the reader to un
 :::{.callout-note}
 # Let's discuss
 
-In our muders data (below), what sort of information might we want to communicate? There are only a few variables here, so we're pretty limited on what we can show. 
+In our murders data (below), what sort of information might we want to communicate? There are only a few variables here, so we're pretty limited on what we can show. 
 ```{r, echo=T}
 library(dslabs)
 data(murders)
@@ -552,7 +552,7 @@ p1 <- heights %>%
 p1
 ```
 
-The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors.  If all the viewer receives is this plot and has no other knowledge of human heights, they will have little information on what to expect if they meets a group of human males and females. The bars go to 0: does this mean there are tiny humans measuring less than one foot? Are all males taller than the tallest females? Is there a range of heights? ET can't answer these questions since we have provided almost no information on the height distribution.
+The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors.  If all the viewer receives is this plot and has no other knowledge of human heights, they will have little information on what to expect if they meet a group of human males and females. The bars go to 0: does this mean there are tiny humans measuring less than one foot? Are all males taller than the tallest females? Is there a range of heights? Our viewer can't answer these questions since we have provided almost no information on the height distribution.
 
 This brings us to our first principle: show the data. This simple __ggplot2__ code already generates a more informative plot than the barplot by simply showing all the data points:
 
@@ -623,7 +623,7 @@ Any axis you set to "free" will automatically show the axis under or next to eve
 
 ### Align plots vertically to see horizontal changes and horizontally to see vertical changes
 
-In these histograms, the **visual cue** related to decreases or increases in height are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:
+In these histograms, the **visual cue** related to decreases or increases in height are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed. First, here they are side by side again with `facet_grid(. ~ sex)`, and then stacked with `facet_grid(sex ~ .)`:
 
 ```{r common-axes-histograms-right-2, echo = TRUE}
 heights %>%
@@ -680,7 +680,7 @@ Notice how much more we learn from the two plots on the right. Barplots are usef
 
 
 ### Facet grids
-As the name implies, `facet_grid` can make more than just side-by-plots. If we specify variables on boths sides of the "~", we get a grid of plots.
+As the name implies, `facet_grid` can make more than just side-by-side plots. If we specify variables on both sides of the "~", we get a grid of plots.
 
 ```{r, echo=TRUE}
 gapminder::gapminder %>%
@@ -729,7 +729,7 @@ dslabs::gapminder %>%
 
 ### Leave some space
 
-The design maven Edward Tufte emphasizes th eneed for clarifying and empty space. Resist the urge to pack everything into a small layout. Especially in digital formats, space can be inexpensive, and can help attract the eye to your work.
+The design maven Edward Tufte emphasizes the need for clarifying and empty space. Resist the urge to pack everything into a small layout. Especially in digital formats, space can be inexpensive, and can help attract the eye to your work.
 
 We can control the space around our plots using the `theme()` function. We'll cover more details of `theme()` on Thursday. To add some space around a plot, we use `theme(plot.margin = margin(t=2, r = 2, b = 2, l = 2, unit = 'cm'))`, where the arguments correspond to top, right, bottom, left (in that order). I'm also going to add a black border to the outside so that we can see the boundary of the frame.
 
@@ -768,7 +768,7 @@ The comparison becomes even easier to make if we use color to denote the two thi
 
 ## Think of the color blind
 
-About 10% of the population is color blind. Unfortunately, the default colors used in __ggplot2__ are not optimal for this group. However, __ggplot2__ does make it easy to change the color palette used in the plots. An example of how we can use a color blind friendly palette is described here: [http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette):
+About 8% of men and 0.5% of women are color blind. Unfortunately, the default colors used in __ggplot2__ are not optimal for this group. However, __ggplot2__ does make it easy to change the color palette used in the plots. An example of how we can use a color blind friendly palette is described here: [http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette):
 
 ```{r, eval=TRUE, echo = TRUE}
 color_blind_friendly_cols <-
@@ -807,7 +807,7 @@ knitr::include_graphics(here('images','Colorblind_example.png'))
 
 
 
-::: {.callout-info}
+::: {.callout-important}
 ## Use colorblind friendly colors in your projects
 
 You should get in the habit of using colorblind-friendly colors. It will be required on your group projects. Mastering the palette is a helpful skill.
@@ -817,7 +817,7 @@ You should get in the habit of using colorblind-friendly colors. It will be requ
 
 If you're simply trying to differentiate between groups by using color, there are many ways of changing your color palette in `ggplot`. Most use `scale_fill_discrete` or `scale_color_discrete` (depending on the aesthetic for which you're setting the color).
 
-The easiest way of getting good-looking (e.g. non-default) colors is the `scale_fill_viridis_d` function, which "inherits" (takes the place of and has the properties of) `scale_fill_discrete`. Viridis has four color palettes and each is designed to be used to maximize the differentiation between colors.
+The easiest way of getting good-looking (e.g. non-default) colors is the `scale_fill_viridis_d` function, which "inherits" (takes the place of and has the properties of) `scale_fill_discrete`. Viridis has eight color palettes -- options A through H -- and each is designed to be used to maximize the differentiation between colors. We'll look at the first four.
 
 We will subset our `dslabs::gapminder` dataset to five different years and take a look at what Viridis colors can do across those five:
 
@@ -848,7 +848,7 @@ grid.arrange(viridis_a, viridis_b, viridis_c, viridis_d)
 
 Viridis uses a better palette of colors that, though distinct, have some cohesiveness to them. 
 
-We can also use a custom palette, like the colorblind palette from before (see above where we defined `color_blind_friendly_cols`). We just need to use the `type=` argument and give ggplot our color-blind friendly palette of colors. If the palette has more entries than we have (N) distinct categories, R reverts to the default.
+We can also use a custom palette, like the colorblind palette from before (see above where we defined `color_blind_friendly_cols`). We just need to use the `type=` argument and give ggplot our color-blind friendly palette of colors. If the palette has fewer entries than we have (N) distinct categories, R reverts to the default.
 
 ```{r, echo=TRUE, warning=FALSE, error = FALSE, echo = TRUE}
 gp = dslabs::gapminder %>% 
@@ -881,13 +881,13 @@ dslabs::gapminder %>%
   filter(country=='Romania' & year>1980) %>%
   ggplot(aes(x = year, y = gdp/population, color = life_expectancy)) + 
   geom_point(size = 5) +
-  labs(x = 'Year', y = 'GDP Per Capita', fill = 'Life Expectancy')
+  labs(x = 'Year', y = 'GDP Per Capita', color = 'Life Expectancy')
 ```
 
 
-We can see that GDP per capita went up, then down in 1989 (fall of the Soviet Union), then up after that. The color ramp tells us that life expectancy reached 75 years near the end, and it certainly improved in the post-2000 era.
+We can see that GDP per capita went up, then down in 1989 (the Romanian Revolution and the collapse of communism there), then up after that. The color ramp tells us that life expectancy reached 75 years near the end, and it certainly improved in the post-2000 era.
 
-We can set some of the points on the ramp manually - here, the ramp starts at dark blue and ends at light blue, but what if we wanted to start at red, and at blue, and cross white in the middle? Easy! We use `scale_color_gradient2` and specify the colors for low, mid, and high, and specify the midpoint at 72.5 years.
+We can set some of the points on the ramp manually - here, the ramp starts at dark blue and ends at light blue, but what if we wanted to start at red, end at blue, and cross white in the middle? Easy! We use `scale_color_gradient2` and specify the colors for low, mid, and high, and specify the midpoint at 72.5 years.
 
 
 ```{r, echo=T, warning=F, error=F, message=F}

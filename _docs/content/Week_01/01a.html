@@ -599,7 +599,7 @@ window.Quarto = {
 <ul>
 <li>What is this course about?</li>
 <li>How does this course work?</li>
-<li>Do you have a working <code>R</code> installation on your computer, along with Rstudio and <code>tinytex</code>?</li>
+<li>Do you have a working <code>R</code> installation on your computer, along with RStudio and <code>tinytex</code>?</li>
 </ul>
 </section>
 </section>
@@ -749,6 +749,7 @@ window.Quarto = {
 <li><p><span class="math inline">\(X \leftarrow Y\)</span> Y causes X (reverse causality)</p></li>
 <li><p><span class="math inline">\(Z \rightarrow X\)</span>; <span class="math inline">\(Z \rightarrow Y\)</span> Z causes X and Y (common cause)</p></li>
 <li><p><span class="math inline">\(X \rightarrow Y\)</span>; <span class="math inline">\(Y \rightarrow X\)</span> X causes Y and Y causes X (simultaneous equations)</p></li>
+<li><p>Dumb luck Nothing causes anything; check enough pairs of variables and some of them will line up by accident</p></li>
 </ol>
 <p><strong>So what does the “Social Science” in “Social Science Data Analytics” do?</strong></p>
 <ul>
@@ -764,7 +765,7 @@ window.Quarto = {
 <li>But also, forming institutions (political science), social movements and norms (sociology), spatial patterns (geography), interactions with natural resources (agriculture, food, and resource economics), etc.</li>
 </ul></li>
 </ul>
-<p>In a way, Social Science Data Analytics is a lot messier, complicated, and rewarding relative to just “data analytics”.</p>
+<p>In a way, Social Science Data Analytics is a lot messier, more complicated, and more rewarding relative to just “data analytics”.</p>
 </section>
 <section id="uniting-social-science-and-computer-science" class="level4">
 <h4 class="anchored" data-anchor-id="uniting-social-science-and-computer-science">Uniting Social Science and Computer Science</h4>
@@ -788,6 +789,7 @@ window.Quarto = {
 <p><strong>Example:</strong> a firm wishes to predict user behavior based on previous purchases or interactions.</p>
 <p>Small margins <span class="math inline">\(\rightarrow\)</span> huge payoffs when <em>scaled up</em>.</p>
 <p><span class="math inline">\(.01\% \rightarrow\)</span> $10 million.</p>
+<p>Netflix, for example, once paid $1 million for a 10% improvement in the accuracy of its movie recommendations.</p>
 <p>Not obvious why this was true for Netflix; quite obvious why this is true in financial markets.</p>
 <p>From a computer science perspective, it only matters that you get that improvement ($$). From a social science perspective, we would want to use the predictions to learn more about <em>why</em>.</p>
 <section id="more-recent-examples-of-prediction" class="level4">
@@ -836,7 +838,7 @@ window.Quarto = {
 </section>
 <section id="case-study-2-us-homicides-by-firearm" class="level2">
 <h2 class="anchored" data-anchor-id="case-study-2-us-homicides-by-firearm">Case study 2: US homicides by firearm</h2>
-<p>Imagine you live in Europe (if only!) and are offered a job in a US company with many locations in every state. It is a great job, but headlines such as <strong>US Gun Homicide Rate Higher Than Other Developed Countries</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> have you worried. Fox News runs a scary looking graphic, and charts like the one below only add to you anxiety:</p>
+<p>Imagine you live in Europe (if only!) and are offered a job in a US company with many locations in every state. It is a great job, but headlines such as <strong>US Gun Homicide Rate Higher Than Other Developed Countries</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> have you worried. Fox News runs a scary looking graphic, and charts like the one below only add to your anxiety:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -864,14 +866,14 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01a_files/figure-html/us-murders-by-state-map-1.png" class="img-fluid figure-img" alt="Image shows a map of US showing state-level murder rates per 100k people. Louisiana and Missouri are highest at 6+, while the upper west/midwest and upper New England areas are lowest" width="672"></p>
+<p><img src="01a_files/figure-html/us-murders-by-state-map-1.png" class="img-fluid figure-img" alt="Image shows a map of US showing state-level murder rates per 100k people. Louisiana and Missouri are among the highest at 5+, while the upper west/midwest and upper New England areas are lowest" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>California, for example, has a larger population than Canada, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the murder rates in Lithuania, Ukraine, and Russia are higher than 4 per 100,000. So perhaps the news reports that worried you are too superficial.</p>
+<p>California, for example, has a larger population than Australia, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the <em>overall</em> murder rates in Lithuania, Ukraine, and Russia are higher than 4 per 100,000 (not all of those are gun murders, so this isn’t quite apples-to-apples). So perhaps the news reports that worried you are too superficial.</p>
 <p>This is a relatively simple and straightforward problem in social science: you have options of where to live, and want to determine the safety of the various states. Your “research” is clearly policy-relevant: you will eventually have to live somewhere. In this course, we will begin to tackle the problem by examining data related to gun homicides in the US using <code>R</code> as a motivating example along the way.</p>
-<p>Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced <code>R</code> skills. Ideally, this is a refresher. However, we are aware that your preparation in previously courses varies greatly from student to student. Moreover, we want you to be aware that the usefulness of some of these early building blocks may not be immediately obvious. Later in the class you will appreciate having these skills. Mastery will be rewarded both in this class and (of course) in life.</p>
+<p>Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced <code>R</code> skills. Ideally, this is a refresher. However, we are aware that your preparation in previous courses varies greatly from student to student. Moreover, we want you to be aware that the usefulness of some of these early building blocks may not be immediately obvious. Later in the class you will appreciate having these skills. Mastery will be rewarded both in this class and (of course) in life.</p>
 </section>
 </section>
 <section id="now-some-class-business" class="level1">

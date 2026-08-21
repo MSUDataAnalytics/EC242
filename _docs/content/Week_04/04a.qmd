@@ -61,7 +61,7 @@ knitr::opts_chunk$set(
 
 ### Exploring the Data
 
-Taking an exercise from the _New Insights on Poverty_ video, we start by testing our knowledge regarding differences in child mortality across different countries. For each of the six pairs of countries below, which country do you think had the highest child mortality rates in 2015? Which pairs do you think are most similar?
+Taking an exercise from the _New Insights on Poverty_ video, we start by testing our knowledge regarding differences in child mortality across different countries. For each of the five pairs of countries below, which country do you think had the highest child mortality rates in 2015? Which pairs do you think are most similar?
 
 1. Sri Lanka or Turkey
 2. Poland or South Korea
@@ -117,7 +117,7 @@ We see that the European countries on this list have higher child mortality rate
 ### Slope charts 
 The slopechart is informative when you are comparing variables of the same type, but at different time points and for a relatively small number of comparisons. For example, comparing life expectancy between 2010 and 2015. In this case, we might recommend a _slope chart_.
 
-There is no geometry for slope charts in __ggplot2__, but we can construct one using `geom_line`. We need to do some tinkering to add labels. We'll paste together a character stright with the country name and the starting life expectancy, then do the same with just the later life expectancy for the right side. Below is an example comparing 2010 to 2015 for large western countries: 
+There is no geometry for slope charts in __ggplot2__, but we can construct one using `geom_line`. We need to do some tinkering to add labels. We'll paste together a character string with the country name and the starting life expectancy, then do the same with just the later life expectancy for the right side. Below is an example comparing 2010 to 2015 for large western countries: 
 
 ```{r slope-plot}
 west <- c("Western Europe","Northern Europe","Southern Europe",
@@ -245,7 +245,7 @@ bumpplot
 ### Themes
 We can go a little further towards a clean, easy-to-read data visualization by using __themes__ in our plots. Themes allow us to set a particular range of plot settings in one command, and let us further tweak things like fonts, background colors, and much more. We've used them in passing a few times without highlighting them, but we'll discuss them here.
 
-A pre-constructed set of instructions for making a visual theme can be had by using a theme's `ggplot` function. Let's look at two of my favorites.
+A pre-constructed set of instructions for making a visual theme can be had by adding one of __ggplot2__'s `theme_*()` functions to your plot. Let's look at two of my favorites.
 
 `theme_bw()` uses the black-and-white theme, which is helpful in making a nice, clean plot:
 
@@ -261,7 +261,7 @@ Here's `theme_minimal()`
 bumpplot + theme_minimal()
 ```
 
-Themes can alter things in the plot as well. If we really want to strip it down and remove the Y-axis (which is rarely a good idea, but in a bump chart, it makes sense):
+Themes can alter things in the plot as well. If we really want to strip it down and remove the axes, gridlines, and background entirely (which is rarely a good idea, but in a bump chart, it makes sense):
 
 ```{r, echo = T,  fig.width=7, fig.height=5.2}
 bumpplot + theme_void()
@@ -287,7 +287,7 @@ bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
 ```
 
 ### Theme elements
-The above code looks a little odd in that asking it to leave out the minor and major Y grid, and the major X grid, required `element_blank()`, a function! Since a "blank" part (or a solid color part) might entail a lot of particular things, the ggplot function is necessary here to take care of all the particular details. 
+The above code looks a little odd in that asking it to leave out the minor and major Y grid, and the minor X grid, required `element_blank()`, a function! Since a "blank" part (or a solid color part) might entail a lot of particular things, the ggplot function is necessary here to take care of all the particular details. 
 
 Relatedly, if we wanted to change the background color of some panel (the plotted area), then `element_rect()` would be used because the panel is a rectangle. The theme argument would be `panel.background =element_rect(fill="red")` if we wanted to make it red (and hideous)
 
@@ -301,9 +301,9 @@ bumpplot +   theme_bw() + theme(strip.text = element_text(face = "bold"),
                    panel.grid.minor.x = element_blank()) # turn off small x grid
 ```
 
-We can also set the `strip.background` for the "strip" rectangles that label our `facet_wrap` and `facet_grid`sections,and `plot.background` for the area behind the plot panel.
+We can also set the `strip.background` for the "strip" rectangles that label our `facet_wrap` and `facet_grid` sections, and `plot.background` for the area behind the plot panel.
 
-In the above example, we also set the `element_text` function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment so that they center over the line. `element_text` is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the `scales::label_comma` [from last week](/content/Week_03/03b.html#labelerFunctions). We can avoid scrunching our labels by using `element_text` to set a new angle (45 or 90).
+In the above example, we also set the `element_text` function for the axis text and specified a rotation (see the years are at 45 degrees) and a horizontal-adjustment (`hjust = 1`) so that the end of each label sits at its tick mark instead of sliding past it. `element_text` is a theme element that controls how the text looks (including font, face, color, etc). This is particularly useful when you have appropriate axis labels that might be long, like the `scales::label_comma` [from last week](/content/Week_03/03b.html#labelerFunctions). We can avoid scrunching our labels by using `element_text` to set a new angle (45 or 90).
 
 
 
@@ -312,10 +312,10 @@ In the above example, we also set the `element_text` function for the axis text 
 
 Vaccines have helped save millions of lives. In the 19th century, before herd immunization was achieved through vaccination programs, deaths from infectious diseases, such as smallpox and polio, were common. However, today vaccination programs have become somewhat controversial despite all the scientific evidence for their importance.
 
-The controversy started with a paper^[http://www.thelancet.com/journals/lancet/article/PIIS0140-6736(97)11096-0/abstract] published in 1988 and led by Andrew Wakefield claiming
+The controversy started with a paper^[http://www.thelancet.com/journals/lancet/article/PIIS0140-6736(97)11096-0/abstract] published in 1998 and led by Andrew Wakefield claiming
 there was a link between the administration of the measles, mumps, and rubella (MMR) vaccine and the appearance of autism and bowel disease.
 Despite much scientific evidence contradicting this finding, sensationalist media reports and fear-mongering from conspiracy theorists led parts of the public into believing that vaccines were harmful. As a result, many parents ceased to vaccinate their children. This dangerous practice can be potentially disastrous given that the Centers for Disease Control (CDC) estimates that vaccinations will prevent more than 21 million hospitalizations and 732,000 deaths among children born in the last 20 years (see Benefits from Immunization during the Vaccines for Children Program Era — United States, 1994-2013, MMWR^[https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6316a4.htm]).
-The 1988 paper has since been retracted and Andrew Wakefield was eventually "struck off the UK medical register, with a statement identifying deliberate falsification in the research published in The Lancet, and was thereby barred from practicing medicine in the UK." (source: Wikipedia^[https://en.wikipedia.org/wiki/Andrew_Wakefield]). Yet misconceptions persist, in part due to self-proclaimed activists who continue to disseminate misinformation about vaccines.
+The 1998 paper has since been retracted and Andrew Wakefield was eventually "struck off the UK medical register, with a statement identifying deliberate falsification in the research published in The Lancet, and was thereby barred from practicing medicine in the UK." (source: Wikipedia^[https://en.wikipedia.org/wiki/Andrew_Wakefield]). Yet misconceptions persist, in part due to self-proclaimed activists who continue to disseminate misinformation about vaccines.
 
 Effective communication of data is a strong antidote to misinformation and fear-mongering. Earlier we used an example provided by a Wall Street Journal article^[http://graphics.wsj.com/infectious-diseases-and-vaccines/] showing data related to the impact of vaccines on battling infectious diseases.  Here we reconstruct that example.
 
@@ -327,7 +327,7 @@ data(us_contagious_diseases)
 names(us_contagious_diseases)
 ```
 
-We create a temporary object `dat` that stores only the measles data, includes a per 100,000 rate, orders states by average value of disease and removes Alaska and Hawaii since they only became states in the late 1950s. Note that there is a `weeks_reporting` column that tells us for how many weeks of the year data was reported. We have to adjust for that value when computing the rate.
+We create a temporary object `dat` that stores only the measles data, includes a per 10,000 rate, orders states by average value of disease and removes Alaska and Hawaii since they only became states in the late 1950s. Note that there is a `weeks_reporting` column that tells us for how many weeks of the year data was reported. We have to adjust for that value when computing the rate.
 
 ```{r}
 the_disease <- "Measles"
@@ -376,7 +376,7 @@ This plot makes a very striking argument for the contribution of vaccines. Howev
 ```{r}
 avg <- us_contagious_diseases %>%
   filter(disease==the_disease) %>% group_by(year) %>%
-  summarize(us_rate = sum(count, na.rm = TRUE) /
+  summarize(us_rate = sum(count * 52 / weeks_reporting, na.rm = TRUE) /
               sum(population, na.rm = TRUE) * 10000)
 ```
 
@@ -435,7 +435,7 @@ The dpi and file size may change the *relative* font size, so you might have to 
 
 In the measles case, it might be nice to examine measles rates on a map. Maybe there's something regional about vaccine rollout? Or maybe we think there might be spillovers between states (measles is incredibly highly contagious).
 
-We'll need `tigris` with accesses US census TIGER/line files which define nearly all federally-recognized boundaries, from states to counties and territories, to US census tracts and blocks. Today we'll work only with US states, since that's the *level of granularity* at which our measles data is reported (that is, we don't see e.g. county-leve measles cases).
+We'll need `tigris`, which accesses US census TIGER/line files which define nearly all federally-recognized boundaries, from states to counties and territories, to US census tracts and blocks. Today we'll work only with US states, since that's the *level of granularity* at which our measles data is reported (that is, we don't see e.g. county-level measles cases).
 
 ```{r, echo=T, warning = F, message = F, error = F}
 library(sf)
@@ -473,7 +473,7 @@ head(states)
 ggplot(states) + geom_sf() + theme_minimal()
 ```
 
-Just a note: we selected only 4 columns, but `R` (rather, the `sf` package) kept the `geometry` column automatically! That's a feature of `sf` -- it won't let you drop that important column unless you specifically tell it to.
+Just a note: we selected only 3 columns, but `R` (rather, the `sf` package) kept the `geometry` column automatically! That's a feature of `sf` -- it won't let you drop that important column unless you specifically tell it to.
 
 Now we need to `join` our measles data to our map. We're covering `join` in the next lecture, so we'll keep it simple here. Note that we're joining `dat` to the `states` object using a key of `NAME`.
 
@@ -527,7 +527,7 @@ library(patchwork)
 p.1965 = ggplot(states.measles.1965, aes(fill = rate)) +
   geom_sf() +
   scale_fill_continuous(type = 'viridis') +
-  labs(fill = 'Measles Rate', title = 'Measels - 1965') +
+  labs(fill = 'Measles Rate', title = 'Measles - 1965') +
   theme_void() +# really get rid of the extra stuff
   theme(legend.position = "bottom")
 

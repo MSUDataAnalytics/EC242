@@ -86,7 +86,7 @@ p + geom_point(aes(x = log(population, base=10), y = log(total, base=10)), size 
   geom_text(aes(x = log(population, base=10), y = log(total, base=10)), nudge_x = 0.05) 
 ```
 
-This avoids using `scale_x_continuous` or it's child function `scale_x_log10`. One advantage to using `scale_x...` is that the axes are correctly labeled. When we transform the data directly, the axis labels only show the transformed values, so 7,000,000 becomes 7.0. This could be confusing! We could update the axis labels to say "total murders (log base 10)" and "total population (log base 10)", but that's cumbersome. Using `scale_x...` is a lot more refined and easy.
+This avoids using `scale_x_continuous` or its child function `scale_x_log10`. One advantage to using `scale_x...` is that the axes are correctly labeled. When we transform the data directly, the axis labels only show the transformed values, so 10,000,000 becomes 7.0. This could be confusing! We could update the axis labels to say "total murders (log base 10)" and "total population (log base 10)", but that's cumbersome. Using `scale_x...` is a lot more refined and easy.
 
 # Axis labels, legends, and titles
 But let's say we did want to re-name our x-axis label. Or maybe we don't like that the variable column name is lower-case "p". 
@@ -141,7 +141,7 @@ Now that you know how, **always label your plots with at least a title and have 
 ## Axis ticks
 In addition to the axis labels, we may want to format or change the axis tick labels (like "1e+06" above) or even where the tick marks and lines are drawn. If we don't specify anything, the axis labels and tick marks are drawn as best as `ggplot` can do, but we can change this. This might be especially useful if our data has some meaningful cutoffs that aren't found by the default, or we just don't like where the marks fall or  how they are labeled. This is easy to fix with `ggplot`.
 
-To change the tick mark labels, we have to set the tick mark locations. Then we can set a label for each tick mark. Let's go back to our `murders` data and, for simplicity, take the log transformation off the Y axis. We'll use `scale_y_continuous` to tell R *where* to put the breaks (`breaks = `) and *what to label* the breaks. We have to give it one label for every break. Let's say we just want a line at the 500's and let's say we want to (absurdly) use written numerics for each of the Y-axis lines. Since `scale_y_log10` **inherits from** `scale_y_continuous`, we can just use that and add the breaks and labels:
+To change the tick mark labels, we have to set the tick mark locations. Then we can set a label for each tick mark. Let's go back to our `murders` data and take control of the Y-axis tick marks. We'll use `scale_y_continuous` to tell R *where* to put the breaks (`breaks = `) and *what to label* the breaks. We have to give it one label for every break. Let's say we just want a line at the 500's and let's say we want to (absurdly) use written numerics for each of the Y-axis lines. Since `scale_y_log10` **inherits from** `scale_y_continuous`, we can just use that and add the breaks and labels:
 
 ```{r, echo=TRUE}
 p + geom_point(aes(color = region), size = 3) +
@@ -168,7 +168,7 @@ So we can now define where axis tick lines should lie and how they should be lab
 ### Flexible axis tick labels
 Anyone else annoyed by the scientific `1e+06`-style x-axis labels? If you're not familiar, `1e+06` means `1 * 10^6` or `1,000,000`. Of course, we could manually make the labels (and the breaks) like we did above, but that might be tedious, and what if we have different ranges of data? We'd end up forcing tick marks in areas that are far out of the support of the data (off the plot).
 
-We can also use a `labeler` function. The most common ones are in the `scales` package, so you'll want to install that and load it up using `library(scales)`. Each labeler is a function that takes as it's first argument a vector of numbers (or some expected format, like dates) and returns a formatted character vector of labels.
+We can also use a `labeler` function. The most common ones are in the `scales` package, so you'll want to install that and load it up using `library(scales)`. Each labeler is a function that takes as its first argument a vector of numbers (or some expected format, like dates) and returns a formatted character vector of labels.
 
 So the following will happen:
 
@@ -238,11 +238,11 @@ Of course, we could also transform the `Population` and `total` variables, divid
 
 There is also a `cut_si()` function that takes as an input a scientific unit (like "g" for grams). It'll use the full scientific notation for larger quantites, so `cut_si("g")` would have "g", then "kg", then "Mg" where needed on the axis.
 
-There are other lots of neat tricks for axis labels on the tidyverse [scales vignette](https://tidyverse.org/blog/2022/04/scales-1-2-0/)
+There are lots of other neat tricks for axis labels on the tidyverse [scales vignette](https://tidyverse.org/blog/2022/04/scales-1-2-0/)
 
 ## Axis tick label orientation
 
-While the `label_comma` kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the `theme()` call since it adjusts the layout or styling of the plot. Here, I've put in a bunch of breaks at 1 million to 40 million, and then asked `ggplot` to rotate and adjust the x-axis tick labels. `hjust` and `vjust` move the orientation of the output. `angle` changes the orientation.
+While the `label_comma` kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the `theme()` call since it adjusts the layout or styling of the plot. Here, I've put in a bunch of breaks at 1 million to 40 million, and then asked `ggplot` to rotate and adjust the x-axis tick labels. `hjust` and `vjust` move the horizontal and vertical justification of the label -- where the text sits relative to its tick mark. `angle` changes the orientation.
 
 ```{r, echo=TRUE}
 p + geom_point(aes(color = region), size = 3) +
@@ -262,12 +262,12 @@ Note that rotating the axis text unfortunately doesn't allow the labeler to add 
 ## Additional geometries
 Let's say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) becuase we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).
 
-`geom_vline` lets us add a single vertical line (without aesthetic mappings). If we look at `?geom_vline` we see that it requires ones aesthetic:`xintercept`. It also takes aesthetics like color and size, and introduces the `linetype` aesthetic:
+`geom_vline` lets us add a single vertical line (without aesthetic mappings). If we look at `?geom_vline` we see that it requires one aesthetic: `xintercept`. It also takes aesthetics like color and size, and introduces the `linetype` aesthetic:
 
 ```{r, echo=TRUE}
 p + geom_point(aes(color = region), size = 3) +
   geom_text(nudge_x = .05) +
-  geom_vline(aes(xintercept = 1000000), col = 'red', size = 2, linetype = 2) +
+  geom_vline(aes(xintercept = 1000000), col = 'red', linewidth = 2, linetype = 2) +
   scale_x_log10() +
   scale_y_log10(breaks = c(0,50, 100, 721, 1000,1500), 
                      labels = c('Zero','Fifty','One hundred','Seven hundred twenty one','One thousand','Fifteen hundred'),
@@ -278,7 +278,7 @@ p + geom_point(aes(color = region), size = 3) +
 Combining geometries is as easy as adding the layers with `+`.
 
 ### `geom_line`
-For a good old line plot, we use the line geometry at `geom_line`. The help for `?geom_line` tells us that we need an x and a y aesthetic (much like `geom_points`). Since our `murders` data isn't really suited to a line graph, we'll use a daily stock price. We'll get this using `tidyquant`, which pulls stock prices from Yahoo Finance and maintains the "tidy" format. You'll need to `install.packages('tidyquant')` before you run this the first time.
+For a good old line plot, we use the line geometry at `geom_line`. The help for `?geom_line` tells us that we need an x and a y aesthetic (much like `geom_point`). Since our `murders` data isn't really suited to a line graph, we'll use a daily stock price. We'll get this using `tidyquant`, which pulls stock prices from Yahoo Finance and maintains the "tidy" format. You'll need to `install.packages('tidyquant')` before you run this the first time.
 
 ```{r getStock, echo=T, warning = FALSE, error = FALSE, message = FALSE}
 library(tidyquant)
@@ -322,7 +322,7 @@ ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
   labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
 ```
 
-Similar result as `geom_line`, but without the color difference (which makes it rather hard to tell what you're looking at). But if we add labels using `geom_label`, we'll get one label for every point, which will be overwhelming. The solution? Use some filtered data so that there is only one point for each label. But that means replacing the `data` in `ggplot`. Here's how.
+Similar result as mapping `color`, but without the color difference (which makes it rather hard to tell what you're looking at). But if we add labels using `geom_label`, we'll get one label for every point, which will be overwhelming. The solution? Use some filtered data so that there is only one point for each label. But that means replacing the `data` in `ggplot`. Here's how.
 
 
 
@@ -358,7 +358,7 @@ Now, we don't lose a lot of space to a legend, and we haven't had to use color t
 
 
 ## Summarizing data and including in ggplot
-Often, we'll want to have lines or highlights in places that are derived from the data. In the above example from `murders`, we added a line at an arbitrary x-value (population) of 1,000,000. Often, though, **we'll want to show some summary of the data** on the plot. That alos requires using a second dataset (derived from the first).
+Often, we'll want to have lines or highlights in places that are derived from the data. In the above example from `murders`, we added a line at an arbitrary x-value (population) of 1,000,000. Often, though, **we'll want to show some summary of the data** on the plot. That also requires using a second dataset (derived from the first).
 
 Let's say we want to show the average state population for each region. We'll need to use two different data objects, one for the original, one for the summary. Create the summary first:
 
@@ -372,7 +372,7 @@ murders.summary = murders %>%
 print(murders.summary)
 ```
 
-The, use both `murders` and `murders.summary` in the plot:
+Then, use both `murders` and `murders.summary` in the plot:
 
 ```{r, echo=T}
 p + geom_point(aes(color = region), size = 3) +
@@ -384,7 +384,7 @@ p + geom_point(aes(color = region), size = 3) +
   labs(x = 'Population', y = 'Total murders', color = 'US Region')
 ```
 
-Note that we get the same color mapping -- this isn't necessarily automatic. Rather, it's because the order in which R encounters each region is *the exact same order* in both `murders` and `murders.summary`. If it weren't, we'd have to set the factor levels using `factor` and overwriting our old `region` column:
+Note that we get the same color mapping -- this isn't necessarily automatic. Rather, it's because `region` is a factor with *the exact same levels* in both `murders` and `murders.summary`, and `ggplot` assigns colors in level order -- not in the order the rows happen to show up. If the levels didn't match, we'd have to set them using `factor` and overwriting our old `region` column:
 
 ```{r, echo=T}
 murders.summary = murders %>%
@@ -485,7 +485,7 @@ You are tasked with two different things:
 
 A: Explore and visualize the discrepancies between polls and actual results using `combined_data`. How do you want to go about representing the data? How many observations do you have per state? What about per region?
 
-You might find these code bits to be useful for this (hint: use them with `case_when`):
+You might find the region definitions above to be useful for this (hint: use them with `case_when`).
 
 
 ```{r, eval=F, echo=F}

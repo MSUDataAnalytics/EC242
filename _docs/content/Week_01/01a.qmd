@@ -33,7 +33,7 @@ For future lectures, the guiding questions will be more pointed and at a higher 
 
 - What is this course about?
 - How does this course work?
-- Do you have a working `R` installation on your computer, along with Rstudio and `tinytex`?
+- Do you have a working `R` installation on your computer, along with RStudio and `tinytex`?
 
 
 
@@ -178,6 +178,9 @@ Cons:
 4. $X \rightarrow Y$; $Y \rightarrow X$
   X causes Y and Y causes X (simultaneous equations)
 
+5. Dumb luck
+  Nothing causes anything; check enough pairs of variables and some of them will line up by accident
+
 **So what does the "Social Science" in "Social Science Data Analytics" do?**
 
 - People do not obey the laws of physics
@@ -188,7 +191,7 @@ Cons:
   - Thus **EC**242
   - But also, forming institutions (political science), social movements and norms (sociology), spatial patterns (geography), interactions with natural resources (agriculture, food, and resource economics), etc.
   
-In a way, Social Science Data Analytics is a lot messier, complicated, and rewarding relative to just "data analytics".
+In a way, Social Science Data Analytics is a lot messier, more complicated, and more rewarding relative to just "data analytics".
 
 
 #### Uniting Social Science and Computer Science
@@ -214,6 +217,8 @@ We will also borrow a few other ideas from CS:
 Small margins $\rightarrow$ huge payoffs when *scaled up*.  
 
 $.01\% \rightarrow$ \$10 million.
+
+Netflix, for example, once paid \$1 million for a 10\% improvement in the accuracy of its movie recommendations.
 
 Not obvious why this was true for Netflix; quite obvious why this is true in financial markets.
 
@@ -284,7 +289,7 @@ You might want to look into the underlying data (in this case, fabricated) and t
 
 ##  Case study 2: US homicides by firearm
 
-Imagine you live in Europe (if only!) and are offered a job in a US company with many locations in every state. It is a great job, but headlines such as **US Gun Homicide Rate Higher Than Other Developed Countries**^[http://abcnews.go.com/blogs/headlines/2012/12/us-gun-ownership-homicide-rate-higher-than-other-developed-countries/] have you worried. Fox News runs a scary looking graphic, and charts like the one below only add to you anxiety:
+Imagine you live in Europe (if only!) and are offered a job in a US company with many locations in every state. It is a great job, but headlines such as **US Gun Homicide Rate Higher Than Other Developed Countries**^[http://abcnews.go.com/blogs/headlines/2012/12/us-gun-ownership-homicide-rate-higher-than-other-developed-countries/] have you worried. Fox News runs a scary looking graphic, and charts like the one below only add to your anxiety:
 
 ```{r murder-rate-example-1, echo=FALSE, warning=FALSE, message=FALSE, out.width="70%"}
 ##from http://abcnews.go.com/images/International/homocides_g8_countries_640x360_wmain.jpg
@@ -345,7 +350,7 @@ dat %>%
 But then you remember that (1) this is a hypothetical exercise; (2) you'll take literally any job at this point; and (3) Geographic diversity matters -- the United States is a large and diverse country with 50 very different states (plus the District of Columbia and some lovely territories).^[I'm especially partial to Puerto Rico.]
 
 ```{r us-murders-by-state-map, warning = FALSE, message=FALSE, echo=FALSE}
-#| fig-alt: "Image shows a map of US showing state-level murder rates per 100k people. Louisiana and Missouri are highest at 6+, while the upper west/midwest and upper New England areas are lowest"
+#| fig-alt: "Image shows a map of US showing state-level murder rates per 100k people. Louisiana and Missouri are among the highest at 5+, while the upper west/midwest and upper New England areas are lowest"
 
 library(tidyverse)
 library(dslabs)
@@ -363,12 +368,12 @@ murders %>% mutate(murder_rate = total/population*10^5,
   scale_y_continuous(breaks = NULL) +
   labs(x = "", y = "", fill = 'Murders\nPer 100k') +
   theme(panel.background = element_blank()) +
-  scale_fill_brewer(labels = c('<1','1-2','2-3','3-4','4-5','6+')) +
+  scale_fill_brewer(labels = c('<1','1-2','2-3','3-4','4-5','5+')) +
   theme_minimal()
 rm(fifty_states)
 ```
 
-California, for example, has a larger population than Canada, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the murder rates in Lithuania, Ukraine, and Russia are higher than 4 per 100,000. So perhaps the news reports that worried you are too superficial.
+California, for example, has a larger population than Australia, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the *overall* murder rates in Lithuania, Ukraine, and Russia are higher than 4 per 100,000 (not all of those are gun murders, so this isn't quite apples-to-apples). So perhaps the news reports that worried you are too superficial.
 
 ```{r echo=FALSE, out.width="60%"}
 # https://twitter.com/realdonaldtrump/status/1267246821597941764
@@ -377,7 +382,7 @@ California, for example, has a larger population than Canada, and 20 US states h
 
 This is a relatively simple and straightforward problem in social science: you have options of where to live, and want to determine the safety of the various states. Your "research" is clearly policy-relevant: you will eventually have to live somewhere. In this course, we will begin to tackle the problem by examining data related to gun homicides in the US using `R` as a motivating example along the way.
 
-Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced `R` skills. Ideally, this is a refresher. However, we are aware that your preparation in previously courses varies greatly from student to student. Moreover, we want you to be aware that the usefulness of some of these early building blocks may not be immediately obvious. Later in the class you will appreciate having these skills. Mastery will be rewarded both in this class and (of course) in life.
+Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced `R` skills. Ideally, this is a refresher. However, we are aware that your preparation in previous courses varies greatly from student to student. Moreover, we want you to be aware that the usefulness of some of these early building blocks may not be immediately obvious. Later in the class you will appreciate having these skills. Mastery will be rewarded both in this class and (of course) in life.
 
 
 # Now, some class business

@@ -654,13 +654,13 @@ window.Quarto = {
 <section id="r-basics" class="level1">
 <h1>What I assume you know</h1>
 <p>If you have not yet installed R and RStudio, and if you have not yet successfully rendered the “weekly writing” template, then please make sure you do so today. Use the <a href="../../resource/">resources</a> page for instructions on installation of R, RStudio, and <code>tinytex</code> for rendering to latex pdfs, as is required in this class.</p>
-<p>Pre-requisites for EC242 include PLS202, which covers the basics of using R and RStudio. Thus, we do not spend any class time on the workings of R. It is assumed you already know how to run a script, the basics of “object oriented programming” (how R refers to and manpiulates data like vectors or data.frames, etc.), and how to put together a code file that runs an analysis.</p>
+<p>Pre-requisites for EC242 include PLS202, which covers the basics of using R and RStudio. Thus, we do not spend any class time on the workings of R. It is assumed you already know how to run a script, the basics of “object oriented programming” (how R refers to and manipulates data like vectors or data.frames, etc.), and how to put together a code file that runs an analysis.</p>
 <p>If you are still unsure of the basic workings of <code>R</code>, I have created a review <em>resource</em> for you here: <a href="../../resource/usingR.html">Using R</a></p>
 </section>
 <section id="how-we-use-rmarkdown" class="level1">
 <h1>How we use Rmarkdown</h1>
 <p>Rmarkdown lets us combine the processing and output from R code with text and headers written in plain english, which lets us <em>do something</em> in code and then <em>show it and discuss it</em> in one place.</p>
-<p>An .Rmd (Rmarkdown document) like your <a href="../../assignment/">lab and weekly writing templates</a> has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, “code chunks” that are processed by R. And third, markdown text that is processed as normal text (via markdown langugage). You do work in code chunks, the output is included in the document, and you discuss the results in-line. When you render your document using the “knit” button, R will construct the final PDF output by running code chunks in order, and merging their output with your text. Make sure you read <a href="../../resource/rmarkdown.html">using Rmarkdown</a> and <a href="../../resource/markdown.html">using markdown</a> before you do your first weekly reading.</p>
+<p>An .Rmd (Rmarkdown document) like your <a href="../../assignment/">lab and weekly writing templates</a> has three parts: first, a YAML header up at the top that establishes some variables for use in rendering to PDF. Second, “code chunks” that are processed by R. And third, markdown text that is processed as normal text (via markdown language). You do work in code chunks, the output is included in the document, and you discuss the results in-line. When you render your document using the “knit” button, R will construct the final PDF output by running code chunks in order, and merging their output with your text. Make sure you read <a href="../../resource/rmarkdown.html">using Rmarkdown</a> and <a href="../../resource/markdown.html">using markdown</a> before you do your first weekly reading.</p>
 <p>The header on the code chunk tells Rstudio what language to use to run the chunk (<code>r</code>), and can take some settings for displaying output. The one you want to know now is <code>echo=T</code>. When this is <code>TRUE</code> (the document’s default), then knitting will include a copy of your code along with the output. Don’t change this to <code>FALSE</code> or I can’t see your work when grading.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -671,7 +671,7 @@ window.Quarto = {
 <p>Your R code goes here in these “chunks”. In the upper right, you’ll see a green down-pointing triangle and a green right-pointing triangle. The first one (down-pointing) runs <em>all of the previous code chunks up to this one</em> while the second (right-pointing) runs <em>this</em> code chunk.</p>
 <p>This is very useful when you are iterating through steps to develop your code. Running a code chunk will show you the output from that code chunk, which is what will drop into your .Rmd file when you knit it. Note that you can also highlight code and use CTRL+ENTER (or CMD+ENTER for macs) to run code.</p>
 <p><strong>Code Flow</strong>: Your script needs to contain all the steps you have taken to complete the assignment (or create your group project, etc.). For each assignment, you will have a single script that can run “from the top” and generate your results. You will be primarily working with an Rmarkdown file, so all your R progress, from loading packages and data to the final plot or output, will be in code chunks with your written answers in between.</p>
-<p>It is important to get a grasp on this paradigm – all code chunks are processed in order (a “flow”), and early code chunks influence later code chunks. All work has to be in the code, and it has to be in sequential order – if you refer to an object in the 3rd code chunk from the 2nd chunk, you’ll get an error, even though your local environment may have that object in it.</p>
+<p>It is important to get a grasp on this paradigm – all code chunks are processed in order (a “flow”), and early code chunks influence later code chunks. All work has to be in the code, and it has to be in sequential order – if your 2nd code chunk uses an object that isn’t created until the 3rd chunk, you’ll get an error, even though your local environment may have that object in it.</p>
 <p>When you “knit” your script, it runs from a fresh, clean, empty state, and your environment is not accessible to it. Any work you do directly into the console will not apply when you run your code from the top. You can work in the console, but it’s absolutely <strong>vital</strong> that you then copy your work to a code chunk. This will be a source of frustration while you get used to the paradigm of <strong>code flow</strong>.</p>
 <p>If you’re unclear on the idea of <code>R</code>’s “workspace”, see <a href="../../resource/usingR.html#workspace">here</a></p>
 <section id="install.packages" class="level3">
@@ -686,7 +686,7 @@ window.Quarto = {
 <section id="functions" class="level2">
 <h2 class="anchored" data-anchor-id="functions">Functions</h2>
 <p>Once you define variables, the data analysis process can usually be described as a series of <em>functions</em> applied to the data. <code>R</code> includes several zillion predefined functions and most of the analysis pipelines we construct make extensive use of the built-in functions. But <code>R</code>’s power comes from its scalability. We have access to (nearly) infinite functions via <code>install.packages</code> and <code>library</code>. As we go through the course, we will carefully note new functions we bring to each problem. For now, though, we will stick to the basics.</p>
-<p>In general, we need to use parentheses to evaluate a function. If you type <code>ls</code>, the function is not evaluated and instead <code>R</code> shows you the code that defines the function. If you type <code>ls()</code> the function is evaluated and, as seen above, we see objects in the workspace.</p>
+<p>In general, we need to use parentheses to evaluate a function. If you type <code>ls</code>, the function is not evaluated and instead <code>R</code> shows you the code that defines the function. If you type <code>ls()</code> the function is evaluated and we see the objects currently sitting in the workspace.</p>
 <p>Unlike <code>ls</code>, most functions require one or more <em>arguments</em>. Below is an example of how we assign an object to the argument of the function <code>log</code>.:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -791,7 +791,7 @@ NULL</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>co2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>R</code> will show you Mauna Loa atmospheric <span class="math inline">\(CO^2\)</span> concentration data.</p>
+<p><code>R</code> will show you Mauna Loa atmospheric <span class="math inline">\(CO_2\)</span> concentration data.</p>
 <p>Other prebuilt objects are mathematical quantities, such as the constant <span class="math inline">\(\pi\)</span> and <span class="math inline">\(\infty\)</span>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>pi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -846,7 +846,7 @@ NULL</code></pre>
 </section>
 <section id="commenting-your-code" class="level2">
 <h2 class="anchored" data-anchor-id="commenting-your-code">Commenting your code</h2>
-<p>If a line of <code>R</code> code starts with the symbol <code>#</code>, it is not evaluated. We can use this to write reminders of why we wrote particular code. For example, in the script above we could add:</p>
+<p>If a line of <code>R</code> code starts with the symbol <code>#</code>, it is not evaluated. We can use this to write reminders of why we wrote particular code. For example, in a script that solves a quadratic equation we could add:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Code to compute solution to quadratic equation of the form ax^2 + bx + c</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="do">## define the variables</span></span>
@@ -875,8 +875,8 @@ NULL</code></pre>
 </div>
 <section id="data-from-packages" class="level3">
 <h3 class="anchored" data-anchor-id="data-from-packages">Data From Packages</h3>
-<p>Woah, there – <code>data(murders)</code> gave me an error! Well, the data, like many functions, are part of a package. Here, it’s the <code>dslabs</code> package. We need to load up the package first (or install it first, as the case may be).</p>
-<p>We can usually also refer to data in a package by referring to the package’s <em>namespace</em>, which is name of the package from which the data originates. So <code>dslabs::murders</code> is an object (from the <code>dslabs</code> namespace) that can be accessed that way, too. We can use a simple line of code to create the object in our environment: <code>myMurders = dslabs::murders</code>. Now, we have a copy of the object in our environment that we can work with.</p>
+<p>Woah, there – drop that first line and <code>data(murders)</code> fails! Well, the data, like many functions, are part of a package. Here, it’s the <code>dslabs</code> package. We need to load up the package first (or install it first, as the case may be).</p>
+<p>We can usually also refer to data in a package by referring to the package’s <em>namespace</em>, which is the name of the package from which the data originates. So <code>dslabs::murders</code> is an object (from the <code>dslabs</code> namespace) that can be accessed that way, too. We can use a simple line of code to create the object in our environment: <code>myMurders = dslabs::murders</code>. Now, we have a copy of the object in our environment that we can work with.</p>
 </section>
 </section>
 <section id="lists" class="level2">
@@ -1003,7 +1003,7 @@ $final_grade
 <pre><code>[1] "character"</code></pre>
 </div>
 </div>
-<p>R <em>coerced</em> the data into characters. It guessed that because you put a character string in the vector, you meant the 1 and 3 to actually be character strings <code>"1"</code> and “<code>3</code>”. The fact that not even a warning is issued is an example of how coercion can cause many unnoticed errors in <code>R</code>.</p>
+<p>R <em>coerced</em> the data into characters. It guessed that because you put a character string in the vector, you meant the 1 and 3 to actually be character strings <code>"1"</code> and <code>"3"</code>. The fact that not even a warning is issued is an example of how coercion can cause many unnoticed errors in <code>R</code>.</p>
 <p>R also offers functions to change from one type to another. For example, you can turn numbers into characters with:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
@@ -1105,7 +1105,7 @@ $final_grade
 [46] "MI" "PA" "NY" "FL" "TX" "CA"</code></pre>
 </div>
 </div>
-<p>According to the above, California had the most murders.</p>
+<p>According to the above, California had the most murders – note that it’s the <em>last</em> entry, since we’ve ordered from smallest to largest.</p>
 <p>If we wanted to re-order the whole data.frame based on the <code>murders$total</code> index, and <strong>write it with the new order</strong>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>murders_ordered <span class="ot">=</span> murders[ind,]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1194,7 +1194,7 @@ $final_grade
 </section>
 <section id="beware-of-recycling" class="level2">
 <h2 class="anchored" data-anchor-id="beware-of-recycling">Beware of recycling</h2>
-<p>Another common source of unnoticed errors in <code>R</code> is the use of <em>recycling</em>. We saw that vectors are added elementwise. So if the vectors don’t match in length, it is natural to assume that we should get an error. But we don’t. Notice what happens:</p>
+<p>Another common source of unnoticed errors in <code>R</code> is the use of <em>recycling</em>. Vectors are added elementwise (see <em>Vector arithmetics</em>, below). So if the vectors don’t match in length, it is natural to assume that we should get an error. But we don’t. Notice what happens:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
 <span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">70</span>)</span>
@@ -1360,7 +1360,7 @@ d + h
 <p>Remake the data frame using the code above, but add a line that converts the temperature from Fahrenheit to Celsius. The conversion is <span class="math inline">\(C = \frac{5}{9} \times (F - 32)\)</span>.</p>
 <ol start="2" type="1">
 <li><p>Write code to compute the following sum <span class="math inline">\(1+1/2^2 + 1/3^2 + \dots 1/100^2\)</span>? <em>Hint:</em> thanks to Euler, we know it should be close to <span class="math inline">\(\pi^2/6\)</span>.</p></li>
-<li><p>Compute the per 100,000 murder rate for each state and store it in a new column called <code>murder_rate</code>. Then compute the average murder rate for the US using the function <code>mean</code>. What is the average?</p></li>
+<li><p>Compute the per 100,000 murder rate for each state and store it in a new column called <code>murder_rate</code>. Then compute the average of those state murder rates using the function <code>mean</code>. What is the average? (Careful: that’s the average of the 51 state rates, not the murder rate for the US as a whole – the latter weights each state by its population.)</p></li>
 </ol>
 </div>
 </div>
@@ -1449,11 +1449,26 @@ d + h
 </div>
 </div>
 </section>
+<section id="match" class="level3">
+<h3 class="anchored" data-anchor-id="match"><code>match</code></h3>
+<p>Sometimes we want to look up several entries at once. The function <code>match</code> takes two vectors and, for each element of the first, returns the index where it turns up in the second. So to find the rows for New York, Florida, and Texas:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Florida"</span>, <span class="st">"Texas"</span>), murders<span class="sc">$</span>state)</span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>ind</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33 10 44</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>rate[ind]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.667960 3.398069 3.201360</code></pre>
+</div>
+</div>
+</section>
 <section id="in" class="level3">
 <h3 class="anchored" data-anchor-id="in"><code>%in%</code></h3>
 <p>If rather than an index we want a logical that tells us whether or not each element of a first vector is in a second, we can use the function <code>%in%</code>. Let’s imagine you are not sure if Boston, Dakota, and Washington are states. You can find out like this:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"Boston"</span>, <span class="st">"Dakota"</span>, <span class="st">"Washington"</span>) <span class="sc">%in%</span> murders<span class="sc">$</span>state</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"Boston"</span>, <span class="st">"Dakota"</span>, <span class="st">"Washington"</span>) <span class="sc">%in%</span> murders<span class="sc">$</span>state</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE FALSE  TRUE</code></pre>
 </div>
@@ -1471,10 +1486,10 @@ d + h
 <div class="callout-body-container callout-body">
 <p>Start by loading the library and data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Note that every time you run this, you replace <code>murder</code> in your environment. So if you had created the <code>murders$rate</code> column, it’s gone. But if you created the free-floating object <code>murder_rate</code>, that still exists (but can be overwritten).</p>
+<p>Note that every time you run this, you replace <code>murders</code> in your environment. So if you had created the <code>murders$rate</code> column, it’s gone. But if you created the free-floating object <code>murder_rate</code>, that still exists (but can be overwritten).</p>
 <ol type="1">
 <li><p>Compute the per 100,000 murder rate for each state and store it in an object called <code>murder_rate</code>. Then use logical operators to create a logical vector named <code>low</code> that tells us which entries of <code>murder_rate</code> are lower than 1.</p></li>
 <li><p>Now use the results from the previous exercise and the function <code>which</code> to determine the indices of <code>murder_rate</code> associated with values lower than 1.</p></li>

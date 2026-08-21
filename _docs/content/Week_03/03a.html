@@ -574,7 +574,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#faceting" id="toc-faceting" class="nav-link" data-scroll-target="#faceting">Faceting</a></li>
   <li><a href="#think-of-the-color-blind" id="toc-think-of-the-color-blind" class="nav-link" data-scroll-target="#think-of-the-color-blind">Think of the color blind</a></li>
-  <li><a href="#use-colorblind-friendly-colors-in-your-projects" id="toc-use-colorblind-friendly-colors-in-your-projects" class="nav-link" data-scroll-target="#use-colorblind-friendly-colors-in-your-projects">Use colorblind friendly colors in your projects</a></li>
   <li><a href="#gridextra-and-grid.arrange" id="toc-gridextra-and-grid.arrange" class="nav-link" data-scroll-target="#gridextra-and-grid.arrange">gridExtra and <code>grid.arrange</code></a></li>
   </ul></li>
   </ul>
@@ -751,7 +750,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Notice how much easier it is to see the differences in the barplot. In fact, we can now determine the actual percentages by following a horizontal line to the x-axis.</p>
+<p>Notice how much easier it is to see the differences in the barplot. In fact, we can now determine the actual percentages by following a horizontal line from the top of each bar over to the y-axis.</p>
 <p>If for some reason you need to make a pie chart, label each pie slice with its respective percentage so viewers do not have to infer them from the angles or area:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -1098,7 +1097,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(y <span class="sc">==</span> <span class="st">"Area"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Country, GDP)) <span class="sc">+</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"GDP in trillions of US dollars"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"GDP relative to France"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1121,7 +1120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In our muders data (below), what sort of information might we want to communicate? There are only a few variables here, so we’re pretty limited on what we can show.</p>
+<p>In our murders data (below), what sort of information might we want to communicate? There are only a few variables here, so we’re pretty limited on what we can show.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(murders)</span>
@@ -1248,7 +1247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors. If all the viewer receives is this plot and has no other knowledge of human heights, they will have little information on what to expect if they meets a group of human males and females. The bars go to 0: does this mean there are tiny humans measuring less than one foot? Are all males taller than the tallest females? Is there a range of heights? ET can’t answer these questions since we have provided almost no information on the height distribution.</p>
+<p>The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors. If all the viewer receives is this plot and has no other knowledge of human heights, they will have little information on what to expect if they meet a group of human males and females. The bars go to 0: does this mean there are tiny humans measuring less than one foot? Are all males taller than the tallest females? Is there a range of heights? Our viewer can’t answer these questions since we have provided almost no information on the height distribution.</p>
 <p>This brings us to our first principle: show the data. This simple <strong>ggplot2</strong> code already generates a more informative plot than the barplot by simply showing all the data points:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -1334,7 +1333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="align-plots-vertically-to-see-horizontal-changes-and-horizontally-to-see-vertical-changes" class="level3">
 <h3 class="anchored" data-anchor-id="align-plots-vertically-to-see-horizontal-changes-and-horizontally-to-see-vertical-changes">Align plots vertically to see horizontal changes and horizontally to see vertical changes</h3>
-<p>In these histograms, the <strong>visual cue</strong> related to decreases or increases in height are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:</p>
+<p>In these histograms, the <strong>visual cue</strong> related to decreases or increases in height are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed. First, here they are side by side again with <code>facet_grid(. ~ sex)</code>, and then stacked with <code>facet_grid(sex ~ .)</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>heights <span class="sc">%&gt;%</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(height)) <span class="sc">+</span></span>
@@ -1405,7 +1404,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="facet-grids" class="level3">
 <h3 class="anchored" data-anchor-id="facet-grids">Facet grids</h3>
-<p>As the name implies, <code>facet_grid</code> can make more than just side-by-plots. If we specify variables on boths sides of the “~”, we get a grid of plots.</p>
+<p>As the name implies, <code>facet_grid</code> can make more than just side-by-side plots. If we specify variables on both sides of the “~”, we get a grid of plots.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>gapminder<span class="sc">::</span>gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1952</span>,<span class="dv">1972</span>, <span class="dv">1992</span>, <span class="dv">2002</span>)) <span class="sc">%&gt;%</span></span>
@@ -1467,7 +1466,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="leave-some-space" class="level3">
 <h3 class="anchored" data-anchor-id="leave-some-space">Leave some space</h3>
-<p>The design maven Edward Tufte emphasizes th eneed for clarifying and empty space. Resist the urge to pack everything into a small layout. Especially in digital formats, space can be inexpensive, and can help attract the eye to your work.</p>
+<p>The design maven Edward Tufte emphasizes the need for clarifying and empty space. Resist the urge to pack everything into a small layout. Especially in digital formats, space can be inexpensive, and can help attract the eye to your work.</p>
 <p>We can control the space around our plots using the <code>theme()</code> function. We’ll cover more details of <code>theme()</code> on Thursday. To add some space around a plot, we use <code>theme(plot.margin = margin(t=2, r = 2, b = 2, l = 2, unit = 'cm'))</code>, where the arguments correspond to top, right, bottom, left (in that order). I’m also going to add a black border to the outside so that we can see the boundary of the frame.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dslabs<span class="sc">::</span>gapminder <span class="sc">%&gt;%</span></span>
@@ -1514,7 +1513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="think-of-the-color-blind" class="level2">
 <h2 class="anchored" data-anchor-id="think-of-the-color-blind">Think of the color blind</h2>
-<p>About 10% of the population is color blind. Unfortunately, the default colors used in <strong>ggplot2</strong> are not optimal for this group. However, <strong>ggplot2</strong> does make it easy to change the color palette used in the plots. An example of how we can use a color blind friendly palette is described here: <a href="http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette">http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette</a>:</p>
+<p>About 8% of men and 0.5% of women are color blind. Unfortunately, the default colors used in <strong>ggplot2</strong> are not optimal for this group. However, <strong>ggplot2</strong> does make it easy to change the color palette used in the plots. An example of how we can use a color blind friendly palette is described here: <a href="http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette">http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette</a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>color_blind_friendly_cols <span class="ot">&lt;-</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"#999999"</span>, <span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>,</span>
@@ -1540,15 +1539,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section>
-<section id="use-colorblind-friendly-colors-in-your-projects" class="level2 callout-info">
-<h2 class="anchored" data-anchor-id="use-colorblind-friendly-colors-in-your-projects">Use colorblind friendly colors in your projects</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Use colorblind friendly colors in your projects
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>You should get in the habit of using colorblind-friendly colors. It will be required on your group projects. Mastering the palette is a helpful skill.</p>
-</section>
+</div>
+</div>
 <section id="using-a-discrete-color-palette" class="level3">
 <h3 class="anchored" data-anchor-id="using-a-discrete-color-palette">Using a discrete color palette</h3>
 <p>If you’re simply trying to differentiate between groups by using color, there are many ways of changing your color palette in <code>ggplot</code>. Most use <code>scale_fill_discrete</code> or <code>scale_color_discrete</code> (depending on the aesthetic for which you’re setting the color).</p>
-<p>The easiest way of getting good-looking (e.g.&nbsp;non-default) colors is the <code>scale_fill_viridis_d</code> function, which “inherits” (takes the place of and has the properties of) <code>scale_fill_discrete</code>. Viridis has four color palettes and each is designed to be used to maximize the differentiation between colors.</p>
+<p>The easiest way of getting good-looking (e.g.&nbsp;non-default) colors is the <code>scale_fill_viridis_d</code> function, which “inherits” (takes the place of and has the properties of) <code>scale_fill_discrete</code>. Viridis has eight color palettes – options A through H – and each is designed to be used to maximize the differentiation between colors. We’ll look at the first four.</p>
 <p>We will subset our <code>dslabs::gapminder</code> dataset to five different years and take a look at what Viridis colors can do across those five:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>gp <span class="ot">=</span> dslabs<span class="sc">::</span>gapminder <span class="sc">%&gt;%</span> </span>
@@ -1586,7 +1593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Viridis uses a better palette of colors that, though distinct, have some cohesiveness to them.</p>
-<p>We can also use a custom palette, like the colorblind palette from before (see above where we defined <code>color_blind_friendly_cols</code>). We just need to use the <code>type=</code> argument and give ggplot our color-blind friendly palette of colors. If the palette has more entries than we have (N) distinct categories, R reverts to the default.</p>
+<p>We can also use a custom palette, like the colorblind palette from before (see above where we defined <code>color_blind_friendly_cols</code>). We just need to use the <code>type=</code> argument and give ggplot our color-blind friendly palette of colors. If the palette has fewer entries than we have (N) distinct categories, R reverts to the default.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>gp <span class="ot">=</span> dslabs<span class="sc">::</span>gapminder <span class="sc">%&gt;%</span> </span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">1990</span> <span class="sc">|</span> year <span class="sc">==</span> <span class="dv">1995</span> <span class="sc">|</span> year<span class="sc">==</span><span class="dv">2000</span> <span class="sc">|</span>  year <span class="sc">==</span> <span class="dv">2005</span> <span class="sc">|</span> year<span class="sc">==</span><span class="dv">2010</span> ) <span class="sc">%&gt;%</span></span>
@@ -1627,7 +1634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country<span class="sc">==</span><span class="st">'Romania'</span> <span class="sc">&amp;</span> year<span class="sc">&gt;</span><span class="dv">1980</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp<span class="sc">/</span>population, <span class="at">color =</span> life_expectancy)) <span class="sc">+</span> </span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Year'</span>, <span class="at">y =</span> <span class="st">'GDP Per Capita'</span>, <span class="at">fill =</span> <span class="st">'Life Expectancy'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Year'</span>, <span class="at">y =</span> <span class="st">'GDP Per Capita'</span>, <span class="at">color =</span> <span class="st">'Life Expectancy'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1636,8 +1643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>We can see that GDP per capita went up, then down in 1989 (fall of the Soviet Union), then up after that. The color ramp tells us that life expectancy reached 75 years near the end, and it certainly improved in the post-2000 era.</p>
-<p>We can set some of the points on the ramp manually - here, the ramp starts at dark blue and ends at light blue, but what if we wanted to start at red, and at blue, and cross white in the middle? Easy! We use <code>scale_color_gradient2</code> and specify the colors for low, mid, and high, and specify the midpoint at 72.5 years.</p>
+<p>We can see that GDP per capita went up, then down in 1989 (the Romanian Revolution and the collapse of communism there), then up after that. The color ramp tells us that life expectancy reached 75 years near the end, and it certainly improved in the post-2000 era.</p>
+<p>We can set some of the points on the ramp manually - here, the ramp starts at dark blue and ends at light blue, but what if we wanted to start at red, end at blue, and cross white in the middle? Easy! We use <code>scale_color_gradient2</code> and specify the colors for low, mid, and high, and specify the midpoint at 72.5 years.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dslabs<span class="sc">::</span>gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country<span class="sc">==</span><span class="st">'Romania'</span> <span class="sc">&amp;</span> year<span class="sc">&gt;</span><span class="dv">1980</span>) <span class="sc">%&gt;%</span></span>
@@ -1670,6 +1677,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section>
 </section>
 <section id="gridextra-and-grid.arrange" class="level2">
 <h2 class="anchored" data-anchor-id="gridextra-and-grid.arrange">gridExtra and <code>grid.arrange</code></h2>

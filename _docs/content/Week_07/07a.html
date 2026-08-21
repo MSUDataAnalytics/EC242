@@ -681,11 +681,11 @@ window.Quarto = {
 <p>The correlation coefficient is defined for a list of pairs <span class="math inline">\((x_1, y_1), \dots, (x_n,y_n)\)</span> as the average of the product of the standardized values:</p>
 <p><span class="math display">\[
 \rho = \frac{1}{n} \sum_{i=1}^n \left( \frac{x_i-\mu_x}{\sigma_x} \right)\left( \frac{y_i-\mu_y}{\sigma_y} \right)
-\]</span> with <span class="math inline">\(\mu_x, \mu_y\)</span> the averages of <span class="math inline">\(x_1,\dots, x_n\)</span> and <span class="math inline">\(y_1, \dots, y_n\)</span>, respectively, and <span class="math inline">\(\sigma_x, \sigma_y\)</span> the standard deviations. The Greek letter <span class="math inline">\(\rho\)</span> is commonly used in statistics books to denote the correlation. The Greek letter for <span class="math inline">\(r\)</span>, <span class="math inline">\(\rho\)</span>, because it is the first letter of regression. Soon we learn about the connection between correlation and regression. We can represent the formula above with R code using:</p>
+\]</span> with <span class="math inline">\(\mu_x, \mu_y\)</span> the averages of <span class="math inline">\(x_1,\dots, x_n\)</span> and <span class="math inline">\(y_1, \dots, y_n\)</span>, respectively, and <span class="math inline">\(\sigma_x, \sigma_y\)</span> the standard deviations. The Greek letter <span class="math inline">\(\rho\)</span> is commonly used in statistics books to denote the correlation. The Greek letter for <span class="math inline">\(r\)</span> is <span class="math inline">\(\rho\)</span>, and we use <span class="math inline">\(r\)</span> because it is the first letter of regression. Soon we learn about the connection between correlation and regression. We can represent the formula above with R code using:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">scale</span>(x) <span class="sc">*</span> <span class="fu">scale</span>(y))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>To understand why this equation does in fact summarize how two variables move together, consider the <span class="math inline">\(i\)</span>-th entry of <span class="math inline">\(x\)</span> is <span class="math inline">\(\left( \frac{x_i-\mu_x}{\sigma_x} \right)\)</span> SDs away from the average. Similarly, the <span class="math inline">\(y_i\)</span> that is paired with <span class="math inline">\(x_i\)</span>, is <span class="math inline">\(\left( \frac{y_1-\mu_y}{\sigma_y} \right)\)</span> SDs away from the average <span class="math inline">\(y\)</span>. If <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are unrelated, the product <span class="math inline">\(\left( \frac{x_i-\mu_x}{\sigma_x} \right)\left( \frac{y_i-\mu_y}{\sigma_y} \right)\)</span> will be positive ( <span class="math inline">\(+ \times +\)</span> and <span class="math inline">\(- \times -\)</span> ) as often as negative (<span class="math inline">\(+ \times -\)</span> and <span class="math inline">\(- \times +\)</span>) and will average out to about 0. This correlation is the average and therefore unrelated variables will have 0 correlation. If instead the quantities vary together, then we are averaging mostly positive products ( <span class="math inline">\(+ \times +\)</span> and <span class="math inline">\(- \times -\)</span>) and we get a positive correlation. If they vary in opposite directions, we get a negative correlation.</p>
+<p>To understand why this equation does in fact summarize how two variables move together, consider the <span class="math inline">\(i\)</span>-th entry of <span class="math inline">\(x\)</span> is <span class="math inline">\(\left( \frac{x_i-\mu_x}{\sigma_x} \right)\)</span> SDs away from the average. Similarly, the <span class="math inline">\(y_i\)</span> that is paired with <span class="math inline">\(x_i\)</span>, is <span class="math inline">\(\left( \frac{y_i-\mu_y}{\sigma_y} \right)\)</span> SDs away from the average <span class="math inline">\(y\)</span>. If <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are unrelated, the product <span class="math inline">\(\left( \frac{x_i-\mu_x}{\sigma_x} \right)\left( \frac{y_i-\mu_y}{\sigma_y} \right)\)</span> will be positive ( <span class="math inline">\(+ \times +\)</span> and <span class="math inline">\(- \times -\)</span> ) as often as negative (<span class="math inline">\(+ \times -\)</span> and <span class="math inline">\(- \times +\)</span>) and will average out to about 0. This correlation is the average and therefore unrelated variables will have 0 correlation. If instead the quantities vary together, then we are averaging mostly positive products ( <span class="math inline">\(+ \times +\)</span> and <span class="math inline">\(- \times -\)</span>) and we get a positive correlation. If they vary in opposite directions, we get a negative correlation.</p>
 <p>The correlation coefficient is always between -1 and 1. We can show this mathematically: consider that we can’t have higher correlation than when we compare a list to itself (perfect correlation) and in this case the correlation is:</p>
 <p><span class="math display">\[
 \rho = \frac{1}{n} \sum_{i=1}^n \left( \frac{x_i-\mu_x}{\sigma_x} \right)^2 =
@@ -694,7 +694,7 @@ window.Quarto = {
 1
 \]</span></p>
 <p>A similar derivation, but with <span class="math inline">\(x\)</span> and its exact opposite, proves the correlation has to be bigger or equal to -1.</p>
-<p>For other pairs, the correlation is in between -1 and 1. The correlation between father and son’s heights is about 0.5:</p>
+<p>For other pairs, the correlation is in between -1 and 1. The correlation between father and son’s heights is about 0.43:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>galton_heights <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">r =</span> <span class="fu">cor</span>(father, son)) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -715,7 +715,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="sample-correlation-is-a-random-variable">Sample correlation is a random variable</h3>
 <p>Before we continue connecting correlation to regression, let’s remind ourselves about random variability.</p>
 <p>In most data science applications, we observe data that includes random variation. For example, in many cases, we do not observe data for the entire population of interest but rather for a random sample. As with the average and standard deviation, the <em>sample correlation</em> is the most commonly used estimate of the population correlation. This implies that the correlation we compute and use as a summary is a random variable.</p>
-<p>By way of illustration, let’s assume that the 179 pairs of fathers and sons is our <span style="     color: red !important;">entire population</span>. A less fortunate geneticist can only afford measurements from a random sample of 25 pairs. The sample correlation can be computed with:</p>
+<p>By way of illustration, let’s assume that the 179 pairs of fathers and sons is our <span class="TRUE" style="color: red !important;">entire population</span>. A less fortunate geneticist can only afford measurements from a random sample of 25 pairs. The sample correlation can be computed with:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">sample_n</span>(galton_heights, <span class="dv">25</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">r =</span> <span class="fu">cor</span>(father, son)) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -779,7 +779,7 @@ window.Quarto = {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The above plot is called a <code>qq plot</code>. It compares two things: the quantiles of the numeric variable, and the quantiles that one would get from a normal distribution with the same mean and standard deviation as the numeric variable. Points on the 45 degree line indicate ranges of the data where the empirical quantile is equal to the theoretical (normal) quantile. Points off the line indicate ranges where the numeric variable is not normal. Small samples will be very noisy, but you should be able to see systematic deviations.</p>
+<p>The above plot is called a <code>qq plot</code>. It compares two things: the quantiles of the numeric variable, and the quantiles that one would get from a normal distribution. Points on the reference line indicate ranges of the data where the empirical quantile is equal to the theoretical (normal) quantile. Points off the line indicate ranges where the numeric variable is not normal. Note that <code>stat_qq</code> puts <em>standard</em> normal quantiles on the horizontal axis, which is why the line we drew above has intercept <code>mean(R)</code> and slope equal to the theoretical standard error rather than being a 45 degree line. Small samples will be very noisy, but you should be able to see systematic deviations.</p>
 </div>
 </div>
 </div>
@@ -827,7 +827,7 @@ window.Quarto = {
 <pre><code>[1] 1</code></pre>
 </div>
 </div>
-<p>A practical way to improve these estimates of the conditional expectations, is to define strata of with similar values of <span class="math inline">\(x\)</span>. In our example, we can round father heights to the nearest inch and assume that they are all 72 inches. If we do this, we end up with the following prediction for the son of a father that is 72 inches tall:</p>
+<p>A practical way to improve these estimates of the conditional expectations, is to define strata with similar values of <span class="math inline">\(x\)</span>. In our example, we can round father heights to the nearest inch and assume that they are all 72 inches. If we do this, we end up with the following prediction for the son of a father that is 72 inches tall:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>conditional_avg <span class="ot">&lt;-</span> galton_heights <span class="sc">%&gt;%</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">round</span>(father) <span class="sc">==</span> <span class="dv">72</span>) <span class="sc">%&gt;%</span></span>
@@ -838,7 +838,7 @@ window.Quarto = {
 <pre><code>[1] 70.5</code></pre>
 </div>
 </div>
-<p>Note that a 72-inch father is taller than average – specifically, 72 - 69.1/2.5 = 1.1 standard deviations taller than the average father. Our prediction 70.5 is also taller than average, but only 0.49 standard deviations larger than the average son. The sons of 72-inch fathers have <em>regressed</em> some to the average height. We notice that the reduction in how many SDs taller is about 0.5, which happens to be the correlation. As we will see in a later lecture, this is not a coincidence.</p>
+<p>Note that a 72-inch father is taller than average – specifically, (72 - 69.1)/2.5 = 1.1 standard deviations taller than the average father. Our prediction 70.5 is also taller than average, but only 0.49 standard deviations larger than the average son. The sons of 72-inch fathers have <em>regressed</em> some to the average height. We notice that the number of SDs shrinks by a factor of about 0.43, which happens to be the correlation. As we will see in a later lecture, this is not a coincidence.</p>
 <p>If we want to make a prediction of any height, not just 72, we could apply the same approach to each strata. Stratification followed by boxplots lets us see the distribution of each group:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>galton_heights <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">father_strata =</span> <span class="fu">factor</span>(<span class="fu">round</span>(father))) <span class="sc">%&gt;%</span></span>
@@ -964,20 +964,16 @@ y= b + mx \mbox{ with slope } m = \rho \frac{\sigma_y}{\sigma_x} \mbox{ and inte
 </section>
 <section id="bivariate-normal-distribution-advanced" class="level3">
 <h3 class="anchored" data-anchor-id="bivariate-normal-distribution-advanced">Bivariate normal distribution (advanced)</h3>
-<p>Correlation and the regression slope are a widely used summary statistic, but they are often misused or misinterpreted. Anscombe’s examples provide over-simplified cases of dataset in which summarizing with correlation would be a mistake. But there are many more real-life examples.</p>
+<p>Correlation and the regression slope are widely used summary statistics, but they are often misused or misinterpreted. Anscombe’s examples provide over-simplified cases of datasets in which summarizing with correlation would be a mistake. But there are many more real-life examples.</p>
 <p>The main way we motivate the use of correlation involves what is called the <em>bivariate normal distribution</em>.</p>
 <p>When a pair of random variables is approximated by the bivariate normal distribution, scatterplots look like ovals. These ovals can be thin (high correlation) or circle-shaped (no correlation).</p>
 <!--
-
-
 
 ::: {.cell}
 ::: {.cell-output-display}
 ![](07a_files/figure-html/bivariate-ovals-1.png){width=672}
 :::
 :::
-
-
 
 -->
 <p>A more technical way to define the bivariate normal distribution is the following: if <span class="math inline">\(X\)</span> is a normally distributed random variable, <span class="math inline">\(Y\)</span> is also a normally distributed random variable, and the conditional distribution of <span class="math inline">\(Y\)</span> for any <span class="math inline">\(X=x\)</span> is approximately normal, then the pair is approximately bivariate normal.</p>
@@ -999,13 +995,13 @@ y= b + mx \mbox{ with slope } m = \rho \frac{\sigma_y}{\sigma_x} \mbox{ and inte
 </div>
 <p>Now we come back to defining correlation. Galton used mathematical statistics to demonstrate that, when two variables follow a bivariate normal distribution, computing the regression line is equivalent to computing conditional expectations. We don’t show the derivation here, but we can show that under this assumption, for any given value of <span class="math inline">\(x\)</span>, the expected value of the <span class="math inline">\(Y\)</span> in pairs for which <span class="math inline">\(X=x\)</span> is:</p>
 <p><span class="math display">\[
-\mbox{E}(Y | X=x) = \mu_Y +  \rho \frac{X-\mu_X}{\sigma_X}\sigma_Y
+\mbox{E}(Y | X=x) = \mu_Y +  \rho \frac{x-\mu_X}{\sigma_X}\sigma_Y
 \]</span></p>
-<p>This is the regression line, with slope <span class="math display">\[\rho \frac{\sigma_Y}{\sigma_X}\]</span> and intercept <span class="math inline">\(\mu_y - m\mu_X\)</span>. It is equivalent to the regression equation we showed earlier which can be written like this:</p>
+<p>This is the regression line, with slope <span class="math inline">\(m = \rho \frac{\sigma_Y}{\sigma_X}\)</span> and intercept <span class="math inline">\(\mu_Y - m\mu_X\)</span>. It is equivalent to the regression equation we showed earlier which can be written like this:</p>
 <p><span class="math display">\[
 \frac{\mbox{E}(Y \mid X=x)  - \mu_Y}{\sigma_Y} = \rho \frac{x-\mu_X}{\sigma_X}
 \]</span></p>
-<p>This implies that, if our data is approximately bivariate, the regression line gives the conditional probability. Therefore, we can obtain a much more stable estimate of the conditional expectation by finding the regression line and using it to predict.</p>
+<p>This implies that, if our data is approximately bivariate normal, the regression line gives the conditional expectation. Therefore, we can obtain a much more stable estimate of the conditional expectation by finding the regression line and using it to predict.</p>
 <p>In summary, if our data is approximately bivariate, then the conditional expectation, the best prediction of <span class="math inline">\(Y\)</span> given we know the value of <span class="math inline">\(X\)</span>, is given by the regression line.</p>
 </section>
 <section id="variance-explained" class="level3">
@@ -1015,8 +1011,8 @@ y= b + mx \mbox{ with slope } m = \rho \frac{\sigma_y}{\sigma_x} \mbox{ and inte
 \mbox{SD}(Y \mid X=x ) = \sigma_Y \sqrt{1-\rho^2}
 \]</span></p>
 <p>To see why this is intuitive, notice that without conditioning, <span class="math inline">\(\mbox{SD}(Y) = \sigma_Y\)</span>, we are looking at the variability of all the sons. But once we condition, we are only looking at the variability of the sons with a tall, 72-inch, father. This group will all tend to be somewhat tall so the standard deviation is reduced.</p>
-<p>Specifically, it is reduced to <span class="math inline">\(\sqrt{1-\rho^2} = \sqrt{1 - 0.25}\)</span> = 0.87 of what it was originally. We could say that father heights “explain” 13% of the variability observed in son heights.</p>
-<p>The statement “<span class="math inline">\(X\)</span> explains such and such percent of the variability” is commonly used in academic papers. In this case, this percent actually refers to the variance (the SD squared). So if the data is bivariate normal, the variance is reduced by <span class="math inline">\(1-\rho^2\)</span>, so we say that <span class="math inline">\(X\)</span> explains <span class="math inline">\(1- (1-\rho^2)=\rho^2\)</span> (the correlation squared) of the variance.</p>
+<p>Specifically, it is reduced to <span class="math inline">\(\sqrt{1-\rho^2} = \sqrt{1 - 0.19}\)</span> = 0.90 of what it was originally. We could say that father heights “explain” 10% of the variability observed in son heights.</p>
+<p>The statement “<span class="math inline">\(X\)</span> explains such and such percent of the variability” is commonly used in academic papers. In this case, this percent actually refers to the variance (the SD squared). So if the data is bivariate normal, the variance is reduced to <span class="math inline">\(1-\rho^2\)</span> of what it was, so we say that <span class="math inline">\(X\)</span> explains <span class="math inline">\(1- (1-\rho^2)=\rho^2\)</span> (the correlation squared) of the variance.</p>
 <p>But it is important to remember that the “variance explained” statement only makes sense when the data is approximated by a bivariate normal distribution.</p>
 </section>
 <section id="warning-there-are-two-regression-lines" class="level3">
@@ -1066,7 +1062,7 @@ y= b + mx \mbox{ with slope } m = \rho \frac{\sigma_y}{\sigma_x} \mbox{ and inte
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li><p>Load the <code>GaltonFamilies</code> data from the <strong>HistData</strong>. The children in each family are listed by gender and then by height. Create a dataset called <code>galton_heights</code> by picking a male and female at random from each family (hint: <code>group_by</code> appropriately and use <code>sample_n</code>).</p></li>
-<li><p>Make a scatterplot for heights between mothers and daughters, mothers and sons, fathers and daughters, and fathers and sons. You may have to use <code>gridExtra</code> or <code>patchwork</code>)</p></li>
+<li><p>Make a scatterplot for heights between mothers and daughters, mothers and sons, fathers and daughters, and fathers and sons. You may have to use <code>gridExtra</code> or <code>patchwork</code>.</p></li>
 <li><p>Compute the correlation in heights between mothers and daughters, mothers and sons, fathers and daughters, and fathers and sons.</p></li>
 </ol>
 </div>

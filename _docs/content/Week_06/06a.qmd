@@ -169,7 +169,7 @@ Not surprisingly, we get results very similar to those previously obtained with 
 
 We say two events are independent if the outcome of one does not affect the other. The classic example is coin tosses. Every time we toss a fair coin, the probability of seeing heads is 1/2 regardless of what previous tosses have revealed. The same is true when we pick beads from an urn with replacement. In the example above, the probability of red is 0.40 regardless of previous draws.
 
-Many examples of events that are not independent come from card games. When we deal the first card, the probability of getting a King is 1/13 since there are thirteen possibilities: Ace, Deuce, Three, $\dots$, Ten, Jack, Queen, King, and Ace. Now if we deal a King for the first card, and don't replace it into the deck, the probabilities of a second card being a King is less because there are only three Kings left: the probability is 3 out of 51. These events are therefore **not independent**: the first outcome affected the next one.
+Many examples of events that are not independent come from card games. When we deal the first card, the probability of getting a King is 1/13 since there are thirteen possibilities: Ace, Deuce, Three, $\dots$, Ten, Jack, Queen, and King. Now if we deal a King for the first card, and don't replace it into the deck, the probabilities of a second card being a King is less because there are only three Kings left: the probability is 3 out of 51. These events are therefore **not independent**: the first outcome affected the next one.
 
 To see an extreme case of non-independent events, consider our example of drawing five beads at random **without** replacement:
 
@@ -218,7 +218,7 @@ $$
 $$
 Let's use Blackjack as an example. In Blackjack, you are assigned two random cards. After you see what you have, you can ask for more. The goal is to get closer to 21 than the dealer, without going over. Face cards are worth 10 points and Aces are worth 11 or 1 (you choose).
 
-So, in a Blackjack game, to calculate the chances of getting a 21 by drawing an Ace and then a face card, we compute the probability of the first being an Ace and multiply by the probability of drawing a face card or a 10 given that the first was an Ace: $1/13 \times 16/51 \approx 0.025$
+So, in a Blackjack game, to calculate the chances of getting a 21 by drawing an Ace and then a face card, we compute the probability of the first being an Ace and multiply by the probability of drawing a face card or a 10 given that the first was an Ace: $1/13 \times 16/51 \approx 0.024$
 
 The multiplication rule also applies to more than two events. We can use induction to expand for more events:
 
@@ -314,7 +314,7 @@ mean(deck %in% kings)
 
 Now, how about the conditional probability of the second card being a King given that the first was a King? Earlier, we deduced that if one King is already out of the deck and there are 51 left, then this probability is 3/51. Let's confirm by listing out all possible outcomes.
 
-To do this, we can use the `permutations` function from the __gtools__ package. For any list of size `n`, this function computes all the different combinations we can get when we select `r` items. Here are all the ways we can choose two numbers from a list consisting of `1,2,3`:
+To do this, we can use the `permutations` function from the __gtools__ package. For any list of size `n`, this function computes all the different ways we can select `r` items when the order matters. Here are all the ways we can choose two numbers from a list consisting of `1,2,3`:
 
 ```{r, message=FALSE, warning=FALSE}
 library(gtools)
@@ -384,7 +384,7 @@ How about if the order doesn't matter? For example, in Blackjack if you get an A
 combinations(3,2)
 ```
 
-In the second line, the outcome does not include (2,1) because  (1,2) already was enumerated. The same applies to (3,1) and (3,2).
+Notice that the outcome does not include (2,1) because (1,2) already was enumerated. The same applies to (3,1) and (3,2).
 
 So to compute the probability of a _Natural 21_ in Blackjack, we can do this:
 
@@ -399,7 +399,7 @@ hands <- combinations(52, 2, v = deck)
 mean(hands[,1] %in% aces & hands[,2] %in% facecard)
 ```
 
-In the last line, we assume the Ace comes first. This is only because we know the way `combination` enumerates possibilities and it will list this case first. But to be safe, we could have written this and produced the same answer:
+In the last line, we assume the Ace comes first. This is only because we know the way `combinations` enumerates possibilities and it will list this case first. But to be safe, we could have written this and produced the same answer:
 
 ```{r}
 mean((hands[,1] %in% aces & hands[,2] %in% facecard) |
@@ -450,7 +450,7 @@ mean(results)
 
 ## Examples
 
-In this section, we describe two discrete probability popular examples: the Monty Hall problem and the birthday problem. We'll use `R` to help illustrate the mathematical concepts and to demostrate an idea that we'll return to: simulation.
+In this section, we describe two popular discrete probability examples: the Monty Hall problem and the birthday problem. We'll use `R` to help illustrate the mathematical concepts and to demonstrate an idea that we'll return to: simulation.
 
 ### Monty Hall problem
 
@@ -479,7 +479,7 @@ switch <- replicate(B, monty_hall("switch"))
 mean(switch)
 ```
 
-As we write the code, we note that the lines starting with `my_pick` and `show` have no influence on the last logical operation when we stick to our original choice anyway. From this we should realize that the chance is 1 in 3, what we began with. When we switch,
+As we write the code, we note that the lines starting with `show` and `switch` have no influence on the last logical operation when we stick to our original choice anyway. From this we should realize that the chance is 1 in 3, what we began with. When we switch,
 the Monte Carlo estimate confirms the 2/3 calculation. This helps us gain some insight by showing that we are removing a door, `show`, that is definitely not a winner from our choices. We also see that unless we get it right when we first pick, you win: 1 - 1/3 = 2/3.
 
 ### Birthday problem
@@ -708,7 +708,7 @@ which, for any value `a`, gives the proportion of values in the list `x` that ar
 Keep in mind that we have not yet introduced probability in the context of CDFs. Let's do this by asking the following: if I pick one of the male students at random, what is the chance that he is taller than 70.5 inches? Because every student has the same chance of being picked, the answer to this is equivalent to the proportion of students that are taller than 70.5 inches. Using the CDF we obtain an answer by typing:
 
 ```{r}
-1 - F(70)
+1 - F(70.5)
 ```
 
 Once a CDF is defined, we can use this to compute the probability of any subset. For instance, the probability of a student being between height `a` and height `b` is:
@@ -728,7 +728,7 @@ The normal distribution is a useful approximation to many naturally occurring di
 F(a) = pnorm(a, m, s)
 ```
 
-This is useful because if we are willing to use the normal approximation for, say, height, we don't need the entire dataset to answer questions such as: what is the probability that a randomly selected student is taller then 70 inches? We just need the average height and standard deviation:
+This is useful because if we are willing to use the normal approximation for, say, height, we don't need the entire dataset to answer questions such as: what is the probability that a randomly selected student is taller than 70.5 inches? We just need the average height and standard deviation:
 
 ```{r}
 m <- mean(x)
@@ -874,7 +874,7 @@ Note that it does not look normal.
 
 ## Continuous distributions
 
-The normal distribution is not the only useful theoretical distribution.  Other continuous distributions that we may encounter are the student-t, Chi-square, exponential, gamma, beta, and beta-binomial. `R` provides functions to compute the density, the quantiles, the cumulative distribution functions and to generate Monte Carlo simulations. `R` uses a convention that lets us remember the names, namely using the letters `d`, `q`, `p`, and `r` in front of a shorthand for the distribution. We have already seen the functions `dnorm`, `pnorm`, and `rnorm` for the normal distribution. Remember that `dnorm` gives us the PDF, `pnorm` gives us the CDF, `rnorm` gives us random draws from the normal, and the function `qnorm` gives us the quantiles (the input to `qnorm`, then, must be between 0 and 1). 
+The normal distribution is not the only useful theoretical distribution.  Other continuous distributions that we may encounter are the student-t, Chi-square, exponential, gamma, and beta. `R` provides functions to compute the density, the quantiles, the cumulative distribution functions and to generate Monte Carlo simulations. `R` uses a convention that lets us remember the names, namely using the letters `d`, `q`, `p`, and `r` in front of a shorthand for the distribution. We have already seen the functions `dnorm`, `pnorm`, and `rnorm` for the normal distribution. Remember that `dnorm` gives us the PDF, `pnorm` gives us the CDF, `rnorm` gives us random draws from the normal, and the function `qnorm` gives us the quantiles (the input to `qnorm`, then, must be between 0 and 1). 
 
 ```{r}
 qnorm(.25, mean = 0, sd = 1)
@@ -899,7 +899,7 @@ qnorm(.975, mean = 0, sd = 1)
 4. Repeat the exercise above, but convert everything to centimeters. That is, multiply every height, including the standard deviation, by 2.54. What is the answer now?
 
 
-5. Notice that the answer to the question does not change when you change units. This makes sense since the answer to the question should not be affected by what units we use. In fact, if you look closely, you notice that 61 and 64 are both 1 SD away from the average. Compute the probability that a randomly picked, normally distributed random variable is within 1 SD from the average.
+5. Notice that the answer to the question does not change when you change units. This makes sense since the answer to the question should not be affected by what units we use. In fact, if you look closely, you notice that 61 and 67 are both 1 SD away from the average. Compute the probability that a randomly picked, normally distributed random variable is within 1 SD from the average.
 
 
 6. To see the math that explains why the answers to questions 3, 4, and 5 are the same, suppose we have a random variable with average $m$ and standard error $s$. Suppose we ask the probability of $X$ being smaller or equal to $a$. Remember that, by definition, $a$ is $(a - m)/s$ standard deviations $s$ away from the average $m$. The probability is:
@@ -908,7 +908,7 @@ $$
 \mbox{Pr}(X \leq a)
 $$
 
-Now we subtract $\mu$ to both sides and then divide both sides by $\sigma$:
+Now we subtract $m$ from both sides and then divide both sides by $s$:
 
 $$
 \mbox{Pr}\left(\frac{X-m}{s} \leq \frac{a-m}{s} \right)
@@ -921,7 +921,7 @@ $$
 \mbox{Pr}\left(Z \leq \frac{a-m}{s} \right)
 $$
 
-So, no matter the units, the probability of $X\leq a$ is the same as the probability of a standard normal variable being less than $(a - m)/s$. If `mu` is the average and `sigma` the standard error, which of the following R code would give us the right answer in every situation:
+So, no matter the units, the probability of $X\leq a$ is the same as the probability of a standard normal variable being less than $(a - m)/s$. If `m` is the average and `s` the standard error, which of the following R code would give us the right answer in every situation:
 
 a. `mean(X<=a)`
 b. `pnorm((a - m)/s)`
@@ -931,7 +931,7 @@ d. `pnorm(a)`
 7. Imagine the distribution of male adults is approximately normal with an expected value of 69 and a standard deviation of 3. How tall is the male in the 99th percentile? Hint: use `qnorm`.
 
 
-8. The distribution of IQ scores is approximately normally distributed.  The average is 100 and the standard deviation is 15. Suppose you want to know the distribution of the highest IQ across all graduating classes if 10,000 people are born each in your school district. Run a Monte Carlo simulation with `B=1000` generating 10,000 IQ scores and keeping the highest. Make a histogram.
+8. The distribution of IQ scores is approximately normally distributed.  The average is 100 and the standard deviation is 15. Suppose you want to know the distribution of the highest IQ across all graduating classes if 10,000 people are born each year in your school district. Run a Monte Carlo simulation with `B=1000` generating 10,000 IQ scores and keeping the highest. Make a histogram.
 :::
 
 
