@@ -17,3 +17,13 @@ NoPost/
 
 # Quarto copies these into the output dir; never publish or track them
 _docs/renv/
+
+# Cloud-sync conflict copies ("foo 2.html", "bar 3.csv", "baz 2/").
+# This repo lives in a synced folder that creates these continuously.
+# Verified: matches no .qmd source, only build artifacts and data duplicates.
+* [0-9].html
+* [0-9].csv
+* [0-9].png
+* [0-9].xlsx
+* [0-9].Rmd
+* [0-9]/

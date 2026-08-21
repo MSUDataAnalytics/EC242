@@ -27,13 +27,13 @@ A careful read of our syllabus under "class participation" will show that I do g
 Do some stuff in `R`
 :::
 
-I'll ask you to give it a go. Then, after a few minutes, I'll ask if anyone wants to share their answer. You get one point of your five necessary participation credits (or extra credit at 1/5th value after the first 5). We will use Zoom **only** to share screen -- the up-arrow logo in the website header next to the Slack logo will take you to the sharing zoom. You can join whenever, I'll call on folks to share using the participant list.
+I'll ask you to give it a go. Then, after a few minutes, I'll ask if anyone wants to share their answer. You get one of your six necessary participation credits (or extra credit at 1/5th value after the first 6). We will use Zoom **only** to share screen -- the up-arrow logo in the website header next to the Slack logo will take you to the sharing zoom. You can join whenever, I'll call on folks to share using the participant list.
 
 
 
 ### Assignment / Exercises
 
-The Assignments page has all of our weekly lab assignments (including Week 1, due on Monday at 11:59pm). The assignments often have a preamble and some code that has to be used to set you up for the questions. **The questions to be completed and turned in are under "Exercises" at the very end**.
+The Assignments page has all of our weekly lab assignments (including Week 1, due **{{< var duedates.lab1 >}}** at 11:59pm). The assignments often have a preamble and some code that has to be used to set you up for the questions. **The questions to be completed and turned in are under "Exercises" at the very end**.
 
 
 
@@ -47,7 +47,6 @@ If you have not yet installed R and RStudio, and if you have not yet successfull
 
 Pre-requisites for EC242 include PLS202, which covers the basics of using R and RStudio. Thus, we do not spend any class time on the workings of R. It is assumed you already know how to run a script, the basics of "object oriented programming" (how R refers to and manpiulates data like vectors or data.frames, etc.), and how to put together a code file that runs an analysis. 
 
-We have created a video walkthrough for the basics of using `R` for another course, but it is useful here. You can [see part A here (labeled "Part 2a") here <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2a/1_kmszjw36)] and [part B here (labeled "Part 2b")  <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2b/1_c0vf0i63). You should already be at this level of familiarity with R, but if you need a review, this is a good place to start.
 
 If you are still unsure of the basic workings of `R`, I have created a review *resource* for you here: [Using R](/resource/usingR.qmd)
 

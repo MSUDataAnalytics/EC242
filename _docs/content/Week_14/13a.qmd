@@ -1548,7 +1548,7 @@ The file above actually represents a data frame. To read it, we can use the func
 library(jsonlite)
 res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
 
-citi_bike <- fromJSON("http://citibikenyc.com/stations/json")
+citi_bike <- fromJSON("https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
 ```
 
 This downloads a list. The first argument tells you when you downloaded it:
