@@ -23,7 +23,7 @@ In class today, we'll talk about the course, review the syllabus, and check your
 
 Your readings will be assigned each week in this area. For this initial week, please read the course content for this week. **Read closely** the following:
 
-- The [syllabus](/syllabus/), [content](/content/), and [lab assignment](/assignment/) pages for this class.
+- The [syllabus](/syllabus.html), [content](/content/), and [lab assignment](/assignment/) pages for this class.
 - This page. Yes, the whole thing.  
 
 
@@ -396,7 +396,7 @@ I encourage measured feedback and thoughtful responses to questions. If I call o
 
 
 
-### Let's review the [syllabus](/syllabus/)
+### Let's review the [syllabus](/syllabus.html)
 
 
 
@@ -404,7 +404,7 @@ I encourage measured feedback and thoughtful responses to questions. If I call o
 
 Do your weekly writing due **Saturday**. Begin working on Lab 1 as it is due Monday.
 
-Keys from the [syllabus](/syllabus/):
+Keys from the [syllabus](/syllabus.html):
 
 - E-mail isn't the ideal solution for technical problems
   - If you do send an email, please start it with `[EC242]` and the subject.

@@ -9,7 +9,7 @@ As mentioned in the syllabus, the course is structured by topics; each week intr
 
 ### Overview
 
-The class is structured in the following way: each week, you will have two readings - generally a "principles" first, then an "applications" second (though this couse has drifted from this paradigm). Read the first reading for the Week under [**Course Content**](/content/) before our first meeting, and the second before our second meeting of the week. In either Tuesday or Thursday class, you'll be given a prompt for your weekly writing, which is due at 11:59pm on Saturday (see [**assignments**](/assignments/) and the [**syllabus**](/syllabus/) for more info.
+The class is structured in the following way: each week, you will have two readings - generally a "principles" first, then an "applications" second (though this couse has drifted from this paradigm). Read the first reading for the Week under [**Course Content**](/content/) before our first meeting, and the second before our second meeting of the week. In either Tuesday or Thursday class, you'll be given a prompt for your weekly writing, which is due at 11:59pm on Saturday (see [**assignments**](/assignment/) and the [**syllabus**](/syllabus.html) for more info.
 
 - [**Tuesdays**](/content/) (<i class="fas fa-book-reader"></i>): This page the material that we will discuss in Tuesday classes. 
 

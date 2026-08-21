@@ -13,7 +13,7 @@ Today's example will pivot between the content from this week and the example be
 
 We will also use the Ames data again. Maybe some new data. Who knows. The Ames data is linked below:
 
-- [<i class="fas fa-file-csv"></i> `Ames.csv`](/projects/data/ames.csv)
+- [<i class="fas fa-file-csv"></i> `Ames.csv`](/data/ames.csv)
 
 :::
 

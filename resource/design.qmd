@@ -12,7 +12,7 @@ output:
 
 ## Accessibility
 
-- [**Vischeck**](http://www.vischeck.com/vischeck/vischeckImage.php): Simulate how your images look for people with different forms of colorblindness (web-based)
+- [**Coblis**](https://www.color-blindness.com/coblis-color-blindness-simulator/): Simulate how your images look for people with different forms of colorblindness (web-based)
 - [**Color Oracle**](http://colororacle.org/index.html): Simulate how your images look for people with different forms of colorblindness (desktop-based, more types of colorblindness)
 
 ## Colors
@@ -23,7 +23,7 @@ output:
 - [**Scientific Colour-Maps**](http://www.fabiocrameri.ch/colourmaps.php): Perceptually uniform color scales like viridis. Use them in R with [**scico**](https://github.com/thomasp85/scico).
 - [**ColorBrewer**](http://colorbrewer2.org/): Sequential, diverging, and qualitative color palettes that take accessibility into account.
 - [**Colorgorical**](http://vrl.cs.brown.edu/color): Create color palettes based on fancy mathematical rules for perceptual distance.
-- [**Colorpicker for data**](http://tristen.ca/hcl-picker/): More fancy mathematical rules for color palettes ([explanation](https://www.vis4.net/blog/posts/avoid-equidistant-hsv-colors/)).
+- [**Colorpicker for data**](http://tristen.ca/hcl-picker/): More fancy mathematical rules for color palettes ([explanation](https://www.vis4.net/blog/avoid-equidistant-hsv-colors/)).
 - [**iWantHue**](http://tools.medialab.sciences-po.fr/iwanthue/): Yet another perceptual distance-based color palette builder.
 - [**Photochrome**](https://photochrome.io/): Word-based color pallettes.
 - [**PolicyViz Design Color Tools**](https://policyviz.com/better-presentations/design-resources/design-color-tools/): Large collection of useful color resources

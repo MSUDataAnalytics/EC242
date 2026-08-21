@@ -41,7 +41,7 @@ You'll need to download one CSV file and put it somewhere on your computer (or u
 
 ### R Markdown
 
-Writing regular text with `R Markdown` follows the rules of Markdown. You can make lists; different-size headers, etc. This should be relatively straightfoward. We talked about a few Markdown features like **bold** and *italics* in class. See [this resource for more formatting](/resource/markdown/).
+Writing regular text with `R Markdown` follows the rules of Markdown. You can make lists; different-size headers, etc. This should be relatively straightfoward. We talked about a few Markdown features like **bold** and *italics* in class. See [this resource for more formatting](/resource/markdown.html).
 
 You'll also need to insert your own code chunks where needed. Rather than typing them by hand (that's tedious and you might miscount the number of backticks!), use the "Insert" button at the top of the editing window, or type <kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>i</kbd> on Windows, or <kbd>⌘</kbd> + <kbd>⌥</kbd> + <kbd>i</kbd> on macOS.
 

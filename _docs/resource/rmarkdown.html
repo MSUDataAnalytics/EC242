@@ -370,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> is <a href="../reference/markdown/">regular Markdown</a> with R code and output sprinkled in. You can do everything you can with <a href="../reference/markdown/">regular Markdown</a>, but you can incorporate graphs, tables, and other R output directly in your document. You can create HTML, PDF, and Word documents, PowerPoint and HTML presentations, websites, books, and even <a href="https://rmarkdown.rstudio.com/flexdashboard/index.html">interactive dashboards</a> with R Markdown. This whole course website is created with R Markdown (and <a href="https://bookdown.org/yihui/blogdown/">a package named <strong>blogdown</strong></a>).</p>
+<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> is <a href="../resource/markdown.html">regular Markdown</a> with R code and output sprinkled in. You can do everything you can with <a href="../resource/markdown.html">regular Markdown</a>, but you can incorporate graphs, tables, and other R output directly in your document. You can create HTML, PDF, and Word documents, PowerPoint and HTML presentations, websites, books, and even <a href="https://rmarkdown.rstudio.com/flexdashboard/index.html">interactive dashboards</a> with R Markdown. This whole course website is created with R Markdown (and <a href="https://bookdown.org/yihui/blogdown/">a package named <strong>blogdown</strong></a>).</p>
 <p>The <a href="https://rmarkdown.rstudio.com/">documentation for R Markdown</a> is extremely comprehensive, and their <a href="https://rmarkdown.rstudio.com/lesson-1.html">tutorials</a> and <a href="https://rmarkdown.rstudio.com/lesson-15.html">cheatsheets</a> are excellent—rely on those.</p>
 <p>Here are the most important things you’ll need to know about R Markdown in this class:</p>
 <section id="key-terms" class="level2">
@@ -384,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>There must be an empty line before and after the chunk. The final three backticks must be the only thing on the line—if you add more text, or if you forget to add the backticks, or accidentally delete the backticks, your document will not knit correctly.</p></li>
 <li><p><strong>Knit</strong>: When you “knit” a document, R runs each of the chunks sequentially and converts the output of each chunk into Markdown. R then runs the knitted document through <a href="https://pandoc.org/">pandoc</a> to convert it to HTML or PDF or Word (or whatever output you’ve selected). We will always use PDF for this course.</p>
 <p>You can knit by clicking on the “Knit” button at the top of the editor window, or by pressing <code>⌘⇧K</code> on macOS or <code>control + shift + K</code> on Windows.</p>
-<p>::: {.cell} ::: {.cell-output-display} <img src="../../../../../../img/assignments/knit-button.png" class="img-fluid" style="width:30.0%"> ::: :::</p></li>
+<p>::: {.cell} ::: {.cell-output-display} <img src="../images/knit-button.png" class="img-fluid" style="width:30.0%"> ::: :::</p></li>
 </ul>
 </section>
 <section id="add-chunks" class="level2">
@@ -393,22 +393,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p>Press <code>⌘⌥I</code> on macOS or <code>control + alt + I</code> on Windows</p></li>
 <li><p>Click on the “Insert” button at the top of the editor window</p>
-<p>::: {.cell} ::: {.cell-output-display} <img src="../../../../../../images/insert-chunk.png" class="img-fluid" style="width:30.0%"> ::: :::</p></li>
+<p>::: {.cell} ::: {.cell-output-display} <img src="../images/insert-chunk-button.png" class="img-fluid" style="width:30.0%"> ::: :::</p></li>
 <li><p>Manually type all the backticks and curly braces (don’t do this)</p></li>
 </ul>
 </section>
 <section id="chunk-names" class="level2">
 <h2 class="anchored" data-anchor-id="chunk-names">Chunk names</h2>
 <p>You can add names to chunks to make it easier to navigate your document. If you click on the little dropdown menu at the bottom of your editor in RStudio, you can see a table of contents that shows all the headings and chunks. If you name chunks, they’ll appear in the list. If you don’t include a name, the chunk will still show up, but you won’t know what it does.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="../../../../../../images/chunk-toc.png" class="img-fluid figure-img" style="width:40.0%"></p>
-</figure>
-</div>
-</div>
-</div>
 <p>To add a name, include it immediately after the <code>{r</code> in the first line of the chunk. Names cannot contain spaces, but they can contain underscores and dashes. <strong>All chunk names in your document must be unique.</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r name-of-this-chunk}</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Code goes here</span></span>
@@ -430,15 +421,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>include=FALSE</code>: The chunk still runs, but the code and results are not included in the final document. Don’t use this on your labs as we need to see your work, but do use this for your final project when the output is to be polished and clean.</li>
 </ul>
 <p>You can also set chunk options by clicking on the little gear icon in the top right corner of any chunk:</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="../../../../../../images/chunk-options.png" class="img-fluid figure-img" style="width:70.0%"></p>
-</figure>
-</div>
-</div>
-</div>
 <section id="chunk-fig.width-and-fig.height" class="level3">
 <h3 class="anchored" data-anchor-id="chunk-fig.width-and-fig.height">Chunk <code>fig.width</code> and <code>fig.height</code></h3>
 <p>When a code chunk includes a plot (like from <code>ggplot</code>), the “canvas” size used can affect the output. You may have noticed if you plot directly in Rstudio, the plot resizes when you change the pane size. Each chunk has its own canvas size, and you can change that. So, if you have a chunk with a large plot, you can change the <code>fig.width=7.5</code> in the chunk options. Note that units default to inches, so no more than 7.5 will fit on a regular-sized sheet of paper (or appropriately sized PDF).</p>
@@ -460,22 +442,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="output-formats" class="level2">
 <h2 class="anchored" data-anchor-id="output-formats">Output formats</h2>
-<p>You can specify what kind of document you create when you knit in the <a href="../reference/markdown/#front-matter">YAML front matter</a>.</p>
+<p>You can specify what kind of document you create when you knit in the <a href="../resource/markdown.html#front-matter">YAML front matter</a>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My document"</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">output</span><span class="kw">:</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html_document</span><span class="kw">:</span><span class="at"> default</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf_document</span><span class="kw">:</span><span class="at"> default</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">word_document</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You can also click on the down arrow on the “Knit” button to choose the output <em>and</em> generate the appropriate YAML. If you click on the gear icon next to the “Knit” button and choose “Output options”, you change settings for each specific output type, like default figure dimensions or whether or not a table of contents is included.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="../../../../../../images/output-options.png" class="img-fluid figure-img" style="width:35.0%"></p>
-</figure>
-</div>
-</div>
-</div>
 <p>The first output type listed under <code>output:</code> will be what is generated when you click on the “Knit” button or press the keyboard shortcut (<code>⌘⇧K</code> on macOS; <code>control + shift + K</code> on Windows). If you choose a different output with the “Knit” button menu, that output will be moved to the top of the <code>output</code> section.</p>
 <p>The indentation of the YAML section matters, especially when you have settings nested under each output type. Here’s what a typical <code>output</code> section might look like:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>

@@ -395,82 +395,101 @@ window.Quarto = {
 <section id="basic-markdown-formatting" class="level2">
 <h2 class="anchored" data-anchor-id="basic-markdown-formatting">Basic Markdown formatting</h2>
 <table class="caption-top table">
-<thead>
-<tr class="header">
-<th><pre><code>              Type…</code></pre></th>
-<th><pre><code>    …or…</code></pre></th>
-<th><pre><code>            …to get</code></pre></th>
-</tr>
-</thead>
+<colgroup>
+<col style="width: 35%">
+<col style="width: 18%">
+<col style="width: 33%">
+<col style="width: 10%">
+</colgroup>
 <tbody>
 <tr class="odd">
-<td><pre>Some text in a paragraph.
+<td rowspan="2"><h1 id="type">Type…</h1>
+<pre>Some text in a paragraph.
 
-More text in the next paragraph. Always
-use empty lines between paragraphs.</pre></td>
-<td></td>
-<td><p>Some text in a paragraph.</p>
+ More text in the next paragraph. Always
+ use empty lines between paragraphs.</pre></td>
+<td rowspan="2"><h1 id="or">…or…</h1></td>
+<td rowspan="2"><h1 id="to-get">…to get</h1>
+<p>Some text in a paragraph.</p>
 <p>More text in the next paragraph. Always use empty lines between paragraphs.</p></td>
+<td></td>
 </tr>
 <tr class="even">
+<td></td>
+</tr>
+<tr class="odd">
 <td><code>*Italic*</code></td>
 <td><code>_Italic_</code></td>
 <td><em>Italic</em></td>
+<td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>**Bold**</code></td>
 <td><code>__Bold__</code></td>
 <td><strong>Bold</strong></td>
+<td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code># Heading 1</code></td>
 <td></td>
 <td><h1 class="smaller-h1">
 Heading 1
 </h1></td>
+<td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>## Heading 2</code></td>
 <td></td>
 <td><h2 class="smaller-h2 anchored">
 Heading 2
 </h2></td>
+<td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>### Heading 3</code></td>
 <td></td>
 <td><h3 class="smaller-h3 anchored">
 Heading 3
 </h3></td>
+<td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>(Go up to heading level 6 with <code>######</code>)</td>
 <td></td>
 <td></td>
+<td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>[Link text](http://www.example.com)</code></td>
 <td></td>
 <td><a href="http://www.example.com">Link text</a></td>
-</tr>
-<tr class="odd">
-<td><code>![Image caption](/path/to/image.png)</code></td>
 <td></td>
-<td><img src="../img/favicon-32x32.png" class="img-fluid" alt="Class logo"> |</td>
 </tr>
 <tr class="even">
+<td><code>![Image caption](/path/to/image.png)</code></td>
+<td></td>
+<td colspan="2"><div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/Spartan-Helmet_Green-RGB.png" class="img-fluid figure-img"></p>
+<figcaption>Class logo</figcaption>
+</figure>
+</div></td>
+</tr>
+<tr class="odd">
 <td>`<code>Inline code` with backticks</code></td>
 <td></td>
 <td><code>Inline code</code> with backticks</td>
+<td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>&gt; Blockquote</code></td>
 <td></td>
 <td><blockquote class="blockquote">
 <p>Blockquote</p>
 </blockquote></td>
+<td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><pre>- Things in
 - an unordered
 - list</pre></td>
@@ -482,8 +501,9 @@ Heading 3
 <li>an unordered</li>
 <li>list</li>
 </ul></td>
+<td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><pre>1. Things in
 2. an ordered
 3. list</pre></td>
@@ -495,8 +515,9 @@ Heading 3
 <li>an ordered</li>
 <li>list</li>
 </ol></td>
+<td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><pre>Horizontal line
 
 ---</pre></td>
@@ -505,6 +526,7 @@ Heading 3
 ***</pre></td>
 <td><p>Horizontal line</p>
 <hr></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -698,46 +720,45 @@ But it can be hard too!<a href="#fnref3" class="footnote-back">↩︎</a>
 <section id="front-matter" class="level2">
 <h2 class="anchored" data-anchor-id="front-matter">Front matter</h2>
 <p>You can include a special section at the top of a Markdown document that contains metadata (or data about your document) like the title, date, author, etc. This section uses a special simple syntax named <a href="https://learn.getgrav.org/16/advanced/yaml">YAML</a> (or “YAML Ain’t Markup Language”) that follows this basic outline: <code>setting: value for setting</code>. Here’s an example YAML metadata section. Note that it must start and end with three dashes (<code>---</code>).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Title of your document</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"January 13, 2020"</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Your name"</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Title of your document</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"January 13, 2020"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Your name"</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You can put the values inside quotes (like the date and name in the example above), or you can leave them outside of quotes (like the title in the example above). I typically use quotes just to be safe—if the value you’re using has a colon (<code>:</code>) in it, it’ll confuse Markdown since it’ll be something like <code>title: My cool title: a subtitle</code>, which has two colons. It’s better to do this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My cool title: a subtitle"</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My cool title: a subtitle"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If you want to use quotes inside one of the values (e.g.&nbsp;your document is <code>An evaluation of "scare quotes"</code>), you can use single quotes instead:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">'An evaluation of "scare quotes"'</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">'An evaluation of "scare quotes"'</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="citations" class="level2">
 <h2 class="anchored" data-anchor-id="citations">Citations</h2>
 <p><strong>SSC442 and EC420, you won’t use this part</strong></p>
-<p>One of the most powerful features of Markdown + pandoc is the ability to automatically cite things and generate bibliographies. to use citations, you need to create a <a href="http://www.bibtex.org/">BibTeX file</a> (ends in <code>.bib</code>) that contains a database of the things you want to cite. You can do this with bibliography managers designed to work with BibTeX directly (like <a href="https://bibdesk.sourceforge.io/">BibDesk</a> on macOS), or you can use <a href="https://www.zotero.org/">Zotero</a> (macOS and Windows) to export a <code>.bib</code> file. You can <a href="../reference/">download an example <code>.bib</code> file of all the readings from this class here</a>.</p>
+<p>One of the most powerful features of Markdown + pandoc is the ability to automatically cite things and generate bibliographies. to use citations, you need to create a <a href="http://www.bibtex.org/">BibTeX file</a> (ends in <code>.bib</code>) that contains a database of the things you want to cite. You can do this with bibliography managers designed to work with BibTeX directly (like <a href="https://bibdesk.sourceforge.io/">BibDesk</a> on macOS), or you can use <a href="https://www.zotero.org/">Zotero</a> (macOS and Windows) to export a <code>.bib</code> file. You can use a <code>.bib</code> file.</p>
 <p><a href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">Complete details for using citations can be found here</a>. In brief, you need to do three things:</p>
 <ol type="1">
 <li><p>Add a <code>bibliography:</code> entry to the YAML metadata:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Title of your document</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"January 13, 2020"</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Your name"</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> name_of_file.bib</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Title of your document</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"January 13, 2020"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Your name"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> name_of_file.bib</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Choose a citation style based on a CSL file. The default is Chicago author-date, but you can choose from 2,000+ <a href="https://github.com/citation-style-language/styles">at this repository</a>. Download the CSL file, put it in your project folder, and add an entry to the YAML metadata (or provide a URL to the online version):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Title of your document</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"January 13, 2020"</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Your name"</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> name_of_file.bib</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">csl</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl"</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Title of your document</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"January 13, 2020"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Your name"</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> name_of_file.bib</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">csl</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl"</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Some of the most common CSLs are:</p>
 <ul>
 <li><a href="https://raw.githubusercontent.com/citation-style-language/styles/master/chicago-author-date.csl">Chicago author-date</a></li>
-<li><a href="https://raw.githubusercontent.com/citation-style-language/styles/master/chicago-note-bibliography.csl">Chicago note-bibliography</a></li>
-<li><a href="https://raw.githubusercontent.com/citation-style-language/styles/master/chicago-fullnote-bibliography.csl">Chicago full note-bibliography</a> (no shortened notes or ibids)</li>
+<li><a href="https://raw.githubusercontent.com/citation-style-language/styles/master/chicago-notes-bibliography.csl">Chicago note-bibliography</a></li>
 <li><a href="https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl">APA 7th edition</a></li>
 <li><a href="https://raw.githubusercontent.com/citation-style-language/styles/master/modern-language-association.csl">MLA 8th edition</a></li>
 </ul></li>
@@ -785,7 +806,7 @@ But it can be hard too!<a href="#fnref3" class="footnote-back">↩︎</a>
 <ul>
 <li><a href="https://commonmark.org/help/tutorial/"><strong>CommonMark’s Markdown tutorial</strong></a>: A quick interactive Markdown tutorial.</li>
 <li><a href="https://www.markdowntutorial.com/"><strong>Markdown tutorial</strong></a>: Another interactive tutorial to practice using Markdown.</li>
-<li><a href="http://packetlife.net/media/library/16/Markdown.pdf"><strong>Markdown cheatsheet</strong></a>: Useful one-page reminder of Markdown syntax.</li>
+<li><a href="https://www.markdownguide.org/cheat-sheet/"><strong>Markdown cheatsheet</strong></a>: Useful one-page reminder of Markdown syntax.</li>
 <li><a href="http://plain-text.co/"><strong>The Plain Person’s Guide to Plain Text Social Science</strong></a>: A comprehensive explanation and tutorial about why you should write data-based reports in Markdown.</li>
 </ul>
 

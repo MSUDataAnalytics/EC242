@@ -28,7 +28,7 @@ Download the {{< var blurbs.labtemplate >}}. Please save the template into a lab
 
 
 
-If you have not yet done so, you'll need to install both `R` and RStudio. See the [Installing page of our course resources](/resource/install/) for instructions.
+If you have not yet done so, you'll need to install both `R` and RStudio. See the [Installing page of our course resources](/resource/install.html) for instructions.
 
 
 ## If you totally forgot how to use `R`
@@ -349,7 +349,7 @@ Once you've saved the file, open it up in Rstudio.
 
 - Keep going until done. Render one last .pdf, proofread it, and turn it in on D2L!
 
-For more on using R Markdown, see the [R Markdown page of our course resources](/resource/rmarkdown.html). You can also learn about the general Markdown language [on our Markdown page of our course resources](/resource/markdown/)
+For more on using R Markdown, see the [R Markdown page of our course resources](/resource/rmarkdown.html). You can also learn about the general Markdown language [on our Markdown page of our course resources](/resource/markdown.html)
 
 
 # EXERCISES 
