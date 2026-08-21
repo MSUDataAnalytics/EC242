@@ -176,7 +176,7 @@ ggplot(ing.tenure, aes(fill = percentSameHouse)) +
 ```
 
 #### An alternative source for finding Census variables
-We can also find census variables by searching the [data.census.gov](data.census.gov) website. We are looking for **tables**, so click on "explore tables".
+We can also find census variables by searching the [data.census.gov](https://data.census.gov) website. We are looking for **tables**, so click on "explore tables".
 
 First thing we want to do is set our level (e.g. block, block-group, tract, county, etc.) so that we are searching for data that exists at the level we want. No sense in searching for something you want at the county level to find out it's only available at the state level! On the left side under "geography" click on the level you want (say, "census tract") then choose a random state and tract -- you're only using this to find the variable's code, not to actually retrieve data. I always use the first county in Alabama just because it's small-ish so it doesn't take long to load up.
 
@@ -188,7 +188,7 @@ To find the exact variable you need, you'll need what's called a "table shell". 
 
 Reading the table shells and translating them to the table ID for `tidycensus` is actually easy. The table number will tell you the start (so something like `S2504`), then an underscore `_`, then the column number prefixed with `C`, then another `_`, then the line number. The column number refers to which set of columns you want to download (the estimate and the margin count as one), and the line number refers to which crosstab you want. So, `S2504_C04_034` gives you table `S2504` ("PHYSICAL HOUSING CHARACTERISTICS FOR OCCUPIED HOUSING UNITS"), the 4th set of columns (Percent, owner-occupied housing units), and the 33rd line (uses electricity for heating). Use the table ID in  `tidycensus`, you can name each of them as you see fit, take whichever ones you need (just the topline, or all of the crosstabs -- it's up to you).
 
-The tables on [data.census.gov](data.census.gov) are the same as the table shells, so you can use that as well, but it doesn't tell you the line numbers.
+The tables on [data.census.gov](https://data.census.gov) are the same as the table shells, so you can use that as well, but it doesn't tell you the line numbers.
 
 
 
