@@ -76,7 +76,7 @@ I've provided some starter code below. A couple comments about it:
 ```{r load-clean-data, eval=FALSE}
 library(tidyverse)
 library(lubridate)
-rats_raw <- read_csv("data/Rat_Sightings.csv", na = c("", "NA", "N/A"))
+rats_raw <- read_csv("data/Rat_sightings.csv", na = c("", "NA", "N/A"))
 # If you get an error that says "All formats failed to parse. No formats
 # found", it's because the mdy_hms function couldn't parse the date. The date
 # variable *should* be in this format: "04/03/2017 12:00:00 AM", but in some

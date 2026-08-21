@@ -207,7 +207,7 @@ p + geom_point() + scale_x_log10(labels = dollar) + geom_smooth()
 
 ## Tidy up your data, then plot
 
-For Exercise 3, use this [data on MI county-level income, age, population, and yearly commute time](data/milong.csv), which can be loaded using the following line of code:
+For Exercise 3, use this [data on MI county-level income, age, population, and yearly commute time](/data/milong.csv), which can be loaded using the following line of code:
 
 ```{r, eval=F, echo=F, include=F}
 

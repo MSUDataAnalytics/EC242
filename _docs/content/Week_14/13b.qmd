@@ -1,13 +1,18 @@
 ---
-title: ""
+title: "No Class — Thanksgiving"
 type: docs
 weight: 1
 editor_options:
   chunk_output_type: console
 ---
 
+# No class today — Thanksgiving recess
 
-# We will finish Tuesday's material in class today (this unit is blank for semesters in which we have Thanksgiving)
+The university is closed Thursday, November 26 and Friday, November 27, so we do
+not meet this Thursday. We will have covered this week's material — [Text as
+Data](/content/Week_14/13a.html) — in Tuesday's class.
 
-<!-- Today we will dedicate in-class time to discussing and reviewing successful final projects in the course from past semesters. -->
+Your lab for this week is still due the following Monday; see the
+[assignments page](/assignment/) for the exact date.
 
+Have a good break.

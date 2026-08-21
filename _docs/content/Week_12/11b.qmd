@@ -160,7 +160,7 @@ While it takes a bit longer to estimate this (especially when $B$ is large), you
 Random Forest has one other wrinkle -- when choosing amongst the candidate predictors for each split, the Random Forest method will choose from a randomly selected subset of the predictors. The reasoning for this given in ISLR is intuitive: if there is one predictor that predicts quite well for the sample, it will always be selected and little emphasis will be on predictors aside from this one. By randomly leaving it out, some trees are forced to fit without that predictor, so they won't all look the same. When you don't take the subset, you are *bagging*. When you do take a subset, you are estimating a *random forest*
 
 
-You won't need to use this on your Project 2, it's purely for your own info. Random forests are common out in the world, and are useful to know especially since you already know the fundamental element of it -- the tree.
+You won't need to use this on your Project 3, it's purely for your own info. Random forests are common out in the world, and are useful to know especially since you already know the fundamental element of it -- the tree.
 
 
 # More examples of bias, variance, and model flexibility

@@ -1,7 +1,6 @@
 ---
 title: "Reintroducing the tidyverse"
 linktitle: "2: The Tidyverse"
-read_date: "2025-01-21"
 lastmod: "`r Sys.Date()`"
 menu:
   content:

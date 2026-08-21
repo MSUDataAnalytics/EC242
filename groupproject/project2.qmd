@@ -6,7 +6,6 @@ format:
     toc: true
 ---
 
-<!-- Ben: I made a google sheet of all the geometry types and am pulling a file that has the class list and group assignment from my TA on it. You might need to make a table separately -- see the code chunk at the end. -->
 
 
 ## Presenting Your Data (Quickly!)
@@ -75,15 +74,29 @@ Many examples (from which I created this list) can be found [here](https://r-sta
 Not every dataset will work with your geometry. You may have to use one of your other datasets to find data that will work. If your group is assigned a method, just use that method in whatever visualization best illustrates it. Email me if you have questions.
 
 
-```{r, warning = F, error = F, message = F, echo = F}
+```{r, eval = FALSE, warning = F, error = F, message = F, echo = F}
+## NOT EVALUATED AT RENDER TIME -- deliberately.
+##
+## This chunk assigns each group a geometry/aesthetic/method at random. It used
+## to run live, which (a) required an interactive Google OAuth session and a
+## local Windows roster file, so `quarto render` failed for anyone else, and
+## (b) baked the class roster -- real student names -- into the published page.
+##
+## To regenerate for a new term: point `roster_path` at a local class list that
+## is NOT committed to this repo (keep it outside the project, or under a
+## gitignored folder), run this chunk interactively, and paste the resulting
+## table into the document. Do not re-enable `eval` for this chunk.
+
 library(googlesheets4)
+
+roster_path <- "~/EC242-roster.xlsx"   # local only; never commit a roster
 
 uselist <- read_sheet('https://docs.google.com/spreadsheets/d/1Jc1SBtV4WiJ6INmRMcnRcSF75fn2OdUicP3P1T2nI9Q/edit?usp=sharing') %>%
   dplyr::filter(!is.na(Type))
 
 set.seed(2026)
 
-grouplist = readxl::read_excel("C:\\Users\\jkirk\\OneDrive - Michigan State University\\Teaching\\EC242_SS26 Grading\\ClassList.xlsx") %>% #, col_names = c('Junk1','netID','Junk2','Junk3','Gname','Fname','Lname')) %>%
+grouplist = readxl::read_excel(roster_path) %>%
   dplyr::select(Gname = Group, Lname = `Last Name`) %>%
   group_by(Gname) %>%
   dplyr::mutate(Number = sample(unique(uselist$Number), 1)) %>%
@@ -91,14 +104,14 @@ grouplist = readxl::read_excel("C:\\Users\\jkirk\\OneDrive - Michigan State Univ
   left_join(uselist, by = 'Number') %>%
   dplyr::select(`Group Name` = Gname, `Last Name` = Lname, `geometry, aesthetic, or method name` = `geom name`, `Additional Info`) %>%
   dplyr::mutate(`Additional Info` = ifelse(is.na(`Additional Info`), '', `Additional Info`)) %>%
-  dplyr::arrange(`Group Name`, `Last Name`) #%>%
-  #dplyr::select(-c(`Last Name`)) %>%
- #distinct()
+  dplyr::arrange(`Group Name`, `Last Name`)
 
 knitr::kable(grouplist)
-
-
-
-
 ```
+
+::: {.callout-note}
+## Your assigned geometry
+Group geometry assignments will be posted to Slack and announced in class once
+groups are finalized.
+:::
 

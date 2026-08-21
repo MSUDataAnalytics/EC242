@@ -1,7 +1,6 @@
 ---
 title: "(Re)introduction to Visualization"
 linktitle: "2: Visualization I"
-read_date: "2025-01-23"
 lastmod: "`r Sys.Date()`"
 output:
   blogdown::html_page:
@@ -412,7 +411,7 @@ We can also change the `fill` and the `color`:
 p + geom_point(aes(x = population/10^6, y = total), size = 4, shape = 23, fill = '#18453B')
 ```
 
-`fill` can take a common name like `'green'`, or can take a hex color like `'#18453B'`, which is [MSU Green according to MSU's branding site](https://brand.msu.edu/design-visual/index.html#color). You can also find [UM Maize](https://youtu.be/0BxNHwJi1y4) and [OSU Scarlet](https://youtu.be/dQw4w9WgXcQ) on respective branding pages, or google "XXX color hex." We'll learn how to build a color palatte later on.
+`fill` can take a common name like `'green'`, or can take a hex color like `'#18453B'`, which is [MSU Green according to MSU's branding site](https://brand.msu.edu/visual/color-palette). You can also find [UM Maize](https://youtu.be/0BxNHwJi1y4) and [OSU Scarlet](https://youtu.be/dQw4w9WgXcQ) on respective branding pages, or google "XXX color hex." We'll learn how to build a color palatte later on.
 
 `color` (or `colour`, same thing because `ggplot` creators allow both spellings) is a little tricky with points - it changes the outline of the geometry rather than the fill color, but in `geom_point()` most shapes are only the outline, including the default. This is more useful with, say, a barplot where the outline and the fill might be different colors. Still, shapes 21-25 have both `fill` and `color`:
 

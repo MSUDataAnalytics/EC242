@@ -17,12 +17,6 @@ library(tidyverse)
 # Welcome to EC242
 In class today, we'll talk about the course, review the syllabus, and check your installation of R, RStudio, and `tinytex` to ensure you're good to go on assignments.
 
-But first a quick plug...
-
-```{r, echo=F, out.width='80%'}
-#| fig-alt: "Flyer promoting MSU Applied Econ study abroad program. Image 1 of 2 shows a group of 20 students standing in front of an old building. Image 2 of 2 shows a skyline view of downton London."
-knitr::include_graphics(here('images','London–Summer 2026-Info Session Flyer.png'))
-```
 
 
 # Readings  

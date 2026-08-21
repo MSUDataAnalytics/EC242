@@ -6,7 +6,6 @@ output:
     toc: true
 ---
 
-<!-- Ben: this material is also in the resource "geospatialbasics.qmd" and spatial merging is from 15a, but we had only 14 weeks this semester. -->
 
 ### Some new packages
 We'll be using `tmaptools` geocoder today, so you'll need to install that package. And `tigris` if you didn't already.
@@ -567,7 +566,7 @@ MI.lakeside.counties %>%
 ## Other resources
 - Claudia Engel's "[Using Spatial Data with R](https://cengel.github.io/R-spatial/)" is a very useful resource. It covers `sf` and an older geospatial library called `sp` that has similar functionality but was not tidyverse-friendly. 
 
-- The [Rstudio Spatial Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/sf.pdf).
+- The [Rstudio Spatial Cheat Sheet](https://rstudio.github.io/cheatsheets/sf.pdf).
 
   - There are [lots of useful RStudio cheat sheets, actually.](https://www.rstudio.com/resources/cheatsheets/)
 

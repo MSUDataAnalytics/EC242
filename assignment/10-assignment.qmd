@@ -27,7 +27,7 @@ library(tidyverse)
 
 ```{r}
 
-Ames <- read.table('https://raw.githubusercontent.com/ajkirkpatrick/FS20/postS21_rev/classdata/ames.csv', 
+Ames <- read.table('https://ec242.netlify.app/data/ames.csv', 
                    header = TRUE,
                    sep = ',') 
 ```

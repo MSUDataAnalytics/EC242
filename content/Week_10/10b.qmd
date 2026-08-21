@@ -7,7 +7,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-<!-- For Sp 2025, probably move the first chunk of this on overfitting to 08a (it was short). The natural split is when test-train is introduced. -->
 
 <!-- Many other changes were added to this one. -->
 

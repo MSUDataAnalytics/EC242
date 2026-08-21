@@ -198,7 +198,7 @@ The markdown language is what controls the text outside of the R code chunks. It
 
 
 ### Images from a local file
-Whether you have the file on your hard drive already, right-click and download from the web to keep a copy for posterity, or save the image from a screenshot, you will often need to insert an image from a local file. In Rmarkdown, the path will always be *relative to the folder containing your .Rmd file*. So if you keep your .Rmd in `/Users/jkirk/SSC442/Example3` and you have a folder `/Users/jkirk/SSC442/Example3/images` that contains a file `picture.png`, then you would tell Rmarkdown to find the file at `./images/picture.png` (which implies its filepath is `/Users/jkirk/SSC442/Example3/images/picture.png`). The `./` tells R to start looking in the local directory holding the .Rmd file you're working on.
+Whether you have the file on your hard drive already, right-click and download from the web to keep a copy for posterity, or save the image from a screenshot, you will often need to insert an image from a local file. In Rmarkdown, the path will always be *relative to the folder containing your .Rmd file*. So if you keep your .Rmd in `/Users/yourname/EC242/Example3` and you have a folder `/Users/yourname/EC242/Example3/images` that contains a file `picture.png`, then you would tell Rmarkdown to find the file at `./images/picture.png` (which implies its filepath is `/Users/yourname/EC242/Example3/images/picture.png`). The `./` tells R to start looking in the local directory holding the .Rmd file you're working on.
 
 Once you know your local relative path, you can use either of the above methods `knitr::include_graphics('./images/picture.png')` or `![](./images/picture.png)`.
 

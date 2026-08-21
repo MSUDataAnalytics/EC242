@@ -934,6 +934,5 @@ d. `pnorm(a)`
 8. The distribution of IQ scores is approximately normally distributed.  The average is 100 and the standard deviation is 15. Suppose you want to know the distribution of the highest IQ across all graduating classes if 10,000 people are born each in your school district. Run a Monte Carlo simulation with `B=1000` generating 10,000 IQ scores and keeping the highest. Make a histogram.
 :::
 
-**Fall 2024: I have moved Random Variables to the top of Thursday's Week 5 content**
 
 

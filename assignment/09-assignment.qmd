@@ -16,7 +16,7 @@ This assignment is due on **{{< meta duedate >}}**
 
 # Lab 9: Group Project 2 Feedback
 
-This lab is a little different. Week 9, we will be having Group Project 2 presentations. Each group will present their work and a new `ggplot` geometry or method.
+This lab is a little different. During the week of the Group Project 2 presentations ({{< var duedates.project2present >}}), each group presents their work. Each group will present their work and a new `ggplot` geometry or method.
 
 ::: {.callout-note}
 ## Exercise 1 of 2

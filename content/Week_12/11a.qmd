@@ -171,7 +171,7 @@ In the context of regression, models are biased when:
 In the context of regression, models are variable when:
 
 - Parametric: The form of the model incorporates too many variables, or the form of the relationship is too flexible. For example, a parametric model assumes a cubic relationship, but the true relationship is linear.
-- Non-parametric: The model does not provide enough smoothing. It is very, "wiggly." [Recall our KNN model example from Content 08](https://ssc442kirkpatrick.netlify.app/content/08-content/#k-nearest-neighbors-1)
+- Non-parametric: The model does not provide enough smoothing. It is very, "wiggly." [Recall our KNN model example](/content/Week_11/11a.html#k-nearest-neighbors)
 
 So for us, to select a model that appropriately balances the tradeoff between bias and variance, and thus minimizes the reducible error, we need to select a model of the appropriate flexibility for the data.
 
