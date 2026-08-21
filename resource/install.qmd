@@ -18,7 +18,6 @@ Hopefully you're well-versed in dealing with these things, but if you're lost, h
 
 ### Install `R`
 
-I have created a video walkthrough for installing R for another course, but it is useful here. You can [see it here <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+1/1_b8nafkzx)]
 
 First you need to install `R` itself (the engine).
 

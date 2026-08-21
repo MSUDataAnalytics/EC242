@@ -6,6 +6,10 @@ format:
     toc: true
 ---
 
+::: {.callout-warning}
+## Due Date
+This project is due on **{{< meta duedate >}}**
+:::
 
 ## Predicting Energy Consumption
 

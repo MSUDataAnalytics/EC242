@@ -7,7 +7,7 @@ format:
 ---
 
 
-::: {.callout-info}
+::: {.callout-note}
 ### Turning This In
 
 **Only one member of your group should turn in your project on D2L**. The copy turned in must have each member's name at the top.
@@ -35,7 +35,7 @@ Here's what you need to do:
 
     - [<i class="fas fa-file-csv"></i> `Rat_sightings.csv`](/data/Rat_sightings.csv)
 
-2. **Summarize** the data somehow. The raw data has more than 150,000 rows, which means you'll need to aggregate the data (`filter()`, `group_by()`, and `summarize()` will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2024. Consider the meaning of variables you create -- remember how the total numbers of murders in a state was mostly just a function of size, but that murder *rate* was a more useful variable. (Of course, I just gave you these ideas, so you'll need to be a bit more creative than just doing exactly what I just said.)
+2. **Summarize** the data somehow. The raw data has more than 150,000 rows, which means you'll need to aggregate the data (`filter()`, `group_by()`, and `summarize()` will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2020. Consider the meaning of variables you create -- remember how the total numbers of murders in a state was mostly just a function of size, but that murder *rate* was a more useful variable. (Of course, I just gave you these ideas, so you'll need to be a bit more creative than just doing exactly what I just said.)
 
 3. **Explore** the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use `case_when()` to add data that's at a coarse level (year, borough, etc.), or `merge()` if you're comfortable with it. [Be create]{.font-orange}, but do so to further explore and analyze. Drill down on something you see in the data to *tell a story*. Remember, as analysts, we are looking for "patterns in the data" that are not easily written in closed form.
 

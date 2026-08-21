@@ -6,7 +6,10 @@ format:
     toc: true
 ---
 
-
+::: {.callout-warning}
+## Due Date
+This project is due on **{{< meta duedate >}}**
+:::
 
 ## Presenting Your Data (Quickly!)
 Project 2 is an in-class presentation which will occur during class on {{< var duedates.project2present >}} (Tuesday and Thursday both). Each group will make and present a short data analysis using one of the data sets you listed in Section 2 of Project 1 (or a new one, I'm not keeping track). Your presentation will introduce and detail a new ggplot `geom_` or aesthetic mapping that we haven't yet covered in class. You will be limited to a total of six slides (plus a cover slide), presented in no more than eight minutes, including questions/discussion.

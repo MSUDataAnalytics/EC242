@@ -58,7 +58,7 @@ lm.fit = lm(SalePrice ~ GrLivArea + LotArea, data = Ames)
 **Try it:** Does controlling for `LotArea` change the *qualitative* conclusions from the previous regression? What about the *quantitative* results? Does the direction of the change in the quantitative results make sense to you?
 
 ::: {.callout-note}
-## Exercise 1/6
+## Exercise 1 of 7
 
 1. Use the `lm()` function in a **simple** linear regression (e.g., with only one predictor) with `SalePrice` as the response to determine the value of a garage. Interpret the coefficient in 1-2 sentences.
 

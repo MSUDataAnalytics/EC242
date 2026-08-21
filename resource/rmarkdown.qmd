@@ -7,7 +7,6 @@ sidebar: resources
 
 The [documentation for R Markdown](https://rmarkdown.rstudio.com/) is extremely comprehensive, and their [tutorials](https://rmarkdown.rstudio.com/lesson-1.html) and [cheatsheets](https://rmarkdown.rstudio.com/lesson-15.html) are excellent—rely on those.
 
-I have created a video walkthrough for using R Markdown for another course, but it is useful here. You can [see it here <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+3/1_yigvqy1i)]
 
 Here are the most important things you'll need to know about R Markdown in this class:
 

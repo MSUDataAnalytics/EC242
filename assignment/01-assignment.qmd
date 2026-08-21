@@ -33,7 +33,7 @@ If you have not yet done so, you'll need to install both `R` and RStudio. See th
 
 ## If you totally forgot how to use `R`
 
-{{< var names.instructorother >}} has created a video walkthrough for the basics of using `R` for another course. You may find it useful here. You can [see part A here (labeled "Part 2a") here <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2a/1_kmszjw36)] and [part B here (labeled "Part 2b")  <i class="fas fa-film"></i>](https://mediaspace.msu.edu/media/R+Part+2b/1_c0vf0i63). You should already be at this level of familiarity with `R`, but if you need a review, this is a good place to start.
+If you need a refresher on the basics of `R`, work through the [Using R](/resource/usingR.qmd) resource before starting this lab.
 
 
 
