@@ -38,7 +38,7 @@ Hans Rosling^[https://en.wikipedia.org/wiki/Hans_Rosling] was the co-founder of 
 
 > Journalists and lobbyists tell dramatic stories. That’s their job. They tell stories about extraordinary events and unusual people. The piles of dramatic stories pile up in peoples' minds into an over-dramatic worldview and strong negative stress feelings: "The world is getting worse!", "It’s we vs. them!”, “Other people are strange!", "The population just keeps growing!" and "Nobody cares!"
 
-Hans Rosling conveyed actual data-based trends in a dramatic way of his own, using effective data visualization. This section is based on two talks that exemplify this approach to education: [New Insights on Poverty]^[https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en] and The Best Stats You've Ever Seen^[https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen]. Specifically, in this section, we use data to attempt to answer the following two questions:
+Hans Rosling conveyed actual data-based trends in a dramatic way of his own, using effective data visualization. This section is based on two talks that exemplify this approach to education: New Insights on Poverty^[https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en] and The Best Stats You've Ever Seen^[https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen]. Specifically, in this section, we use data to attempt to answer the following two questions:
 
 1. Is it a fair characterization of today's world to say it is divided into western rich nations and the developing world in Africa, Asia, and Latin America?
 2. Has income inequality across countries worsened during the last 40 years?
@@ -130,11 +130,6 @@ dat <- gapminder %>%
            label_last = ifelse(year == 2015,  paste0(round(life_expectancy, 1),' years'), NA))
 
 dat %>%
-  mutate(location = ifelse(year == 2010, 1, 2),
-         location = ifelse(year == 2015 &
-                             country %in% c("United Kingdom", "Portugal"),
-                           location+0.22, location),
-         hjust = ifelse(year == 2010, 1, 0)) %>%
   mutate(year = as.factor(year)) %>%
   ggplot(aes(year, life_expectancy, group = country)) +
   geom_line(aes(color = country), show.legend = FALSE) +
@@ -197,7 +192,7 @@ Here, by simply looking at the y-axis, we quickly see which countries have shown
 
 ### Bump charts
 
-Finally, we can make a bump chart that shows changes in rankings over time. We'll look at fertility in South Asia. First we need to calculate a new variable that shows the rank of each country within each year. We can do this if we group by year and then use the `rank()` function to rank countries by the `fertility` column.
+Finally, we can make a bump chart that shows changes in rankings over time. We'll look at fertility in South Asia. First we need to calculate a new variable that shows the rank of each country within each year. We can do this if we group by year and then use the `rank()` function to rank countries by the `fertility` column. Note that `rank()` counts up from the smallest value, so rank 1 is the country with the *lowest* fertility.
 
 ```{r filter-bump-data}
 sa_fe <- gapminder %>%
@@ -353,7 +348,7 @@ Now can we show data for all states in one plot? We have three variables to show
 
 In our example, we want to use a sequential palette since there is no meaningful center, just low and high rates.
 
-We use the geometry `geom_tile` to tile the region with colors representing disease rates. We use a square root transformation to avoid having the really high counts dominate the plot. Notice that missing values are shown in grey. Note that once a disease was pretty much eradicated, some states stopped reporting cases all together. This is why we see so much grey after 1980.
+We use the geometry `geom_tile` to tile the region with colors representing disease rates. We use a square root transformation to avoid having the really high counts dominate the plot. Notice that missing values are shown in grey. Note that once a disease was pretty much eradicated, some states stopped reporting cases altogether. This is why we see so much grey after 1980.
 
 ```{r vaccines-plot, out.width="100%", fig.height=5}
 dat %>% 
@@ -407,7 +402,7 @@ In RMarkdown, we display the plot as part of the chunk output. For your group pr
 ```
 ggsave(myPlot, file = 'myPlot.png', width = 7, height = 5, dpi=300)
 ```
-File type will be discerned from the suffix on the file, and the height and width are in inches. The `dpi` argument sets the pixes-per-inch. Generally, screens display at around 150 (though this is rapidly increasing, it used to be 72 dpi), and print is usually 300 or better. A width of 5 inches at 300 dpi will render an image 1,500 pixels across.
+File type will be discerned from the suffix on the file, and the height and width are in inches. The `dpi` argument sets the pixels-per-inch. Generally, screens display at around 150 (though this is rapidly increasing, it used to be 72 dpi), and print is usually 300 or better. A width of 5 inches at 300 dpi will render an image 1,500 pixels across.
 
 The dpi and file size may change the *relative* font size, so you might have to experiment with different sizes and dpi values for exporting.
 
@@ -416,7 +411,7 @@ The dpi and file size may change the *relative* font size, so you might have to 
 
 ## TRY IT
 
-1. Reproduce the heatmap plot we previously made but for smallpox. For this plot, do not include years in which cases were not reported in 10 or more weeks.
+1. Reproduce the heatmap plot we previously made but for smallpox. For this plot, include only years with 10 or more weeks reporting.
 
 2. Now reproduce the time series plot we previously made, but this time following the instructions of the previous question for smallpox.
 
@@ -460,13 +455,13 @@ ggplot(states) + geom_sf()
 
 We get a lot of information besides the `geometry` column, including the census `REGION` and `DIVISION`, plus the `STATEFP`, which is the "state FIPS code" for each state. These are unique numbers for each state that are used in federal data. We'll use them more in the future.
 
-We also get all the territories, which extends the map window way out the South Pacific. Let's use some tricks to make this better. First off, US territories have FIPS codes of 60 and above, so we can filter to get the 50 US States + DC. Then, we can shift the geometry to include AK and HI (not to scale).
+We also get all the territories, which extends the map window way out into the South Pacific. Let's use some tricks to make this better. First off, US territories have FIPS codes of 60 and above, so we can filter to get the 50 US States + DC. Then, we can shift the geometry to include AK and HI (not to scale).
 
 ```{r, echo = T, message = F, error = F, warning = F, collapse = T}
 states = tigris::states(cb = T, progress_bar = F) %>%
   dplyr::filter(STATEFP<60) %>%
   tigris::shift_geometry(position = 'below') %>%
-  dplyr::select(STATEFP, STATEFP, STUSPS, NAME)
+  dplyr::select(STATEFP, STUSPS, NAME)
 
 head(states)
 
@@ -513,7 +508,7 @@ p.1960
 A couple things to note in this code:
 
 - We use the `fill` aesthetic mapping, so the state borders still have the default for `color`
-- Kansas, Alaska, and Hawaii are `NA` for 1960
+- Kansas, Alaska, and Hawaii are `NA` for 1960 -- and so is DC, because `dslabs` spells it "District Of Columbia" while `tigris` spells it "District of Columbia", so the join silently misses it
 - We set the theme to `theme_void()` and *then* use another `theme()` function to move the legend. Think of it as overwriting the previous theme.
 
 
@@ -559,7 +554,7 @@ p.1965b = ggplot(states.measles.1965, aes(fill = rate)) +
   geom_sf() +
   scale_fill_continuous(type = 'viridis', limits = c(min(c(states.measles.1960$rate, states.measles.1965$rate), na.rm=T),
                                                      max(c(states.measles.1960$rate, states.measles.1965$rate), na.rm=T))) +
-  labs(fill = 'Measles Rate', title = 'Measels - 1965') +
+  labs(fill = 'Measles Rate', title = 'Measles - 1965') +
   theme_void() +# really get rid of the extra stuff
   theme(legend.position = "bottom")
 

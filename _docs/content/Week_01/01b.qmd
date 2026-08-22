@@ -88,12 +88,12 @@ For a full review of data types, see [the usingR resource](/resource/usingR.qmd)
 
 ## Functions
 
-Once you define variables, the data analysis process can usually be described as a series of *functions* applied to the data. `R` includes several zillion predefined functions and most of the analysis pipelines we construct make extensive use of the built-in functions. But `R`'s power comes from its scalability. We have access to (nearly) infinite functions via `install.packages` and `library`. As we go through the course, we will carefully note new functions we bring to each problem. For now, though, we will stick to the basics.
+Once you define variables, the data analysis process can usually be described as a series of *functions* applied to the data. `R` includes several zillion predefined functions and most of the analysis pipelines we construct make extensive use of the built-in functions. But `R`'s power comes from its extensibility. We have access to (nearly) infinite functions via `install.packages` and `library`. As we go through the course, we will carefully note new functions we bring to each problem. For now, though, we will stick to the basics.
 
 
 In general, we need to use parentheses to evaluate a function. If you type `ls`, the function is not evaluated and instead `R` shows you the code that defines the function. If you type `ls()` the function is evaluated and we see the objects currently sitting in the workspace.
 
-Unlike `ls`, most functions require one or more _arguments_. Below is an example of how we assign an object to the argument of the function `log`.:
+Unlike `ls`, most functions require one or more _arguments_. Below is an example of how we assign an object to the argument of the function `log`:
 
 ```{r}
 log(8)
@@ -114,7 +114,7 @@ For most functions, we can also use this shorthand:
 ?log
 ```
 
-The help page will show you what arguments the function is expecting. For example, `log` needs `x` and `base` to run. However, some arguments are required and others are optional. You can determine which arguments are optional by noting in the help document that a default value is assigned with `=`. Defining these is optional.^[This equals sign is the reasons we assign values with `<-`; then when arguments of a function are assigned values, we don't end up with multiple equals signs. But... who cares.] For example, the base of the function `log` defaults to `base = exp(1)`---that is, `log` evaluates the natural log by default.
+The help page will show you what arguments the function is expecting. For example, `log` needs `x` and `base` to run. However, some arguments are required and others are optional. You can determine which arguments are optional by noting in the help document that a default value is assigned with `=`. Defining these is optional.^[This equals sign is the reason we assign values with `<-`; then when arguments of a function are assigned values, we don't end up with multiple equals signs. But... who cares.] For example, the base of the function `log` defaults to `base = exp(1)`---that is, `log` evaluates the natural log by default.
 
 If you want a quick look at the arguments without opening the help system, you can type:
 
@@ -317,7 +317,7 @@ We can also use double square brackets (`[[`) like this:
 record[["student_id"]]
 ```
 
-You should get used to the fact that in `R` there are often several ways to do the same thing. such as accessing entries.^[Whether you view this as a feature or a bug is a good indicator whether you'll enjoy working with `R`.]
+You should get used to the fact that in `R` there are often several ways to do the same thing, such as accessing entries.^[Whether you view this as a feature or a bug is a good indicator whether you'll enjoy working with `R`.]
 
 You might also encounter lists without variable names.
 
@@ -456,14 +456,14 @@ x <- c(31, 4, 15, 92, 65)
 sort(x)
 ```
 
-Rather than sort the input vector, the function `order` returns the index that sorts input vector:
+Rather than sort the input vector, the function `order` returns the index that sorts the input vector:
 
 ```{r}
 index <- order(x)
 print(index)
 ```
 
-The second entry of `x` is the smallest, so `order(x)` starts with `2`. The next smallest is the third entry, so the second entry is `3` and so on.
+The second entry of `x` is the smallest, so `order(x)` starts with `2`. The next smallest is the third entry of `x`, so the second entry of `order(x)` is `3`, and so on.
 
 To use this, we just need to place it as the index to `x`. If we look at this index, we see why it works:
 ```{r}
@@ -601,7 +601,7 @@ However, when we compute the average with the function `mean`, we obtain an `NA`
 mean(na_example)
 ```
 
-The `is.na` function returns a logical vector that tells us which entries are `NA`. Assign this logical vector to an object called `ind` and determine how many `NA`s does `na_example` have. Note that TRUE=1 and FALSE=0 when "coerced".
+The `is.na` function returns a logical vector that tells us which entries are `NA`. Assign this logical vector to an object called `ind` and determine how many `NA`s `na_example` has. Note that TRUE=1 and FALSE=0 when "coerced".
 :::
   
   
@@ -701,7 +701,7 @@ city_temps <- data.frame(name = city, temperature = temp)
 
 Remake the data frame using the code above, but add a line that converts the temperature from Fahrenheit to Celsius. The conversion is $C = \frac{5}{9} \times (F - 32)$.
 
-2. Write code to compute the following sum $1+1/2^2 + 1/3^2 + \dots 1/100^2$? *Hint:* thanks to Euler, we know it should be close to $\pi^2/6$.
+2. Write code to compute the following sum $1+1/2^2 + 1/3^2 + \dots + 1/100^2$. *Hint:* thanks to Euler, we know it should be close to $\pi^2/6$.
 
 3. Compute the per 100,000 murder rate for each state and store it in a new column called `murder_rate`. Then compute the average of those state murder rates using the function `mean`. What is the average? (Careful: that's the average of the 51 state rates, not the murder rate for the US as a whole -- the latter weights each state by its population.)
 :::
@@ -798,7 +798,7 @@ If rather than an index we want a logical that tells us whether or not each elem
 c("Boston", "Dakota", "Washington") %in% murders$state
 ```
 
-Note that we will be using `%in%` often throughout the course
+Note that we will be using `%in%` often throughout the course.
 
 
 

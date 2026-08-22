@@ -191,7 +191,7 @@ In statistical textbooks, upper case letters are used to denote random variables
 
 ## The expected value and standard error
 
-We have described sampling models for draws. We will now go over the mathematical theory that lets us approximate the probability distributions for the sum of draws. Once we do this, we will be able to help the casino predict how much money they will make. The same approach we use for the sum of draws will be useful for describing the distribution of averages and proportion which we will need to understand how polls work.
+We have described sampling models for draws. We will now go over the mathematical theory that lets us approximate the probability distributions for the sum of draws. Once we do this, we will be able to help the casino predict how much money they will make. The same approach we use for the sum of draws will be useful for describing the distribution of averages and proportions, which we will need to understand how polls work.
 
 The first important concept to learn is the _expected value_.
 In statistics books, it is common to use letter $\mbox{E}$ like this:
@@ -335,7 +335,7 @@ How do we use these definitions and rules? Well, when there are things in the re
 
 ## Central Limit Theorem
 
-We really want to know the probability that a casino will lose money. We know the probability distribution of roulette which let us calculate the expected value and the standard deviation of a random variable that consists of 1,000 people playing roulette, but we don't know the distribution of the sum of those random variables.
+We really want to know the probability that a casino will lose money. We know the probability distribution of roulette, which let us calculate the expected value and the standard error of the sum of 1,000 people playing roulette, but we don't know the shape of that sum's distribution.
 
 The Central Limit Theorem (CLT) tells us that when the number of plays (or "draws"), also called the _sample size_, is large, the probability distribution of the **sum** of the independent draws is approximately normal. Because sampling models are used for so many data generation processes, the CLT is considered one of the most important mathematical insights in history.
 
@@ -501,7 +501,7 @@ Elections are a particularly interesting case of opinion polls because the actua
 
 Although typically the results of these polls are kept private, similar polls are conducted by news organizations because results tend to be of interest to the general public and made public. We will eventually be looking at such data.
 
-Real Clear Politics^[http://www.realclearpolitics.com] is an example of a news aggregator that organizes and publishes poll results. For example, they present the following poll results reporting estimates of the popular vote for the 2016 presidential election^[http://www.realclearpolitics.com/epolls/2016/president/us/general_election_trump_vs_clinton-5491.html]:
+Real Clear Politics^[http://www.realclearpolitics.com] is an example of a news aggregator that organizes and publishes poll results. For example, they collect poll results reporting estimates of the popular vote for the 2016 presidential election^[http://www.realclearpolitics.com/epolls/2016/president/us/general_election_trump_vs_clinton-5491.html]. We aren't reproducing their table here, but you can find it at that link.
 
 ```{r, eval = F, echo=FALSE, message=FALSE, warning=FALSE}
 # knitr::include_graphics(file.path(img_path,"rcp-polls.png"))
@@ -533,7 +533,7 @@ Although in the United States the popular vote does not determine the result of 
 
 Let's make some observations about the polls Real Clear Politics collected in the week before that election. First, note that different polls, all taken days before the election, report a different _spread_:  the estimated difference between support for the two candidates. Notice also that the reported spreads hover around what ended up being the actual result: Clinton won the popular vote by 2.1%. Each poll also reports a number labeled **MoE**, which stands for _margin of error_.
 
-In this example, we will show how the probability concepts we learned in the previous content can be applied to develop the statistical approaches that make polls an effective tool. We will learn the statistical concepts necessary to define _estimates_ and _margins of errors_, and show how we can use these to forecast final results relatively well and also provide an estimate of the precision of our forecast. Once we learn this, we will be able to understand two concepts that are ubiquitous in data science: _confidence intervals_ and _p-values_. Finally, to understand probabilistic statements about the probability of a candidate winning, we will have to learn about Bayesian modeling. In the final sections, we put it all together to recreate the simplified version of the FiveThirtyEight model and apply it to the 2016 election.
+In this example, we will show how the probability concepts we learned in the previous content can be applied to develop the statistical approaches that make polls an effective tool. We will learn the statistical concepts necessary to define _estimates_ and _margins of errors_, and show how we can use these to forecast final results relatively well and also provide an estimate of the precision of our forecast. Once we learn this, we will be able to understand two concepts that are ubiquitous in data science: _confidence intervals_ and _p-values_, which we take up in a couple of weeks. Understanding statements like "Clinton has an 81.4% chance of winning" would require Bayesian statistics, which we don't cover in this course.
 
 We start by connecting probability theory to the task of using polls to learn about a population.
 
@@ -574,7 +574,7 @@ In statistical textbooks, the beads in the urn are called the _population_. The 
 ::: {.callout-tip}
 ## This is a different approach
 
-Above, we knew what was in the urn (the probability distribution) and calculated things from that. Now, we're in a world where we don't know what's in the urn, but we can take samples. The two will meet in the middle -- we can caluclate sample versions of things, and see what we can infer about population values.
+Above, we knew what was in the urn (the probability distribution) and calculated things from that. Now, we're in a world where we don't know what's in the urn, but we can take samples. The two will meet in the middle -- we can calculate sample versions of things, and see what we can infer about population values.
 
 Here we go!
 :::
@@ -606,7 +606,7 @@ Here we encounter an important difference with what we did in the Probability ch
 
 ### Parameters
 
-Just like we use variables to define unknowns in systems of equations, in statistical inference we define _parameters_ to define unknown parts of our models. In the urn model which we are using to mimic an opinion poll, **we do not know the proportion of blue beads in the urn**. We define the parameters $p$ to represent this quantity. $p$ is the average of the urn because if we take the average of the 1s (blue) and 0s (red), we get the proportion of blue beads. Since our main goal is figuring out what is $p$, we are going to _estimate this parameter_.
+Just like we use variables to define unknowns in systems of equations, in statistical inference we define _parameters_ to define unknown parts of our models. In the urn model which we are using to mimic an opinion poll, **we do not know the proportion of blue beads in the urn**. We define the parameter $p$ to represent this quantity. $p$ is the average of the urn because if we take the average of the 1s (blue) and 0s (red), we get the proportion of blue beads. Since our main goal is figuring out what is $p$, we are going to _estimate this parameter_.
 
 The ideas presented here on how we estimate parameters, and provide insights into how good these estimates are, extrapolate to many data science tasks. For example, we may want to determine the difference in health improvement between patients receiving treatment and a control group. We may ask, what are the health effects of smoking on a population? What are the differences in racial groups of fatal shootings by police? What is the rate of change in life expectancy in the US during the last 10 years? All these questions can be framed as a task of estimating a parameter from a sample.
 
@@ -616,7 +616,7 @@ The ideas presented here on how we estimate parameters, and provide insights int
 
 ### Properties of our estimate: expected value and standard error
 
-To understand how good our estimate is, we will describe the statistical properties of the random variable defined above: the sample proportion $\bar{X}$. Remember that $\bar{X}$ is the sum of independent draws so the rules we covered in the probability chapter apply.
+To understand how good our estimate is, we will describe the statistical properties of the random variable defined above: the sample proportion $\bar{X}$. Remember that $\bar{X}$ is the sum of independent draws divided by $N$, so the rules we covered above apply.
 
 Using what we have learned, the expected value of the sum $N\bar{X}$ is $N \times$ the average of the urn, $p$. So dividing by the non-random constant $N$ gives us that the expected value of the average $\bar{X}$ is $p$. We can write it using our mathematical notation:
 
@@ -642,12 +642,12 @@ N <- 10^seq(1,5, len=100)
 data.frame(N=N, SE = sqrt(p*(1-p)/N)) %>% ggplot(aes(N, SE)) + geom_line() + scale_x_continuous(breaks = c(10,100,1000,10000), trans = "log10")
 ```
 
-From the plot we see that we would need a poll of about 2,500 people to get the standard error that low -- and about 10,000 to get the *margin of error* (roughly two standard errors) down to 1%. We rarely see polls of that size due in part to costs. From the Real Clear Politics table, we learn that the sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and $p=0.51$, the standard error is:
+From the plot we see that we would need a poll of about 2,500 people to get the standard error that low -- and about 10,000 to get the *margin of error* (roughly two standard errors) down to 1%. We rarely see polls of 10,000 people due in part to costs. From the Real Clear Politics polls linked above, we learn that the sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and $p=0.51$, the standard error is:
 ```{r}
 sqrt(p*(1-p))/sqrt(1000)
 ```
 
-or 1.5 percentage points. So even with large polls, for close elections, $\bar{X}$ can lead us astray if we don't realize it is a random variable. Nonetheless, we can actually say more about how close we get the $p$.
+or 1.6 percentage points. So even with large polls, for close elections, $\bar{X}$ can lead us astray if we don't realize it is a random variable. Nonetheless, we can actually say more about how close we get to $p$.
 
 ::: {.callout-tip}
 ## Central Limit Theorem {#clt}
@@ -681,7 +681,7 @@ $$
 $$
 In statistics textbooks, we use a little hat to denote estimates. The estimate can be constructed using the observed data and $N$.
 
-Now we continue with our calculation, but dividing by $\hat{\mbox{SE}}(\bar{X})=\sqrt{\bar{X}(1-\bar{X})/N})$ instead. In our first sample we had 12 blue and 13 red so $\bar{X} = 0.48$ and our estimate of standard error is:
+Now we continue with our calculation, but dividing by $\hat{\mbox{SE}}(\bar{X})=\sqrt{\bar{X}(1-\bar{X})/N}$ instead. In our first sample we had 12 blue and 13 red so $\bar{X} = 0.48$ and our estimate of standard error is:
 
 ```{r}
 x_hat <- 0.48
@@ -776,7 +776,7 @@ mean(x_hat)
 sd(x_hat)
 ```
 
-A histogram and qq-plot confirm that the normal approximation is accurate as well. A qq-plot simply plots the observed quantile values (for quantiles 1-100 usually) agains the *theoretical* quantiles from a normal distribution with the same mean and standard error (from the sample's SD):
+A histogram and qq-plot confirm that the normal approximation is accurate as well. A qq-plot simply plots the observed quantile values (for quantiles 1-100 usually) against the *theoretical* quantiles from a normal distribution with the same mean and standard error (from the sample's SD):
 
 ```{r normal-approximation-for-polls, echo=FALSE, warning=FALSE, message=FALSE, out.width="100%", fig.height=3}
 library(tidyverse)
@@ -801,7 +801,7 @@ Of course, in real life we would never be able to run such an experiment because
 
 The competition is to predict the spread, not the proportion $p$. However, because we are assuming there are only two parties, we know that the spread is $p - (1-p) = 2p - 1$.  As a result, everything we have done can easily be adapted to an estimate of $2p - 1$. Once we have our estimate $\bar{X}$ and $\hat{\mbox{SE}}(\bar{X})$, we estimate the spread with $2\bar{X} - 1$ and, since we are multiplying by 2, the standard error is $2\hat{\mbox{SE}}(\bar{X})$. Note that subtracting 1 does not add any variability so it does not affect the standard error.
 
-For our 25 item sample above, our estimate $p$ is `.48` with margin of error `.20` and our estimate of the spread is `0.04` with margin of error `.40`. Again, not a very useful sample size. However, the point is that once we have an estimate and standard error for $p$, we have it for the spread $2p-1$.
+For our 25 item sample above, our estimate $p$ is `.48` with margin of error `.20` and our estimate of the spread is `-0.04` with margin of error `.40`. Again, not a very useful sample size. However, the point is that once we have an estimate and standard error for $p$, we have it for the spread $2p-1$.
 
 
 ### Bias: why not run a very large poll?

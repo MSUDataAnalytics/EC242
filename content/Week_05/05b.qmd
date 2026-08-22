@@ -31,7 +31,7 @@ output:
 
 
 # Before we start:
-You must obtain a US Census API key, which is free and fast. Go to [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html). Then, install the `tidycensus` package and, once loaded, run `tidycensus::census_api_key('your census API key')` once and only once. It will save the key on your computer and won't expose it in your code.
+You must obtain a US Census API key, which is free and fast. Go to [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html). Then, install the `tidycensus` package and, once loaded, run `tidycensus::census_api_key('your census API key', install = TRUE)` once and only once. The `install = TRUE` is what saves the key on your computer (restart R once afterward); it won't expose it in your code.
 
 
 
@@ -65,7 +65,7 @@ Temporal granularity refers to time, the number of times we observe the same uni
 ### Panel Data
 When we see the same unit of observation at different points in time (yearly, decadally, etc.), and when we see more than one unit of observation, then we say we have "panel data". Panel data is very useful because we can look at changes over time for multiple units of observation, and we can look at the ways in which different variables change over time, and whether they change together.
 
-For example, if we see unemployment rate and average education level every year for every county in Michigan, we'd say "we have a panel of counties with yearly data." A panel dataset might be individuals as well, as long as we observe the same individual multiple times. If we saw that counties with increasing unemployment rates over time also tend to have decreasing average educational attainment, we will have learned somehting about the relationship (correlation) between the two, even if different counties have very different "usual" levels of unemployment.
+For example, if we see unemployment rate and average education level every year for every county in Michigan, we'd say "we have a panel of counties with yearly data." A panel dataset might be individuals as well, as long as we observe the same individual multiple times. If we saw that counties with increasing unemployment rates over time also tend to have decreasing average educational attainment, we will have learned something about the relationship (correlation) between the two, even if different counties have very different "usual" levels of unemployment.
 
 ### Repeated cross-section
 If we have data where the same variable is measured at different points in time, but measured against a different sample from the same population at each time period, we call that a "repeated cross-section." It's not as useful as a panel, but it's better than nothing. Later, we'll work with the US Energy Information Administration's RECS (Residential Energy Consumption Survey), which is taken every 10 years and surveys a sample of around 10,000 homes in the US. Since it's different homes sampled every 10 years, it's a "repeated cross-section".
@@ -109,7 +109,7 @@ There are many sources for data that we can use for social science research and 
 ### Summary tables, cross-tabs, and individual data
 Most US Census data is used via summary tables, which report a single value for each spatial area (like a census tract). Average income by census tract, average age by county, etc. We often also use cross-tabs of summary files, which subdivides by two or more variables. For instance, summary data may be reported for average income **by age** by census tract, or average age **by nationality of birth** by county. The US census makes a lot of cross-tabs, but not every single combination you could imagine. Plus, they are limited by privacy, so they can't subdivide to the point you can identify a person. For instance, "average income by exact age by number of kids by profession by time living in current house by census block" would absolutely identify an individual's current income as they'd be the only one being averaged.
 
-The US decennial census and the yearly 5-year and 1-year American Community Survery (ACS) report summary tables with very rich cross-tabs. 
+The US decennial census and the yearly 5-year and 1-year American Community Survey (ACS) report summary tables with very rich cross-tabs. 
 
 **Individual microdata** allows for generating any cross-tab as individual data would contain all responses to all questions for the respondent. The US Census makes the ACS sample individual answers available to the public, along with the survey and codebook for translating responses. Of course, for privacy reasons, the geographic location provided with the individual data is limited. The finest area reported is the "PUMA" (Public Use Microdata Area), each of which contains at least 100,000 individuals. For example, the City of Detroit is comprised of 5 PUMAs. 
 
@@ -155,7 +155,7 @@ Rule of thumb: you want your census data to be at the same spatial and temporal 
 
 ## Obtaining Census Data
 
-Using the `tidycensus` package, we can easily obtain US census data. First, you must obtain a US Census API key, which is free and fast. Go to [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html). Then, install the `tidycensus` package and, once loaded, run `tidycensus::census_api_key('your census API key')` once and only once. It will save the key on your computer and won't expose it in your code. Handy!
+Using the `tidycensus` package, we can easily obtain US census data. First, you must obtain a US Census API key, which is free and fast. Go to [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html). Then, install the `tidycensus` package and, once loaded, run `tidycensus::census_api_key('your census API key', install = TRUE)` once and only once. It will save the key on your computer and won't expose it in your code. Handy!
 
 Tidycensus can obtain data from both PUMS (individual) and from the summary tables for ACS and decennial censuses. The interface makes it easy to import data directly into your R session. The hard part, though, is knowing what to ask for.
 
@@ -239,7 +239,7 @@ You now have a wealth of socio-economic microdata at your fingertips, all linked
 
 ## Decennial/ACS Summary tables
 
-Summary tables from decennial census or the ACS contain finer geographies (usually down to census block), but aggregate rather than giving individual observations. Many cross-tabs are calculated for each geography, so finding the right one can be tricky. Some tables report averages or shares (percent renters, average income) while some report total counts (count of renters, number of people earning between \$25-35k). 
+Summary tables from decennial census or the ACS contain finer geographies (down to the census block for the decennial, blockgroup for the ACS), but aggregate rather than giving individual observations. Many cross-tabs are calculated for each geography, so finding the right one can be tricky. Some tables report averages or shares (percent renters, average income) while some report total counts (count of renters, number of people earning between \$25-35k). 
 
 While `tidycensus` provides a function to import the whole list of all variables, we can also use the [data.census.gov](https://data.census.gov) website. We are looking for **tables**, so click on "explore tables".
 
@@ -412,7 +412,7 @@ Census data products are core resources in socio-economic research. But they are
 ### MSU-available data
 
 - [MSU Data Librarian start page](https://lib.msu.edu/data)
-  - MSU-subscribed datasets, may of which (but not all) are available to undergraduates
+  - MSU-subscribed datasets, many of which (but not all) are available to undergraduates
 - [Dewey Data Catalog](https://www.deweydata.io/)
   - Clearinghouse of usually-expensive data across 25+ providers. Some examples:
     - NatureQuant has urban heat indexes
@@ -459,7 +459,7 @@ Here's how most (but not all) ArcGIS-hosted spatial data can be obtained.
 
 7. Click on one and look at the URL or URL summary. You're looking for an address that starts with the URL of the mapping site (for mine, gisagoegle.state.mi.us), then followed by `/arcgis/rest` and eventually ending with `/featureserver` or `mapserver` followed by a number. We want to copy everything up to and including the number after `featureserver` or `mapserver`. In this example, the full address we want to copy is: `https://gisagoegle.state.mi.us/arcgis/rest/services/EGLE/WrdOpenData/MapServer/1/`.
 
-8. Using `arcgislayer`:
+8. Using `arcgislayers`:
 
 ```{r, echo=T, eval = T}
 library(arcgislayers)

@@ -700,7 +700,7 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We will learn how to implement the tidyverse approach throughout the book, but before delving into the details, in this chapter we introduce some of the most widely used tidyverse functionality, starting with the <strong>dplyr</strong> package for manipulating data frames and the <strong>purrr</strong> package for working with functions. Note that the tidyverse also includes a graphing package, <strong>ggplot2</strong>, the <strong>readr</strong> package, and many others. In this lesson, we first introduce the concept of <em>tidy data</em> and then demonstrate how we use the tidyverse to work with data frames in this format.</p>
+<p>We will learn how to implement the tidyverse approach throughout the course, but before delving into the details, here we introduce some of the most widely used tidyverse functionality, starting with the <strong>dplyr</strong> package for manipulating data frames and the <strong>purrr</strong> package for working with functions. Note that the tidyverse also includes a graphing package, <strong>ggplot2</strong>, the <strong>readr</strong> package, and many others. In this lesson, we first introduce the concept of <em>tidy data</em> and then demonstrate how we use the tidyverse to work with data frames in this format.</p>
 </details></section>
 <section id="tidy-data" class="level1">
 <h1>Tidy data</h1>
@@ -721,7 +721,7 @@ window.Quarto = {
 6   Colorado  CO   West    5029196    65</code></pre>
 </div>
 </div>
-<p>Each row represent a state with each of the five columns providing a different variable related to these states: name, abbreviation, region, population, and total murders.</p>
+<p>Each row represents a state with each of the five columns providing a different variable related to these states: name, abbreviation, region, population, and total murders.</p>
 <p>To see how the same information can be provided in different formats, consider the following example:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -977,7 +977,7 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li>The pipe <code>%&gt;%</code> can be used to perform operations sequentially without having to define intermediate objects. Start by redefining murder to include rate and rank.</li>
+<li>The pipe <code>%&gt;%</code> can be used to perform operations sequentially without having to define intermediate objects. Start by redefining <code>murders</code> to include rate and rank.</li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>murders <span class="ot">&lt;-</span> <span class="fu">mutate</span>(murders, <span class="at">rate =</span>  total <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>,</span>
@@ -1388,7 +1388,7 @@ window.Quarto = {
 <h1>Applying more complex functions</h1>
 <section id="the-dot-operator" class="level2">
 <h2 class="anchored" data-anchor-id="the-dot-operator">The dot operator</h2>
-<p>One of the advantages of using the pipe <code>%&gt;%</code> is that we do not have to keep naming new objects as we manipulate the data frame. As a quick reminder, if we want to compute the median murder rate for states in the southern states, instead of typing:</p>
+<p>One of the advantages of using the pipe <code>%&gt;%</code> is that we do not have to keep naming new objects as we manipulate the data frame. As a quick reminder, if we want to compute the median murder rate for states in the South, instead of typing:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>tab_1 <span class="ot">&lt;-</span> <span class="fu">filter</span>(murders, region <span class="sc">==</span> <span class="st">"South"</span>)</span>
 <span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>tab_2 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(tab_1, <span class="at">rate =</span> total <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">5</span>)</span>
@@ -1719,7 +1719,7 @@ window.Quarto = {
 <pre><code>[1] "character"</code></pre>
 </div>
 </div>
-<p>The <code>pivot_longer</code> function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers::</p>
+<p>The <code>pivot_longer</code> function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>new_tidy_data <span class="ot">&lt;-</span> wide_data <span class="sc">%&gt;%</span></span>
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>country, <span class="at">names_to =</span> <span class="st">'year'</span>, <span class="at">values_to =</span> <span class="st">'fertility'</span>) <span class="sc">%&gt;%</span></span>
@@ -1736,7 +1736,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="02a_files/figure-html/fertility-year-check-1.png" class="img-fluid figure-img" alt="Plot showing South Korean fertility rate (green points) and German fertility rates (red points) from 1960 to approximately 2020. South Korean rates are much higher in 1960, while German rates are lower at around 2.5. Over time, German fertility rates decline to around 1.5, while South Korean drop from 6 to under 1.5 around 2000, remaining low through 2020." width="672"></p>
+<p><img src="02a_files/figure-html/fertility-year-check-1.png" class="img-fluid figure-img" alt="Plot showing South Korean fertility rate (green points) and German fertility rates (red points) from 1960 to 2015. South Korean rates are much higher in 1960, while German rates are lower at around 2.5. Over time, German fertility rates decline to around 1.5, while South Korean drop from 6 to under 1.5 around 2000, remaining low through 2015." width="672"></p>
 </figure>
 </div>
 </div>
@@ -1757,7 +1757,7 @@ window.Quarto = {
 2 South Korea   6.16   5.99   5.79   5.57   5.36   5.16   4.99   4.85</code></pre>
 </div>
 </div>
-<p>The function assumes that the remaining columns – those that aren’t <code>names_from</code> or <code>values_from</code> <em>form a unique “tidy” observation</em>. If this isn’t the case, you’ll either need to use <code>select</code> to keep just the variables that uniquely define an observation <em>or</em> use the <code>id_cols</code> argument to state which columns do uniquely identify an observation. Since our <code>new_tidy_data</code> didn’t have any additional columns, we didn’t need to do this.</p>
+<p>The function assumes that the remaining columns – those that aren’t <code>names_from</code> or <code>values_from</code> – <em>form a unique “tidy” observation</em>. If this isn’t the case, you’ll either need to use <code>select</code> to keep just the variables that uniquely define an observation <em>or</em> use the <code>id_cols</code> argument to state which columns do uniquely identify an observation. Since our <code>new_tidy_data</code> didn’t have any additional columns, we didn’t need to do this.</p>
 <p>The following diagram can help remind you how these two functions work:</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1819,7 +1819,7 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> <span class="fu">separate</span>(<span class="at">col =</span> key, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"variable_name"</span>), <span class="at">sep =</span> <span class="st">"_"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The function does separate the values, but we run into a new problem. We receive the warning <code>Expected 2 pieces. Additional pieces discarded in 112 rows [2, 4, 6, 8, ...]</code>. (Earlier versions may give the error <code>Too many values at 112 locations:</code>) and that the <code>life_expectancy</code> variable is truncated to <code>life</code>. This is because the <code>_</code> is used to separate <code>life</code> and <code>expectancy</code>, not just year and variable name! We could add a third column to catch this and let the <code>separate</code> function know which column to <em>fill in</em> with missing values, <code>NA</code>, when there is no third value. Here we tell it to fill the column on the right:</p>
+<p>The function does separate the values, but we run into a new problem. We receive the warning <code>Expected 2 pieces. Additional pieces discarded in 112 rows [2, 4, 6, 8, ...]</code> (earlier versions may give the error <code>Too many values at 112 locations:</code>), and we see that the <code>life_expectancy</code> variable is truncated to <code>life</code>. This is because the <code>_</code> is used to separate <code>life</code> and <code>expectancy</code>, not just year and variable name! We could add a third column to catch this and let the <code>separate</code> function know which column to <em>fill in</em> with missing values, <code>NA</code>, when there is no third value. Here we tell it to fill the column on the right:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> <span class="fu">separate</span>(key, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"first_variable_name"</span>, <span class="st">"second_variable_name"</span>), <span class="at">fill =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1881,7 +1881,7 @@ window.Quarto = {
 # ℹ 102 more rows</code></pre>
 </div>
 </div>
-<p>The data is now in tidy format with one row for each observation with three variables: year, fertility, and life expectancy.</p>
+<p>The data is now in tidy format with one row for each observation and four variables: country, year, fertility, and life expectancy.</p>
 </section>
 <section id="unite" class="level2">
 <h2 class="anchored" data-anchor-id="unite"><code>unite</code></h2>
@@ -1980,7 +1980,7 @@ window.Quarto = {
 <ol start="5" type="1">
 <li>Now we will try a more advanced wrangling challenge. We want to wrangle the admissions data so that for each major we have 4 observations: <code>admitted_men</code>, <code>admitted_women</code>, <code>applicants_men</code> and <code>applicants_women</code>. The <em>trick</em> we perform here is actually quite common: first pivot_longer to generate an intermediate data frame and then pivot_wider to obtain the tidy data we want. We will go step by step in this and the next two exercises.</li>
 </ol>
-<p>Use the pivot_longer function to create a <code>tmp</code> data.frame with a column containing the type of observation <code>admitted</code> or <code>applicants</code>. Call the new columns <code>key</code> and value.</p>
+<p>Use the pivot_longer function to create a <code>tmp</code> data.frame with a column containing the type of observation <code>admitted</code> or <code>applicants</code>. Call the new columns <code>key</code> and <code>value</code>.</p>
 <ol start="6" type="1">
 <li><p>Now you have an object <code>tmp</code> with columns <code>major</code>, <code>gender</code>, <code>key</code> and <code>value</code>. Note that if you combine the key and gender, we get the column names we want: <code>admitted_men</code>, <code>admitted_women</code>, <code>applicants_men</code> and <code>applicants_women</code>. Use the function <code>unite</code> to create a new column called <code>column_name</code>.</p></li>
 <li><p>Now use the <code>pivot_wider</code> function to generate the tidy data with four variables for each major.</p></li>

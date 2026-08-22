@@ -600,7 +600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>Journalists and lobbyists tell dramatic stories. That’s their job. They tell stories about extraordinary events and unusual people. The piles of dramatic stories pile up in peoples’ minds into an over-dramatic worldview and strong negative stress feelings: “The world is getting worse!”, “It’s we vs.&nbsp;them!”, “Other people are strange!”, “The population just keeps growing!” and “Nobody cares!”</p>
 </blockquote>
-<p>Hans Rosling conveyed actual data-based trends in a dramatic way of his own, using effective data visualization. This section is based on two talks that exemplify this approach to education: [New Insights on Poverty]<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> and The Best Stats You’ve Ever Seen<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Specifically, in this section, we use data to attempt to answer the following two questions:</p>
+<p>Hans Rosling conveyed actual data-based trends in a dramatic way of his own, using effective data visualization. This section is based on two talks that exemplify this approach to education: New Insights on Poverty<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> and The Best Stats You’ve Ever Seen<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Specifically, in this section, we use data to attempt to answer the following two questions:</p>
 <ol type="1">
 <li>Is it a fair characterization of today’s world to say it is divided into western rich nations and the developing world in Africa, Asia, and Latin America?</li>
 <li>Has income inequality across countries worsened during the last 40 years?</li>
@@ -705,17 +705,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">label_last =</span> <span class="fu">ifelse</span>(year <span class="sc">==</span> <span class="dv">2015</span>,  <span class="fu">paste0</span>(<span class="fu">round</span>(life_expectancy, <span class="dv">1</span>),<span class="st">' years'</span>), <span class="cn">NA</span>))</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">location =</span> <span class="fu">ifelse</span>(year <span class="sc">==</span> <span class="dv">2010</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">location =</span> <span class="fu">ifelse</span>(year <span class="sc">==</span> <span class="dv">2015</span> <span class="sc">&amp;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                             country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"United Kingdom"</span>, <span class="st">"Portugal"</span>),</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                           location<span class="fl">+0.22</span>, location),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">hjust =</span> <span class="fu">ifelse</span>(year <span class="sc">==</span> <span class="dv">2010</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.factor</span>(year)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, life_expectancy, <span class="at">group =</span> country)) <span class="sc">+</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> country), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> label_first, <span class="at">color =</span> country), <span class="at">direction =</span> <span class="st">'y'</span>, <span class="at">nudge_x =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">seed =</span> <span class="dv">1234</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> label_last, <span class="at">color =</span> country), <span class="at">direction =</span> <span class="st">'y'</span>, <span class="at">nudge_x =</span>  <span class="dv">1</span>, <span class="at">seed =</span> <span class="dv">1234</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Life Expectancy"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.factor</span>(year)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, life_expectancy, <span class="at">group =</span> country)) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> country), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> label_first, <span class="at">color =</span> country), <span class="at">direction =</span> <span class="st">'y'</span>, <span class="at">nudge_x =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">seed =</span> <span class="dv">1234</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> label_last, <span class="at">color =</span> country), <span class="at">direction =</span> <span class="st">'y'</span>, <span class="at">nudge_x =</span>  <span class="dv">1</span>, <span class="at">seed =</span> <span class="dv">1234</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Life Expectancy"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -763,7 +758,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="bump-charts" class="level3">
 <h3 class="anchored" data-anchor-id="bump-charts">Bump charts</h3>
-<p>Finally, we can make a bump chart that shows changes in rankings over time. We’ll look at fertility in South Asia. First we need to calculate a new variable that shows the rank of each country within each year. We can do this if we group by year and then use the <code>rank()</code> function to rank countries by the <code>fertility</code> column.</p>
+<p>Finally, we can make a bump chart that shows changes in rankings over time. We’ll look at fertility in South Asia. First we need to calculate a new variable that shows the rank of each country within each year. We can do this if we group by year and then use the <code>rank()</code> function to rank countries by the <code>fertility</code> column. Note that <code>rank()</code> counts up from the smallest value, so rank 1 is the country with the <em>lowest</em> fertility.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sa_fe <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Southern Asia"</span>) <span class="sc">%&gt;%</span></span>
@@ -945,7 +940,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We add a vertical line at 1963 since this is when the vaccine was introduced [Control, Centers for Disease; Prevention (2014). CDC health information for international travel 2014 (the yellow book). p.&nbsp;250. ISBN 9780199948505].</p>
 <p>Now can we show data for all states in one plot? We have three variables to show: year, state, and rate. In the WSJ figure, they use the x-axis for year, the y-axis for state, and color hue to represent rates. However, the color scale they use, which goes from yellow to blue to green to orange to red, can be improved.</p>
 <p>In our example, we want to use a sequential palette since there is no meaningful center, just low and high rates.</p>
-<p>We use the geometry <code>geom_tile</code> to tile the region with colors representing disease rates. We use a square root transformation to avoid having the really high counts dominate the plot. Notice that missing values are shown in grey. Note that once a disease was pretty much eradicated, some states stopped reporting cases all together. This is why we see so much grey after 1980.</p>
+<p>We use the geometry <code>geom_tile</code> to tile the region with colors representing disease rates. We use a square root transformation to avoid having the really high counts dominate the plot. Notice that missing values are shown in grey. Note that once a disease was pretty much eradicated, some states stopped reporting cases altogether. This is why we see so much grey after 1980.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">%&gt;%</span> </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">state =</span> <span class="fu">factor</span>(state, <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(state)[<span class="fu">order</span>(<span class="fu">levels</span>(state))]))) <span class="sc">%&gt;%</span></span>
@@ -1004,7 +999,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="saving-your-plot">Saving your plot</h2>
 <p>In RMarkdown, we display the plot as part of the chunk output. For your group project (or for future use) you’ll likely need to save your plot as well. The function <code>ggsave</code> is a good way of outputting your plot.</p>
 <pre><code>ggsave(myPlot, file = 'myPlot.png', width = 7, height = 5, dpi=300)</code></pre>
-<p>File type will be discerned from the suffix on the file, and the height and width are in inches. The <code>dpi</code> argument sets the pixes-per-inch. Generally, screens display at around 150 (though this is rapidly increasing, it used to be 72 dpi), and print is usually 300 or better. A width of 5 inches at 300 dpi will render an image 1,500 pixels across.</p>
+<p>File type will be discerned from the suffix on the file, and the height and width are in inches. The <code>dpi</code> argument sets the pixels-per-inch. Generally, screens display at around 150 (though this is rapidly increasing, it used to be 72 dpi), and print is usually 300 or better. A width of 5 inches at 300 dpi will render an image 1,500 pixels across.</p>
 <p>The dpi and file size may change the <em>relative</em> font size, so you might have to experiment with different sizes and dpi values for exporting.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1017,7 +1012,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><p>Reproduce the heatmap plot we previously made but for smallpox. For this plot, do not include years in which cases were not reported in 10 or more weeks.</p></li>
+<li><p>Reproduce the heatmap plot we previously made but for smallpox. For this plot, include only years with 10 or more weeks reporting.</p></li>
 <li><p>Now reproduce the time series plot we previously made, but this time following the instructions of the previous question for smallpox.</p></li>
 <li><p>For the state of California, make a time series plot showing rates for all diseases. Include only years with 10 or more weeks reporting. Use a different color for each disease.</p></li>
 <li><p>Now do the same for the rates for the US. Hint: compute the US rate by using summarize: the total divided by total population.</p></li>
@@ -1082,12 +1077,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We get a lot of information besides the <code>geometry</code> column, including the census <code>REGION</code> and <code>DIVISION</code>, plus the <code>STATEFP</code>, which is the “state FIPS code” for each state. These are unique numbers for each state that are used in federal data. We’ll use them more in the future.</p>
-<p>We also get all the territories, which extends the map window way out the South Pacific. Let’s use some tricks to make this better. First off, US territories have FIPS codes of 60 and above, so we can filter to get the 50 US States + DC. Then, we can shift the geometry to include AK and HI (not to scale).</p>
+<p>We also get all the territories, which extends the map window way out into the South Pacific. Let’s use some tricks to make this better. First off, US territories have FIPS codes of 60 and above, so we can filter to get the 50 US States + DC. Then, we can shift the geometry to include AK and HI (not to scale).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>states <span class="ot">=</span> tigris<span class="sc">::</span><span class="fu">states</span>(<span class="at">cb =</span> T, <span class="at">progress_bar =</span> F) <span class="sc">%&gt;%</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(STATEFP<span class="sc">&lt;</span><span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  tigris<span class="sc">::</span><span class="fu">shift_geometry</span>(<span class="at">position =</span> <span class="st">'below'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(STATEFP, STATEFP, STUSPS, NAME)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(STATEFP, STUSPS, NAME)</span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(states)</span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Simple feature collection with 6 features and 3 fields</span></span>
@@ -1166,7 +1161,7 @@ Projected CRS: USA_Contiguous_Albers_Equal_Area_Conic
 <p>A couple things to note in this code:</p>
 <ul>
 <li>We use the <code>fill</code> aesthetic mapping, so the state borders still have the default for <code>color</code></li>
-<li>Kansas, Alaska, and Hawaii are <code>NA</code> for 1960</li>
+<li>Kansas, Alaska, and Hawaii are <code>NA</code> for 1960 – and so is DC, because <code>dslabs</code> spells it “District Of Columbia” while <code>tigris</code> spells it “District of Columbia”, so the join silently misses it</li>
 <li>We set the theme to <code>theme_void()</code> and <em>then</em> use another <code>theme()</code> function to move the legend. Think of it as overwriting the previous theme.</li>
 </ul>
 <p>Finally, let’s put the years side-by-side:</p>

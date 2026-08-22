@@ -126,7 +126,7 @@ as.numeric(murders_raw$population[1:3])
 ```
 
 This is because of the commas `,`. The string processing we want to do here is remove the **pattern**, `,`, from the **strings** in `murders_raw$population` and then coerce to numbers.
-We can use the `str_detect` function to see that two of the three columns have commas in the entries:
+We can use the `str_detect` function to see that two of the four columns have commas in the entries:
 
 ```{r}
 commas <- function(x) any(str_detect(x, ","))
@@ -580,7 +580,7 @@ There are two other similar quantifiers. For none or once, we can use `?`, and f
 ```{r}
 data.frame(string = c("AB", "A1B", "A11B", "A111B", "A1111B"),
            none_or_more = str_detect(yes, "A1*B"),
-           nore_or_once = str_detect(yes, "A1?B"),
+           none_or_once = str_detect(yes, "A1?B"),
            once_or_more = str_detect(yes, "A1+B"))
 ```
 
@@ -719,7 +719,7 @@ Our strategy will therefore be to search for a very specific pattern that assure
 
 Another powerful aspect of groups is that you can refer to the extracted values in a regex when searching and replacing.
 
-The regex special character for the `i`-th group is `\\i`. So `\\1` is the value extracted from the first group, `\\2` the value from the second and so on. As a simple example, note that the following code will replace a comma with the feet symbol `'`, but only if the comma comes right after a digit between 4 and 7:
+The regex special character for the `i`-th group is `\\i`. So `\\1` is the value extracted from the first group, `\\2` the value from the second and so on. As a simple example, note that the following code will replace a comma with the feet symbol `'`, but only if the whole entry is a digit between 4 and 7, then the comma, then none or more digits:
 
 ```{r}
 pattern_with_groups <-  "^([4-7]),(\\d*)$"
@@ -825,7 +825,7 @@ str_replace(s, "^([4-7])$", "\\1'0")
 
 The pattern says it has to start (`^`) with a digit between 4 and 7 and end there (`$`). The parenthesis defines the group that we pass as `\\1` to generate the replacement regex string.
 
-We can adapt this code slightly to handle the case 1 as well, which covers the entry `5'`. Note `5'` is left untouched. This is because the extra `'` makes the pattern not match since we have to end with a 5 or 6. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add `'{0,1}` after the `'` to do this. However, we can use the none or once special character `?`. As we saw above, this is different from `*` which is none or more. We now see that the fourth case is also converted:
+We can adapt this code slightly to handle the case 1 as well, which covers the entry `5'`. Note `5'` is left untouched. This is because the extra `'` makes the pattern not match since we have to end with a digit between 4 and 7. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add `{0,1}` after the `'` to do this. However, we can use the none or once special character `?`. As we saw above, this is different from `*` which is none or more. We now see that the fourth entry of `s` is also converted:
 
 ```{r}
 str_replace(s, "^([56])'?$", "\\1'0")
@@ -834,7 +834,7 @@ str_replace(s, "^([56])'?$", "\\1'0")
 Here we only permit 5 and 6, but not 4 and 7. This is because 5 and 6 feet tall is quite common, so we assume those that typed 5 or 6 really meant `60` or `72` inches. However, `4` and `7` feet tall are so rare that, although we accept `84` as a valid entry, we assume `7` was entered in error.
 
 We can use quantifiers to deal with **case 3**. These entries are not matched because the inches include decimals and our pattern does not permit this. We need to allow the second group to include decimals not just digits. This means we must permit zero or one period `.` then zero or more digits. So we will be using both `?` and `*`.
-Also remember that, for this particular case, the period needs to be escaped since it is a special character (it means any character except line break). Here is a simple example of how we can use `*`.
+Also remember that, for this particular case, the period needs to be escaped since it is a special character (it means any character except line break).
 
 So we can adapt our pattern, currently `^[4-7]\\s*'\\s*\\d{1,2}$` to permit a decimal at the end:
 
@@ -1019,7 +1019,7 @@ A final observation is that if we look at the shortest students in our course:
 new_heights %>% arrange(height) %>% head(n=7)
 ```
 
-We see heights of 53, 54, and 55. In the originals, we also have 51 and 52. These short heights are rare and it is likely that the students actually meant `5'1`, `5'2`, `5'3`, `5'4`, and `5'5`. Because we are not completely sure, we will leave them as reported. The object `new_heights` contains our final solution for this case study.
+We see heights of 50, 51, 52, and 53. These short heights are rare and it is likely that the students actually meant `5'0`, `5'1`, `5'2`, and `5'3`. Because we are not completely sure, we will leave them as reported. The object `new_heights` contains our final solution for this case study.
 
 ## String splitting
 
@@ -1227,7 +1227,7 @@ identical(research_funding_rates, new_research_funding_rates)
 
 ## Recoding
 
-Another common operation involving strings is recoding the names of categorical variables. Let's say you have really long names for your levels and you will be displaying them in plots, you might want to use shorter versions of these names. For example, in character vectors with country names, you might want to change "United States of America" to "USA" and "United Kingdom" to UK, and so on. We can do this with `case_when`, although the __tidyverse__ offers an option that is specifically designed for this task: the `recode` function.
+Another common operation involving strings is recoding the names of categorical variables. Let's say you have really long names for your levels and you will be displaying them in plots, you might want to use shorter versions of these names. For example, in character vectors with country names, you might want to change "United States of America" to "USA" and "United Kingdom" to "UK", and so on. We can do this with `case_when`, although the __tidyverse__ offers an option that is specifically designed for this task: the `recode` function.
 
 Here is an example that shows how to rename countries with long names:
 
@@ -1365,7 +1365,7 @@ Use the `str_which` function to find the rows with a header. Save these results 
 15. Now you are almost ready to finish. Add column names to the matrix, including one called `day`. Also, add a column with the month. Call the resulting object `dat`. Finally, make sure the day is an integer not a character. Hint: use only the first five columns.
 
 
-16. Now finish it up by tidying `tab` with the gather function.
+16. Now finish it up by tidying `dat` with the gather function.
 
 
 17. Make a plot of deaths versus day with color to denote year. Exclude 2018 since we do not have data for the entire year.
@@ -1497,7 +1497,7 @@ Now, instead of the entire webpage, we just have the html code for the tables in
 tab
 ```
 
-The table we are interested is the first one:
+The table we are interested in is the first one:
 
 ```{r}
 tab[[1]]
@@ -1528,7 +1528,7 @@ The default look of a webpage made with the most basic HTML is quite unattractiv
 If we want to grab data from a webpage and we happen to know a selector that is unique to the part of the page containing this data, we can use the `html_nodes` function. However, knowing which selector can be quite complicated.
 In fact, the complexity of webpages has been increasing as they become more sophisticated. For some of the more advanced ones, it seems almost impossible to find the nodes that define a particular piece of data. However, selector gadgets actually make this possible.
 
-SelectorGadget^[http://selectorgadget.com/] is piece of software that allows you to interactively determine what CSS selector you need to extract specific components from the webpage. If you plan on scraping data other than tables from html pages, we highly recommend you install it. A Chrome extension is available which permits you to turn on the gadget and then, as you click through the page, it highlights parts and shows you the selector you need to extract these parts. There are various demos of how to do this including __rvest__ author Hadley Wickham's
+SelectorGadget^[http://selectorgadget.com/] is a piece of software that allows you to interactively determine what CSS selector you need to extract specific components from the webpage. If you plan on scraping data other than tables from html pages, we highly recommend you install it. A Chrome extension is available which permits you to turn on the gadget and then, as you click through the page, it highlights parts and shows you the selector you need to extract these parts. There are various demos of how to do this including __rvest__ author Hadley Wickham's
 vignette^[https://rvest.tidyverse.org/articles/selectorgadget.html] and other tutorials based on the vignette^[https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/] ^[https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/].
 
 ## JSON
@@ -1551,16 +1551,16 @@ res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
 citi_bike <- fromJSON("https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
 ```
 
-This downloads a list. The first argument tells you when you downloaded it:
+This downloads a list. The `last_updated` element tells you when the feed was last refreshed, as a Unix timestamp:
 
 ```{r,eval=FALSE}
-citi_bike$executionTime
+citi_bike$last_updated
 ```
 
-and the second is a data table:
+and the stations are a data table nested one level down:
 
 ```{r,eval=FALSE}
-citi_bike$stationBeanList %>% as_tibble()
+citi_bike$data$stations %>% as_tibble()
 ```
 
 

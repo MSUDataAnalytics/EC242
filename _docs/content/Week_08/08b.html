@@ -851,7 +851,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li><p><span class="math inline">\(\hat{\beta}_0 = 26.5849137\)</span> is the estimated average <code>mpg</code> for a car with an automatic transmission and <strong>0</strong> <code>hp</code>.</p></li>
 <li><p><span class="math inline">\(\hat{\beta}_0 + \hat{\beta}_2 = 31.8619991\)</span> is the estimated average <code>mpg</code> for a car with a manual transmission and <strong>0</strong> <code>hp</code>.</p></li>
 <li><p><span class="math inline">\(\hat{\beta}_2 = 5.2770853\)</span> is the estimated <strong>difference</strong> in average <code>mpg</code> for cars with manual transmissions as compared to those with automatic transmission, for <strong>any</strong> <code>hp</code>.</p></li>
-<li><p><span class="math inline">\(\hat{\beta}_1 = -0.0588878\)</span> is the estimated change in average <code>mpg</code> for an increase in one <code>hp</code>, for <strong>either</strong> transmission types.</p></li>
+<li><p><span class="math inline">\(\hat{\beta}_1 = -0.0588878\)</span> is the estimated change in average <code>mpg</code> for an increase in one <code>hp</code>, for <strong>either</strong> transmission type.</p></li>
 </ul>
 <p>We should take special notice of those last two. In the model,</p>
 <p><span class="math display">\[
@@ -898,7 +898,7 @@ Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \epsilon,
  $ domestic: num  1 1 1 1 1 1 1 1 1 1 ...</code></pre>
 </div>
 </div>
-<p>We’ve removed cars with <code>3</code> and <code>5</code> cylinders , as well as created a new variable <code>domestic</code> which indicates whether or not a car was built in the United States. Removing the <code>3</code> and <code>5</code> cylinders is simply for ease of demonstration later in the chapter and would not be done in practice. The new variable <code>domestic</code> takes the value <code>1</code> if the car was built in the United States, and <code>0</code> otherwise, which we will refer to as “foreign.” (We are arbitrarily using the United States as the reference point here.) We have also made <code>cyl</code> into a factor variable, which we will discuss later. (We’ll build a factor version of <code>origin</code> further down.)</p>
+<p>We’ve removed cars with <code>3</code> and <code>5</code> cylinders, as well as created a new variable <code>domestic</code> which indicates whether or not a car was built in the United States. Removing the <code>3</code> and <code>5</code> cylinders is simply for ease of demonstration later in the chapter and would not be done in practice. The new variable <code>domestic</code> takes the value <code>1</code> if the car was built in the United States, and <code>0</code> otherwise, which we will refer to as “foreign.” (We are arbitrarily using the United States as the reference point here.) We have also made <code>cyl</code> into a factor variable, which we will discuss later. (We’ll build a factor version of <code>origin</code> further down.)</p>
 <p>We’ll now be concerned with three variables: <code>mpg</code>, <code>disp</code>, and <code>domestic</code>. We will use <code>mpg</code> as the response. We can fit a model,</p>
 <p><span class="math display">\[
 Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \epsilon,
@@ -975,7 +975,7 @@ Y = (\beta_0 + \beta_2) + (\beta_1 + \beta_3) x_1 + \epsilon.
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mpg_disp_int <span class="ot">=</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> disp <span class="sc">+</span> domestic <span class="sc">+</span> disp<span class="sc">:</span>domestic, <span class="at">data =</span> autompg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>An alternative method, which will fit the exact same model as above would be to use the <code>*</code> operator. This method automatically creates the interaction term, as well as any “lower order terms,” which in this case are the first order terms for <code>disp</code> and <code>domestic</code></p>
+<p>An alternative method, which will fit the exact same model as above would be to use the <code>*</code> operator. This method automatically creates the interaction term, as well as any “lower order terms,” which in this case are the first order terms for <code>disp</code> and <code>domestic</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mpg_disp_int2 <span class="ot">=</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> disp <span class="sc">*</span> domestic, <span class="at">data =</span> autompg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1110,7 +1110,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p><span class="math display">\[
 H_0: \beta_3 = 0.
 \]</span></p>
-<p>Again, we see a very low p-value so we reject the null (additive model) in favor of the interaction model. We can take a closer look at the coefficients of our fitted interaction model.</p>
+<p>Again, we see a very low p-value so we reject the null (additive model) in favor of the interaction model. The <code>anova()</code> output above tests exactly the same thing and gives the same p-value; note again that the <span class="math inline">\(F\)</span> statistic is the <span class="math inline">\(t\)</span> statistic squared. We can take a closer look at the coefficients of our fitted interaction model.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mpg_disp_int_hp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1153,7 +1153,7 @@ Y = \beta_0 + (\beta_1 + \beta_3 x_2) x_1 + \beta_2 x_2 + \epsilon.
 <pre><code>[1] FALSE</code></pre>
 </div>
 </div>
-<p>Earlier when we used the <code>domestic</code> variable, it was <strong>not</strong> a factor variable. It was simply a numerical variable that only took two possible values, <code>1</code> for domestic, and <code>0</code> for foreign. Let’s create a new variable <code>origin</code> that stores the same information, but in a different way. First, we create an empty (all-<code>NA</code>) variable of type <code>character</code>. Then, we update it. Yes, we could also do this with <code>ifelse</code> or <code>case_when</code>:</p>
+<p>Earlier when we used the <code>domestic</code> variable, it was <strong>not</strong> a factor variable. It was simply a numerical variable that only took two possible values, <code>1</code> for domestic, and <code>0</code> for foreign. Let’s overwrite the raw <code>origin</code> column – the numeric code we used to build <code>domestic</code> – with a variable that stores the same information, but in a different way. First, we create an empty (all-<code>NA</code>) variable of type <code>character</code>. Then, we update it. Yes, we could also do this with <code>ifelse</code> or <code>case_when</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>autompg<span class="sc">$</span>origin <span class="ot">=</span> <span class="fu">as.character</span>(<span class="cn">NA</span>)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>autompg<span class="sc">$</span>origin[autompg<span class="sc">$</span>domestic <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">=</span> <span class="st">"domestic"</span></span>
@@ -1328,7 +1328,7 @@ Y = \beta_0 + \beta_1 x + \beta_2 v_2 + \beta_3 v_3 + \epsilon,
 <ul>
 <li><span class="math inline">\(\beta_0\)</span> is the average <code>mpg</code> for a 4 cylinder car with 0 <code>disp</code>.</li>
 <li><span class="math inline">\(\beta_0 + \beta_2\)</span> is the average <code>mpg</code> for a 6 cylinder car with 0 <code>disp</code>.</li>
-<li><span class="math inline">\(\beta_0 + \beta_3\)</span> is the average <code>mpg</code> for a 8 cylinder car with 0 <code>disp</code>.</li>
+<li><span class="math inline">\(\beta_0 + \beta_3\)</span> is the average <code>mpg</code> for an 8 cylinder car with 0 <code>disp</code>.</li>
 </ul>
 <p>So because 4 cylinder is the reference level, <span class="math inline">\(\beta_0\)</span> is specific to 4 cylinders, but <span class="math inline">\(\beta_2\)</span> and <span class="math inline">\(\beta_3\)</span> are used to represent quantities relative to 4 cylinders.</p>
 <p>As we have done before, we can extract these intercepts and slopes for the three lines, and plot them accordingly.</p>
@@ -1641,7 +1641,7 @@ Coefficients:
 </ol>
 <p>I’d like you to choose one of the above and run two models: one with <code>GrLivArea</code> and your chosen factor variable, and one with <code>GrLivArea</code>, your chosen factor variable, <em>and the interaction of the two</em>. Once you have run these:</p>
 <ol type="1">
-<li>Be prepared to interpret the coefficients on the “baseline” coefficient on <code>GrLivArea</code>, as well as one of the coefficients on the interaction.</li>
+<li>Be prepared to interpret the “baseline” coefficient on <code>GrLivArea</code>, as well as one of the coefficients on the interaction.</li>
 <li>Test the two models using <code>anova(mod1, mod2)</code> and tell us if your more flexible model is statistically better than the less flexible model.</li>
 </ol>
 </div>

@@ -204,7 +204,7 @@ Recapping some interpretations:
 - $\hat{\beta}_0 + \hat{\beta}_2 = `r coef(mpg_hp_add)[1] + coef(mpg_hp_add)[3]`$ is the estimated average `mpg` for a car with a manual transmission and **0** `hp`.
 
 - $\hat{\beta}_2 = `r coef(mpg_hp_add)[3]`$ is the estimated **difference** in average `mpg` for cars with manual transmissions as compared to those with automatic transmission, for **any** `hp`.
-- $\hat{\beta}_1 = `r coef(mpg_hp_add)[2]`$ is the estimated change in average `mpg` for an increase in one `hp`, for **either** transmission types.
+- $\hat{\beta}_1 = `r coef(mpg_hp_add)[2]`$ is the estimated change in average `mpg` for an increase in one `hp`, for **either** transmission type.
 
 We should take special notice of those last two. In the model,
 
@@ -244,7 +244,7 @@ autompg = autompg %>%
 str(autompg)
 ```
 
-We've removed cars with `3` and `5` cylinders , as well as created a new variable `domestic` which indicates whether or not a car was built in the United States. Removing the `3` and `5` cylinders is simply for ease of demonstration later in the chapter and would not be done in practice. The new variable `domestic` takes the value `1` if the car was built in the United States, and `0` otherwise, which we will refer to as "foreign." (We are arbitrarily using the United States as the reference point here.) We have also made `cyl` into a factor variable, which we will discuss later. (We'll build a factor version of `origin` further down.)
+We've removed cars with `3` and `5` cylinders, as well as created a new variable `domestic` which indicates whether or not a car was built in the United States. Removing the `3` and `5` cylinders is simply for ease of demonstration later in the chapter and would not be done in practice. The new variable `domestic` takes the value `1` if the car was built in the United States, and `0` otherwise, which we will refer to as "foreign." (We are arbitrarily using the United States as the reference point here.) We have also made `cyl` into a factor variable, which we will discuss later. (We'll build a factor version of `origin` further down.)
 
 We'll now be concerned with three variables: `mpg`, `disp`, and `domestic`. We will use `mpg` as the response. We can fit a model,
 
@@ -335,7 +335,7 @@ You should only do this as a last resort. We greatly prefer not to have to modif
 mpg_disp_int = lm(mpg ~ disp + domestic + disp:domestic, data = autompg)
 ```
 
-An alternative method, which will fit the exact same model as above would be to use the `*` operator. This method automatically creates the interaction term, as well as any "lower order terms," which in this case are the first order terms for `disp` and `domestic`
+An alternative method, which will fit the exact same model as above would be to use the `*` operator. This method automatically creates the interaction term, as well as any "lower order terms," which in this case are the first order terms for `disp` and `domestic`.
 
 ```{r}
 mpg_disp_int2 = lm(mpg ~ disp * domestic, data = autompg)
@@ -428,7 +428,7 @@ $$
 H_0: \beta_3 = 0.
 $$
 
-Again, we see a very low p-value so we reject the null (additive model) in favor of the interaction model.
+Again, we see a very low p-value so we reject the null (additive model) in favor of the interaction model. The `anova()` output above tests exactly the same thing and gives the same p-value; note again that the $F$ statistic is the $t$ statistic squared.
 We can take a closer look at the coefficients of our fitted interaction model.
 
 ```{r}
@@ -478,7 +478,7 @@ We will now discuss **factor** variables, which is a special way that `R` deals 
 is.factor(autompg$domestic)
 ```
 
-Earlier when we used the `domestic` variable, it was **not** a factor variable. It was simply a numerical variable that only took two possible values, `1` for domestic, and `0` for foreign. Let's create a new variable `origin` that stores the same information, but in a different way. First, we create an empty (all-`NA`) variable of type `character`. Then, we update it. Yes, we could also do this with `ifelse` or `case_when`:
+Earlier when we used the `domestic` variable, it was **not** a factor variable. It was simply a numerical variable that only took two possible values, `1` for domestic, and `0` for foreign. Let's overwrite the raw `origin` column -- the numeric code we used to build `domestic` -- with a variable that stores the same information, but in a different way. First, we create an empty (all-`NA`) variable of type `character`. Then, we update it. Yes, we could also do this with `ifelse` or `case_when`:
 
 ```{r}
 autompg$origin = as.character(NA)
@@ -638,7 +638,7 @@ Notice that they all have the same slope. However, using the two dummy variables
 
 - $\beta_0$ is the average `mpg` for a 4 cylinder car with 0 `disp`.
 - $\beta_0 + \beta_2$ is the average `mpg` for a 6 cylinder car with 0 `disp`.
-- $\beta_0 + \beta_3$ is the average `mpg` for a 8 cylinder car with 0 `disp`.
+- $\beta_0 + \beta_3$ is the average `mpg` for an 8 cylinder car with 0 `disp`.
 
 So because 4 cylinder is the reference level, $\beta_0$ is specific to 4 cylinders, but $\beta_2$ and $\beta_3$ are used to represent quantities relative to 4 cylinders.
 
@@ -861,7 +861,7 @@ What factor variables should we use? Here are some options:
 
 I'd like you to choose one of the above and run two models: one with `GrLivArea` and your chosen factor variable, and one with `GrLivArea`, your chosen factor variable, *and the interaction of the two*. Once you have run these:
 
-1. Be prepared to interpret the coefficients on the "baseline" coefficient on `GrLivArea`, as well as one of the coefficients on the interaction.
+1. Be prepared to interpret the "baseline" coefficient on `GrLivArea`, as well as one of the coefficients on the interaction.
 2. Test the two models using `anova(mod1, mod2)` and tell us if your more flexible model is statistically better than the less flexible model.
 
 :::

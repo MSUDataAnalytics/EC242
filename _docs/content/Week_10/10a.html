@@ -639,7 +639,7 @@ window.Quarto = {
 <p><span class="math display">\[Y = \beta_0 + \beta_1 X1\]</span></p>
 <p>and then</p>
 <p><span class="math display">\[Y = \beta_0 + \beta_1 X1 + \beta_2 X2\]</span></p>
-<p>and so on. How you do so is up to you – you could do a list of formulas constructed with <code>paste</code>, then use <code>lapply</code> to that list. Or you could wisely use the <code>~ .</code> part of the formula and change the columns in the data you pass to <code>lm</code>. Here are a few tips pertaining to some of the ways of doing this.</p>
+<p>and so on. How you do so is up to you – you could do a list of formulas constructed with <code>paste</code>, then use <code>lapply</code> on that list. Or you could wisely use the <code>~ .</code> part of the formula and change the columns in the data you pass to <code>lm</code>. Here are a few tips pertaining to some of the ways of doing this.</p>
 <p>If you have a dataset called <code>DesMoines</code> and a character vector of all of your columns in <code>DesMoines</code> like so <code>varnames = c('Y','X1','X2','X3')</code>, and it’s in the order in which you’d like to add the variables to the model, then:</p>
 <pre><code>DesMoines %&gt;% dplyr::select(varnames[1:N])</code></pre>
 <p>would select the first <code>N</code> variables. A loop on <code>N</code> from 2 to 4 would give you <code>c('Y','X1')</code> then <code>c('Y','X1','X2')</code> and so on.</p>
@@ -731,7 +731,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>It’s just a mathematical fact that if we observe 1,000,000 random correlations that are expected to be 0, but have a standard error of 0.2040457, the largest one will be close to 1.</p>
+<p>It’s just a mathematical fact that if we observe 1,000,000 random correlations that are expected to be 0, but have a standard error of 0.2040457, the largest one will be enormous.</p>
 <p>If we performed regression on this group and interpreted the p-value, we would incorrectly claim this was a statistically significant relation:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
@@ -844,7 +844,7 @@ window.Quarto = {
 <section id="confounders" class="level2">
 <h2 class="anchored" data-anchor-id="confounders">Confounders</h2>
 <p>Confounders are perhaps the most common reason that leads to associations being misinterpreted.</p>
-<p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are correlated, we call <span class="math inline">\(Z\)</span> a <em>confounder</em> if changes in <span class="math inline">\(Z\)</span> causes changes in both <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. Earlier, when studying baseball data, we saw how Home Runs was a confounder that resulted in a higher correlation than expected when studying the relationship between Bases on Balls and Runs. In some cases, we can use linear models to account for confounders. However, this is not always the case.</p>
+<p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are correlated, we call <span class="math inline">\(Z\)</span> a <em>confounder</em> if changes in <span class="math inline">\(Z\)</span> cause changes in both <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. Earlier, when studying baseball data, we saw how Home Runs was a confounder that resulted in a higher correlation than expected when studying the relationship between Bases on Balls and Runs. In some cases, we can use linear models to account for confounders. However, this is not always the case.</p>
 <p>Incorrect interpretation due to confounders is ubiquitous in the lay press and they are often hard to detect. Here, we present a widely used example related to college admissions.</p>
 <section id="example-uc-berkeley-admissions" class="level3">
 <h3 class="anchored" data-anchor-id="example-uc-berkeley-admissions">Example: UC Berkeley admissions</h3>
@@ -974,7 +974,7 @@ admissions %>%
 </div>
 </div>
 <p>Now we see that major by major, there is not much difference. The size of the dot represents the number of applicants, and explains the paradox: we see large red dots and small blue dots for the easiest (least selective) majors, A and B.</p>
-<p>If we average the difference by major, we find that the percent is actually 3.5% higher for women.</p>
+<p>If we average the difference by major, we find that the percent admitted is actually 3.5 points higher for women.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>admissions <span class="sc">%&gt;%</span>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">average =</span> <span class="fu">mean</span>(admitted))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">

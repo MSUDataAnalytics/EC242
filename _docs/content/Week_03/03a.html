@@ -613,10 +613,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Nominate <strong>one</strong> person in your group to e-mail me at <a href="mailto:bbushong@msu.edu">bbushong@msu.edu</a> with the subject <strong>[EC242] Groups</strong>.</li>
 <li>On the e-mail, cc- the other two members of the group</li>
-<li>In the e-mail, tell me the name of your group (be creative) and list the names and emails of all three members.</li>
-<li>Give me the team name you’d like to have as well (or I will make one up for you.) Remember, only one person per group should send this email. Groups must be 3 people exactly. Groups will be the same for the semester (all 4 projects).</li>
+<li>In the e-mail, list the names and emails of all three members.</li>
+<li>Give me the team name you’d like to have as well; be creative, or I will make one up for you.</li>
 </ul>
-<p>On Thursday, I will assign all remaining students to a group. <em>No changes will be made and there is no room for late group formation.</em> You will recieve an email letting you know your group assignment on or before Saturday.</p>
+<p>Remember, only one person per group should send this email. Groups must be 3 people exactly. Groups will be the same for the semester (all 4 projects).</p>
+<p>On Thursday, I will assign all remaining students to a group. <em>No changes will be made and there is no room for late group formation.</em> You will receive an email letting you know your group assignment on or before Saturday.</p>
 </section>
 <section id="readings" class="level2">
 <h2 class="anchored" data-anchor-id="readings">Readings</h2>
@@ -1055,7 +1056,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Note that in the plot on the left, which includes 0, the space between 0 and 43 adds no information and makes it harder to compare the between and within group variability.</p>
+<p>Note that in the plot on the left, which includes 0, the space between 0 and 46 adds no information and makes it harder to compare the between and within group variability.</p>
 </section>
 <section id="do-not-visually-distort-quantities" class="level2">
 <h2 class="anchored" data-anchor-id="do-not-visually-distort-quantities">Do not visually distort quantities</h2>
@@ -1144,7 +1145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <details class="collapsible-bg">
 <summary>
-<strong>Don’t open this till we’ve discssed it in class.</strong>
+<strong>Don’t open this till we’ve discussed it in class.</strong>
 </summary>
 <p>Sure, we can plot murders by state (see the top of Week 2’s lesson), but what are we trying to communicate? I would posit that we are trying to communicate “how safe a person should feel in a state”. But what communicates that?</p>
 <p>Is it:</p>
@@ -1420,10 +1421,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>This makes it easy to read the life expectancy distribution over time (left-to-right) and across continents (up-and-down). It makes it easy to see that Africa has spread it’s life expectancy distribution (some improved, some didn’t), while Europe has become more clustered at the top end over time. Faceting in a grid is very helpful when you have a time dimension.</p>
+<p>This makes it easy to read the life expectancy distribution over time (left-to-right) and across continents (up-and-down). It makes it easy to see that Africa has spread its life expectancy distribution (some improved, some didn’t), while Europe has become more clustered at the top end over time. Faceting in a grid is very helpful when you have a time dimension.</p>
 </section>
-<section id="visual-cues-to-be-compared-should-be-adjacent-continued" class="level3">
-<h3 class="anchored" data-anchor-id="visual-cues-to-be-compared-should-be-adjacent-continued">Visual cues to be compared should be adjacent, continued</h3>
+<section id="visual-cues-to-be-compared-should-be-adjacent" class="level3">
+<h3 class="anchored" data-anchor-id="visual-cues-to-be-compared-should-be-adjacent">Visual cues to be compared should be adjacent</h3>
 <p>For each continent, let’s compare income in 1970 versus 2010. When comparing income data across regions between 1970 and 2010, we made a figure similar to the one below, but this time we investigate continents rather than regions.</p>
 <p>Note that there are two <code>gapminder</code> datasets, one in <code>dslabs</code> and one in the <code>gapminder</code> package. The <code>dslabs</code> version has more data, so I will switch to that here by using <code>dslabs::gapminder</code> as our data.</p>
 <div class="cell" data-layout-align="center">
@@ -1628,7 +1629,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="using-a-continuous-color-palette" class="level3">
 <h3 class="anchored" data-anchor-id="using-a-continuous-color-palette">Using a continuous color palette</h3>
 <p>We may often want to use the color to indicate a numeric value instead of simply using it to delineate groupings. When this is the case, the <code>fill</code> or <code>color</code> aesthetic is set to a continuous value. For instance, if one were to plot election results by precinct, we may represent precincts with heavy Republican support as dark red, swing districts as purple or white, and Democratic districts as blue. The intensity of red/blue indicates how heavily slanted votes in that precinct were in the election. This is known as a <em>color ramp</em>.</p>
-<p>Lets plot one country’s GDP by year, but have the color indicate the life expectancy. Whenever you map a continuous variable to a color or fill aesthetic, you get the default color ramp – dark-to-light blue:</p>
+<p>Let’s plot one country’s GDP by year, but have the color indicate the life expectancy. Whenever you map a continuous variable to a color or fill aesthetic, you get the default color ramp – dark-to-light blue:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>dslabs<span class="sc">::</span>gapminder <span class="sc">%&gt;%</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country<span class="sc">==</span><span class="st">'Romania'</span> <span class="sc">&amp;</span> year<span class="sc">&gt;</span><span class="dv">1980</span>) <span class="sc">%&gt;%</span></span>

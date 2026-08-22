@@ -29,11 +29,12 @@ Now that add-drop has passed, it's time to set groups. **If you have found 2 oth
 
 - Nominate **one** person in your group to e-mail me at {{< var email.instructor >}} with the subject **[EC242] Groups**.
 - On the e-mail, cc- the other two members of the group
-- In the e-mail, tell me the name of your group (be creative) and list the names and emails of all three members.
-- Give me the team name you'd like to have as well (or I will make one up for you.)
+- In the e-mail, list the names and emails of all three members.
+- Give me the team name you'd like to have as well; be creative, or I will make one up for you.
+
 Remember, only one person per group should send this email. Groups must be 3 people exactly. Groups will be the same for the semester (all 4 projects).
 
-On Thursday, I will assign all remaining students to a group. *No changes will be made and there is no room for late group formation.* You will recieve an email letting you know your group assignment on or before Saturday.
+On Thursday, I will assign all remaining students to a group. *No changes will be made and there is no room for late group formation.* You will receive an email letting you know your group assignment on or before Saturday.
 
 
 
@@ -370,7 +371,7 @@ p2 <- p1 +
 grid.arrange(p2, p1, ncol = 2)
 ```
 
-Note that in the plot on the left, which includes 0, the space between 0 and 43 adds no information and makes it harder to compare the between and within group variability.
+Note that in the plot on the left, which includes 0, the space between 0 and 46 adds no information and makes it harder to compare the between and within group variability.
 
 
 ## Do not visually distort quantities
@@ -431,7 +432,7 @@ Anything else we can look at?
 
 
 <details class="collapsible-bg">
-<summary><strong>Don't open this till we've discssed it in class.</strong></summary>
+<summary><strong>Don't open this till we've discussed it in class.</strong></summary>
 
 Sure, we can plot murders by state (see the top of Week 2's lesson), but what are we trying to communicate? I would posit that we are trying to communicate "how safe a person should feel in a state". But what communicates that?
 
@@ -691,10 +692,10 @@ gapminder::gapminder %>%
   facet_grid(continent ~ year)
 ```
 
-This makes it easy to read the life expectancy distribution over time (left-to-right) and across continents (up-and-down). It makes it easy to see that Africa has spread it's life expectancy distribution (some improved, some didn't), while Europe has become more clustered at the top end over time. Faceting in a grid is very helpful when you have a time dimension.
+This makes it easy to read the life expectancy distribution over time (left-to-right) and across continents (up-and-down). It makes it easy to see that Africa has spread its life expectancy distribution (some improved, some didn't), while Europe has become more clustered at the top end over time. Faceting in a grid is very helpful when you have a time dimension.
 
 
-### Visual cues to be compared should be adjacent, continued
+### Visual cues to be compared should be adjacent
 For each continent, let's compare income in 1970 versus 2010. When comparing income data across regions between 1970 and 2010, we made a figure similar to the one below, but this time we investigate continents rather than regions.
 
 Note that there are two `gapminder` datasets, one in `dslabs` and one in the `gapminder` package. The `dslabs` version has more data, so I will switch to that here by using `dslabs::gapminder` as our data.
@@ -874,7 +875,7 @@ In the lower plot, we only give it a length-3 vector of colors, and it needs 5, 
 
 We may often want to use the color to indicate a numeric value instead of simply using it to delineate groupings. When this is the case, the `fill` or `color` aesthetic is set to a continuous value. For instance, if one were to plot election results by precinct, we may represent precincts with heavy Republican support as dark red, swing districts as purple or white, and Democratic districts as blue. The intensity of red/blue indicates how heavily slanted votes in that precinct were in the election. This is known as a *color ramp*.
 
-Lets plot one country's GDP by year, but have the color indicate the life expectancy. Whenever you map a continuous variable to a color or fill aesthetic, you get the default color ramp -- dark-to-light blue:
+Let's plot one country's GDP by year, but have the color indicate the life expectancy. Whenever you map a continuous variable to a color or fill aesthetic, you get the default color ramp -- dark-to-light blue:
 
 ```{r, echo=T, warning=F, error=F, message=F}
 dslabs::gapminder %>%

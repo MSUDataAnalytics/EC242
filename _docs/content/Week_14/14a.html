@@ -647,7 +647,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>That is, the classifier <span class="math inline">\(\hat{C}(x)\)</span> returns the predicted category <span class="math inline">\(\hat{y}(X)\)</span>.</p>
+<p>That is, the classifier <span class="math inline">\(\hat{C}(x)\)</span> returns the predicted category <span class="math inline">\(\hat{y}(x)\)</span>.</p>
 <p><span class="math display">\[
 \hat{y}(x) = \hat{C}(x)
 \]</span></p>
@@ -693,7 +693,7 @@ window.Quarto = {
 </div>
 <section id="visualization-for-classification" class="level2">
 <h2 class="anchored" data-anchor-id="visualization-for-classification">Visualization for Classification</h2>
-<p>Often, some simple visualizations can suggest simple classification rules. To quickly create some useful visualizations, we use the <code>featurePlot()</code> function from the <code>caret()</code> package.</p>
+<p>Often, some simple visualizations can suggest simple classification rules. To quickly create some useful visualizations, we use the <code>featurePlot()</code> function from the <code>caret</code> package.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -939,7 +939,7 @@ I(y_i \neq \hat{C}(x)) =
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note, R doesn't know to rename the result "err", so it keeps the name "Accuracy"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We can go back to the <code>tst_con_mat</code> table (called <code>tst_tab</code>) before and hand-calculate the error rate</p>
+<p>We can go back to the test confusion matrix from before (called <code>tst_tab</code>) and hand-calculate the error rate</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tst_tab)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -966,7 +966,7 @@ predicted   No  Yes
 <li><span class="math inline">\(P = TP + FN\)</span></li>
 <li><span class="math inline">\(N = TN + FP\)</span></li>
 </ul>
-<p>Sometimes guarding against making certain errors, FP or FN, are more important than simply finding the best accuracy. Thus, sometimes we will consider <strong>sensitivity</strong> and <strong>specificity</strong>.</p>
+<p>Sometimes guarding against making certain errors, FP or FN, is more important than simply finding the best accuracy. Thus, sometimes we will consider <strong>sensitivity</strong> and <strong>specificity</strong>.</p>
 <p><span class="math display">\[
 \text{Sensitivity} = \text{True Positive Rate} = \frac{\text{TP}}{\text{P}} = \frac{\text{TP}}{\text{TP + FN}}
 \]</span></p>
@@ -1010,7 +1010,7 @@ predicted   No  Yes
     0.0332 </code></pre>
 </div>
 </div>
-<p>Here, we see an extremely low prevalence, which suggests an even simpler classifier than our current based on <code>balance</code>.</p>
+<p>Here, we see an extremely low prevalence, which suggests an even simpler classifier than our current one based on <code>balance</code>.</p>
 <p><span class="math display">\[
 \hat{C}(\texttt{balance}) =
 \begin{cases}
@@ -1042,7 +1042,7 @@ predicted   No  Yes
 <pre><code>[1] 0.0332</code></pre>
 </div>
 </div>
-<p>Here we see that the error rate is exactly the prevelance of the minority class.</p>
+<p>Here we see that the error rate is exactly the prevalence of the minority class.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(default_tst<span class="sc">$</span>default) <span class="sc">/</span> <span class="fu">length</span>(default_tst<span class="sc">$</span>default)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1051,7 +1051,7 @@ predicted   No  Yes
 0.9668 0.0332 </code></pre>
 </div>
 </div>
-<p>This classifier does better than the previous. But the point is, in reality, to create a good classifier, we should obtain a test error better than the 0.033, which is obtained by simply manipulating the prevalences. Next section, we’ll introduce much better classifiers which should have no problem accomplishing this task. Point is, think carefully about what you’re putting your classifier up against. In March 2020 when we were very worried about COVID test accuracy, and when <em>prevalance</em> was, say, 1%, it was pointed out that we could make a 99% accurate COVID test by simply returning “No COVID” for every test! We’d be the new Theranos!</p>
+<p>This classifier does better than the previous. But the point is, in reality, to create a good classifier, we should obtain a test error better than the 0.033, which is obtained by simply manipulating the prevalences. Next section, we’ll introduce much better classifiers which should have no problem accomplishing this task. Point is, think carefully about what you’re putting your classifier up against. In March 2020 when we were very worried about COVID test accuracy, and when <em>prevalence</em> was, say, 1%, it was pointed out that we could make a 99% accurate COVID test by simply returning “No COVID” for every test! We’d be the new Theranos!</p>
 </section>
 </section>
 </section>
@@ -1191,7 +1191,7 @@ p(x) = P(Y = 1 \mid {X = x})
 <p><span class="math display">\[
 p(x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p x_p)}} = \sigma(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p x_p)
 \]</span></p>
-<p>Above, <span class="math inline">\(\sigma\)</span> is a function, the <strong>sigmoid</strong> function. It is shorthand notation which appears often in deep learning literature. It takes any real input, and outputs a number <em>between</em> 0 and 1. How useful! (This is actualy a particular sigmoid function called the logistic function, but since it is by far the most popular sigmoid function, often sigmoid function is used to refer to the logistic function)</p>
+<p>Above, <span class="math inline">\(\sigma\)</span> is a function, the <strong>sigmoid</strong> function. It is shorthand notation which appears often in deep learning literature. It takes any real input, and outputs a number <em>between</em> 0 and 1. How useful! (This is actually a particular sigmoid function called the logistic function, but since it is by far the most popular sigmoid function, often sigmoid function is used to refer to the logistic function.)</p>
 <p><span class="math display">\[
 \sigma(x) = \frac{e^x}{1 + e^x} = \frac{1}{1 + e^{-x}}
 \]</span></p>
@@ -1363,7 +1363,7 @@ p(x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p
 <p><span class="math display">\[
 \hat{p}(x) = \hat{P}(Y = 1 \mid { X = x}) = 0.5
 \]</span></p>
-<p>This is equivalent to point that satisfy</p>
+<p>This is equivalent to points that satisfy</p>
 <p><span class="math display">\[
 \hat{\beta}_0 + \hat{\beta}_1 x_1 = 0.
 \]</span> Thus, for logistic regression with a single predictor, the decision boundary is given by the <em>point</em></p>
@@ -1534,7 +1534,7 @@ c = 0.90   0.9688  0.04294479   1.0000000</code></pre>
 <h2 class="anchored" data-anchor-id="multinomial-logistic-regression-bonus">Multinomial Logistic Regression (BONUS)</h2>
 <p>What if the response contains more than two categories? For that we need multinomial logistic regression.</p>
 <p><span class="math display">\[
-P(Y = k \mid { X = x}) = \frac{e^{\beta_{0k} + \beta_{1k} x_1 + \cdots +  + \beta_{pk} x_p}}{\sum_{g = 1}^{G} e^{\beta_{0g} + \beta_{1g} x_1 + \cdots + \beta_{pg} x_p}}
+P(Y = k \mid { X = x}) = \frac{e^{\beta_{0k} + \beta_{1k} x_1 + \cdots + \beta_{pk} x_p}}{\sum_{g = 1}^{G} e^{\beta_{0g} + \beta_{1g} x_1 + \cdots + \beta_{pg} x_p}}
 \]</span></p>
 <p>We will omit the details, as ISL has as well. If you are interested, the <a href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression">Wikipedia page</a> provides a rather thorough coverage. Also note that the above is an example of the <a href="https://en.wikipedia.org/wiki/Softmax_function">softmax function</a>.</p>
 <p>As an example of a dataset with a three category response, we use the <code>iris</code> dataset, which is so famous, it has its own <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Wikipedia entry</a>. It is also a default dataset in <code>R</code>, so no need to load it.</p>
@@ -1557,7 +1557,7 @@ versicolor    16.77474    -7.855576   -13.98668     25.13860    4.270375
 virginica    -33.94895   -37.519645   -94.22846     97.82691   73.487162</code></pre>
 </div>
 </div>
-<p>Notice we are only given coefficients for two of the three class, much like only needing coefficients for one class in logistic regression.</p>
+<p>Notice we are only given coefficients for two of the three classes, much like only needing coefficients for one class in logistic regression.</p>
 <p>A difference between <code>glm()</code> and <code>multinom()</code> is how the <code>predict()</code> function operates.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(model_multi, <span class="at">newdata =</span> iris_trn))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

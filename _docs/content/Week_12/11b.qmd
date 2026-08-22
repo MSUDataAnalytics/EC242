@@ -20,7 +20,7 @@ We will use the lecture slides from my friend and ace economist, Ed Rubin (U of 
 
 ## The data and packages
 
-Dr. Rubin uses the `ISLR` package's `credit` dataset, which we can get from the `ISLR` package (which you may need to install). You'll also want to install the `wooldridge` package for our later work:
+Dr. Rubin uses the `Credit` dataset from the `ISLR` package (which you may need to install). You'll also want to install the `wooldridge` package for our later work:
 
 ```{r credit-data, echo = T}
 library(ISLR)
@@ -34,7 +34,7 @@ We will also need to load the `caret` package (which you've used before), as wel
 ## Terminology
 I used to have this lecture at the end of our semester, but I think the intuition behind LASSO and ridge regression helps understand our "overfitting" problem. There are two terms I want to cover before we dive into the slides:
 
-1. **Bias vs. Variance**: We saw that super-overfit polynomial last week (where we took 20 observations and fit a 16th-degree polynomial). The model we fit was very flexible and bendy, but it did get most of the data points right. It had low *bias* as it was generally right, but had huge *variance* -- it was all over the place, even within a small range of advertising mode spending. **Bias vs. variance** refers to the innate tradeoff between these two things. When we used the train and test samples to get the best *out* of sample fit, we were balancing bias and variance
+1. **Bias vs. Variance**: We saw that super-overfit polynomial a couple weeks ago (where we took 20 observations and fit a 16th-degree polynomial). The model we fit was very flexible and bendy, but it did get most of the data points right. It had low *bias* as it was generally right, but had huge *variance* -- it was all over the place, even within a small range of advertising mode spending. **Bias vs. variance** refers to the innate tradeoff between these two things. When we used the train and test samples to get the best *out* of sample fit, we were balancing bias and variance.
 
 2. **Cross validation**: This is the term for splitting your sample into two (or more) different subsets (e.g. train and test), fitting the model on one and checking how it does on the other -- and then rotating, so every chunk of the data gets a turn being held out. 
 
@@ -80,7 +80,8 @@ library(glmnet)
 
 wage2 = wooldridge::wage2 %>%
    mutate_if(is.numeric, list(squared = function(x) x^2)) %>%
-  dplyr::select(-wage_squared, -lwage, -lwage_squared, -married_squared, -black_squared, -south_squared, -urban_squared)
+  dplyr::select(-wage_squared, -lwage, -lwage_squared, -married_squared, -black_squared, -south_squared, -urban_squared) %>%
+  na.omit()
 
 
 lasso_cv = cv.glmnet(
@@ -157,7 +158,7 @@ While it takes a bit longer to estimate this (especially when $B$ is large), you
 
 ### OK, technically that's "bagging"
 
-Random Forest has one other wrinkle -- when choosing amongst the candidate predictors for each split, the Random Forest method will choose from a randomly selected subset of the predictors. The reasoning for this given in ISLR is intuitive: if there is one predictor that predicts quite well for the sample, it will always be selected and little emphasis will be on predictors aside from this one. By randomly leaving it out, some trees are forced to fit without that predictor, so they won't all look the same. When you don't take the subset, you are *bagging*. When you do take a subset, you are estimating a *random forest*
+Random Forest has one other wrinkle -- when choosing amongst the candidate predictors for each split, the Random Forest method will choose from a randomly selected subset of the predictors. The reasoning for this given in ISLR is intuitive: if there is one predictor that predicts quite well for the sample, it will always be selected and little emphasis will be on predictors aside from this one. By randomly leaving it out, some trees are forced to fit without that predictor, so they won't all look the same. When you don't take the subset, you are *bagging*. When you do take a subset, you are estimating a *random forest*.
 
 
 You won't need to use this on your Project 3, it's purely for your own info. Random forests are common out in the world, and are useful to know especially since you already know the fundamental element of it -- the tree.
@@ -169,7 +170,7 @@ If we have time, we can dive back into a little more about model flexibility, bi
 
 ## Model Flexibility
 
-Let's return to the simulated dataset we used occaisionally in the linear regression content. Recall there was a single feature $x$ with the following properties:
+Let's return to the simulated dataset we used occasionally in the linear regression content. Recall there was a single feature $x$ with the following properties:
 
 ```{r}
 # define regression function
@@ -248,7 +249,7 @@ legend("bottomleft", c("Validation", "Train"), lty = c(6, 1), lwd = 3,
        col = c("dodgerblue", "darkorange"))
 ```
 
-This picture is an idealized version of what we expect to see, but we'll illustrate the sorts of validate "curves" that we might see in practice.
+This picture is an idealized version of what we expect to see, but we'll illustrate the sorts of validation "curves" that we might see in practice.
 
 Note that in the following three sub-sections, a significant portion of the code is suppressed for visual clarity. See the source document for full details.
 
@@ -306,7 +307,7 @@ What do we see here? As the polynomial degree *increases*:
 - The training error *decreases*.
 - The validation error *decreases*, then *increases*.
 
-This more of less matches the idealized version above, but the validation "curve" is much more jagged. This is something that we can expect in practice.
+This more or less matches the idealized version above, but the validation "curve" is much more jagged. This is something that we can expect in practice.
 
 We have previously noted that training error isn't particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we know that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.^[In practice, if you already know how your model's flexibility works, by checking that the training error goes down as you increase flexibility, you can check that you have done your coding and model training correctly.]
 
@@ -369,7 +370,7 @@ Important to note here: the pattern above only holds "in general," that is, ther
 
 ### Decision Trees
 
-Lastly, we evaluate some decision tree models. We choose some arbitrary values of `cp` to evaluate, while holding `minsplit` constant at `5`. There are arbitrary choices that produce a plot that is useful for discussion.
+Lastly, we evaluate some decision tree models. We choose some arbitrary values of `cp` to evaluate, while holding `minsplit` constant at `5`. These are arbitrary choices that produce a plot that is useful for discussion.
 
 ```{r}
 # helper function for fitting decision tree models

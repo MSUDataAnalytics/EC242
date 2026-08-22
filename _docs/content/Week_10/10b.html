@@ -673,7 +673,7 @@ window.Quarto = {
 \text{RMSE}(\hat{f}, \text{Data}) = \sqrt{\frac{1}{n}\displaystyle\sum_{i = 1}^{n}\left(y_i - \hat{f}(\bf{x}_i)\right)^2}
 \]</span></p>
 <p>While for the sake of comparing models, the choice between RMSE and MSE is arbitrary, we have a preference for RMSE, as it has the same units as the response variable. Also, notice that in the prediction context MSE refers to an average, whereas in an ANOVA (<code>summary(lm(...))</code>) context, the denominator for MSE may not be <span class="math inline">\(n\)</span>.</p>
-<p>For a linear model , the estimate of <span class="math inline">\(f\)</span>, <span class="math inline">\(\hat{f}\)</span>, is given by the fitted regression line.</p>
+<p>For a linear model, the estimate of <span class="math inline">\(f\)</span>, <span class="math inline">\(\hat{f}\)</span>, is given by the fitted regression line.</p>
 <p><span class="math display">\[
 \hat{y}({\bf{x}_i}) = \hat{f}({\bf{x}_i})
 \]</span></p>
@@ -686,7 +686,7 @@ window.Quarto = {
 </section>
 <section id="model-complexity" class="level2">
 <h2 class="anchored" data-anchor-id="model-complexity">Model Complexity</h2>
-<p>Aside from how well a model predicts, we will also be very interested in the complexity (flexibility) of a model. For now, we will only consider nested linear models for simplicity. What is a “nested model”? When you have “nested models”, then one model contains all of the <em>same</em> terms that the other model has. If we have <code>TV</code>, <code>Radio</code>, <code>Newspaper</code>, then we would have a “nested model” in this case:</p>
+<p>Aside from how well a model predicts, we will also be very interested in the complexity (flexibility) of a model. For now, we will only consider nested linear models for simplicity. What is a “nested model”? When you have “nested models”, then one model contains all of the <em>same</em> terms that the other model has. If we have <code>TV</code>, <code>radio</code>, <code>newspaper</code>, then we would have a “nested model” in this case:</p>
 <pre><code>model1 = lm(sales ~ TV + radio, data = Advertising)
 model2 = lm(sales ~ TV + radio + newspaper, data = Advertising)</code></pre>
 <p>Here, <code>model1</code> is nested in <code>model2</code>. Here are <strong>non-nested models</strong>:</p>
@@ -801,7 +801,7 @@ F-statistic: 0.9732 on 16 and 3 DF,  p-value: 0.5933</code></pre>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="dv">30</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">EnergyUsed =</span> TOTALBTU, </span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                REGIONC, DIVISION, Climate_Region_Pub, METROMICRO, <span class="at">Urban=</span>UR, <span class="at">OWNRENT =</span> KOWNRENT,YEARMADERANGE, </span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">Occupants =</span> OCCUPYYRANGE,<span class="at">ColdDays =</span> HDD65, <span class="at">HotDayss =</span> CDD65, <span class="at">SquareFeet =</span> TOTHSQFT, <span class="at">CarsGarage =</span> SIZEOFGARAGE, </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">Occupants =</span> OCCUPYYRANGE,<span class="at">ColdDays =</span> HDD65, <span class="at">HotDays =</span> CDD65, <span class="at">SquareFeet =</span> TOTHSQFT, <span class="at">CarsGarage =</span> SIZEOFGARAGE, </span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">AgeOfHome =</span> YEARMADERANGE, <span class="at">TreeShade =</span> TREESHAD, <span class="at">TVSize =</span> TVSIZE1, <span class="at">HeaterAge =</span> EQUIPAGE, <span class="at">HasAC =</span> AIRCOND,</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">TempHome =</span> TEMPHOME) <span class="sc">%&gt;%</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(HeaterAge <span class="sc">!=</span> <span class="sc">-</span><span class="dv">2</span> <span class="sc">&amp;</span> TempHome <span class="sc">!=-</span><span class="dv">2</span>)  <span class="sc">%&gt;%</span> <span class="co"># get rid of some NA's</span></span>
@@ -817,8 +817,8 @@ F-statistic: 0.9732 on 16 and 3 DF,  p-value: 0.5933</code></pre>
 </section>
 <section id="avoiding-overfitting" class="level3">
 <h3 class="anchored" data-anchor-id="avoiding-overfitting">Avoiding overfitting</h3>
-<p>Frequently we will take a dataset of interest and split it in two. One part of the datasets will be used to fit (train) a model, which we will call the <strong>training</strong> data. The remainder of the original data will be used to assess how well the model is predicting, which we will call the <strong>test</strong> data. Test data should <em>never</em> be used to train a model.</p>
-<p>Note that sometimes the terms <em>evaluation set</em> and <em>test set</em> are used interchangeably. We will give somewhat specific definitions to these later. For now we will simply use a single test set and a single training set.</p>
+<p>Frequently we will take a dataset of interest and split it in two. One part of the dataset will be used to fit (train) a model, which we will call the <strong>training</strong> data. The remainder of the original data will be used to assess how well the model is predicting, which we will call the <strong>test</strong> data. Test data should <em>never</em> be used to train a model.</p>
+<p>Note that sometimes the terms <em>validation set</em> and <em>test set</em> are used interchangeably. We will give somewhat specific definitions to these later. For now we will simply use a single test set and a single training set.</p>
 <p>Here we use the <code>sample()</code> function to obtain a random sample of the rows of the original data. We then use those row numbers (and remaining row numbers) to split the data accordingly. Notice we used the <code>set.seed()</code> function to allow us to reproduce the same random split each time we perform this analysis.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">90</span>)</span>
@@ -1146,7 +1146,7 @@ F-statistic: 0.9732 on 16 and 3 DF,  p-value: 0.5933</code></pre>
 </div>
 </div>
 <p>In the first line, we create a 10-row (and 1-column and very boring) dataset to use to illustrate the train/test index.</p>
-<p>In the second line, we make a sample by drawing row <em>numbers</em>. The first argument to <code>sample</code> is “what do you want to draw from” and if we give it a single number, it assumes we meant 1 through that number. So giving it <code>NROW(dataset)</code> samples from the numbers 1:10, because we have 10 rows. The second argument is “how many should we draw”, and here, we ask for 50%. Since sometimes 50% will be fraction (if an odd number of rows), we use <code>trunc</code> to round it down. If we had 11 rows, this would give us a training sample of 5. Note that we don’t use replacement here – we don’t want to draw the same row index twice!</p>
+<p>In the second line, we make a sample by drawing row <em>numbers</em>. The first argument to <code>sample</code> is “what do you want to draw from” and if we give it a single number, it assumes we meant 1 through that number. So giving it <code>NROW(dataset)</code> samples from the numbers 1:10, because we have 10 rows. The second argument is “how many should we draw”, and here, we ask for 50%. Since sometimes 50% will be a fraction (if an odd number of rows), we use <code>trunc</code> to round it down. If we had 11 rows, this would give us a training sample of 5. Note that we don’t use replacement here – we don’t want to draw the same row index twice!</p>
 <p>Now we create the split data:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="ot">=</span> dataset[train_index,]</span>
@@ -1218,43 +1218,43 @@ F-statistic: 0.9732 on 16 and 3 DF,  p-value: 0.5933</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 Y ~ 1
-&lt;environment: 0xca734eb68&gt;
+&lt;environment: 0xb5b32ab68&gt;
 
 [[2]]
 Y ~ X1
-&lt;environment: 0xca734eb68&gt;
+&lt;environment: 0xb5b32ab68&gt;
 
 [[3]]
 Y ~ X1 * X2
-&lt;environment: 0xca734eb68&gt;
+&lt;environment: 0xb5b32ab68&gt;
 
 [[4]]
 Y ~ X1 * X2 * X3
-&lt;environment: 0xca734eb68&gt;
+&lt;environment: 0xb5b32ab68&gt;
 
 [[5]]
 Y ~ X1 * X2 * X3 * I(X1^2)
-&lt;environment: 0xca734eb68&gt;
+&lt;environment: 0xb5b32ab68&gt;
 
 [[6]]
 Y ~ X1 * X2 * X3 * I(X1^2) * I(X2^2)
-&lt;environment: 0xca734eb68&gt;
+&lt;environment: 0xb5b32ab68&gt;
 
 [[7]]
 Y ~ X1 * X2 * X3 * I(X1^2) * I(X2^2) * I(X3^2)
-&lt;environment: 0xca734eb68&gt;
+&lt;environment: 0xb5b32ab68&gt;
 
 [[8]]
 Y ~ poly(X1, 3) * poly(X2, 3) * poly(X3, 3)
-&lt;environment: 0xca734eb68&gt;
+&lt;environment: 0xb5b32ab68&gt;
 
 [[9]]
 Y ~ poly(X1, 4) * poly(X2, 4) * poly(X3, 4)
-&lt;environment: 0xca734eb68&gt;</code></pre>
+&lt;environment: 0xb5b32ab68&gt;</code></pre>
 </div>
 </div>
 <p>First we make some fake data to illustrate. Then, we get to the real business – this is the structure we’ll follow: we make a vector of model specifications, then we make it a list using <code>as.list</code>. Then, we use <code>lapply</code> (list-apply) to hit every entry with <code>as.formula</code>. Remember, for <code>lapply</code>, it takes each list element and uses it as the first argument in the given <code>FUN</code>, so it’ll run <code>as.formula(model_list[[1]])</code> and then, in the output’s first list entry, place the result.</p>
-<p>Now, we <code>lapply</code> that model, returning the fit object (which we can use to <code>predict</code> results using new data). This requires an “anonymous function”. The anonymous function lets you, on the fly, write a function with one argument that lets you reference the list element being applied:</p>
+<p>Now, we <code>lapply</code> over that list of formulas, returning the fit object (which we can use to <code>predict</code> results using new data). This requires an “anonymous function”. The anonymous function lets you, on the fly, write a function with one argument that lets you reference the list element being applied:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>model_ests <span class="ot">=</span> <span class="fu">lapply</span>(model_list_form, <span class="cf">function</span>(x) <span class="fu">lm</span>(x, <span class="at">data =</span> dat.train ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>

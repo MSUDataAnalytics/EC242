@@ -1,8 +1,8 @@
 {
-  "hash": "002dcecc20f9f5ff2c196b4d7ac3f202",
+  "hash": "c6709cb1ba12537472f1fdff9a7c3877",
   "result": {
     "engine": "knitr",
-    "markdown": "---\ntitle: \"Group Presentations\"\noutput:\n  blogdown::html_page:\n    toc: true\n---\n\n\n\n## Required Reading\n\n- Nothing. Attendance is required.\n\n\n## Group Project 2 Presentations\n\nToday, we will have a lightning-round set of group presentations where each group will present their work for Project 2. Format and expectations are on the [Project 2 page](/groupproject/project2.qmd). Take notes while you watch: [Lab 9](/assignment/09-assignment.qmd) asks you to write feedback on one group's analysis and to apply a geometry that isn't your own group's to your own data.\n",
+    "markdown": "---\ntitle: \"Group Presentations\"\noutput:\n  blogdown::html_page:\n    toc: true\n---\n\n\n\n## Required Reading\n\n- Nothing. Attendance is required.\n\n\n## Group Project 2 Presentations\n\nToday, we will have a lightning-round set of group presentations where each group will present their work for Project 2. Format and expectations are on the [Project 2 page](/groupproject/project2.qmd). Take notes while you watch: [Lab 9](/assignment/09-assignment.qmd) asks you to write feedback on one group's analysis and to apply a geometry, aesthetic, or method that isn't your own group's to your own data.\n",
     "supporting": [
       "09b_files"
     ],

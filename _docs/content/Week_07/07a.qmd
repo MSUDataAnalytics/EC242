@@ -31,7 +31,7 @@ __Historical note__: Galton made important contributions to statistics and genet
 
 ## Case study: is height hereditary?
 
-We have access to Galton's family height data through the __HistData__ package. This data contains heights on several dozen families: mothers, fathers, daughters, and sons. To imitate Galton's analysis, we will create a dataset with the heights of fathers and a randomly selected son of each family:
+We have access to Galton's family height data through the __HistData__ package. This data contains heights on a couple hundred families: mothers, fathers, daughters, and sons. To imitate Galton's analysis, we will create a dataset with the heights of fathers and a randomly selected son of each family:
 
 ```{r, message=FALSE, warning=FALSE, echo=TRUE}
 library(tidyverse)
@@ -157,7 +157,7 @@ sd(R)
 
 So, when interpreting correlations, remember that correlations derived from samples are estimates containing uncertainty.
 
-Also, note that because the sample correlation is an average of independent draws, the central limit actually applies. Therefore, for large enough $N$, the distribution of `R` is approximately normal with expected value $\rho$. The standard deviation, which is somewhat complex to derive, is $\sqrt{\frac{1-r^2}{N-2}}$.
+Also, note that because the sample correlation is an average of independent draws, the central limit actually applies. Therefore, for large enough $N$, the distribution of `R` is approximately normal with expected value $\rho$. The standard deviation, which is somewhat complex to derive, is $\sqrt{\frac{1-\rho^2}{N-2}}$.
 
 In our example, $N=25$ does not seem to be large enough to make the approximation a good one:
 
@@ -235,8 +235,8 @@ conditional_avg
 ```
 
 
-Note that a 72-inch father is taller than average -- specifically, (72 - `r round( mean(galton_heights$father),1)`)/`r round(sd(galton_heights$father),1)` =
-`r round((72 -mean(galton_heights$father))/sd(galton_heights$father), 1)` standard deviations taller than the average father. Our prediction `r conditional_avg` is also taller than average, but only `r round((conditional_avg - mean(galton_heights$son)) /sd(galton_heights$son),2)` standard deviations larger than the average son. The sons of 72-inch fathers have _regressed_ some to the average height. We notice that the number of SDs shrinks by a factor of about 0.43, which happens to be the correlation. As we will see in a later lecture, this is not a coincidence.
+Note that a 72-inch father is taller than average -- specifically, (72 - `r round( mean(galton_heights$father),1)`)/`r round(sd(galton_heights$father),2)` =
+`r round((72 -mean(galton_heights$father))/sd(galton_heights$father), 1)` standard deviations taller than the average father. Our prediction `r conditional_avg` is also taller than average, but only `r round((conditional_avg - mean(galton_heights$son)) /sd(galton_heights$son),2)` standard deviations larger than the average son. The sons of 72-inch fathers have _regressed_ some to the average height. We notice that the number of SDs shrinks by a factor of about 0.43, which happens to be the correlation. As we will see in the next section, this is not a coincidence.
 
 If we want to make a prediction of any height, not just 72, we could apply the same approach to each strata. Stratification followed by boxplots lets us see the distribution of each group:
 
@@ -263,7 +263,7 @@ The fact that these conditional averages follow a line is not a coincidence. In 
 
 ## The regression line
 
-If we are predicting a random variable $Y$ knowing the value of another $X=x$ using a regression line, then we predict that for every standard deviation, $\sigma_X$, that $x$ increases above the average $\mu_X$, $Y$ increase $\rho$ standard deviations $\sigma_Y$ above the average $\mu_Y$ with $\rho$ the correlation between $X$ and $Y$. The formula for the regression is therefore:
+If we are predicting a random variable $Y$ knowing the value of another $X=x$ using a regression line, then we predict that for every standard deviation, $\sigma_X$, that $x$ increases above the average $\mu_X$, $Y$ increases $\rho$ standard deviations $\sigma_Y$ above the average $\mu_Y$ with $\rho$ the correlation between $X$ and $Y$. The formula for the regression is therefore:
 
 $$
 \left( \frac{Y-\mu_Y}{\sigma_Y} \right) = \rho \left( \frac{x-\mu_X}{\sigma_X} \right)
@@ -299,7 +299,7 @@ galton_heights %>%
   geom_abline(slope = r * s_y/s_x, intercept = mu_y - r * s_y/s_x * mu_x)
 ```
 
-The regression formula implies that if we first standardize the variables, that is subtract the average and divide by the standard deviation, then the regression line has intercept 0 and slope equal to the correlation $\rho$. You can make same plot, but using standard units like this:
+The regression formula implies that if we first standardize the variables, that is subtract the average and divide by the standard deviation, then the regression line has intercept 0 and slope equal to the correlation $\rho$. You can make the same plot, but using standard units like this:
 
 ```{r regression-line-standard-units, fig.height = 3, fig.width = 3, out.width="40%", eval=FALSE}
 galton_heights %>%
@@ -356,7 +356,7 @@ sd(conditional_avg, na.rm = TRUE)
 sd(regression_prediction)
 ```
 
-The regression line is therefore much more stable than the conditional mean. There is an intuitive reason for this. The conditional average is computed on a relatively small subset: the fathers that are about 72 inches tall. In fact, in some of the permutations we have no data, which is why we use `na.rm=TRUE`. The regression always uses all the data.
+The regression line is therefore much more stable than the conditional mean. There is an intuitive reason for this. The conditional average is computed on a relatively small subset: the fathers that are about 72 inches tall. In fact, in some of the samples we have no data, which is why we use `na.rm=TRUE`. The regression always uses all the data.
 
 So why not always use the regression for prediction? Because it is not always appropriate. For example, Anscombe provided cases for which the data does not have a linear relationship. So are we justified in using the regression line to predict? Galton answered this in the positive for height data. The justification, which we include in the next section, is somewhat more advanced than the rest of this reading.
 
@@ -408,7 +408,7 @@ $$
 
 This implies that, if our data is approximately bivariate normal, the regression line gives the conditional expectation. Therefore, we can obtain a much more stable estimate of the conditional expectation by finding the regression line and using it to predict.
 
-In summary, if our data is approximately bivariate, then the conditional expectation, the best prediction of $Y$ given we know the value of $X$, is given by the regression line.
+In summary, if our data is approximately bivariate normal, then the conditional expectation, the best prediction of $Y$ given we know the value of $X$, is given by the regression line.
 
 ### Variance explained
 
@@ -443,7 +443,7 @@ b_1 <- mu_y - m_1*mu_x
 which gives us the function $\mbox{E}(Y\mid X=x) =$ `r round(b_1, 1)` + `r round(m_1, 2)` $x$.
 
 What if we want to predict the father's height based on the son's? It is important to know that this is not determined by computing the inverse function:
-$x = \{ \mbox{E}(Y\mid X=x) -$ `r round(b_1, 1)` $\} /$ `r round(m_1, 1)`.
+$x = \{ \mbox{E}(Y\mid X=x) -$ `r round(b_1, 1)` $\} /$ `r round(m_1, 2)`.
 
 We need to compute $\mbox{E}(X \mid Y=y)$. Since the data is approximately bivariate normal, the theory described above tells us that this conditional expectation will follow a line with slope and intercept:
 
@@ -454,7 +454,7 @@ b_2 <- mu_x - m_2 * mu_y
 
 So we get $\mbox{E}(X \mid Y=y) =$ `r round(b_2, 1)` + `r round(m_2, 2)`y. Again we see regression to the average: the prediction for the father is closer to the father average than the son heights $y$ is to the son average.
 
-Here is a plot showing the two regression lines, with blue for the predicting son heights with father heights and red for predicting father heights with son heights:
+Here is a plot showing the two regression lines, with blue for predicting son heights with father heights and red for predicting father heights with son heights:
 
 ```{r two-regression-lines, fig.height = 3, fig.width = 3, out.width="40%"}
 galton_heights %>%

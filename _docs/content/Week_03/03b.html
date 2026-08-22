@@ -623,7 +623,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Scales and transformations</h1>
 <section id="log-transformations" class="level3">
 <h3 class="anchored" data-anchor-id="log-transformations">Log transformations</h3>
-<p>Last lecture, we re-scaled our population by 10^6 (millions), but still had a lot of variation because some states are tiny and some are huge. Sometimes, we want to have one (or both) of our axes scaled non-linearly. For instance, if we wanted to have our x-axis be in log base 10, then each major tick would represent a factor of 10 over the last. This is not the default, so this change needs to be added through a <em>scales</em> layer. A quick look at the cheat sheet reveals the <code>scale_x_continuous</code> function lets us control the behavior of scales. We use them like this:</p>
+<p>In our first visualization lecture, we re-scaled our population by 10^6 (millions), but still had a lot of variation because some states are tiny and some are huge. Sometimes, we want to have one (or both) of our axes scaled non-linearly. For instance, if we wanted to have our x-axis be in log base 10, then each major tick would represent a factor of 10 over the last. This is not the default, so this change needs to be added through a <em>scales</em> layer. A quick look at the cheat sheet reveals the <code>scale_x_continuous</code> function lets us control the behavior of scales. We use them like this:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">nudge_x =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
@@ -637,7 +637,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>A couple of things here: adding things like <code>scale_x_continuous(...)</code> operates on the whole plot. In some cases, order matters, but it doesn’t here, so we can throw <code>scale_x_continuous</code> anywhere. Because we have altered the whole plot’s scale to be in the log-scale now, the <em>nudge</em> must be made smaller. It is in log-base-10 units. Using <code>?scale_x_continuous</code> brings us to the help for both <code>scale_x_continuous</code> and <code>scale_y_continuous</code>, which shows us the options for transformations <code>trans = ...</code></p>
+<p>A couple of things here: adding things like <code>scale_x_continuous(...)</code> operates on the whole plot. In some cases, order matters, but it doesn’t here, so we can throw <code>scale_x_continuous</code> anywhere. Because we have altered the whole plot’s scale to be in the log-scale now, the <em>nudge</em> must be made smaller. It is in log-base-10 units. Using <code>?scale_x_continuous</code> brings us to the help for both <code>scale_x_continuous</code> and <code>scale_y_continuous</code>, which shows us the options for transformations <code>transform = ...</code> (you’ll see <code>trans = ...</code> in older code, including the chunk above – it still works, but it’s deprecated)</p>
 <p>This particular transformation is so common that <strong>ggplot2</strong> provides the specialized functions <code>scale_x_log10</code> and <code>scale_y_log10</code> which “inherit” (take the place of) the <code>scale_x_continuous</code> functions but have log base 10 as default. We can use these to rewrite the code like this:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
@@ -787,7 +787,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We can also use a <code>labeler</code> function. The most common ones are in the <code>scales</code> package, so you’ll want to install that and load it up using <code>library(scales)</code>. Each labeler is a function that takes as its first argument a vector of numbers (or some expected format, like dates) and returns a formatted character vector of labels.</p>
 <p>So the following will happen:</p>
 <ul>
-<li><code>scales::comma_format</code></li>
+<li><code>scales::label_comma</code></li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>numbers.vector <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">20000</span>, <span class="dv">50000</span>, <span class="dv">100000</span>, <span class="dv">500000</span>, <span class="dv">1000000</span>) <span class="co"># 20k to 1M</span></span>
@@ -801,8 +801,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         style_positive = style_positive, style_negative = style_negative, 
         scale_cut = scale_cut, trim = trim, ...)
 }
-&lt;bytecode: 0x9252aea50&gt;
-&lt;environment: 0x9252b3b28&gt;</code></pre>
+&lt;bytecode: 0x94f21c040&gt;
+&lt;environment: 0x94f21f118&gt;</code></pre>
 </div>
 </div>
 <p>Wha? That looks like the output…is a function?</p>
@@ -830,7 +830,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] "$20,000"    "$50,000"    "$100,000"   "$500,000"   "$1,000,000"</code></pre>
 </div>
 </div>
-<p>Note that we could set the <code>accuracy</code> and <code>scale</code> arguments in <code>scales::label_percent</code> and <code>scales::label_dollar</code>. The <code>accuracy</code> argument determines rounding. We don’t need cents when we have dollar values up to 1M, but we do need fractions of a percent when we use the murder rate (not multipled by 100,000).</p>
+<p>Note that we could set the <code>accuracy</code> and <code>scale</code> arguments in <code>scales::label_percent</code> and <code>scales::label_dollar</code>. The <code>accuracy</code> argument determines rounding. We don’t need cents when we have dollar values up to 1M, but we do need fractions of a percent when we use the murder rate (not multiplied by 100,000).</p>
 </section>
 </section>
 <section id="labelerFunctions" class="level2">
@@ -854,7 +854,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We don’t need the decimals on the y-axis tick labels, it’s just there for illustration.</p>
 <p>Sometimes, our axis tick labels are still too long. When numbers get long, we usually have standard ways of representing them (like k, M, G, and T for kilo-, mega-, giga- and terabytes). Labeler functions can make this easy for us.</p>
-<p>We can use the <code>labels = label_number(scale_cut = cut_short_scale())</code> argument to shorten the display and use the common suffix.</p>
+<p>We can use the <code>labels = label_comma(scale_cut = cut_short_scale())</code> argument to shorten the display and use the common suffix.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> region), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">nudge_x =</span> .<span class="dv">05</span>) <span class="sc">+</span></span>
@@ -870,12 +870,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Of course, we could also transform the <code>Population</code> and <code>total</code> variables, dividing by 1,000,000 or 1,000, then add “Thousands” or “Millions” to the label. But this way is cleaner. Also, notice on the Y-axis that the suffix “K” is only used when necessary – we don’t have “.01K” on there.</p>
-<p>There is also a <code>cut_si()</code> function that takes as an input a scientific unit (like “g” for grams). It’ll use the full scientific notation for larger quantites, so <code>cut_si("g")</code> would have “g”, then “kg”, then “Mg” where needed on the axis.</p>
+<p>There is also a <code>cut_si()</code> function that takes as an input a scientific unit (like “g” for grams). It’ll use the full scientific notation for larger quantities, so <code>cut_si("g")</code> would have “g”, then “kg”, then “Mg” where needed on the axis.</p>
 <p>There are lots of other neat tricks for axis labels on the tidyverse <a href="https://tidyverse.org/blog/2022/04/scales-1-2-0/">scales vignette</a></p>
 </section>
 <section id="axis-tick-label-orientation" class="level2">
 <h2 class="anchored" data-anchor-id="axis-tick-label-orientation">Axis tick label orientation</h2>
-<p>While the <code>label_comma</code> kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the <code>theme()</code> call since it adjusts the layout or styling of the plot. Here, I’ve put in a bunch of breaks at 1 million to 40 million, and then asked <code>ggplot</code> to rotate and adjust the x-axis tick labels. <code>hjust</code> and <code>vjust</code> move the horizontal and vertical justification of the label – where the text sits relative to its tick mark. <code>angle</code> changes the orientation.</p>
+<p>While the <code>label_comma</code> kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the <code>theme()</code> call since it adjusts the layout or styling of the plot. Here, I’ve put in a bunch of breaks at 1 million to 40 million, and then asked <code>ggplot</code> to rotate and adjust the x-axis tick labels. <code>hjust</code> and <code>vjust</code> move the horizontal and vertical justification of the label – where the text sits relative to its tick mark. <code>angle</code> changes the orientation. Careful, though: justification follows the rotated text, so at <code>angle = 90</code> it’s <code>hjust</code> that slides the label up and down and <code>vjust</code> that centers it on its tick.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> region), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">nudge_x =</span> .<span class="dv">05</span>) <span class="sc">+</span></span>
@@ -897,7 +897,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="additional-geometries" class="level2">
 <h2 class="anchored" data-anchor-id="additional-geometries">Additional geometries</h2>
-<p>Let’s say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) becuase we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).</p>
+<p>Let’s say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) because we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).</p>
 <p><code>geom_vline</code> lets us add a single vertical line (without aesthetic mappings). If we look at <code>?geom_vline</code> we see that it requires one aesthetic: <code>xintercept</code>. It also takes aesthetics like color and size, and introduces the <code>linetype</code> aesthetic:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> region), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
@@ -978,7 +978,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Well there we go! We can now see each stock price over time, with a convenient legend. Later on, we’ll learn how to change the color palatte. If we don’t necessarily want a different color but we do want to separate the lines, we can use the <code>group</code> aesthetic.</p>
+<p>Well there we go! We can now see each stock price over time, with a convenient legend. Later on, we’ll learn how to change the color palette. If we don’t necessarily want a different color but we do want to separate the lines, we can use the <code>group</code> aesthetic.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>AAPLNFLX <span class="ot">=</span> <span class="fu">tq_get</span>(<span class="fu">c</span>(<span class="st">"AAPL"</span>,<span class="st">"NFLX"</span>), <span class="at">from =</span> <span class="st">'2021-01-01'</span>, <span class="at">to =</span> <span class="st">'2021-08-01'</span>, <span class="at">get =</span> <span class="st">'stock.prices'</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(AAPLNFLX, <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> close, <span class="at">group =</span> symbol)) <span class="sc">+</span></span>
@@ -1060,7 +1060,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> region), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">nudge_x =</span> .<span class="dv">05</span>) <span class="sc">+</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data =</span> murders.summary, </span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> meanpop, <span class="at">color=</span>region), <span class="at">size =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">1</span>, <span class="at">alpha=</span>.<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> meanpop, <span class="at">color=</span>region), <span class="at">linewidth =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">1</span>, <span class="at">alpha=</span>.<span class="dv">5</span>) <span class="sc">+</span></span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
 <span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Population'</span>, <span class="at">y =</span> <span class="st">'Total murders'</span>, <span class="at">color =</span> <span class="st">'US Region'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

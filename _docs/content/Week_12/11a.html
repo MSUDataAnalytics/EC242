@@ -638,7 +638,7 @@ window.Quarto = {
 <section id="the-biasvariance-tradeoff" class="level1">
 <h1>The Bias–Variance Tradeoff</h1>
 <p>This lecture will begin to dig into some theoretical details of estimating regression functions, in particular how the <strong>bias-variance tradeoff</strong> helps explain the relationship between <strong>model flexibility</strong> and the errors a model makes.</p>
-<p>Don’t freak out if this seems mathematically overwhelming. We’ll walk through relatively slowly. It’s not super important to follow the nitty-gritty details; but the broad takeaways are quite important.</p>
+<p>Don’t freak out if this seems mathematically overwhelming. We’ll walk through it relatively slowly. It’s not super important to follow the nitty-gritty details; but the broad takeaways are quite important.</p>
 <section id="illustration-of-bias-vs.-variance" class="level2">
 <h2 class="anchored" data-anchor-id="illustration-of-bias-vs.-variance">Illustration of Bias vs.&nbsp;Variance</h2>
 <p>Bias is about how close you are on average to the correct answer. Variance is about how scattered your estimates would be if you repeated your experiment with new data.</p>
@@ -681,7 +681,7 @@ R(Y, f(X)) \triangleq \mathbb{E}[L(Y, f(X))] = \mathbb{E}_{X, Y}[(Y - f(X)) ^ 2]
 \mathbb{E}_{X, Y} \left[ (Y - f(X)) ^ 2 \right] = \mathbb{E}_{X} \mathbb{E}_{Y \mid X} \left[ ( Y - f(X) ) ^ 2 \mid X = x \right]
 \]</span></p>
 <p>Minimizing the right-hand side is much easier, as it simply amounts to minimizing the inner expectation with respect to <span class="math inline">\(Y \mid X\)</span>, essentially minimizing the risk pointwise, for each <span class="math inline">\(x\)</span>.</p>
-<p>It turns out, that the risk is minimized by setting <span class="math inline">\(f(x)\)</span> to be equal the conditional mean of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>,</p>
+<p>It turns out, that the risk is minimized by setting <span class="math inline">\(f(x)\)</span> to be equal to the conditional mean of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>,</p>
 <p><span class="math display">\[
 f(x) = \mathbb{E}(Y \mid X = x)
 \]</span></p>
@@ -716,7 +716,7 @@ f(x) = \text{median}(Y \mid X = x)
 <li>The expected prediction error is for a random <span class="math inline">\(Y\)</span> given a fixed <span class="math inline">\(x\)</span> and a random <span class="math inline">\(\hat{f}\)</span>. As such, the expectation is over <span class="math inline">\(Y \mid X\)</span> and <span class="math inline">\(\mathcal{D}\)</span>. Our estimated function <span class="math inline">\(\hat{f}\)</span> is random depending on the data, <span class="math inline">\(\mathcal{D}\)</span>, which is used to perform the estimation.</li>
 <li>The expected prediction error of predicting <span class="math inline">\(Y\)</span> using <span class="math inline">\(\hat{f}(X)\)</span> when <span class="math inline">\(X = x\)</span> has been decomposed into two errors:
 <ul>
-<li>The <strong>reducible error</strong>, which is the expected squared error loss of estimation <span class="math inline">\(f(x)\)</span> using <span class="math inline">\(\hat{f}(x)\)</span> at a fixed point <span class="math inline">\(x\)</span>. The only thing that is random here is <span class="math inline">\(\mathcal{D}\)</span>, the data used to obtain <span class="math inline">\(\hat{f}\)</span>. (Both <span class="math inline">\(f\)</span> and <span class="math inline">\(x\)</span> are fixed.) We’ll often call this reducible error the <strong>mean squared error</strong> of estimating <span class="math inline">\(f(x)\)</span> using <span class="math inline">\(\hat{f}\)</span> at a fixed point <span class="math inline">\(x\)</span>. <span class="math display">\[ \text{MSE}\left(f(x), \hat{f}(x)\right) \triangleq \mathbb{E}_{\mathcal{D}} \left[  \left(f(x) - \hat{f}(x) \right)^2 \right]\]</span></li>
+<li>The <strong>reducible error</strong>, which is the expected squared error loss of estimating <span class="math inline">\(f(x)\)</span> using <span class="math inline">\(\hat{f}(x)\)</span> at a fixed point <span class="math inline">\(x\)</span>. The only thing that is random here is <span class="math inline">\(\mathcal{D}\)</span>, the data used to obtain <span class="math inline">\(\hat{f}\)</span>. (Both <span class="math inline">\(f\)</span> and <span class="math inline">\(x\)</span> are fixed.) We’ll often call this reducible error the <strong>mean squared error</strong> of estimating <span class="math inline">\(f(x)\)</span> using <span class="math inline">\(\hat{f}\)</span> at a fixed point <span class="math inline">\(x\)</span>. <span class="math display">\[ \text{MSE}\left(f(x), \hat{f}(x)\right) \triangleq \mathbb{E}_{\mathcal{D}} \left[  \left(f(x) - \hat{f}(x) \right)^2 \right]\]</span></li>
 <li>The <strong>irreducible error</strong>. This is simply the variance of <span class="math inline">\(Y\)</span> given that <span class="math inline">\(X = x\)</span>, essentially noise that we do not want to learn. This is also called the <strong>Bayes error</strong>.</li>
 </ul></li>
 </ul>
@@ -1147,7 +1147,7 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 </div>
 </div>
 </div>
-<p>This picture is an idealized version of what we expect to see, but we’ll illustrate the sorts of validate “curves” that we might see in practice.</p>
+<p>This picture is an idealized version of what we expect to see, but we’ll illustrate the sorts of validation “curves” that we might see in practice.</p>
 <p>Note that in the following three sub-sections, a significant portion of the code is suppressed for visual clarity. See the source document for full details.</p>
 <section id="linear-models" class="level3">
 <h3 class="anchored" data-anchor-id="linear-models">Linear Models</h3>
@@ -1222,7 +1222,7 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 <p>Lastly, we evaluate some decision tree models. We choose some arbitrary values of <code>cp</code> to evaluate, while holding <code>minsplit</code> constant at <code>5</code>. These are arbitrary choices that produce a plot that is useful for discussion.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for fitting decision tree models</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>tree_knn_mod <span class="ot">=</span> <span class="cf">function</span>(flex) {</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>tree_mod <span class="ot">=</span> <span class="cf">function</span>(flex) {</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(y <span class="sc">~</span> x, <span class="at">data =</span> slr_est, <span class="at">cp =</span> flex, <span class="at">minsplit =</span> <span class="dv">5</span>)</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1231,7 +1231,7 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>cp_to_try <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>, <span class="fl">0.001</span>, <span class="fl">0.0001</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit decision tree models</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>tree_mod_est_list <span class="ot">=</span> <span class="fu">lapply</span>(cp_to_try, tree_knn_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>tree_mod_est_list <span class="ot">=</span> <span class="fu">lapply</span>(cp_to_try, tree_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The plot below visualizes the results.</p>
 <div class="cell" data-layout-align="center">
@@ -1255,7 +1255,7 @@ FALSE FALSE  TRUE  TRUE </code></pre>
 
 <ol>
 <li id="fn1"><p>Note that in this section, we will refer to <span class="math inline">\(f(x)\)</span> as the regression function instead of <span class="math inline">\(\mu(x)\)</span> for unimportant and arbitrary reasons.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Someday, someone will tell you this is a lie. They aren’t wrong. In modern deep learning, there is a concept called <a href="https://openai.com/blog/deep-double-descent/">Deep Double Descent</a>. See also <span class="citation" data-cites="belkin2018reconciling">@belkin2018reconciling</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Someday, someone will tell you this is a lie. They aren’t wrong. In modern deep learning, there is a concept called <a href="https://openai.com/blog/deep-double-descent/">Deep Double Descent</a>. See also <a href="https://arxiv.org/abs/1812.11118">Belkin et al.&nbsp;(2018)</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>It’s actually the same as the 0 predictor linear model. Can you see why?<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>In practice, if you already know how your model’s flexibility works, by checking that the training error goes down as you increase flexibility, you can check that you have done your coding and model training correctly.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>As <code>cp</code> increases, model flexibility decreases.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

@@ -76,7 +76,7 @@ We can load all the tidyverse packages at once by installing and loading the __t
 library(tidyverse)
 ```
 
-We will learn how to implement the tidyverse approach throughout the book, but before delving into the details, in this chapter we introduce some of the most widely used tidyverse functionality, starting with the __dplyr__ package for manipulating data frames and the __purrr__ package for working with functions. Note that the tidyverse also includes a graphing package, __ggplot2__,  the __readr__ package, and many others. In this lesson, we first introduce the concept of _tidy data_ and then demonstrate how we use the tidyverse to work with data frames in this format.
+We will learn how to implement the tidyverse approach throughout the course, but before delving into the details, here we introduce some of the most widely used tidyverse functionality, starting with the __dplyr__ package for manipulating data frames and the __purrr__ package for working with functions. Note that the tidyverse also includes a graphing package, __ggplot2__,  the __readr__ package, and many others. In this lesson, we first introduce the concept of _tidy data_ and then demonstrate how we use the tidyverse to work with data frames in this format.
 
 ```{r, include=F, eval = T, echo=F}
 filter <- dplyr::filter
@@ -93,7 +93,7 @@ head(murders)
 
 ```
 
-Each row represent a state with each of the five columns providing a different variable related to these states: name, abbreviation, region, population, and total murders.
+Each row represents a state with each of the five columns providing a different variable related to these states: name, abbreviation, region, population, and total murders.
 
 To see how the same information can be provided in different formats, consider the following example:
 
@@ -322,7 +322,7 @@ Note that the pipe works well with functions where the first argument is the inp
 ::: {.callout-note}
 ## TRY IT
 
-1. The pipe `%>%` can be used to perform operations sequentially without having to define intermediate objects. Start by redefining murder to include rate and rank.
+1. The pipe `%>%` can be used to perform operations sequentially without having to define intermediate objects. Start by redefining `murders` to include rate and rank.
 
 ```{r, eval=FALSE}
 murders <- mutate(murders, rate =  total / population * 100000,
@@ -666,7 +666,7 @@ as_tibble(grades) %>% class()
 
 ## The dot operator
 
-One of the advantages of using the pipe `%>%` is that we do not have to keep naming new objects as we manipulate the data frame. As a quick reminder, if we want to compute the median murder rate for states in the southern states, instead of typing:
+One of the advantages of using the pipe `%>%` is that we do not have to keep naming new objects as we manipulate the data frame. As a quick reminder, if we want to compute the median murder rate for states in the South, instead of typing:
 
 ```{r}
 tab_1 <- filter(murders, region == "South")
@@ -981,7 +981,7 @@ class(tidy_data$year)
 class(new_tidy_data$year)
 ```
 
-The `pivot_longer` function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers::
+The `pivot_longer` function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers:
 
 ```{r}
 new_tidy_data <- wide_data %>%
@@ -993,7 +993,7 @@ class(new_tidy_data$year)
 Now that the data is tidy, we can use this relatively simple ggplot code:
 
 ```{r fertility-year-check, eval=TRUE}
-#| fig-alt: "Plot showing South Korean fertility rate (green points) and German fertility rates (red points) from 1960 to approximately 2020. South Korean rates are much higher in 1960, while German rates are lower at around 2.5. Over time, German fertility rates decline to around 1.5, while South Korean drop from 6 to under 1.5 around 2000, remaining low through 2020."
+#| fig-alt: "Plot showing South Korean fertility rate (green points) and German fertility rates (red points) from 1960 to 2015. South Korean rates are much higher in 1960, while German rates are lower at around 2.5. Over time, German fertility rates decline to around 1.5, while South Korean drop from 6 to under 1.5 around 2000, remaining low through 2015."
 new_tidy_data %>% ggplot(aes(year, fertility, color = country)) +
   geom_point()
 ```
@@ -1007,7 +1007,7 @@ new_wide_data <- new_tidy_data %>% pivot_wider(names_from = year, values_from = 
 dplyr::select(new_wide_data, country, `1960`:`1967`)
 ```
 
-The function assumes that the remaining columns -- those that aren't `names_from` or `values_from` *form a unique "tidy" observation*. If this isn't the case, you'll either need to use `select` to keep just the variables that uniquely define an observation *or* use the `id_cols` argument to state which columns do uniquely identify an observation. Since our `new_tidy_data` didn't have any additional columns, we didn't need to do this.
+The function assumes that the remaining columns -- those that aren't `names_from` or `values_from` -- *form a unique "tidy" observation*. If this isn't the case, you'll either need to use `select` to keep just the variables that uniquely define an observation *or* use the `id_cols` argument to state which columns do uniquely identify an observation. Since our `new_tidy_data` didn't have any additional columns, we didn't need to do this.
 
 The following diagram can help remind you how these two functions work:
 
@@ -1057,7 +1057,7 @@ dat %>% separate(col = key, into = c("year", "variable_name"), sep = "_")
 
 
 
-The function does separate the values, but we run into a new problem. We receive the warning `Expected 2 pieces. Additional pieces discarded in 112 rows [2, 4, 6, 8, ...]`. (Earlier versions may give the error `Too many values at 112 locations:`) and that the `life_expectancy` variable is truncated to `life`. This is because the `_` is used to separate `life` and `expectancy`, not just year and variable name! We could add a third column to catch this and let the `separate` function know which column to _fill in_ with missing values, `NA`, when there is no third value. Here we tell it to fill the column on the right:
+The function does separate the values, but we run into a new problem. We receive the warning `Expected 2 pieces. Additional pieces discarded in 112 rows [2, 4, 6, 8, ...]` (earlier versions may give the error `Too many values at 112 locations:`), and we see that the `life_expectancy` variable is truncated to `life`. This is because the `_` is used to separate `life` and `expectancy`, not just year and variable name! We could add a third column to catch this and let the `separate` function know which column to _fill in_ with missing values, `NA`, when there is no third value. Here we tell it to fill the column on the right:
 
 ```{r}
 dat %>% separate(key, into = c("year", "first_variable_name", "second_variable_name"), fill = "right")
@@ -1077,7 +1077,7 @@ dat %>%
   pivot_wider(names_from = variable_name, values_from = value)
 ```
 
-The data is now in tidy format with one row for each observation with three variables: year, fertility, and life expectancy.
+The data is now in tidy format with one row for each observation and four variables: country, year, fertility, and life expectancy.
 
 ## `unite`
 
@@ -1148,7 +1148,7 @@ If we think of an observation as a major, and that each observation has two vari
 
 5. Now we will try a more advanced wrangling challenge. We want to wrangle the admissions data so that for each major we have 4 observations: `admitted_men`, `admitted_women`, `applicants_men` and `applicants_women`.  The _trick_ we perform here is actually quite common: first pivot_longer to generate an intermediate data frame and then pivot_wider to obtain the tidy data we want. We will go step by step in this and the next two exercises.
 
-Use the pivot_longer function to create a `tmp` data.frame with a column containing the type of observation `admitted` or `applicants`. Call the new columns `key` and value.
+Use the pivot_longer function to create a `tmp` data.frame with a column containing the type of observation `admitted` or `applicants`. Call the new columns `key` and `value`.
 
 
 6. Now you have an object `tmp` with columns `major`,  `gender`, `key` and  `value`. Note that if you combine the key and gender, we get the column names we want: `admitted_men`, `admitted_women`, `applicants_men` and `applicants_women`. Use the function `unite` to create a new column called `column_name`.

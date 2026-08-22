@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center", cache = TRUE, autodep =
 
 This lecture will begin to dig into some theoretical details of estimating regression functions, in particular how the **bias-variance tradeoff** helps explain the relationship between **model flexibility** and the errors a model makes.
 
-Don't freak out if this seems mathematically overwhelming. We'll walk through relatively slowly. It's not super important to follow the nitty-gritty details; but the broad takeaways are quite important.
+Don't freak out if this seems mathematically overwhelming. We'll walk through it relatively slowly. It's not super important to follow the nitty-gritty details; but the broad takeaways are quite important.
 
 
 ## Illustration of Bias vs. Variance
@@ -75,7 +75,7 @@ $$
 
 Minimizing the right-hand side is much easier, as it simply amounts to minimizing the inner expectation with respect to $Y \mid X$, essentially minimizing the risk pointwise, for each $x$.
 
-It turns out, that the risk is minimized by setting $f(x)$ to be equal the conditional mean of $Y$ given $X$,
+It turns out, that the risk is minimized by setting $f(x)$ to be equal to the conditional mean of $Y$ given $X$,
 
 $$
 f(x) = \mathbb{E}(Y \mid X = x)
@@ -122,7 +122,7 @@ A number of things to note here:
 
 - The expected prediction error is for a random $Y$ given a fixed $x$ and a random $\hat{f}$. As such, the expectation is over $Y \mid X$ and $\mathcal{D}$. Our estimated function $\hat{f}$ is random depending on the data, $\mathcal{D}$, which is used to perform the estimation.
 - The expected prediction error of predicting $Y$ using $\hat{f}(X)$ when $X = x$ has been decomposed into two errors:
-    - The **reducible error**, which is the expected squared error loss of estimation $f(x)$ using $\hat{f}(x)$ at a fixed point $x$. The only thing that is random here is $\mathcal{D}$, the data used to obtain $\hat{f}$. (Both $f$ and $x$ are fixed.) We'll often call this reducible error the **mean squared error** of estimating $f(x)$ using $\hat{f}$ at a fixed point $x$.
+    - The **reducible error**, which is the expected squared error loss of estimating $f(x)$ using $\hat{f}(x)$ at a fixed point $x$. The only thing that is random here is $\mathcal{D}$, the data used to obtain $\hat{f}$. (Both $f$ and $x$ are fixed.) We'll often call this reducible error the **mean squared error** of estimating $f(x)$ using $\hat{f}$ at a fixed point $x$.
     $$ \text{MSE}\left(f(x), \hat{f}(x)\right) \triangleq \mathbb{E}_{\mathcal{D}} \left[  \left(f(x) - \hat{f}(x) \right)^2 \right]$$
     - The **irreducible error**. This is simply the variance of $Y$ given that $X = x$, essentially noise that we do not want to learn. This is also called the **Bayes error**.
 
@@ -306,7 +306,7 @@ legend("bottomleft", c("Validation", "Train"), lty = c(6, 1), lwd = 3,
        col = c("dodgerblue", "darkorange"))
 ```
 
-Tying this all together, the above image shows how we "expect" training and validation error to behave in relation to model flexibility.^[Someday, someone will tell you this is a lie. They aren't wrong. In modern deep learning, there is a concept called [Deep Double Descent](https://openai.com/blog/deep-double-descent/). See also @belkin2018reconciling.] In practice, we won't always see such a nice "curve" in the validation error, but we expect to see the general trends.
+Tying this all together, the above image shows how we "expect" training and validation error to behave in relation to model flexibility.^[Someday, someone will tell you this is a lie. They aren't wrong. In modern deep learning, there is a concept called [Deep Double Descent](https://openai.com/blog/deep-double-descent/). See also [Belkin et al. (2018)](https://arxiv.org/abs/1812.11118).] In practice, we won't always see such a nice "curve" in the validation error, but we expect to see the general trends.
 
 ## Using Simulation to Estimate Bias and Variance
 
@@ -779,7 +779,7 @@ Let's check how linear, k-nearest neighbors, and decision tree models fit to thi
 ```{r error-vs-flex, fig.height = 6, fig.width = 10, echo = FALSE}
 ```
 
-This picture is an idealized version of what we expect to see, but we'll illustrate the sorts of validate "curves" that we might see in practice.
+This picture is an idealized version of what we expect to see, but we'll illustrate the sorts of validation "curves" that we might see in practice.
 
 Note that in the following three sub-sections, a significant portion of the code is suppressed for visual clarity. See the source document for full details.
 
@@ -903,7 +903,7 @@ Lastly, we evaluate some decision tree models. We choose some arbitrary values o
 
 ```{r}
 # helper function for fitting decision tree models
-tree_knn_mod = function(flex) {
+tree_mod = function(flex) {
   rpart(y ~ x, data = slr_est, cp = flex, minsplit = 5)
 }
 ```
@@ -913,7 +913,7 @@ tree_knn_mod = function(flex) {
 cp_to_try = c(0.5, 0.3, 0.1, 0.05, 0.01, 0.001, 0.0001)
 
 # fit decision tree models
-tree_mod_est_list = lapply(cp_to_try, tree_knn_mod)
+tree_mod_est_list = lapply(cp_to_try, tree_mod)
 ```
 
 ```{r, echo = FALSE}

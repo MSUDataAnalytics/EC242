@@ -886,7 +886,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] NA NA NA</code></pre>
 </div>
 </div>
-<p>This is because of the commas <code>,</code>. The string processing we want to do here is remove the <strong>pattern</strong>, <code>,</code>, from the <strong>strings</strong> in <code>murders_raw$population</code> and then coerce to numbers. We can use the <code>str_detect</code> function to see that two of the three columns have commas in the entries:</p>
+<p>This is because of the commas <code>,</code>. The string processing we want to do here is remove the <strong>pattern</strong>, <code>,</code>, from the <strong>strings</strong> in <code>murders_raw$population</code> and then coerce to numbers. We can use the <code>str_detect</code> function to see that two of the four columns have commas in the entries:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>commas <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">any</span>(<span class="fu">str_detect</span>(x, <span class="st">","</span>))</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>murders_raw <span class="sc">%&gt;%</span> <span class="fu">summarize_all</span>(commas)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1320,10 +1320,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">string =</span> <span class="fu">c</span>(<span class="st">"AB"</span>, <span class="st">"A1B"</span>, <span class="st">"A11B"</span>, <span class="st">"A111B"</span>, <span class="st">"A1111B"</span>),</span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">none_or_more =</span> <span class="fu">str_detect</span>(yes, <span class="st">"A1*B"</span>),</span>
-<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">nore_or_once =</span> <span class="fu">str_detect</span>(yes, <span class="st">"A1?B"</span>),</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">none_or_once =</span> <span class="fu">str_detect</span>(yes, <span class="st">"A1?B"</span>),</span>
 <span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">once_or_more =</span> <span class="fu">str_detect</span>(yes, <span class="st">"A1+B"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  string none_or_more nore_or_once once_or_more
+<pre><code>  string none_or_more none_or_once once_or_more
 1     AB         TRUE         TRUE        FALSE
 2    A1B         TRUE         TRUE         TRUE
 3   A11B         TRUE        FALSE         TRUE
@@ -1475,7 +1475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="search-and-replace-using-groups" class="level3">
 <h3 class="anchored" data-anchor-id="search-and-replace-using-groups">Search and replace using groups</h3>
 <p>Another powerful aspect of groups is that you can refer to the extracted values in a regex when searching and replacing.</p>
-<p>The regex special character for the <code>i</code>-th group is <code>\\i</code>. So <code>\\1</code> is the value extracted from the first group, <code>\\2</code> the value from the second and so on. As a simple example, note that the following code will replace a comma with the feet symbol <code>'</code>, but only if the comma comes right after a digit between 4 and 7:</p>
+<p>The regex special character for the <code>i</code>-th group is <code>\\i</code>. So <code>\\1</code> is the value extracted from the first group, <code>\\2</code> the value from the second and so on. As a simple example, note that the following code will replace a comma with the feet symbol <code>'</code>, but only if the whole entry is a digit between 4 and 7, then the comma, then none or more digits:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span>  <span class="st">"^([4-7]),(</span><span class="sc">\\</span><span class="st">d*)$"</span></span>
 <span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5,9"</span>, <span class="st">"5,11"</span>, <span class="st">"6,"</span>, <span class="st">"6,1"</span>)</span>
@@ -1604,7 +1604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The pattern says it has to start (<code>^</code>) with a digit between 4 and 7 and end there (<code>$</code>). The parenthesis defines the group that we pass as <code>\\1</code> to generate the replacement regex string.</p>
-<p>We can adapt this code slightly to handle the case 1 as well, which covers the entry <code>5'</code>. Note <code>5'</code> is left untouched. This is because the extra <code>'</code> makes the pattern not match since we have to end with a 5 or 6. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add <code>'{0,1}</code> after the <code>'</code> to do this. However, we can use the none or once special character <code>?</code>. As we saw above, this is different from <code>*</code> which is none or more. We now see that the fourth case is also converted:</p>
+<p>We can adapt this code slightly to handle the case 1 as well, which covers the entry <code>5'</code>. Note <code>5'</code> is left untouched. This is because the extra <code>'</code> makes the pattern not match since we have to end with a digit between 4 and 7. We want to permit the 5 or 6 to be followed by 0 or 1 feet sign. So we can simply add <code>{0,1}</code> after the <code>'</code> to do this. However, we can use the none or once special character <code>?</code>. As we saw above, this is different from <code>*</code> which is none or more. We now see that the fourth entry of <code>s</code> is also converted:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_replace</span>(s, <span class="st">"^([56])'?$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1'0"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1612,7 +1612,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Here we only permit 5 and 6, but not 4 and 7. This is because 5 and 6 feet tall is quite common, so we assume those that typed 5 or 6 really meant <code>60</code> or <code>72</code> inches. However, <code>4</code> and <code>7</code> feet tall are so rare that, although we accept <code>84</code> as a valid entry, we assume <code>7</code> was entered in error.</p>
-<p>We can use quantifiers to deal with <strong>case 3</strong>. These entries are not matched because the inches include decimals and our pattern does not permit this. We need to allow the second group to include decimals not just digits. This means we must permit zero or one period <code>.</code> then zero or more digits. So we will be using both <code>?</code> and <code>*</code>. Also remember that, for this particular case, the period needs to be escaped since it is a special character (it means any character except line break). Here is a simple example of how we can use <code>*</code>.</p>
+<p>We can use quantifiers to deal with <strong>case 3</strong>. These entries are not matched because the inches include decimals and our pattern does not permit this. We need to allow the second group to include decimals not just digits. This means we must permit zero or one period <code>.</code> then zero or more digits. So we will be using both <code>?</code> and <code>*</code>. Also remember that, for this particular case, the period needs to be escaped since it is a special character (it means any character except line break).</p>
 <p>So we can adapt our pattern, currently <code>^[4-7]\\s*'\\s*\\d{1,2}$</code> to permit a decimal at the end:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[4-7]</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.?</span><span class="sc">\\</span><span class="st">d*)$"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1808,7 +1808,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 7 2015-01-07 08:57:29   Male  53.77   NA     NA    53.77</code></pre>
 </div>
 </div>
-<p>We see heights of 53, 54, and 55. In the originals, we also have 51 and 52. These short heights are rare and it is likely that the students actually meant <code>5'1</code>, <code>5'2</code>, <code>5'3</code>, <code>5'4</code>, and <code>5'5</code>. Because we are not completely sure, we will leave them as reported. The object <code>new_heights</code> contains our final solution for this case study.</p>
+<p>We see heights of 50, 51, 52, and 53. These short heights are rare and it is likely that the students actually meant <code>5'0</code>, <code>5'1</code>, <code>5'2</code>, and <code>5'3</code>. Because we are not completely sure, we will leave them as reported. The object <code>new_heights</code> contains our final solution for this case study.</p>
 </section>
 </section>
 <section id="string-splitting" class="level2">
@@ -2068,7 +2068,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="recoding" class="level2">
 <h2 class="anchored" data-anchor-id="recoding">Recoding</h2>
-<p>Another common operation involving strings is recoding the names of categorical variables. Let’s say you have really long names for your levels and you will be displaying them in plots, you might want to use shorter versions of these names. For example, in character vectors with country names, you might want to change “United States of America” to “USA” and “United Kingdom” to UK, and so on. We can do this with <code>case_when</code>, although the <strong>tidyverse</strong> offers an option that is specifically designed for this task: the <code>recode</code> function.</p>
+<p>Another common operation involving strings is recoding the names of categorical variables. Let’s say you have really long names for your levels and you will be displaying them in plots, you might want to use shorter versions of these names. For example, in character vectors with country names, you might want to change “United States of America” to “USA” and “United Kingdom” to “UK”, and so on. We can do this with <code>case_when</code>, although the <strong>tidyverse</strong> offers an option that is specifically designed for this task: the <code>recode</code> function.</p>
 <p>Here is an example that shows how to rename countries with long names:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb191"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb191-1"><a href="#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
@@ -2200,7 +2200,7 @@ gapminder %>%
 <li><p>Now we are ready to remove all the non-numeric entries. Do this using regex and the <code>str_remove_all</code> function. Hint: remember that in regex, using the upper case version of a special character usually means the opposite. So <code>\\D</code> means “not a digit”. Remember you also want to keep spaces.</p></li>
 <li><p>To convert the strings into a table, use the <code>str_split_fixed</code> function. Convert <code>s</code> into a data matrix with just the day and death count data. Hints: note that the separator is one or more spaces. Make the argument <code>n</code> a value that limits the number of columns to the values in the 4 columns and the last column captures all the extra stuff. Then keep only the first four columns.</p></li>
 <li><p>Now you are almost ready to finish. Add column names to the matrix, including one called <code>day</code>. Also, add a column with the month. Call the resulting object <code>dat</code>. Finally, make sure the day is an integer not a character. Hint: use only the first five columns.</p></li>
-<li><p>Now finish it up by tidying <code>tab</code> with the gather function.</p></li>
+<li><p>Now finish it up by tidying <code>dat</code> with the gather function.</p></li>
 <li><p>Make a plot of deaths versus day with color to denote year. Exclude 2018 since we do not have data for the entire year.</p></li>
 <li><p>Now that we have wrangled this data step-by-step, put it all together in one R chunk, using the pipe as much as possible. Hint: first define the indexes, then write one line of code that does all the string processing.</p></li>
 <li><p>Advanced: let’s return to the MLB Payroll example from the web scraping section. Use what you have learned in the web scraping and string processing chapters to extract the payroll for the New York Yankees, Boston Red Sox, and Oakland A’s and plot them as a function of time.</p></li>
@@ -2322,7 +2322,7 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 [2] &lt;table class="nowraplinks hlist mw-collapsible mw-collapsed navbox-inner" ...</code></pre>
 </div>
 </div>
-<p>The table we are interested is the first one:</p>
+<p>The table we are interested in is the first one:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb209"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb209-1"><a href="#cb209-1" aria-hidden="true" tabindex="-1"></a>tab[[<span class="dv">1</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2361,7 +2361,7 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <h2 class="anchored" data-anchor-id="css-selectors">CSS selectors</h2>
 <p>The default look of a webpage made with the most basic HTML is quite unattractive. The aesthetically pleasing pages we see today are made using CSS to define the look and style of webpages. The fact that all pages for a company have the same style usually results from their use of the same CSS file to define the style. The general way these CSS files work is by defining how each of the elements of a webpage will look. The title, headings, itemized lists, tables, and links, for example, each receive their own style including font, color, size, and distance from the margin. CSS does this by leveraging patterns used to define these elements, referred to as <em>selectors</em>. An example of such a pattern, which we used above, is <code>table</code>, but there are many, many more.</p>
 <p>If we want to grab data from a webpage and we happen to know a selector that is unique to the part of the page containing this data, we can use the <code>html_nodes</code> function. However, knowing which selector can be quite complicated. In fact, the complexity of webpages has been increasing as they become more sophisticated. For some of the more advanced ones, it seems almost impossible to find the nodes that define a particular piece of data. However, selector gadgets actually make this possible.</p>
-<p>SelectorGadget<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> is piece of software that allows you to interactively determine what CSS selector you need to extract specific components from the webpage. If you plan on scraping data other than tables from html pages, we highly recommend you install it. A Chrome extension is available which permits you to turn on the gadget and then, as you click through the page, it highlights parts and shows you the selector you need to extract these parts. There are various demos of how to do this including <strong>rvest</strong> author Hadley Wickham’s vignette<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> and other tutorials based on the vignette<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> <a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>.</p>
+<p>SelectorGadget<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> is a piece of software that allows you to interactively determine what CSS selector you need to extract specific components from the webpage. If you plan on scraping data other than tables from html pages, we highly recommend you install it. A Chrome extension is available which permits you to turn on the gadget and then, as you click through the page, it highlights parts and shows you the selector you need to extract these parts. There are various demos of how to do this including <strong>rvest</strong> author Hadley Wickham’s vignette<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> and other tutorials based on the vignette<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> <a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>.</p>
 </section>
 <section id="json" class="level2">
 <h2 class="anchored" data-anchor-id="json">JSON</h2>
@@ -2403,13 +2403,13 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <span id="cb216-3"><a href="#cb216-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb216-4"><a href="#cb216-4" aria-hidden="true" tabindex="-1"></a>citi_bike <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"https://gbfs.citibikenyc.com/gbfs/en/station_information.json"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This downloads a list. The first argument tells you when you downloaded it:</p>
+<p>This downloads a list. The <code>last_updated</code> element tells you when the feed was last refreshed, as a Unix timestamp:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb217"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb217-1"><a href="#cb217-1" aria-hidden="true" tabindex="-1"></a>citi_bike<span class="sc">$</span>executionTime</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb217"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb217-1"><a href="#cb217-1" aria-hidden="true" tabindex="-1"></a>citi_bike<span class="sc">$</span>last_updated</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>and the second is a data table:</p>
+<p>and the stations are a data table nested one level down:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a>citi_bike<span class="sc">$</span>stationBeanList <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a>citi_bike<span class="sc">$</span>data<span class="sc">$</span>stations <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can learn much more by examining tutorials and help files from the <strong>jsonlite</strong> package. This package is intended for relatively simple tasks such as converting data into tables. For more flexibility, we recommend <code>rjson</code>.</p>
 

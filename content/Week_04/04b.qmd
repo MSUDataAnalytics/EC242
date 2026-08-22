@@ -43,7 +43,7 @@ If we don't name the columns, `bind_cols` makes names up for us (`...1`, `...2`)
 
 Note that there is an R-base function `cbind` with the exact same functionality. An important difference is that `cbind` can create different types of objects, while `bind_cols` always produces a data frame.
 
-`bind_cols` can also bind two different data frames. For example, here we bind `dslabs::murders` and our election polling data from previous lessons
+`bind_cols` can also bind two different data frames. For example, here we bind `dslabs::murders` and the 2016 election results, also from __dslabs__
 
 ```{r}
 library(tidyverse)
@@ -109,11 +109,11 @@ The _join_ functions, described below, are designed to handle this challenge.
 
 ## Joins {#joins}
 
-The _join_ functions in the __dplyr__ package (part of the tidyverse) make sure that the tables are combined so that matching rows are together. If you know SQL, you will see that the approach and syntax is very similar. The general idea is that one needs to identify one or more columns that will serve to match the two tables. Then a new table with the combined information is returned. Notice what happens if we join the two tables above by state using `left_join` (we will remove the `others` column and rename `electoral_votes` so that the tables fit on the page):
+The _join_ functions in the __dplyr__ package (part of the tidyverse) make sure that the tables are combined so that matching rows are together. If you know SQL, you will see that the approach and syntax is very similar. The general idea is that one needs to identify one or more columns that will serve to match the two tables. Then a new table with the combined information is returned. Notice what happens if we join the two tables above by state using `left_join` (we will remove the minor-party columns and rename `electoral_votes` so that the tables fit on the page):
 
 ```{r}
 tab <- left_join(murders, results_us_election_2016, by = "state") %>%
-  dplyr::select(-others) %>% 
+  dplyr::select(-others, -johnson, -stein, -mcmullin) %>% 
   rename(ev = electoral_votes)
 head(tab)
 ```
@@ -133,7 +133,7 @@ tab %>% ggplot(aes(population/10^6, ev, label = abb)) +
 We see the relationship is close to linear with about 2 electoral votes for every million persons, but with very small states getting higher ratios.
 
 
-In practice, it is not always the case that each row in one table has a matching row in the other. For this reason, we have several versions of join. To illustrate this challenge, we will take subsets of the tables above. We create the tables `tab1` and `tab2` so that they have some states in common but not all:
+In practice, it is not always the case that each row in one table has a matching row in the other. For this reason, we have several versions of join. To illustrate this challenge, we will take subsets of the tables above. We create the tables `tab_1` and `tab_2` so that they have some states in common but not all:
 
 ```{r}
 tab_1 <- slice(murders, 1:6) %>% dplyr::select(state, population)
@@ -229,7 +229,7 @@ Keys are super important. We'll see what can go wrong if we have poorly defined 
 Another set of commands useful for combining datasets are the set operators. When applied to vectors, these behave as their names suggest. Examples are `intersect`, `union`, `setdiff`, and `setequal`. However, if the __tidyverse__, or  more specifically __dplyr__, is loaded, these functions can be used on data frames as opposed to just on vectors.
 
 
-### Intersect
+## Intersect
 
 You can take intersections of vectors of any type, such as numeric:
 
@@ -456,7 +456,7 @@ We have described three main types of vectors: numeric, character, and logical. 
 
 Now how should we represent dates and times when analyzing data in R? We could just use days since the epoch, but then it is almost impossible to interpret. If I tell you it's November 2, 2017, you know what this means immediately. If I tell you it's day 17,472, you will be quite confused. Similar problems arise with times and even more complications can appear due to time zones.
 
-For this reason, `R` defines a data type just for dates and times. We saw an example in the polls data:
+For this reason, `R` defines a data type just for dates and times. Here's an example from the 2016 polling data in __dslabs__:
 
 ```{r,  message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -536,7 +536,7 @@ ymd(x)
 A further complication comes from the fact that dates often come in different formats in which the order of year, month, and day are different. The preferred format is to show year (with all four digits), month (two digits), and then day, or what is called the ISO 8601. Specifically we use YYYY-MM-DD so that if we order the string, it will be ordered by date. You can see the function `ymd` returns them in this format.
 
 But, what if you encounter dates such as "09/01/02"? This could be September 1, 2002 or January 2, 2009 or January 9, 2002.
-In these cases, examining the entire vector of dates will help you determine what format it is by process of elimination. Once you know, you can use the many parses provided by __lubridate__.
+In these cases, examining the entire vector of dates will help you determine what format it is by process of elimination. Once you know, you can use the many parsers provided by __lubridate__.
 
 For example, if the string is:
 
@@ -593,7 +593,7 @@ mdy_hms(x)
 
 This package has many other useful functions. We describe two of these here that we find particularly useful.
 
-The `make_date` function can be used to quickly create a date object. It takes three arguments: year, month, day. `make_datetime` takes the same as `make_date` but also adds hour, minute, seconds, and time zone like 'US/Michigan' but defaulting to UTC. So create an date object representing, for example, July 6, 2019 we write:
+The `make_date` function can be used to quickly create a date object. It takes three arguments: year, month, day. `make_datetime` takes the same as `make_date` but also adds hour, minute, seconds, and time zone like 'US/Michigan' but defaulting to UTC. So to create a date object representing, for example, July 6, 2019 we write:
 
 ```{r}
 make_date(2019, 7, 6)
@@ -653,7 +653,7 @@ You work for a travel booking website as a data analyst. A hotel has asked your 
 
 Unfortunately, you only have the following data:
 
-- [<i class="fas fa-file-csv"></i> `booking.csv`](/data/Travel_booking.csv) - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hoted. 
+- [<i class="fas fa-file-csv"></i> `booking.csv`](/data/Travel_booking.csv) - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hotel. 
 
 - [<i class="fas fa-file-csv"></i> `roomrates.csv`](/data/Travel_roomrates.csv) - Contains the price of each room on each day
 
@@ -668,13 +668,13 @@ Unfortunately, you only have the following data:
 
 - Right-click on each of the links, copy the address, and read the URL in using `read.csv` to read .csv's
 
-- You'll find you need to use most of the tools we covered previously including `pivot_longer`, `pivot_wider` and more.
+- You'll find you need to use most of the tools we covered previously including `pivot_longer`, `separate` and more.
 
 - You'll need `lubridate` and `tidyverse` loaded up.
 
 :::
 
-Your lab wil be based on similar data (with more wrinkles to fix) so share your code with your group when you're done.
+Your lab will be based on similar data (with more wrinkles to fix) so share your code with your group when you're done.
 
 
 ```{r eval = F, include=F}

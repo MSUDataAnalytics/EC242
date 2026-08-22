@@ -662,7 +662,7 @@ Y = f(\boldsymbol{X}) + \epsilon
 <p><span class="math display">\[
 \mathbb{E}_{\boldsymbol{X}, Y} \left[ (Y - f(\boldsymbol{X})) ^ 2 \right] = \mathbb{E}_{\boldsymbol{X}} \mathbb{E}_{Y \mid \boldsymbol{X}} \left[ ( Y - f(\boldsymbol{X}) ) ^ 2 \mid \boldsymbol{X} = \boldsymbol{x} \right]
 \]</span></p>
-<p>We saw previously (see the slides from last two content days) that this risk is minimized by the <strong>conditional mean</strong> of <span class="math inline">\(Y\)</span> given <span class="math inline">\(\boldsymbol{X}\)</span>,</p>
+<p>We saw previously (see the slides from the last two content days) that this risk is minimized by the <strong>conditional mean</strong> of <span class="math inline">\(Y\)</span> given <span class="math inline">\(\boldsymbol{X}\)</span>,</p>
 <p><span class="math display">\[
 \mu(\boldsymbol{x}) \triangleq \mathbb{E}[Y \mid \boldsymbol{X} = \boldsymbol{x}]
 \]</span></p>
@@ -705,7 +705,7 @@ Coefficients:
      0.8397      -2.7257      -2.3752       6.0906  </code></pre>
 </div>
 </div>
-<p>Notice that what is returned are (maximum likelihood or least squares) estimates of the unknown <span class="math inline">\(\beta\)</span> coefficients. That is, the “learning” that takes place with a linear models is “learning” the values of the coefficients.</p>
+<p>Notice that what is returned are (maximum likelihood or least squares) estimates of the unknown <span class="math inline">\(\beta\)</span> coefficients. That is, the “learning” that takes place with a linear model is “learning” the values of the coefficients.</p>
 <p>For this reason, we call linear regression models <strong>parametric</strong> models. They have unknown <strong>model parameters</strong>, in this case the <span class="math inline">\(\beta\)</span> coefficients that must be learned from the data. The form of the regression function is assumed.</p>
 <p>What if we don’t want to make an assumption about the form of the regression function? While in this case, you might look at the plot and arrive at a reasonable guess of assuming a third order polynomial, what if it isn’t so clear? What if you have 100 features? Making strong assumptions might not work well.</p>
 <p>Enter <strong>nonparametric</strong> models. We will consider two examples: <strong>k-nearest neighbors</strong> and <strong>decision trees</strong>.</p>
@@ -774,7 +774,7 @@ Coefficients:
 </ul>
 <p>While the middle plot with <span class="math inline">\(k = 5\)</span> is not “perfect” it seems to roughly capture the “motion” of the true regression function. We can begin to see that if we generated new data, this estimated regression function would perform better than the other two.</p>
 <p>But remember, in practice, we won’t know the true regression function, so we will need to determine how our model performs using only the available data!</p>
-<p>This <span class="math inline">\(k\)</span>, the number of neighbors, is an example of a <strong>tuning parameter</strong>. Instead of being learned from the data, like model parameters such as the <span class="math inline">\(\beta\)</span> coefficients in linear regression, a tuning parameter tells us <em>how</em> to learn from data. It is user-specified. To determine the value of <span class="math inline">\(k\)</span> that should be used, many models are fit to the estimation data, then evaluated on the validation. Using the information from the validation data, a value of <span class="math inline">\(k\)</span> is chosen. (More on this in a bit.)</p>
+<p>This <span class="math inline">\(k\)</span>, the number of neighbors, is an example of a <strong>tuning parameter</strong>. Instead of being learned from the data, like model parameters such as the <span class="math inline">\(\beta\)</span> coefficients in linear regression, a tuning parameter tells us <em>how</em> to learn from data. It is user-specified. To determine the value of <span class="math inline">\(k\)</span> that should be used, many models are fit to the estimation data, then evaluated on the validation data. Using the information from the validation data, a value of <span class="math inline">\(k\)</span> is chosen. (More on this in a bit.)</p>
 <ul>
 <li><strong>Model parameters</strong> are “learned” using the same data that was used to fit the model.</li>
 <li><strong>Tuning parameters</strong> are “chosen” using data not used to fit the model.</li>
@@ -1049,7 +1049,7 @@ Coefficients:
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>crdt_trn <span class="ot">=</span> crdt[crdt_trn_idx, ]</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>crdt_tst <span class="ot">=</span> crdt[<span class="sc">-</span>crdt_trn_idx, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We’ll start by using default tuning parameters for <code>minsplit</code>, but I’m going to use a <code>cp</code> that gets us something interesting.</p>
+<p>Note that we re-split the data with a new seed here, so the RMSEs in this section aren’t directly comparable to the KNN numbers above. We’ll start by using default tuning parameters for <code>minsplit</code>, but I’m going to use a <code>cp</code> that gets us something interesting.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>crdt_tree <span class="ot">=</span> <span class="fu">rpart</span>(Rating <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Student, <span class="at">data =</span> crdt_trn, <span class="at">cp =</span> .<span class="dv">0095</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1138,7 +1138,7 @@ node), split, n, deviance, yval
 </div>
 </div>
 <p>Here we see the model, with <code>cp = 0.010</code>, performs best.</p>
-<p>Note that by only using these three features, we are severely limiting our models performance. Let’s quickly assess using all available predictors.</p>
+<p>Note that by only using these three features, we are severely limiting our model’s performance. Let’s quickly assess using all available predictors.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>crdt_tree_all <span class="ot">=</span> <span class="fu">rpart</span>(Rating <span class="sc">~</span> ., <span class="at">data =</span> crdt_trn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1184,10 +1184,10 @@ node), split, n, deviance, yval
 <ol>
 <li id="fn1"><p>We chose to start with linear regression because most students in the social sciences should already be familiar with the basic notion.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The usual distance when you hear distance. That is, unless you drive a <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">taxicab</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>For this reason, KNN is often not used in practice, but it is very useful learning tool.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>For this reason, KNN is often not used in practice, but it is a very useful learning tool.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Many texts use the term complex instead of flexible. We feel this is confusing as complex is often associated with difficult. KNN with <span class="math inline">\(k = 1\)</span> is actually a very simple model to understand, but it is very flexible as defined here.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>To exhaust all possible splits of a variable, we would need to consider the midpoint between each of the order statistics of the variable. To exhaust all possible splits, we would need to do this for each of the feature variables.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>It’s really an upside tree isn’t it?<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>It’s really an upside down tree isn’t it?<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>Flexibility parameter would be a better name.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>The <code>rpart</code> function in R would allow us to use others, but we will always just leave their values as the default values.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>There is a question of whether or not we <em>should</em> use these variables. For example, should men and women be given different ratings when all other variables are the same? Using the <code>Gender</code> variable allows for this to happen. Also, you might think, just don’t use the <code>Gender</code> variable. Unfortunately, it’s not that easy. There is an increasingly popular field of study centered around these ideas called <a href="https://en.wikipedia.org/wiki/Fairness_(machine_learning)">machine learning <strong>fairness</strong></a>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

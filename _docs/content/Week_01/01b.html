@@ -685,9 +685,9 @@ window.Quarto = {
 <p>For a full review of data types, see <a href="../../resource/usingR.html">the usingR resource</a>. I’m going to cover some of the important, non-basic data types we’ll be using.</p>
 <section id="functions" class="level2">
 <h2 class="anchored" data-anchor-id="functions">Functions</h2>
-<p>Once you define variables, the data analysis process can usually be described as a series of <em>functions</em> applied to the data. <code>R</code> includes several zillion predefined functions and most of the analysis pipelines we construct make extensive use of the built-in functions. But <code>R</code>’s power comes from its scalability. We have access to (nearly) infinite functions via <code>install.packages</code> and <code>library</code>. As we go through the course, we will carefully note new functions we bring to each problem. For now, though, we will stick to the basics.</p>
+<p>Once you define variables, the data analysis process can usually be described as a series of <em>functions</em> applied to the data. <code>R</code> includes several zillion predefined functions and most of the analysis pipelines we construct make extensive use of the built-in functions. But <code>R</code>’s power comes from its extensibility. We have access to (nearly) infinite functions via <code>install.packages</code> and <code>library</code>. As we go through the course, we will carefully note new functions we bring to each problem. For now, though, we will stick to the basics.</p>
 <p>In general, we need to use parentheses to evaluate a function. If you type <code>ls</code>, the function is not evaluated and instead <code>R</code> shows you the code that defines the function. If you type <code>ls()</code> the function is evaluated and we see the objects currently sitting in the workspace.</p>
-<p>Unlike <code>ls</code>, most functions require one or more <em>arguments</em>. Below is an example of how we assign an object to the argument of the function <code>log</code>.:</p>
+<p>Unlike <code>ls</code>, most functions require one or more <em>arguments</em>. Below is an example of how we assign an object to the argument of the function <code>log</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -916,7 +916,7 @@ $final_grade
 <pre><code>[1] 1234</code></pre>
 </div>
 </div>
-<p>You should get used to the fact that in <code>R</code> there are often several ways to do the same thing. such as accessing entries.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>You should get used to the fact that in <code>R</code> there are often several ways to do the same thing, such as accessing entries.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>You might also encounter lists without variable names.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>record2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1065,7 +1065,7 @@ $final_grade
 <pre><code>[1]  4 15 31 65 92</code></pre>
 </div>
 </div>
-<p>Rather than sort the input vector, the function <code>order</code> returns the index that sorts input vector:</p>
+<p>Rather than sort the input vector, the function <code>order</code> returns the index that sorts the input vector:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">order</span>(x)</span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(index)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1073,7 +1073,7 @@ $final_grade
 <pre><code>[1] 2 3 1 5 4</code></pre>
 </div>
 </div>
-<p>The second entry of <code>x</code> is the smallest, so <code>order(x)</code> starts with <code>2</code>. The next smallest is the third entry, so the second entry is <code>3</code> and so on.</p>
+<p>The second entry of <code>x</code> is the smallest, so <code>order(x)</code> starts with <code>2</code>. The next smallest is the third entry of <code>x</code>, so the second entry of <code>order(x)</code> is <code>3</code>, and so on.</p>
 <p>To use this, we just need to place it as the index to <code>x</code>. If we look at this index, we see why it works:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>x[index]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1256,7 +1256,7 @@ Note
 <pre><code>[1] NA</code></pre>
 </div>
 </div>
-<p>The <code>is.na</code> function returns a logical vector that tells us which entries are <code>NA</code>. Assign this logical vector to an object called <code>ind</code> and determine how many <code>NA</code>s does <code>na_example</code> have. Note that TRUE=1 and FALSE=0 when “coerced”.</p>
+<p>The <code>is.na</code> function returns a logical vector that tells us which entries are <code>NA</code>. Assign this logical vector to an object called <code>ind</code> and determine how many <code>NA</code>s <code>na_example</code> has. Note that TRUE=1 and FALSE=0 when “coerced”.</p>
 </div>
 </div>
 </section>
@@ -1359,7 +1359,7 @@ d + h
 </div>
 <p>Remake the data frame using the code above, but add a line that converts the temperature from Fahrenheit to Celsius. The conversion is <span class="math inline">\(C = \frac{5}{9} \times (F - 32)\)</span>.</p>
 <ol start="2" type="1">
-<li><p>Write code to compute the following sum <span class="math inline">\(1+1/2^2 + 1/3^2 + \dots 1/100^2\)</span>? <em>Hint:</em> thanks to Euler, we know it should be close to <span class="math inline">\(\pi^2/6\)</span>.</p></li>
+<li><p>Write code to compute the following sum <span class="math inline">\(1+1/2^2 + 1/3^2 + \dots + 1/100^2\)</span>. <em>Hint:</em> thanks to Euler, we know it should be close to <span class="math inline">\(\pi^2/6\)</span>.</p></li>
 <li><p>Compute the per 100,000 murder rate for each state and store it in a new column called <code>murder_rate</code>. Then compute the average of those state murder rates using the function <code>mean</code>. What is the average? (Careful: that’s the average of the 51 state rates, not the murder rate for the US as a whole – the latter weights each state by its population.)</p></li>
 </ol>
 </div>
@@ -1473,7 +1473,7 @@ d + h
 <pre><code>[1] FALSE FALSE  TRUE</code></pre>
 </div>
 </div>
-<p>Note that we will be using <code>%in%</code> often throughout the course</p>
+<p>Note that we will be using <code>%in%</code> often throughout the course.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1530,7 +1530,7 @@ d + h
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>This equals sign is the reasons we assign values with <code>&lt;-</code>; then when arguments of a function are assigned values, we don’t end up with multiple equals signs. But… who cares.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>This equals sign is the reason we assign values with <code>&lt;-</code>; then when arguments of a function are assigned values, we don’t end up with multiple equals signs. But… who cares.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Whether you view this as a feature or a bug is a good indicator whether you’ll enjoy working with <code>R</code>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->

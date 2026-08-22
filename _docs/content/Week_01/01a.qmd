@@ -67,7 +67,7 @@ This will count for one of your participation points and is required.
 
 ...
 
-> The ability to take data – to be able to understand it, to process it, to extract value from it, to visualize it, to communicate it’s going to be a hugely important skill in the next decades
+> The ability to take data – to be able to understand it, to process it, to extract value from it, to visualize it, to communicate it – that’s going to be a hugely important skill in the next decades
 
 - [Hal Varian, Chief Economist, Google (2009)](https://flowingdata.com/2009/02/25/googles-chief-economist-hal-varian-on-statistics-and-data/)
 
@@ -132,7 +132,7 @@ Suppose you are a researcher and you want to know whether prisons reduce crime.
 
 from "A Call for a Moratorium on Prison Building" (1976)
 
-- Between 1955 and 1975, fifteen states increased the collective capacity of their adult prison systems by 56\% (from, on average, 63,100 to 98,649).
+- Between 1955 and 1975, fifteen states increased the collective capacity of their adult prison systems by 56\% (from 63,100 to 98,649).
 - Fifteen other states increased capacity by less than 4\% (from 49,575 to 51,440).
 - In "heavy-construction" states the crime rate increased by 167\%; in "low-construction" states the crime rate increased by 145\%.
 
@@ -178,8 +178,8 @@ Cons:
 4. $X \rightarrow Y$; $Y \rightarrow X$
   X causes Y and Y causes X (simultaneous equations)
 
-5. Dumb luck
-  Nothing causes anything; check enough pairs of variables and some of them will line up by accident
+5. Dumb luck:
+  nothing causes anything; check enough pairs of variables and some of them will line up by accident
 
 **So what does the "Social Science" in "Social Science Data Analytics" do?**
 
@@ -347,7 +347,7 @@ dat %>%
 ```
 <!--(Source  [everytown.org](https://everytownresearch.org))-->
 
-But then you remember that (1) this is a hypothetical exercise; (2) you'll take literally any job at this point; and (3) Geographic diversity matters -- the United States is a large and diverse country with 50 very different states (plus the District of Columbia and some lovely territories).^[I'm especially partial to Puerto Rico.]
+But then you remember that (1) this is a hypothetical exercise; (2) you'll take literally any job at this point; and (3) geographic diversity matters -- the United States is a large and diverse country with 50 very different states (plus the District of Columbia and some lovely territories).^[I'm especially partial to Puerto Rico.]
 
 ```{r us-murders-by-state-map, warning = FALSE, message=FALSE, echo=FALSE}
 #| fig-alt: "Image shows a map of US showing state-level murder rates per 100k people. Louisiana and Missouri are among the highest at 5+, while the upper west/midwest and upper New England areas are lowest"
@@ -373,7 +373,7 @@ murders %>% mutate(murder_rate = total/population*10^5,
 rm(fifty_states)
 ```
 
-California, for example, has a larger population than Australia, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the *overall* murder rates in Lithuania, Ukraine, and Russia are higher than 4 per 100,000 (not all of those are gun murders, so this isn't quite apples-to-apples). So perhaps the news reports that worried you are too superficial.
+California, for example, has a larger population than Australia, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the *overall* murder rates in Lithuania, Ukraine, and Russia were all higher than 4 per 100,000 when these data were collected (not all of those are gun murders, so this isn't quite apples-to-apples). So perhaps the news reports that worried you are too superficial.
 
 ```{r echo=FALSE, out.width="60%"}
 # https://twitter.com/realdonaldtrump/status/1267246821597941764

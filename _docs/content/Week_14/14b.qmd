@@ -55,6 +55,7 @@ Default = read_csv(here('data','UCI_credit.csv'))
 
 ```{r, echo = T, eval = F}
 library(tidyverse)
+library(caret)
 Default = read_csv('https://ec242.netlify.app/data/UCI_credit.csv')
 ```
 
@@ -96,7 +97,7 @@ In our second breakout, we will create a ROC curve manually. To do this
 
 
 ```{r, eval=F, include=F, echo=F}
-Default = na.omit(Default)
+Default = na.omit(Default) %>% dplyr::select(-1)
 
 mod1 = glm(default ~ . , Default, family = 'binomial')
 
@@ -115,14 +116,15 @@ results = lapply(cs, function(cutoff){
   pred = ifelse(predict(mod1, type = 'response')>cutoff, 1, 0)
   conf = confusionMatrix(table(predicted = pred, actual = Default$default), positive = '1')
   
-  tibble(Accuracy =    conf$overall['Accuracy'],
+  tibble(cutoff = cutoff,
+         Accuracy =    conf$overall['Accuracy'],
          Sensitivity = conf$byClass['Sensitivity'],
          Specificity = conf$byClass['Specificity'])
 })
 
 results_compiled = bind_rows(results)
 
-ggplot(results_compiled, aes(x = Specificity, y = Sensitivity)) + geom_line() +
+ggplot(results_compiled, aes(x = Specificity, y = Sensitivity, color = cutoff)) + geom_line() +
   scale_x_reverse()
 
 # AUC = area under Sensitivity plotted against FPR = 1 - Specificity

@@ -75,7 +75,7 @@ In this lecture, to simplify the exercise, we will focus on scoring runs and ign
 
 To see how regression will help us find undervalued players, we actually don't need to understand all the details about the game of baseball, which has over 100 rules. Here, we distill the sport to the basic knowledge one needs to know how to effectively attack the data science problem.
 
-The goal of a baseball game is to score more runs (points) than the other team. Each team has 9 batters that have an opportunity to hit a ball with a bat in a predetermined order. After the 9th batter has had their turn, the first batter bats again, then the second, and so on. Each time a batter has an opportunity to bat, we call it a plate appearance (PA). At each PA, the other team's _pitcher_ throws the ball and the batter tries to hit it. The PA ends with an binary outcome: the batter either makes an _out_ (failure) and returns to the bench or the batter doesn't (success) and can run around the bases, and potentially score a run (reach all 4 bases). Each team gets nine tries, referred to as _innings_, to score runs and each inning ends after three outs (three failures).
+The goal of a baseball game is to score more runs (points) than the other team. Each team has 9 batters that have an opportunity to hit a ball with a bat in a predetermined order. After the 9th batter has had their turn, the first batter bats again, then the second, and so on. Each time a batter has an opportunity to bat, we call it a plate appearance (PA). At each PA, the other team's _pitcher_ throws the ball and the batter tries to hit it. The PA ends with a binary outcome: the batter either makes an _out_ (failure) and returns to the bench or the batter doesn't (success) and can run around the bases, and potentially score a run (reach all 4 bases). Each team gets nine tries, referred to as _innings_, to score runs and each inning ends after three outs (three failures).
 
 Here is a video showing a success: [https://www.youtube.com/watch?v=HL-XjMCPfio](https://www.youtube.com/watch?v=HL-XjMCPfio). And here is one showing a failure: [https://www.youtube.com/watch?v=NeloljCx-1g](https://www.youtube.com/watch?v=NeloljCx-1g). In these videos, we see how luck is involved in the process. When at bat, the batter wants to hit the ball hard. If the batter hits it hard enough, it is a HR, the best possible outcome as the batter gets at least one automatic run. But sometimes, due to chance, the batter hits the ball very hard and a defender catches it, resulting in an out. In contrast, sometimes the batter hits the ball softly, but it lands just in the right place. The fact that there is chance involved hints at why probability models will be involved.
 
@@ -99,7 +99,7 @@ We are simplifying a bit, but there are five ways a batter can succeed, that is,
 
 Here  is an example of a HR:
   [https://www.youtube.com/watch?v=xYxSZJ9GZ-w](https://www.youtube.com/watch?v=xYxSZJ9GZ-w).
-If a batter gets to a base, the batter still has a chance of getting home and scoring a run if the next batter hits successfully. While the batter is _on base_, the batter can also try to steal a base (SB). If a batter runs fast enough, the batter can try to go from one base to the next without the other team tagging the runner. [Here] is an example of a stolen base: [https://www.youtube.com/watch?v=JSE5kfxkzfk](https://www.youtube.com/watch?v=JSE5kfxkzfk).
+If a batter gets to a base, the batter still has a chance of getting home and scoring a run if the next batter hits successfully. While the batter is _on base_, the batter can also try to steal a base (SB). If a batter runs fast enough, the batter can try to go from one base to the next without the other team tagging the runner. Here is an example of a stolen base: [https://www.youtube.com/watch?v=JSE5kfxkzfk](https://www.youtube.com/watch?v=JSE5kfxkzfk).
 
 All these events are kept track of during the season and are available to us through the __Lahman__ package. Now we will start discussing how data analysis can help us decide how to use these statistics to evaluate players.
 
@@ -118,7 +118,7 @@ One of Bill James' first important insights is that the batting average ignores 
 
 One of the challenges in this analysis is that it is not obvious how to determine if a player produces runs because so much depends on his teammates. We do keep track of the number of runs scored by a player. However, remember that if a player X bats right before someone who hits many HRs, batter X will score many runs. But these runs don't necessarily happen if we hire player X but not his HR hitting teammate.  However, we can examine team-level statistics. How do teams with many SB compare to teams with few? How about BB? We have data! Let's examine some.
 
-Let's start with an obvious one: HRs. Do teams that hit more home runs score more runs? We examine data from 1961 to 2001. The visualization of choice when exploring the relationship between two variables, such as HRs and wins, is a scatterplot:
+Let's start with an obvious one: HRs. Do teams that hit more home runs score more runs? We examine data from 1961 to 2001. The visualization of choice when exploring the relationship between two variables, such as HRs and runs, is a scatterplot:
 
 ```{r runs-vs-hrs, message=FALSE, warning=FALSE}
 library(Lahman)
@@ -147,7 +147,7 @@ Teams %>% filter(yearID %in% 1961:2001) %>%
   geom_point(alpha = 0.5)
 ```
 
-Here again we see a clear association. But does this mean that increasing a team's BBs **causes** an increase in runs? One of the most important lessons you learn in this book is that **association is not causation.**
+Here again we see a clear association. But does this mean that increasing a team's BBs **causes** an increase in runs? One of the most important lessons you learn in this class is that **association is not causation.**
 
 In fact, it looks like BBs and HRs are also associated:
 
@@ -223,7 +223,7 @@ In the example above, the slope is `r reg_line$slope`. So this tells us that tea
 
 ## Confounding
 
-Previously, we noted a strong relationship between Runs and BB. If we find the regression line for predicting runs from bases on balls, we a get slope of:
+Previously, we noted a strong relationship between Runs and BB. If we find the regression line for predicting runs from bases on balls, we get a slope of:
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -254,7 +254,7 @@ singles_slope
 
 which is a lower value than what we obtain for BB.
 
-Also, notice that a single gets you to first base just like a BB. Those that know about baseball will tell you that with a single, runners on base have a better chance of scoring than with a BB. So how can BB be more predictive of runs? The reason this happen is because of confounding. Here we show the correlation between HR, BB, and singles:
+Also, notice that a single gets you to first base just like a BB. Those that know about baseball will tell you that with a single, runners on base have a better chance of scoring than with a BB. So how can BB be more predictive of runs? The reason this happens is because of confounding. Here we show the correlation between HR, BB, and singles:
 
 ```{r}
 Teams %>%
@@ -368,7 +368,7 @@ We have described how if data is bivariate normal then the conditional expectati
 We note that "linear" here does not refer to lines exclusively, but rather to the fact that the conditional expectation is a linear combination of known quantities. In mathematics, when we multiply each variable by a constant and then add them together, we say we formed a linear combination of the variables. For example, $3x - 4y + 5z$ is a linear combination of $x$, $y$, and $z$. We can also add a constant so $2 + 3x - 4y + 5z$ is also linear combination of $x$, $y$, and $z$.
 
 So $\beta_0 + \beta_1 x_1 + \beta_2 x_2$, is a linear combination of $x_1$ and $x_2$.
-The simplest linear model is a constant $\beta_0$; the second simplest is a line $\beta_0 + \beta_1 x$. If we were to specify a linear model for Galton's data, we would denote the $N$ observed father heights with $x_1, \dots, x_n$, then we model the $N$ son heights we are trying to predict with:
+The simplest linear model is a constant $\beta_0$; the second simplest is a line $\beta_0 + \beta_1 x$. If we were to specify a linear model for Galton's data, we would denote the $N$ observed father heights with $x_1, \dots, x_N$, then we model the $N$ son heights we are trying to predict with:
 
 $$
 Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i, \, i=1,\dots,N.
@@ -466,7 +466,7 @@ The object we named `fit` here is a "lm" object. Not a data frame or a tibble. I
 summary(fit)
 ```
 
-To understand some of the information included in this summary we need to remember that the LSE are random variables. Mathematical statistics gives us some ideas of the distribution of these random variables
+To understand some of the information included in this summary we need to remember that the LSE are random variables. Mathematical statistics gives us some ideas of the distribution of these random variables.
 
 
 ### LSE are random variables
@@ -908,7 +908,7 @@ Wikipedia defines the _sophomore slump_ as:
 
 > A sophomore slump or sophomore jinx or sophomore jitters refers to an instance in which a second, or sophomore, effort fails to live up to the standards of the first effort. It is commonly used to refer to the apathy of students (second year of high school, college or university), the performance of athletes (second season of play), singers/bands (second album), television shows (second seasons) and movies (sequels/prequels).
 
-In Major League Baseball, the rookie of the year (ROY) award is given to the first-year player who is judged to have performed the best. The _sophmore slump_ phrase is used to describe the observation that ROY award winners don't do as well during their second year. For example, this Fox Sports article^[http://www.foxsports.com/mlb/story/kris-bryant-carlos-correa-rookies-of-year-award-matt-duffy-francisco-lindor-kang-sano-120715] asks "Will MLB's tremendous rookie class of 2015 suffer a sophomore slump?".
+In Major League Baseball, the rookie of the year (ROY) award is given to the first-year player who is judged to have performed the best. The _sophomore slump_ phrase is used to describe the observation that ROY award winners don't do as well during their second year. For example, this Fox Sports article^[http://www.foxsports.com/mlb/story/kris-bryant-carlos-correa-rookies-of-year-award-matt-duffy-francisco-lindor-kang-sano-120715] asks "Will MLB's tremendous rookie class of 2015 suffer a sophomore slump?".
 
 Does the data confirm the existence of a sophomore slump? Let's take a look. Examining the data for batting average, we see that this observation holds true for the top performing ROYs:
 
@@ -969,7 +969,7 @@ tmp <- ROY %>% slice(1:5) %>%
 
 In fact, the proportion of players that have a lower batting average their sophomore year is `r mean(ROY$sophomore - ROY$rookie <= 0)`.
 
-So is it "jitters" or "jinx"? To answer this question, let's turn our attention to all players that played the 2013 and 2014 seasons and batted more than 130 times (minimum to win Rookie of the Year).
+So is it "jitters" or "jinx"? To answer this question, let's turn our attention to all players that played the 2013 and 2014 seasons and batted at least 130 times (the at-bat cutoff that defines rookie eligibility).
 
 <!--We perform similar operations to what we did above: -->
 
@@ -1023,6 +1023,6 @@ the data look very much like a bivariate normal distribution, which means we pre
 
 $$ \frac{Y - .255}{.033} = 0.46 \left( \frac{X - .261}{.032}\right) $$
 
-Because the correlation is not perfect, regression tells us that, on average, expect high performers from 2013 to do a bit worse in 2014. It's not a jinx; it's just due to chance. The ROY are selected from the top values of $X$ so it is expected that $Y$ will regress to the mean.
+Because the correlation is not perfect, regression tells us that, on average, we expect high performers from 2013 to do a bit worse in 2014. It's not a jinx; it's just due to chance. The ROY are selected from the top values of $X$ so it is expected that $Y$ will regress to the mean.
 
 

@@ -635,7 +635,7 @@ window.Quarto = {
 <p>We will use the lecture slides from my friend and ace economist, Ed Rubin (U of Oregon). They are available <a href="https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#1"><strong>right here</strong></a>. A couple things first, though:</p>
 <section id="the-data-and-packages" class="level2">
 <h2 class="anchored" data-anchor-id="the-data-and-packages">The data and packages</h2>
-<p>Dr.&nbsp;Rubin uses the <code>ISLR</code> package’s <code>credit</code> dataset, which we can get from the <code>ISLR</code> package (which you may need to install). You’ll also want to install the <code>wooldridge</code> package for our later work:</p>
+<p>Dr.&nbsp;Rubin uses the <code>Credit</code> dataset from the <code>ISLR</code> package (which you may need to install). You’ll also want to install the <code>wooldridge</code> package for our later work:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>credit <span class="ot">=</span> ISLR<span class="sc">::</span>Credit</span>
@@ -663,7 +663,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
 <p>I used to have this lecture at the end of our semester, but I think the intuition behind LASSO and ridge regression helps understand our “overfitting” problem. There are two terms I want to cover before we dive into the slides:</p>
 <ol type="1">
-<li><p><strong>Bias vs.&nbsp;Variance</strong>: We saw that super-overfit polynomial last week (where we took 20 observations and fit a 16th-degree polynomial). The model we fit was very flexible and bendy, but it did get most of the data points right. It had low <em>bias</em> as it was generally right, but had huge <em>variance</em> – it was all over the place, even within a small range of advertising mode spending. <strong>Bias vs.&nbsp;variance</strong> refers to the innate tradeoff between these two things. When we used the train and test samples to get the best <em>out</em> of sample fit, we were balancing bias and variance</p></li>
+<li><p><strong>Bias vs.&nbsp;Variance</strong>: We saw that super-overfit polynomial a couple weeks ago (where we took 20 observations and fit a 16th-degree polynomial). The model we fit was very flexible and bendy, but it did get most of the data points right. It had low <em>bias</em> as it was generally right, but had huge <em>variance</em> – it was all over the place, even within a small range of advertising mode spending. <strong>Bias vs.&nbsp;variance</strong> refers to the innate tradeoff between these two things. When we used the train and test samples to get the best <em>out</em> of sample fit, we were balancing bias and variance.</p></li>
 <li><p><strong>Cross validation</strong>: This is the term for splitting your sample into two (or more) different subsets (e.g.&nbsp;train and test), fitting the model on one and checking how it does on the other – and then rotating, so every chunk of the data gets a turn being held out.</p></li>
 </ol>
 <p>Now, back to the <a href="https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#5"><strong>lecture notes for today</strong></a></p>
@@ -724,7 +724,7 @@ Note
 </section>
 <section id="ok-technically-thats-bagging" class="level3">
 <h3 class="anchored" data-anchor-id="ok-technically-thats-bagging">OK, technically that’s “bagging”</h3>
-<p>Random Forest has one other wrinkle – when choosing amongst the candidate predictors for each split, the Random Forest method will choose from a randomly selected subset of the predictors. The reasoning for this given in ISLR is intuitive: if there is one predictor that predicts quite well for the sample, it will always be selected and little emphasis will be on predictors aside from this one. By randomly leaving it out, some trees are forced to fit without that predictor, so they won’t all look the same. When you don’t take the subset, you are <em>bagging</em>. When you do take a subset, you are estimating a <em>random forest</em></p>
+<p>Random Forest has one other wrinkle – when choosing amongst the candidate predictors for each split, the Random Forest method will choose from a randomly selected subset of the predictors. The reasoning for this given in ISLR is intuitive: if there is one predictor that predicts quite well for the sample, it will always be selected and little emphasis will be on predictors aside from this one. By randomly leaving it out, some trees are forced to fit without that predictor, so they won’t all look the same. When you don’t take the subset, you are <em>bagging</em>. When you do take a subset, you are estimating a <em>random forest</em>.</p>
 <p>You won’t need to use this on your Project 3, it’s purely for your own info. Random forests are common out in the world, and are useful to know especially since you already know the fundamental element of it – the tree.</p>
 </section>
 </section>
@@ -733,7 +733,7 @@ Note
 <p>If we have time, we can dive back into a little more about model flexibility, bias, and variance….</p>
 <section id="model-flexibility" class="level2">
 <h2 class="anchored" data-anchor-id="model-flexibility">Model Flexibility</h2>
-<p>Let’s return to the simulated dataset we used occaisionally in the linear regression content. Recall there was a single feature <span class="math inline">\(x\)</span> with the following properties:</p>
+<p>Let’s return to the simulated dataset we used occasionally in the linear regression content. Recall there was a single feature <span class="math inline">\(x\)</span> with the following properties:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define regression function</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cubic_mean <span class="ot">=</span> <span class="cf">function</span>(x) {</span>
@@ -800,7 +800,7 @@ Note
 </div>
 </div>
 </div>
-<p>This picture is an idealized version of what we expect to see, but we’ll illustrate the sorts of validate “curves” that we might see in practice.</p>
+<p>This picture is an idealized version of what we expect to see, but we’ll illustrate the sorts of validation “curves” that we might see in practice.</p>
 <p>Note that in the following three sub-sections, a significant portion of the code is suppressed for visual clarity. See the source document for full details.</p>
 <section id="linear-models" class="level3">
 <h3 class="anchored" data-anchor-id="linear-models">Linear Models</h3>
@@ -834,7 +834,7 @@ Note
 <li>The training error <em>decreases</em>.</li>
 <li>The validation error <em>decreases</em>, then <em>increases</em>.</li>
 </ul>
-<p>This more of less matches the idealized version above, but the validation “curve” is much more jagged. This is something that we can expect in practice.</p>
+<p>This more or less matches the idealized version above, but the validation “curve” is much more jagged. This is something that we can expect in practice.</p>
 <p>We have previously noted that training error isn’t particularly useful for validating models. That is still true. However, it can be useful for checking that everything is working as planned. In this case, since we know that training error decreases as model flexibility increases, we can verify our intuition that a higher degree polynomial is indeed more flexible.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 </section>
 <section id="k-nearest-neighbors" class="level3">
@@ -873,7 +873,7 @@ Note
 </section>
 <section id="decision-trees" class="level3">
 <h3 class="anchored" data-anchor-id="decision-trees">Decision Trees</h3>
-<p>Lastly, we evaluate some decision tree models. We choose some arbitrary values of <code>cp</code> to evaluate, while holding <code>minsplit</code> constant at <code>5</code>. There are arbitrary choices that produce a plot that is useful for discussion.</p>
+<p>Lastly, we evaluate some decision tree models. We choose some arbitrary values of <code>cp</code> to evaluate, while holding <code>minsplit</code> constant at <code>5</code>. These are arbitrary choices that produce a plot that is useful for discussion.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for fitting decision tree models</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>

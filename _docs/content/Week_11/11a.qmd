@@ -58,7 +58,7 @@ $$
 \mathbb{E}_{\boldsymbol{X}, Y} \left[ (Y - f(\boldsymbol{X})) ^ 2 \right] = \mathbb{E}_{\boldsymbol{X}} \mathbb{E}_{Y \mid \boldsymbol{X}} \left[ ( Y - f(\boldsymbol{X}) ) ^ 2 \mid \boldsymbol{X} = \boldsymbol{x} \right]
 $$
 
-We saw previously (see the slides from last two content days) that this risk is minimized by the **conditional mean** of $Y$ given $\boldsymbol{X}$,
+We saw previously (see the slides from the last two content days) that this risk is minimized by the **conditional mean** of $Y$ given $\boldsymbol{X}$,
 
 $$
 \mu(\boldsymbol{x}) \triangleq \mathbb{E}[Y \mid \boldsymbol{X} = \boldsymbol{x}]
@@ -123,7 +123,7 @@ which is fit in R using the `lm()` function
 lm(y ~ x + I(x ^ 2) + I(x ^ 3), data = sim_slr_data)
 ```
 
-Notice that what is returned are (maximum likelihood or least squares) estimates of the unknown $\beta$ coefficients. That is, the "learning" that takes place with a linear models is "learning" the values of the coefficients.
+Notice that what is returned are (maximum likelihood or least squares) estimates of the unknown $\beta$ coefficients. That is, the "learning" that takes place with a linear model is "learning" the values of the coefficients.
 
 For this reason, we call linear regression models **parametric** models. They have unknown **model parameters**, in this case the $\beta$ coefficients that must be learned from the data. The form of the regression function is assumed.
 
@@ -195,7 +195,7 @@ plot_knn(k = 9, x = 0.75, main = "k = 9, x = 0.75")
 - In the middle plot, to estimate the mean of $Y$ at $x = 0$ we use the five nearest neighbors, which are highlighted with green. Our estimate is the average of the $y_i$ values of these five points indicated by the black x.
 - In the right plot, to estimate the mean of $Y$ at $x = 0.75$ we use the nine nearest neighbors, which are highlighted with green. Our estimate is the average of the $y_i$ values of these nine points indicated by the black x.
 
-You might begin to notice a bit of an issue here. We have to do a new calculation each time we want to estimate the regression function at a different value of $x$! For this reason, k-nearest neighbors is often said to be "fast to train" and "slow to predict." Training, is instant. You just memorize the data! Prediction involves finding the distance between the $x$ considered and all $x_i$ in the data!^[For this reason, KNN is often not used in practice, but it is very useful learning tool.]
+You might begin to notice a bit of an issue here. We have to do a new calculation each time we want to estimate the regression function at a different value of $x$! For this reason, k-nearest neighbors is often said to be "fast to train" and "slow to predict." Training, is instant. You just memorize the data! Prediction involves finding the distance between the $x$ considered and all $x_i$ in the data!^[For this reason, KNN is often not used in practice, but it is a very useful learning tool.]
 
 So, how then, do we choose the value of the **tuning** parameter $k$? We _**validate**_!
 
@@ -247,7 +247,7 @@ While the middle plot with $k = 5$ is not "perfect" it seems to roughly capture 
 
 But remember, in practice, we won't know the true regression function, so we will need to determine how our model performs using only the available data!
 
-This $k$, the number of neighbors, is an example of a **tuning parameter**. Instead of being learned from the data, like model parameters such as the $\beta$ coefficients in linear regression, a tuning parameter tells us *how* to learn from data. It is user-specified. To determine the value of $k$ that should be used, many models are fit to the estimation data, then evaluated on the validation. Using the information from the validation data, a value of $k$ is chosen. (More on this in a bit.)
+This $k$, the number of neighbors, is an example of a **tuning parameter**. Instead of being learned from the data, like model parameters such as the $\beta$ coefficients in linear regression, a tuning parameter tells us *how* to learn from data. It is user-specified. To determine the value of $k$ that should be used, many models are fit to the estimation data, then evaluated on the validation data. Using the information from the validation data, a value of $k$ is chosen. (More on this in a bit.)
 
 - **Model parameters** are "learned" using the same data that was used to fit the model.
 - **Tuning parameters** are "chosen" using data not used to fit the model.
@@ -348,7 +348,7 @@ In the plot above, the true regression function is the dashed black curve, and t
 rpart.plot::rpart.plot(tree_slr)
 ```
 
-The above "tree"^[It's really an upside tree isn't it?] shows the splits that were made. It informs us of the variable used, the cutoff value, and some summary of the resulting neighborhood. In "tree" terminology the resulting neighborhoods are "terminal nodes" of the tree. In contrast, "internal nodes" are neighborhoods that are created, but then further split.
+The above "tree"^[It's really an upside down tree isn't it?] shows the splits that were made. It informs us of the variable used, the cutoff value, and some summary of the resulting neighborhood. In "tree" terminology the resulting neighborhoods are "terminal nodes" of the tree. In contrast, "internal nodes" are neighborhoods that are created, but then further split.
 
 The "root node" is the neighborhood that contains all observations, before any splitting, and can be seen at the top of the image above. We see that this node represents 100% of the data. The other number, 0.21, is the mean of the response variable, in this case, $y_i$.
 
@@ -583,7 +583,7 @@ crdt_trn = crdt[crdt_trn_idx, ]
 crdt_tst = crdt[-crdt_trn_idx, ]
 ```
 
-We'll start by using default tuning parameters for `minsplit`, but I'm going to use a `cp` that gets us something interesting.
+Note that we re-split the data with a new seed here, so the RMSEs in this section aren't directly comparable to the KNN numbers above. We'll start by using default tuning parameters for `minsplit`, but I'm going to use a `cp` that gets us something interesting.
 
 ```{r}
 crdt_tree = rpart(Rating ~ Age + Gender + Student, data = crdt_trn, cp = .0095)
@@ -653,7 +653,7 @@ sapply(tree_val_pred, calc_rmse, crdt_tst$Rating)
 
 Here we see the model, with `cp = 0.010`, performs best.
 
-Note that by only using these three features, we are severely limiting our models performance. Let's quickly assess using all available predictors.
+Note that by only using these three features, we are severely limiting our model's performance. Let's quickly assess using all available predictors.
 
 ```{r}
 crdt_tree_all = rpart(Rating ~ ., data = crdt_trn)

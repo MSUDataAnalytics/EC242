@@ -746,7 +746,7 @@ Projected CRS: WGS 84 / Pseudo-Mercator
 <section id="importing-projected-data" class="level4">
 <h4 class="anchored" data-anchor-id="importing-projected-data">Importing projected data</h4>
 <p>GEOJSON, shapefiles, and KML files usually come with embedded projections stored as <strong>EPSG</strong> numbers like ‘4326’ (incidentally, ‘4326’ is the usual projection for GPS coordinates). Thus, the first one is usually already taken care of. If your data doesn’t have a PROJ4 or EPSG number but the coordinates are all between -180 and +180, it’s likely in EPSG=4326. If none of those, then the data creator should have <em>metadata</em> stating the projection. It might take some googling and some trial and error.</p>
-<p>For mapping, you might need to <em>transform</em> your data between projections (or “reproject” it, same thing). We use <code>st_transform</code> for this. We only need to give <code>R</code> the EPSG (Geodetic Parameter Dataset) of the projection you want to end up in. As long as it’s already in a known projection, <code>R</code> can re-project it. The projection is refered to by the Coordinate Reference System (CRS). <code>st_crs</code> will tell us the projection (EPSG number and a lot more) of any spatial object. If they do not match, then <code>R</code> will give an error or, worse, plot them on totally different scales - sometimes you end up with points from the US landing in the middle of the Indian Ocean! Look back at our map of gas plants and the US: that one came out fine anyway, because <code>ggplot</code> quietly re-projects every <code>geom_sf()</code> layer into the CRS of the first one. <code>st_join()</code> does no such favor – it just errors.</p>
+<p>For mapping, you might need to <em>transform</em> your data between projections (or “reproject” it, same thing). We use <code>st_transform</code> for this. We only need to give <code>R</code> the EPSG (Geodetic Parameter Dataset) of the projection you want to end up in. As long as it’s already in a known projection, <code>R</code> can re-project it. The projection is referred to by the Coordinate Reference System (CRS). <code>st_crs</code> will tell us the projection (EPSG number and a lot more) of any spatial object. If they do not match, then <code>R</code> will give an error or, worse, plot them on totally different scales - sometimes you end up with points from the US landing in the middle of the Indian Ocean! Look back at our map of gas plants and the US: that one came out fine anyway, because <code>ggplot</code> quietly re-projects every <code>geom_sf()</code> layer into the CRS of the first one. <code>st_join()</code> does no such favor – it just errors.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(gasplants)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -915,10 +915,10 @@ Geodetic CRS:  WGS 84
 </section>
 <section id="spatial-merges" class="level2">
 <h2 class="anchored" data-anchor-id="spatial-merges">Spatial merges</h2>
-<p>Combining spatial data is the strength of geospatial analysis. We have our map of MI, and we have out points. Let’s “merge” the points to the map, meaning let’s connect the elements in our map (the state of MI) to the elements in our points (gas plants). This is a point-to-polygon merge.</p>
+<p>Combining spatial data is the strength of geospatial analysis. We have our map of MI, and we have our points. Let’s “merge” the points to the map, meaning let’s connect the elements in our map (the state of MI) to the elements in our points (gas plants). This is a point-to-polygon merge.</p>
 <section id="point-to-polygon-merges" class="level3">
 <h3 class="anchored" data-anchor-id="point-to-polygon-merges">Point-to-polygon merges</h3>
-<p>We’ll use <code>st_join</code> to produce an inner join, so we keep only those points that are “in” (spatially) the state of Michigan. I’m specifying <code>join = st_intersects</code> though this is the default. Note that all the points that remain in the merged <code>MI.gasplants</code> are in Michigan, and note that all the data columns from <code>MI</code> are now in <code>gasplants</code>. We’ll use a county map of MI here so we will have the <em>county</em> data for each county containing a gas plant.</p>
+<p>We’ll use <code>st_join</code> to produce an inner join, so we keep only those points that are “in” (spatially) the state of Michigan. I’m specifying <code>join = st_intersects</code> though this is the default. Note that all the points that remain in the merged <code>MI.gasplants</code> are in Michigan, and note that all the data columns from <code>MI.counties</code> are now in <code>MI.gasplants</code>. We’ll use a county map of MI here so we will have the <em>county</em> data for each county containing a gas plant.</p>
 <div class="cell" data-result="hide">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>MI.counties <span class="ot">=</span> <span class="fu">counties</span>(<span class="at">state =</span> <span class="st">'MI'</span>, <span class="at">cb =</span> <span class="cn">TRUE</span>, <span class="at">progress_bar =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1034,7 +1034,7 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </div>
-<p>These watersheds clearly overlap state boundaries. So what happens if we merge them? <code>sf</code> will create a new obsveration (row) for every HUC-4 / State combination</p>
+<p>These watersheds clearly overlap state boundaries. So what happens if we merge them? <code>sf</code> will create a new observation (row) for every HUC-4 / State combination</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>poly.merge <span class="ot">=</span> HUC4 <span class="sc">%&gt;%</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(US, <span class="at">left =</span> <span class="cn">TRUE</span>)</span>
@@ -1047,12 +1047,12 @@ Dimension:     XY
 Bounding box:  xmin: -115.7061 ymin: 31.5082 xmax: -111.5061 ymax: 39.30285
 Geodetic CRS:  NAD83
                         Name Description randomData STATEFP  STATENS
-1             Lower Colorado                     25      06 01779778
-1.1           Lower Colorado                     25      32 01779793
-1.2           Lower Colorado                     25      04 01779777
-2   Lower Colorado-Lake Mead                     25      49 01455989
-2.1 Lower Colorado-Lake Mead                     25      32 01779793
-2.2 Lower Colorado-Lake Mead                     25      04 01779777
+1             Lower Colorado                     15      06 01779778
+1.1           Lower Colorado                     15      32 01779793
+1.2           Lower Colorado                     15      04 01779777
+2   Lower Colorado-Lake Mead                     18      49 01455989
+2.1 Lower Colorado-Lake Mead                     18      32 01779793
+2.2 Lower Colorado-Lake Mead                     18      04 01779777
         GEOIDFQ GEOID STUSPS       NAME LSAD        ALAND      AWATER
 1   0400000US06    06     CA California   00 403673433805 20291632828
 1.1 0400000US32    32     NV     Nevada   00 284537045743  1839880833
@@ -1094,11 +1094,11 @@ Dimension:     XY
 Bounding box:  xmin: -121.255 ymin: 31.5082 xmax: -111.5061 ymax: 42.3448
 Geodetic CRS:  NAD83
                           Name Description randomData STATEFP  STATENS
-1               Lower Colorado                     25      04 01779777
-2     Lower Colorado-Lake Mead                     25      04 01779777
-3    Northern Mojave-Mono Lake                     22      06 01779778
-4 Central Nevada Desert Basins                     15      32 01779793
-5               North Lahontan                     21      06 01779778
+1               Lower Colorado                     15      04 01779777
+2     Lower Colorado-Lake Mead                     18      04 01779777
+3    Northern Mojave-Mono Lake                     23      06 01779778
+4 Central Nevada Desert Basins                     17      32 01779793
+5               North Lahontan                     18      06 01779778
 6   Black Rock Desert-Humboldt                     19      32 01779793
       GEOIDFQ GEOID STUSPS       NAME LSAD        ALAND      AWATER
 1 0400000US04    04     AZ    Arizona   00 294366118294   853991999
@@ -1128,11 +1128,11 @@ Dimension:     XY
 Bounding box:  xmin: -121.255 ymin: 31.5082 xmax: -111.5061 ymax: 42.3448
 Geodetic CRS:  NAD83
                           Name Description randomData STATEFP STATENS GEOIDFQ
-1               Lower Colorado                     25    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-2     Lower Colorado-Lake Mead                     25    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-3    Northern Mojave-Mono Lake                     22    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-4 Central Nevada Desert Basins                     15    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-5               North Lahontan                     21    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+1               Lower Colorado                     15    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+2     Lower Colorado-Lake Mead                     18    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+3    Northern Mojave-Mono Lake                     23    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+4 Central Nevada Desert Basins                     17    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+5               North Lahontan                     18    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
 6   Black Rock Desert-Humboldt                     19    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
   GEOID STUSPS NAME LSAD ALAND AWATER                       geometry
 1  &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    NA     NA POLYGON ((-114.6233 36.0304...
@@ -1164,9 +1164,9 @@ Geodetic CRS:  NAD83
 6     Black Rock Desert-Humboldt                     19      06 01779778
 6.1   Black Rock Desert-Humboldt                     19      32 01779793
 6.2   Black Rock Desert-Humboldt                     19      41 01155107
-7               Central Lahontan                     36      06 01779778
-7.1             Central Lahontan                     36      32 01779793
-4   Central Nevada Desert Basins                     15      06 01779778
+7               Central Lahontan                     17      06 01779778
+7.1             Central Lahontan                     17      32 01779793
+4   Central Nevada Desert Basins                     17      06 01779778
         GEOIDFQ GEOID STUSPS       NAME LSAD        ALAND      AWATER
 6   0400000US06    06     CA California   00 403673433805 20291632828
 6.1 0400000US32    32     NV     Nevada   00 284537045743  1839880833
@@ -1201,7 +1201,7 @@ Geodetic CRS:  NAD83
 </section>
 <section id="summarizing" class="level3">
 <h3 class="anchored" data-anchor-id="summarizing">Summarizing</h3>
-<p>Our <code>summarize</code> function let us collapse by groups and calculate interseting things like average (over a group or region). The neat part is that <em>it works on spatial data as well</em>. Let’s look at the data again:</p>
+<p>Our <code>summarize</code> function let us collapse by groups and calculate interesting things like average (over a group or region). The neat part is that <em>it works on spatial data as well</em>. Let’s look at the data again:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(poly.int <span class="sc">%&gt;%</span> </span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>       dplyr<span class="sc">::</span><span class="fu">select</span>(Name, randomData, STUSPS) <span class="sc">%&gt;%</span></span>
@@ -1213,12 +1213,12 @@ Dimension:     XY
 Bounding box:  xmin: -120.4649 ymin: 32.2603 xmax: -111.5061 ymax: 41.10578
 Geodetic CRS:  NAD83
                             Name randomData STUSPS
-1.2               Lower Colorado         25     AZ
-2.2     Lower Colorado-Lake Mead         25     AZ
+1.2               Lower Colorado         15     AZ
+2.2     Lower Colorado-Lake Mead         18     AZ
 6     Black Rock Desert-Humboldt         19     CA
-7               Central Lahontan         36     CA
-4   Central Nevada Desert Basins         15     CA
-1                 Lower Colorado         25     CA
+7               Central Lahontan         17     CA
+4   Central Nevada Desert Basins         17     CA
+1                 Lower Colorado         15     CA
                           geometry
 1.2 POLYGON ((-114.8165 32.5069...
 2.2 POLYGON ((-114.7368 36.0159...
@@ -1228,7 +1228,7 @@ Geodetic CRS:  NAD83
 1   POLYGON ((-115.1379 35.4054...</code></pre>
 </div>
 </div>
-<p>So AZ has two HUC-4’s in it - Lower Colorado and Lower Coloardo - Lake Mead (you can see them above). Summarize on geospatial data works just like regular data - we can <code>group_by(STUSPS)</code>, and we can <code>summarize()</code> any of the data. I threw some random data into <code>HUC-4</code> so we can summarize that.</p>
+<p>So AZ has two HUC-4’s in it - Lower Colorado and Lower Colorado-Lake Mead (you can see them above). Summarize on geospatial data works just like regular data - we can <code>group_by(STUSPS)</code>, and we can <code>summarize()</code> any of the data. I threw some random data into <code>HUC-4</code> so we can summarize that.</p>
 <p>But how do we combine data specific to each HUC-4 in AZ? We could:</p>
 <ul>
 <li><p>Just take the average of all of the <code>randomData</code> values within the state.</p></li>
@@ -1252,16 +1252,16 @@ Geodetic CRS:  NAD83
 # A tibble: 6 × 3
   STUSPS mean.randomData                                                geometry
   &lt;chr&gt;            &lt;dbl&gt;                                          &lt;GEOMETRY [°]&gt;
-1 AZ                25   POLYGON ((-114.7368 36.01591, -114.737 36.01577, -114.…
-2 CA                22.8 POLYGON ((-118.9235 38.25064, -118.9497 38.26894, -118…
-3 ID                22.7 POLYGON ((-117.243 44.39097, -117.2351 44.37385, -117.…
-4 MT                26   MULTIPOLYGON (((-111.3842 44.75446, -111.3846 44.75484…
-5 NV                19.6 POLYGON ((-118.7021 38.09324, -118.6216 38.03439, -118…
-6 OR                19.1 POLYGON ((-116.7012 45.24284, -116.7016 45.24301, -116…</code></pre>
+1 AZ                16.7 POLYGON ((-114.7368 36.01591, -114.737 36.01577, -114.…
+2 CA                21.1 POLYGON ((-118.9235 38.25064, -118.9497 38.26894, -118…
+3 ID                17.5 POLYGON ((-117.243 44.39097, -117.2351 44.37385, -117.…
+4 MT                15   MULTIPOLYGON (((-111.3842 44.75446, -111.3846 44.75484…
+5 NV                18.1 POLYGON ((-118.7021 38.09324, -118.6216 38.03439, -118…
+6 OR                24.7 POLYGON ((-116.7012 45.24284, -116.7016 45.24301, -116…</code></pre>
 </div>
 </div>
 <p><code>sf</code> with the <code>tidyverse</code> makes it really easy to apply spatial versions of <code>summarize</code> and <code>mutate</code>. Very useful.</p>
-<p>If we had wanted to just take the average (ignoring area), we’d just leave out the <code>w = State.HUC.area</code> or just used <code>mean</code>. If we had wanted to take, say, the minimum, we would use <code>min(randomData)</code> instead of <code>weighted.mean</code>. We can use whatever function we want in <code>summarize</code>, just as we did with non-spatial data.</p>
+<p>If we had wanted to just take the average (ignoring area), we’d just leave out the <code>w = State.HUC.area</code> or just use <code>mean</code>. If we had wanted to take, say, the minimum, we would use <code>min(randomData)</code> instead of <code>weighted.mean</code>. We can use whatever function we want in <code>summarize</code>, just as we did with non-spatial data.</p>
 </section>
 <section id="choosing-the-right-summarization" class="level3">
 <h3 class="anchored" data-anchor-id="choosing-the-right-summarization">Choosing the right summarization</h3>
@@ -1320,7 +1320,7 @@ Geodetic CRS:  NAD83
 <p>Note that the data for each HUC-4 remains unchanged. If there were something in that data (like “population” or “area”) that is specific to the entire polygon representing the HUC, then cropping the HUC outside of Nevada may lead to misleading data. The moral of the story is: be careful and thoughtful!</p>
 <section id="bounding-boxes" class="level3">
 <h3 class="anchored" data-anchor-id="bounding-boxes">Bounding boxes</h3>
-<p>This introduces a useful concept: the <em>bounding box</em>. The bounding box is defined by the closest 4 points that form a box that perfectly encloses the object (even when the object is not a rectangle). The extent of the above plot is the bounding box for Nevada.</p>
+<p>This introduces a useful concept: the <em>bounding box</em>. The bounding box is the smallest box – given by an <code>xmin</code>, <code>ymin</code>, <code>xmax</code>, and <code>ymax</code> – that perfectly encloses the object (even when the object is not a rectangle). The extent of the above plot is the bounding box for Nevada.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>Nevada.bbox <span class="ot">=</span> <span class="fu">st_bbox</span>(US <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(STUSPS<span class="sc">==</span><span class="st">'NV'</span>))</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>Nevada.bbox</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1466,7 +1466,7 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 <p>This is exactly our <code>max.index</code> and can be used on the <code>y</code> object, <code>MI.gasplants.small</code>, to pull the names, subset, get distances etc.</p>
-<p><code>st_nearest_feature</code> also works for points and polygons, or polygons and polygons, where it returns the index of the polygon that contains the nearest point to the features in <code>x</code>. Let’s find the nearest Great Lake for each of our cities using a <a href="https://hub.arcgis.com/datasets/wi-dnr::great-lakes?geometry=-127.301%2C37.038%2C-43.585%2C48.298">KML shapefile of the Great Lakes from WI DNR</a> Note that the GeoJSON link is under “API” on this site. We run into a complex geometry problem, and add <code>st_make_valid()</code> to fix it:</p>
+<p><code>st_nearest_feature</code> also works for points and polygons, or polygons and polygons, where it returns the index of the polygon that contains the nearest point to the features in <code>x</code>. Let’s find the nearest Great Lake for each of our cities using a <a href="https://hub.arcgis.com/datasets/wi-dnr::great-lakes?geometry=-127.301%2C37.038%2C-43.585%2C48.298">GeoJSON file of the Great Lakes from WI DNR</a> Note that the GeoJSON link is under “API” on this site. We run into a complex geometry problem, and add <code>st_make_valid()</code> to fix it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>GL <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">'https://opendata.arcgis.com/datasets/a8bb79fc10e64eee8c3a9db97cc5dc80_4.geojson'</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(ourCities.spatial)) <span class="sc">%&gt;%</span> <span class="fu">st_make_valid</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1641,7 +1641,7 @@ Geodetic CRS:  NAD83
 </ul></li>
 <li><p>If you want to remove the Great Lakes from your map, here’s how you do it</p>
 <ul>
-<li><p>First, retrieve the geojson file of the great lakes. Only WI DNR seems to have a public shapefile of the Great Lakes (an informal complaint has been registered with MI-EGLE, grrrr) which you can download as a <a href="https://data-wi-dnr.opendata.arcgis.com/datasets/great-lakes/explore">geojson from here</a> – see the little cloud download button, and select geojson. This one doesn’t have a link to take it directly, so download the file to your local drive, keep it with your .RMD file, and load it direction from your local path.</p></li>
+<li><p>First, retrieve the geojson file of the great lakes. Only WI DNR seems to have a public shapefile of the Great Lakes (an informal complaint has been registered with MI-EGLE, grrrr) which you can download as a <a href="https://data-wi-dnr.opendata.arcgis.com/datasets/great-lakes/explore">geojson from here</a> – see the little cloud download button, and select geojson. This one doesn’t have a link to take it directly, so download the file to your local drive, keep it with your .RMD file, and load it directly from your local path.</p></li>
 <li><p>Second, use the code below as an example. You may have a different shapefile you want to clip to the Great Lakes – put it in place of <code>MI</code> below. Note that we use a spatial version of the <code>difference</code> function, which gives us “everything in the first that isn’t in the second”.</p></li>
 </ul></li>
 </ul>

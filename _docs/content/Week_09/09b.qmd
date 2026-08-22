@@ -18,4 +18,4 @@ knitr::opts_chunk$set(warning = FALSE, error = FALSE, message = FALSE)
 
 ## Group Project 2 Presentations
 
-Today, we will have a lightning-round set of group presentations where each group will present their work for Project 2. Format and expectations are on the [Project 2 page](/groupproject/project2.qmd). Take notes while you watch: [Lab 9](/assignment/09-assignment.qmd) asks you to write feedback on one group's analysis and to apply a geometry that isn't your own group's to your own data.
+Today, we will have a lightning-round set of group presentations where each group will present their work for Project 2. Format and expectations are on the [Project 2 page](/groupproject/project2.qmd). Take notes while you watch: [Lab 9](/assignment/09-assignment.qmd) asks you to write feedback on one group's analysis and to apply a geometry, aesthetic, or method that isn't your own group's to your own data.

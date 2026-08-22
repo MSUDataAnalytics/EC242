@@ -43,7 +43,7 @@ Once cleaned, we should be able to use `rpart(wage ~ ., data = wage_clean)` and 
 
 ### Predicting wage
 
-I'm going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (`rpart` and `rpart.plot`, plus `dplyr` and `skimr`). Copy the `rmse` and `get_rmse` code into a blank R script (you don't have to use RMarkdown, just use a blank R script and run from there). You'll also want to have these functions from last week loaded:
+I'm going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (`wooldridge`, `rpart` and `rpart.plot`, plus `dplyr` and `skimr`). Copy the `rmse` and `get_rmse` code into a blank R script (you don't have to use RMarkdown, just use a blank R script and run from there). You'll also want to have these functions from last week loaded:
 
 ```{r}
 rmse = function(actual, predicted) {
@@ -74,7 +74,7 @@ onetree = rpart(wage ~ ., data = wage_clean)
 rpart.plot(onetree)
 
 predict(onetree, newdata = data.frame(
-  hours = 40, IQ = 100, KWW = 50, educ = 18, exper = 19, tenure = 15, age = 20, married = 1, black = 0, south = 0, urban = 1, sibs = 1, brthord = 6))
+  hours = 40, IQ = 100, KWW = 50, educ = 18, exper = 19, tenure = 15, age = 20, married = 1, black = 0, south = 0, urban = 1, sibs = 1))
 ```
 **5 minutes**
 
@@ -169,7 +169,7 @@ We'll ask someone to share (a few of) their group's 10 regression trees using `r
 ### Breakout #3 (if time)
 Use `lapply` to get a list of your RMSE's (one for each of your models). The anonymous function may come in handy here (though it's not necessary). Note that we are not yet splitting into `test` and `train` (which you **will** need to do on your lab assignment). That matters for what the plot looks like: because these are RMSEs on the same data we fit, they'll keep falling as the trees get bigger (as `cp` goes to zero, or as `minsplit` shrinks), so there's no bottom of the U to find here. The U only shows up once the RMSE is calculated on data the tree hasn't seen. 
 
-Once you have your list, **create the plot of RMSEs** similar to the one we looked at in Content this week. Note: you can use `unlist(myRMSE)` to get a numeric vector of the RMSE's (as long as all of the elements in `myRMSE` are numeric). Then, it's a matter of plotting either with base `plot` or with `ggplot` (if you use `ggplot` you'll have to put the RMSEs in a data frame first, with a second column holding the `cp` or `minsplit` value that goes on the x-axis).
+Once you have your list, **create the plot of RMSEs** similar to the one we made in last week's lab. Note: you can use `unlist(myRMSE)` to get a numeric vector of the RMSE's (as long as all of the elements in `myRMSE` are numeric). Then, it's a matter of plotting either with base `plot` or with `ggplot` (if you use `ggplot` you'll have to put the RMSEs in a data frame first, with a second column holding the `cp` or `minsplit` value that goes on the x-axis).
 
 
 :::

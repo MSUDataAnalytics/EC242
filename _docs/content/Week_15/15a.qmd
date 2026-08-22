@@ -9,7 +9,7 @@ output:
 Our last class!
 
 # A little more on Geospatial in R
-We went over the basics and got some practice using geospatial data in R. Let's look closely at the `tidycensus` packages. Thus far, we have used `tigris` to get TIGER/line census boundaries for things like counties. `tidycensus` does more than this -- we can pull actual census data with its geospatial references (the polygons referring to the counties, tracts, block groups, and blocks) *along with* census data because `tidycensus` interfaces with `tigris` to combine the census data and the census geographies.
+We went over the basics and got some practice using geospatial data in R. Let's look closely at the `tidycensus` package. Thus far, we have used `tigris` to get TIGER/line census boundaries for things like counties. `tidycensus` does more than this -- we can pull actual census data with its geospatial references (the polygons referring to the counties, tracts, block groups, and blocks) *along with* census data because `tidycensus` interfaces with `tigris` to combine the census data and the census geographies.
 
 ## Tigris for polygons
 Make sure you load `tigris` (for spatial data) and `tidycensus` for census data to attach to the spatial data:
@@ -86,7 +86,7 @@ incvars[1:5,]
 
 We got lucky - the first `concept` is "MEDIAN INCOME IN THE PAST 12 MONTHS (IN 2019 INFLATION-ADJUSTED DOLLARS) BY PLACE OF BIRTH". Now, we didn't want the "place of birth" part (though...sounds interesting), but look at the first `label`. It is the `!!Total:`, meaning it is the median income when you combine all places of birth. The second label is `!!Total:!!Born in state of residence`, which is a *subset* of the total. Same with the next. **We do not need to use the subsets in order to use the `!!Total` value**. Note the `name` is `B06011_001`. 
 
-Lots and lots of variables will have the same total - the next variable `B07011_001` (after the Puerto Rico version) is the median income broken down by whether or not the household lives in the same house, instead of by place of birth. It's long, but you can see that it is "MEDIAN INCOME IN THE PAST 12 MONTHS (IN 2019 INFLATION-ADJUSTED DOLLARS) BY GEOGRAPHICAL MOBILITY IN THE PAST YEAR FOR CURRENT RESIDENCE IN THE UNITED STATES"
+Lots and lots of variables will have the same total - the next variable `B07011_001` is the median income broken down by whether or not the household lives in the same house, instead of by place of birth. It's long, but you can see that it is "MEDIAN INCOME IN THE PAST 12 MONTHS (IN 2019 INFLATION-ADJUSTED DOLLARS) BY GEOGRAPHICAL MOBILITY IN THE PAST YEAR FOR CURRENT RESIDENCE IN THE UNITED STATES"
 
 ```{r, echo = TRUE}
 incvars[6:15,]
@@ -118,7 +118,7 @@ ing.medincome = get_acs(geography = 'tract',
 head(ing.medincome)
 ```
 
-We got to name the variables (useful!) as you see in the `variable` column. However, there is more than one row per observation now: the results are **not** "tidy". But clearly the two variable's totals are the same, so we have convinced ourselves that `!!Total:` works for any of the different concepts that cover median income. 
+We got to name the variables (useful!) as you see in the `variable` column. However, there is more than one row per observation now: the results are **not** "tidy". But clearly the two variables' totals are the same, so we have convinced ourselves that `!!Total:` works for any of the different concepts that cover median income. 
 
 Often, the data we wish to pull is a total, but it is broken down (by race, income groups, etc.). This means we want one observation per row (census tract), but multiple columns representing the total and the breakdown of a variable. Imagine "race" by tract with counts of households by race. We'll have to use `output = 'wide'` in our `get_acs` call:
 
@@ -169,7 +169,7 @@ ing.tenure = ing.tenure %>%
 ing.tenure
 ```
 
-The NA's come from tracts with zero households in them (the [haunted](https://www.wzzm13.com/article/news/local/michigan-life/seven-gables-road-haunted-michigan/69-e2f92018-59da-473c-ae32-1d7de68dd65e) Seven Gables Nature Area, GM's Lansing plant, industrial areas, etc.). Let's plot this!
+The `NaN`s come from tracts with zero population in them (the [haunted](https://www.wzzm13.com/article/news/local/michigan-life/seven-gables-road-haunted-michigan/69-e2f92018-59da-473c-ae32-1d7de68dd65e) Seven Gables Nature Area, GM's Lansing plant, industrial areas, etc.). Let's plot this!
 
 ```{r, echo = TRUE}
 ggplot(ing.tenure, aes(fill = percentSameHouse)) + 
@@ -184,7 +184,7 @@ First thing we want to do is set our level (e.g. block, block-group, tract, coun
 
 With the tract(s) set on geography, go up to the search box and type in the topic you're interested in. It'll draw from decennial census, the ACS, and more. You can view the data (for the set of selected geographies) by clicking on the results to make sure the numbers look like you'd expect. That will also let you see the crosstabs -- some data will have further breakdowns (by race, by tenure, etc.) and the crosstabs will show you what those breakdowns are, and if there is a "topline" number that serves your purpose.
 
-Once you find the series you want, you're getting close to being done. The variable code will be on the results (you'll see "B...." or "H..." or "S...."). Note that **and** the source (ACS, decennial) and the year(s) you want. What's missing, though? The `_001` suffix! Frustrating, I know.
+Once you find the series you want, you're getting close to being done. The variable code will be on the results (you'll see "B...." or "H..." or "S...."). Note that down, **and** the source (ACS, decennial) and the year(s) you want. What's missing, though? The `_001` suffix! Frustrating, I know.
 
 To find the exact variable you need, you'll need what's called a "table shell". You can [find them all here](https://www.census.gov/programs-surveys/acs/technical-documentation/table-shells.html). Download the "table shells for all detailed data" for the data series and year you need (ACS 2021, decennial 2020, etc.) and search using your variable name. That'll take you to the complete crosstabs available for that variable. Those are the variables (["table ID's" in census terms](https://www.census.gov/programs-surveys/acs/data/data-tables/table-ids-explained.html)) you'll need to feed to `tidycensus`. 
 
@@ -195,7 +195,7 @@ The tables on [data.census.gov](https://data.census.gov) are the same as the tab
 
 
 ### Wrapping up
-Finding census variables via `tidycensus` can be frustrating, and other sources exist to help lookup census tables. One useful tip is that you can use the "filter" button in your Rstudio `View()` window to interactively filter the `concept` column from `load_variables`. Once you find what you want there, then use the `get_acs` function in your code. Fundamentally, it's a lot of information with the ability to subset in many way, which makes it hard to wade through and find what you're looking for.
+Finding census variables via `tidycensus` can be frustrating, and other sources exist to help lookup census tables. One useful tip is that you can use the "filter" button in your Rstudio `View()` window to interactively filter the `concept` column from `load_variables`. Once you find what you want there, then use the `get_acs` function in your code. Fundamentally, it's a lot of information with the ability to subset in many ways, which makes it hard to wade through and find what you're looking for.
 
 ::: {.callout-note}
 

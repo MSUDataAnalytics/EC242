@@ -567,6 +567,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#set-operators" id="toc-set-operators" class="nav-link" data-scroll-target="#set-operators">Set operators</a>
   <ul class="collapse">
+  <li><a href="#intersect" id="toc-intersect" class="nav-link" data-scroll-target="#intersect">Intersect</a></li>
   <li><a href="#union" id="toc-union" class="nav-link" data-scroll-target="#union">Union</a></li>
   <li><a href="#setdiff" id="toc-setdiff" class="nav-link" data-scroll-target="#setdiff"><code>setdiff</code></a></li>
   <li><a href="#setequal" id="toc-setequal" class="nav-link" data-scroll-target="#setequal"><code>setequal</code></a></li>
@@ -642,7 +643,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>If we don’t name the columns, <code>bind_cols</code> makes names up for us (<code>...1</code>, <code>...2</code>), which is rarely what you want. Here we chose <code>a</code> and <code>b</code>.</p>
 <p>Note that there is an R-base function <code>cbind</code> with the exact same functionality. An important difference is that <code>cbind</code> can create different types of objects, while <code>bind_cols</code> always produces a data frame.</p>
-<p><code>bind_cols</code> can also bind two different data frames. For example, here we bind <code>dslabs::murders</code> and our election polling data from previous lessons</p>
+<p><code>bind_cols</code> can also bind two different data frames. For example, here we bind <code>dslabs::murders</code> and the 2016 election results, also from <strong>dslabs</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
@@ -767,27 +768,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <em>join</em> functions, described below, are designed to handle this challenge.</p>
 <section id="joins" class="level2">
 <h2 class="anchored" data-anchor-id="joins">Joins</h2>
-<p>The <em>join</em> functions in the <strong>dplyr</strong> package (part of the tidyverse) make sure that the tables are combined so that matching rows are together. If you know SQL, you will see that the approach and syntax is very similar. The general idea is that one needs to identify one or more columns that will serve to match the two tables. Then a new table with the combined information is returned. Notice what happens if we join the two tables above by state using <code>left_join</code> (we will remove the <code>others</code> column and rename <code>electoral_votes</code> so that the tables fit on the page):</p>
+<p>The <em>join</em> functions in the <strong>dplyr</strong> package (part of the tidyverse) make sure that the tables are combined so that matching rows are together. If you know SQL, you will see that the approach and syntax is very similar. The general idea is that one needs to identify one or more columns that will serve to match the two tables. Then a new table with the combined information is returned. Notice what happens if we join the two tables above by state using <code>left_join</code> (we will remove the minor-party columns and rename <code>electoral_votes</code> so that the tables fit on the page):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">left_join</span>(murders, results_us_election_2016, <span class="at">by =</span> <span class="st">"state"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>others) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>others, <span class="sc">-</span>johnson, <span class="sc">-</span>stein, <span class="sc">-</span>mcmullin) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">ev =</span> electoral_votes)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tab)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       state abb region population total ev  clinton    trump  johnson
-1    Alabama  AL  South    4779736   135  9 34.35795 62.08309 2.094169
-2     Alaska  AK   West     710231    19  3 36.55087 51.28151 5.877128
-3    Arizona  AZ   West    6392017   232 11 44.58042 48.08314 4.082188
-4   Arkansas  AR  South    2915918    93  6 33.65190 60.57191 2.648769
-5 California  CA   West   37253956  1257 55 61.72640 31.61711 3.374092
-6   Colorado  CO   West    5029196    65  9 48.15651 43.25098 5.183748
-      stein  mcmullin
-1 0.4422682 0.0000000
-2 1.8000176 0.0000000
-3 1.3185997 0.6699155
-4 0.8378174 1.1653206
-5 1.9649200 0.2792070
-6 1.3825031 1.0400874</code></pre>
+<pre><code>       state abb region population total ev  clinton    trump
+1    Alabama  AL  South    4779736   135  9 34.35795 62.08309
+2     Alaska  AK   West     710231    19  3 36.55087 51.28151
+3    Arizona  AZ   West    6392017   232 11 44.58042 48.08314
+4   Arkansas  AR  South    2915918    93  6 33.65190 60.57191
+5 California  CA   West   37253956  1257 55 61.72640 31.61711
+6   Colorado  CO   West    5029196    65  9 48.15651 43.25098</code></pre>
 </div>
 </div>
 <p>The data has been successfully joined and we can now, for example, make a plot to explore the relationship:</p>
@@ -808,7 +802,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We see the relationship is close to linear with about 2 electoral votes for every million persons, but with very small states getting higher ratios.</p>
-<p>In practice, it is not always the case that each row in one table has a matching row in the other. For this reason, we have several versions of join. To illustrate this challenge, we will take subsets of the tables above. We create the tables <code>tab1</code> and <code>tab2</code> so that they have some states in common but not all:</p>
+<p>In practice, it is not always the case that each row in one table has a matching row in the other. For this reason, we have several versions of join. To illustrate this challenge, we will take subsets of the tables above. We create the tables <code>tab_1</code> and <code>tab_2</code> so that they have some states in common but not all:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>tab_1 <span class="ot">&lt;-</span> <span class="fu">slice</span>(murders, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(state, population)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>tab_1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -965,8 +959,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="set-operators" class="level1">
 <h1>Set operators</h1>
 <p>Another set of commands useful for combining datasets are the set operators. When applied to vectors, these behave as their names suggest. Examples are <code>intersect</code>, <code>union</code>, <code>setdiff</code>, and <code>setequal</code>. However, if the <strong>tidyverse</strong>, or more specifically <strong>dplyr</strong>, is loaded, these functions can be used on data frames as opposed to just on vectors.</p>
-<section id="intersect" class="level3">
-<h3 class="anchored" data-anchor-id="intersect">Intersect</h3>
+<section id="intersect" class="level2">
+<h2 class="anchored" data-anchor-id="intersect">Intersect</h2>
 <p>You can take intersections of vectors of any type, such as numeric:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">intersect</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -987,14 +981,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>tab_2 <span class="ot">&lt;-</span> tab[<span class="dv">3</span><span class="sc">:</span><span class="dv">7</span>,]</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">intersect</span>(tab_1, tab_2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       state abb region population total ev  clinton    trump  johnson
-1    Arizona  AZ   West    6392017   232 11 44.58042 48.08314 4.082188
-2   Arkansas  AR  South    2915918    93  6 33.65190 60.57191 2.648769
-3 California  CA   West   37253956  1257 55 61.72640 31.61711 3.374092
-      stein  mcmullin
-1 1.3185997 0.6699155
-2 0.8378174 1.1653206
-3 1.9649200 0.2792070</code></pre>
+<pre><code>       state abb region population total ev  clinton    trump
+1    Arizona  AZ   West    6392017   232 11 44.58042 48.08314
+2   Arkansas  AR  South    2915918    93  6 33.65190 60.57191
+3 California  CA   West   37253956  1257 55 61.72640 31.61711</code></pre>
 </div>
 </div>
 </section>
@@ -1017,22 +1007,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>tab_2 <span class="ot">&lt;-</span> tab[<span class="dv">3</span><span class="sc">:</span><span class="dv">7</span>,]</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">union</span>(tab_1, tab_2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        state abb    region population total ev  clinton    trump  johnson
-1     Alabama  AL     South    4779736   135  9 34.35795 62.08309 2.094169
-2      Alaska  AK      West     710231    19  3 36.55087 51.28151 5.877128
-3     Arizona  AZ      West    6392017   232 11 44.58042 48.08314 4.082188
-4    Arkansas  AR     South    2915918    93  6 33.65190 60.57191 2.648769
-5  California  CA      West   37253956  1257 55 61.72640 31.61711 3.374092
-6    Colorado  CO      West    5029196    65  9 48.15651 43.25098 5.183748
-7 Connecticut  CT Northeast    3574097    97  7 54.56630 40.92691 2.959171
-      stein  mcmullin
-1 0.4422682 0.0000000
-2 1.8000176 0.0000000
-3 1.3185997 0.6699155
-4 0.8378174 1.1653206
-5 1.9649200 0.2792070
-6 1.3825031 1.0400874
-7 1.3885782 0.1281521</code></pre>
+<pre><code>        state abb    region population total ev  clinton    trump
+1     Alabama  AL     South    4779736   135  9 34.35795 62.08309
+2      Alaska  AK      West     710231    19  3 36.55087 51.28151
+3     Arizona  AZ      West    6392017   232 11 44.58042 48.08314
+4    Arkansas  AR     South    2915918    93  6 33.65190 60.57191
+5  California  CA      West   37253956  1257 55 61.72640 31.61711
+6    Colorado  CO      West    5029196    65  9 48.15651 43.25098
+7 Connecticut  CT Northeast    3574097    97  7 54.56630 40.92691</code></pre>
 </div>
 </div>
 <p>Note that we get 7 unique rows from this. We do not get duplicated rows from the overlap in <code>1:5</code> and <code>3:7</code>. If we were to <code>bind_rows</code> on the two subsets, we would get duplicates.</p>
@@ -1056,12 +1038,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>tab_2 <span class="ot">&lt;-</span> tab[<span class="dv">3</span><span class="sc">:</span><span class="dv">7</span>,]</span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">setdiff</span>(tab_1, tab_2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    state abb region population total ev  clinton    trump  johnson     stein
-1 Alabama  AL  South    4779736   135  9 34.35795 62.08309 2.094169 0.4422682
-2  Alaska  AK   West     710231    19  3 36.55087 51.28151 5.877128 1.8000176
-  mcmullin
-1        0
-2        0</code></pre>
+<pre><code>    state abb region population total ev  clinton    trump
+1 Alabama  AL  South    4779736   135  9 34.35795 62.08309
+2  Alaska  AK   West     710231    19  3 36.55087 51.28151</code></pre>
 </div>
 </div>
 <p><strong><code>setdiff</code> is particularly useful in joining because it tells you which keys are in one dataset but aren’t in another.</strong></p>
@@ -1277,7 +1256,7 @@ Note
 <h2 class="anchored" data-anchor-id="the-date-data-type">The date data type</h2>
 <p>We have described three main types of vectors: numeric, character, and logical. In data science projects, we very often encounter variables that are dates. Although we can represent a date with a string, for example <code>November 2, 2017</code>, once we pick a reference day, referred to as the <em>epoch</em>, they can be converted to numbers by calculating the number of days since the epoch. Computer languages usually use January 1, 1970, as the epoch. So, for example, January 2, 1970 is day 1, December 31, 1969 is day -1, and November 2, 2017, is day 17,472.</p>
 <p>Now how should we represent dates and times when analyzing data in R? We could just use days since the epoch, but then it is almost impossible to interpret. If I tell you it’s November 2, 2017, you know what this means immediately. If I tell you it’s day 17,472, you will be quite confused. Similar problems arise with times and even more complications can appear due to time zones.</p>
-<p>For this reason, <code>R</code> defines a data type just for dates and times. We saw an example in the polls data:</p>
+<p>For this reason, <code>R</code> defines a data type just for dates and times. Here’s an example from the 2016 polling data in <strong>dslabs</strong>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
@@ -1381,7 +1360,7 @@ Note
 </div>
 </div>
 <p>A further complication comes from the fact that dates often come in different formats in which the order of year, month, and day are different. The preferred format is to show year (with all four digits), month (two digits), and then day, or what is called the ISO 8601. Specifically we use YYYY-MM-DD so that if we order the string, it will be ordered by date. You can see the function <code>ymd</code> returns them in this format.</p>
-<p>But, what if you encounter dates such as “09/01/02”? This could be September 1, 2002 or January 2, 2009 or January 9, 2002. In these cases, examining the entire vector of dates will help you determine what format it is by process of elimination. Once you know, you can use the many parses provided by <strong>lubridate</strong>.</p>
+<p>But, what if you encounter dates such as “09/01/02”? This could be September 1, 2002 or January 2, 2009 or January 9, 2002. In these cases, examining the entire vector of dates will help you determine what format it is by process of elimination. Once you know, you can use the many parsers provided by <strong>lubridate</strong>.</p>
 <p>For example, if the string is:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="st">"09/01/02"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1423,11 +1402,11 @@ Note
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2026-08-21 18:25:39 EDT"</code></pre>
+<pre><code>[1] "2026-08-21 20:02:42 EDT"</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>(<span class="st">"GMT"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2026-08-21 22:25:39 GMT"</code></pre>
+<pre><code>[1] "2026-08-22 00:02:42 GMT"</code></pre>
 </div>
 </div>
 <p>You can see all the available time zones with <code>OlsonNames()</code> function.</p>
@@ -1435,15 +1414,15 @@ Note
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">hour</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 18</code></pre>
+<pre><code>[1] 20</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">minute</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 25</code></pre>
+<pre><code>[1] 2</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">%&gt;%</span> <span class="fu">second</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 39.48297</code></pre>
+<pre><code>[1] 42.71426</code></pre>
 </div>
 </div>
 <p>The package also includes a function to parse strings into times as well as parsers for time objects that include dates:</p>
@@ -1460,7 +1439,7 @@ Note
 </div>
 </div>
 <p>This package has many other useful functions. We describe two of these here that we find particularly useful.</p>
-<p>The <code>make_date</code> function can be used to quickly create a date object. It takes three arguments: year, month, day. <code>make_datetime</code> takes the same as <code>make_date</code> but also adds hour, minute, seconds, and time zone like ‘US/Michigan’ but defaulting to UTC. So create an date object representing, for example, July 6, 2019 we write:</p>
+<p>The <code>make_date</code> function can be used to quickly create a date object. It takes three arguments: year, month, day. <code>make_datetime</code> takes the same as <code>make_date</code> but also adds hour, minute, seconds, and time zone like ‘US/Michigan’ but defaulting to UTC. So to create a date object representing, for example, July 6, 2019 we write:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make_date</span>(<span class="dv">2019</span>, <span class="dv">7</span>, <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1537,7 +1516,7 @@ Note
 <p>You work for a travel booking website as a data analyst. A hotel has asked your company for data on corporate bookings at the hotel via your site. Specifically, they have five corporations that are frequent customers of the hotel, and they want to know who spends the most with them. They’ve asked you to help out. Most of the corporate spending is in the form of room reservations, but there are also parking fees that the hotel wants included in the analysis. Your goal: total up spending by corporation and report the biggest and smallest spenders inclusive of rooms and parking.</p>
 <p>Unfortunately, you only have the following data:</p>
 <ul>
-<li><p><a href="../../data/Travel_booking.csv"><i class="fas fa-file-csv"></i> <code>booking.csv</code></a> - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hoted.</p></li>
+<li><p><a href="../../data/Travel_booking.csv"><i class="fas fa-file-csv"></i> <code>booking.csv</code></a> - Contains the corporation name, the room type, and the dates someone from the corporation stayed at the hotel.</p></li>
 <li><p><a href="../../data/Travel_roomrates.csv"><i class="fas fa-file-csv"></i> <code>roomrates.csv</code></a> - Contains the price of each room on each day</p></li>
 <li><p><a href="../../data/Travel_parking.csv"><i class="fas fa-file-csv"></i> <code>parking.csv</code></a> - Contains the corporations who negotiated free parking for employees</p></li>
 <li><p>Parking at the hotel is $60 per night if you don’t have free parking. This hotel is in California, so everyone drives and parks when they stay.</p></li>
@@ -1554,12 +1533,12 @@ Tip
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Right-click on each of the links, copy the address, and read the URL in using <code>read.csv</code> to read .csv’s</p></li>
-<li><p>You’ll find you need to use most of the tools we covered previously including <code>pivot_longer</code>, <code>pivot_wider</code> and more.</p></li>
+<li><p>You’ll find you need to use most of the tools we covered previously including <code>pivot_longer</code>, <code>separate</code> and more.</p></li>
 <li><p>You’ll need <code>lubridate</code> and <code>tidyverse</code> loaded up.</p></li>
 </ul>
 </div>
 </div>
-<p>Your lab wil be based on similar data (with more wrinkles to fix) so share your code with your group when you’re done.</p>
+<p>Your lab will be based on similar data (with more wrinkles to fix) so share your code with your group when you’re done.</p>
 
 
 </section>

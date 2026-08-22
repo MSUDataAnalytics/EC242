@@ -52,7 +52,7 @@ p <- ggplot(data = murders, aes(x = population, y = total, label = abb))
 # Scales and transformations
 
 ### Log transformations
-Last lecture, we re-scaled our population by 10^6 (millions), but still had a lot of variation because some states are tiny and some are huge. Sometimes, we want to have one (or both) of our axes scaled non-linearly. For instance, if we wanted to have our x-axis be in log base 10, then each major tick would represent a factor of 10 over the last. This is not the default, so this change needs to be added through a _scales_ layer. A quick look at the cheat sheet reveals the `scale_x_continuous` function lets us control the behavior of scales. We use them like this:
+In our first visualization lecture, we re-scaled our population by 10^6 (millions), but still had a lot of variation because some states are tiny and some are huge. Sometimes, we want to have one (or both) of our axes scaled non-linearly. For instance, if we wanted to have our x-axis be in log base 10, then each major tick would represent a factor of 10 over the last. This is not the default, so this change needs to be added through a _scales_ layer. A quick look at the cheat sheet reveals the `scale_x_continuous` function lets us control the behavior of scales. We use them like this:
 
 
 ```{r ggplot-example-9}
@@ -62,7 +62,7 @@ p + geom_point(size = 3) +
   scale_y_continuous(trans = "log10")
 ```
 
-A couple of things here: adding things like `scale_x_continuous(...)` operates on the whole plot. In some cases, order matters, but it doesn't here, so we can throw `scale_x_continuous` anywhere. Because we have altered the whole plot's scale to be in the log-scale now, the _nudge_ must be made smaller. It is in log-base-10 units. Using `?scale_x_continuous` brings us to the help for both `scale_x_continuous` and `scale_y_continuous`, which shows us the options for transformations `trans = ...`
+A couple of things here: adding things like `scale_x_continuous(...)` operates on the whole plot. In some cases, order matters, but it doesn't here, so we can throw `scale_x_continuous` anywhere. Because we have altered the whole plot's scale to be in the log-scale now, the _nudge_ must be made smaller. It is in log-base-10 units. Using `?scale_x_continuous` brings us to the help for both `scale_x_continuous` and `scale_y_continuous`, which shows us the options for transformations `transform = ...` (you'll see `trans = ...` in older code, including the chunk above -- it still works, but it's deprecated)
 
 This particular transformation is so common that __ggplot2__ provides the specialized functions `scale_x_log10` and `scale_y_log10` which "inherit" (take the place of) the `scale_x_continuous` functions but have log base 10 as default. We can use these to rewrite the code like this:
 
@@ -172,7 +172,7 @@ We can also use a `labeler` function. The most common ones are in the `scales` p
 
 So the following will happen:
 
-- `scales::comma_format`
+- `scales::label_comma`
 ```{r}
 numbers.vector = c(20000, 50000, 100000, 500000, 1000000) # 20k to 1M
 
@@ -205,7 +205,7 @@ scalefun.dollar(numbers.vector)
 
 ```
 
-Note that we could set the `accuracy` and `scale` arguments in `scales::label_percent` and `scales::label_dollar`. The `accuracy` argument determines rounding. We don't need cents when we have dollar values up to 1M, but we do need fractions of a percent when we use the murder rate (not multipled by 100,000).
+Note that we could set the `accuracy` and `scale` arguments in `scales::label_percent` and `scales::label_dollar`. The `accuracy` argument determines rounding. We don't need cents when we have dollar values up to 1M, but we do need fractions of a percent when we use the murder rate (not multiplied by 100,000).
 
 ## Using labeler functions {#labelerFunctions}
 The above was just an illustration of how the labelers work. To use it in practice, we need only give the function name to ggplot:
@@ -224,7 +224,7 @@ We don't need the decimals on the y-axis tick labels, it's just there for illust
 
 Sometimes, our axis tick labels are still too long. When numbers get long, we usually have standard ways of representing them (like k, M, G, and T for kilo-, mega-, giga- and terabytes). Labeler functions can make this easy for us.
 
-We can use the `labels = label_number(scale_cut = cut_short_scale())` argument to shorten the display and use the common suffix.
+We can use the `labels = label_comma(scale_cut = cut_short_scale())` argument to shorten the display and use the common suffix.
 
 ```{r, echo=T}
 p + geom_point(aes(color = region), size = 3) +
@@ -236,13 +236,13 @@ p + geom_point(aes(color = region), size = 3) +
 
 Of course, we could also transform the `Population` and `total` variables, dividing by 1,000,000 or 1,000, then add "Thousands" or "Millions" to the label. But this way is cleaner. Also, notice on the Y-axis that the suffix "K" is only used when necessary -- we don't have ".01K" on there.
 
-There is also a `cut_si()` function that takes as an input a scientific unit (like "g" for grams). It'll use the full scientific notation for larger quantites, so `cut_si("g")` would have "g", then "kg", then "Mg" where needed on the axis.
+There is also a `cut_si()` function that takes as an input a scientific unit (like "g" for grams). It'll use the full scientific notation for larger quantities, so `cut_si("g")` would have "g", then "kg", then "Mg" where needed on the axis.
 
 There are lots of other neat tricks for axis labels on the tidyverse [scales vignette](https://tidyverse.org/blog/2022/04/scales-1-2-0/)
 
 ## Axis tick label orientation
 
-While the `label_comma` kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the `theme()` call since it adjusts the layout or styling of the plot. Here, I've put in a bunch of breaks at 1 million to 40 million, and then asked `ggplot` to rotate and adjust the x-axis tick labels. `hjust` and `vjust` move the horizontal and vertical justification of the label -- where the text sits relative to its tick mark. `angle` changes the orientation.
+While the `label_comma` kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the `theme()` call since it adjusts the layout or styling of the plot. Here, I've put in a bunch of breaks at 1 million to 40 million, and then asked `ggplot` to rotate and adjust the x-axis tick labels. `hjust` and `vjust` move the horizontal and vertical justification of the label -- where the text sits relative to its tick mark. `angle` changes the orientation. Careful, though: justification follows the rotated text, so at `angle = 90` it's `hjust` that slides the label up and down and `vjust` that centers it on its tick.
 
 ```{r, echo=TRUE}
 p + geom_point(aes(color = region), size = 3) +
@@ -260,7 +260,7 @@ Note that rotating the axis text unfortunately doesn't allow the labeler to add 
 
 
 ## Additional geometries
-Let's say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) becuase we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).
+Let's say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) because we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).
 
 `geom_vline` lets us add a single vertical line (without aesthetic mappings). If we look at `?geom_vline` we see that it requires one aesthetic: `xintercept`. It also takes aesthetics like color and size, and introduces the `linetype` aesthetic:
 
@@ -313,7 +313,7 @@ ggplot(AAPLNFLX, aes(x = date, y = close, color = symbol)) +
   geom_line() +
   labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
 ```
-Well there we go! We can now see each stock price over time, with a convenient legend. Later on, we'll learn how to change the color palatte. If we don't necessarily want a different color but we do want to separate the lines, we can use the `group` aesthetic.
+Well there we go! We can now see each stock price over time, with a convenient legend. Later on, we'll learn how to change the color palette. If we don't necessarily want a different color but we do want to separate the lines, we can use the `group` aesthetic.
 
 ```{r, echo=T}
 AAPLNFLX = tq_get(c("AAPL","NFLX"), from = '2021-01-01', to = '2021-08-01', get = 'stock.prices')
@@ -378,7 +378,7 @@ Then, use both `murders` and `murders.summary` in the plot:
 p + geom_point(aes(color = region), size = 3) +
   geom_text(nudge_x = .05) +
   geom_vline(data = murders.summary, 
-             aes(xintercept = meanpop, color=region), size = 2, linetype = 1, alpha=.5) +
+             aes(xintercept = meanpop, color=region), linewidth = 2, linetype = 1, alpha=.5) +
   scale_x_log10() +
   scale_y_log10() +
   labs(x = 'Population', y = 'Total murders', color = 'US Region')

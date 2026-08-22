@@ -36,7 +36,7 @@ and then
 
 $$Y = \beta_0 + \beta_1 X1 + \beta_2 X2$$
 
-and so on. How you do so is up to you -- you could do a list of formulas constructed with `paste`, then use `lapply` to that list. Or you could wisely use the `~ .` part of the formula and change the columns in the data you pass to `lm`. Here are a few tips pertaining to some of the ways of doing this.
+and so on. How you do so is up to you -- you could do a list of formulas constructed with `paste`, then use `lapply` on that list. Or you could wisely use the `~ .` part of the formula and change the columns in the data you pass to `lm`. Here are a few tips pertaining to some of the ways of doing this.
 
 If you have a dataset called `DesMoines` and a character vector of all of your columns in `DesMoines` like so `varnames = c('Y','X1','X2','X3')`, and it's in the order in which you'd like to add the variables to the model, then:
 
@@ -126,7 +126,7 @@ Remember that the correlation summary is a random variable. Here is the distribu
 res %>% ggplot(aes(x=r)) + geom_histogram(binwidth = 0.1, color = "black")
 ```
 
-It's just a mathematical fact that if we observe `r prettyNum(g, big.mark=",", scientific=FALSE)` random correlations that are expected to be 0, but have a standard error of `r sd(res$r)`, the largest one will be close to 1.
+It's just a mathematical fact that if we observe `r prettyNum(g, big.mark=",", scientific=FALSE)` random correlations that are expected to be 0, but have a standard error of `r sd(res$r)`, the largest one will be enormous.
 
 If we performed regression on this group and interpreted the p-value, we would incorrectly claim this was a statistically significant relation:
 
@@ -228,7 +228,7 @@ The estimates are precise and the p-value is tiny. If we look at the mathematica
 
 Confounders are perhaps the most common reason that leads to associations being misinterpreted.
 
-If $X$ and $Y$ are correlated, we call $Z$ a _confounder_ if changes in $Z$ causes changes in both $X$ and $Y$. Earlier, when studying baseball data, we saw how Home Runs was a confounder that resulted in a higher correlation than expected when studying the relationship between Bases on Balls and Runs. In some cases, we can use linear models to account for confounders. However, this is not always the case.
+If $X$ and $Y$ are correlated, we call $Z$ a _confounder_ if changes in $Z$ cause changes in both $X$ and $Y$. Earlier, when studying baseball data, we saw how Home Runs was a confounder that resulted in a higher correlation than expected when studying the relationship between Bases on Balls and Runs. In some cases, we can use linear models to account for confounders. However, this is not always the case.
 
 Incorrect interpretation due to confounders is ubiquitous in the lay press and they are often hard to detect. Here, we present a widely used example related to college admissions.
 
@@ -334,7 +334,7 @@ admissions %>%
 
 Now we see that major by major, there is not much difference. The size of the dot represents the number of applicants, and explains the paradox: we see large red dots and small blue dots for the easiest (least selective) majors, A and B.
 
-If we average the difference by major, we find that the percent is actually 3.5% higher for women.
+If we average the difference by major, we find that the percent admitted is actually 3.5 points higher for women.
 
 ```{r}
 admissions %>%  group_by(gender) %>% summarize(average = mean(admitted))

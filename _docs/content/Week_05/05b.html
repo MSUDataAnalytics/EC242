@@ -642,7 +642,7 @@ window.Quarto = {
 </section>
 <section id="before-we-start" class="level1">
 <h1>Before we start:</h1>
-<p>You must obtain a US Census API key, which is free and fast. Go to <a href="https://api.census.gov/data/key_signup.html">https://api.census.gov/data/key_signup.html</a>. Then, install the <code>tidycensus</code> package and, once loaded, run <code>tidycensus::census_api_key('your census API key')</code> once and only once. It will save the key on your computer and won’t expose it in your code.</p>
+<p>You must obtain a US Census API key, which is free and fast. Go to <a href="https://api.census.gov/data/key_signup.html">https://api.census.gov/data/key_signup.html</a>. Then, install the <code>tidycensus</code> package and, once loaded, run <code>tidycensus::census_api_key('your census API key', install = TRUE)</code> once and only once. The <code>install = TRUE</code> is what saves the key on your computer (restart R once afterward); it won’t expose it in your code.</p>
 </section>
 <section id="seeking-out-data" class="level1">
 <h1>Seeking out data</h1>
@@ -667,7 +667,7 @@ window.Quarto = {
 <section id="panel-data" class="level3">
 <h3 class="anchored" data-anchor-id="panel-data">Panel Data</h3>
 <p>When we see the same unit of observation at different points in time (yearly, decadally, etc.), and when we see more than one unit of observation, then we say we have “panel data”. Panel data is very useful because we can look at changes over time for multiple units of observation, and we can look at the ways in which different variables change over time, and whether they change together.</p>
-<p>For example, if we see unemployment rate and average education level every year for every county in Michigan, we’d say “we have a panel of counties with yearly data.” A panel dataset might be individuals as well, as long as we observe the same individual multiple times. If we saw that counties with increasing unemployment rates over time also tend to have decreasing average educational attainment, we will have learned somehting about the relationship (correlation) between the two, even if different counties have very different “usual” levels of unemployment.</p>
+<p>For example, if we see unemployment rate and average education level every year for every county in Michigan, we’d say “we have a panel of counties with yearly data.” A panel dataset might be individuals as well, as long as we observe the same individual multiple times. If we saw that counties with increasing unemployment rates over time also tend to have decreasing average educational attainment, we will have learned something about the relationship (correlation) between the two, even if different counties have very different “usual” levels of unemployment.</p>
 </section>
 <section id="repeated-cross-section" class="level3">
 <h3 class="anchored" data-anchor-id="repeated-cross-section">Repeated cross-section</h3>
@@ -707,7 +707,7 @@ window.Quarto = {
 <section id="summary-tables-cross-tabs-and-individual-data" class="level3">
 <h3 class="anchored" data-anchor-id="summary-tables-cross-tabs-and-individual-data">Summary tables, cross-tabs, and individual data</h3>
 <p>Most US Census data is used via summary tables, which report a single value for each spatial area (like a census tract). Average income by census tract, average age by county, etc. We often also use cross-tabs of summary files, which subdivides by two or more variables. For instance, summary data may be reported for average income <strong>by age</strong> by census tract, or average age <strong>by nationality of birth</strong> by county. The US census makes a lot of cross-tabs, but not every single combination you could imagine. Plus, they are limited by privacy, so they can’t subdivide to the point you can identify a person. For instance, “average income by exact age by number of kids by profession by time living in current house by census block” would absolutely identify an individual’s current income as they’d be the only one being averaged.</p>
-<p>The US decennial census and the yearly 5-year and 1-year American Community Survery (ACS) report summary tables with very rich cross-tabs.</p>
+<p>The US decennial census and the yearly 5-year and 1-year American Community Survey (ACS) report summary tables with very rich cross-tabs.</p>
 <p><strong>Individual microdata</strong> allows for generating any cross-tab as individual data would contain all responses to all questions for the respondent. The US Census makes the ACS sample individual answers available to the public, along with the survey and codebook for translating responses. Of course, for privacy reasons, the geographic location provided with the individual data is limited. The finest area reported is the “PUMA” (Public Use Microdata Area), each of which contains at least 100,000 individuals. For example, the City of Detroit is comprised of 5 PUMAs.</p>
 </section>
 <section id="us-census-spatial-definitions" class="level3">
@@ -747,7 +747,7 @@ window.Quarto = {
 </section>
 <section id="obtaining-census-data" class="level2">
 <h2 class="anchored" data-anchor-id="obtaining-census-data">Obtaining Census Data</h2>
-<p>Using the <code>tidycensus</code> package, we can easily obtain US census data. First, you must obtain a US Census API key, which is free and fast. Go to <a href="https://api.census.gov/data/key_signup.html">https://api.census.gov/data/key_signup.html</a>. Then, install the <code>tidycensus</code> package and, once loaded, run <code>tidycensus::census_api_key('your census API key')</code> once and only once. It will save the key on your computer and won’t expose it in your code. Handy!</p>
+<p>Using the <code>tidycensus</code> package, we can easily obtain US census data. First, you must obtain a US Census API key, which is free and fast. Go to <a href="https://api.census.gov/data/key_signup.html">https://api.census.gov/data/key_signup.html</a>. Then, install the <code>tidycensus</code> package and, once loaded, run <code>tidycensus::census_api_key('your census API key', install = TRUE)</code> once and only once. It will save the key on your computer and won’t expose it in your code. Handy!</p>
 <p>Tidycensus can obtain data from both PUMS (individual) and from the summary tables for ACS and decennial censuses. The interface makes it easy to import data directly into your R session. The hard part, though, is knowing what to ask for.</p>
 </section>
 <section id="individual-pums-data" class="level2">
@@ -857,7 +857,7 @@ Geodetic CRS:  NAD83
 </section>
 <section id="decennialacs-summary-tables" class="level2">
 <h2 class="anchored" data-anchor-id="decennialacs-summary-tables">Decennial/ACS Summary tables</h2>
-<p>Summary tables from decennial census or the ACS contain finer geographies (usually down to census block), but aggregate rather than giving individual observations. Many cross-tabs are calculated for each geography, so finding the right one can be tricky. Some tables report averages or shares (percent renters, average income) while some report total counts (count of renters, number of people earning between $25-35k).</p>
+<p>Summary tables from decennial census or the ACS contain finer geographies (down to the census block for the decennial, blockgroup for the ACS), but aggregate rather than giving individual observations. Many cross-tabs are calculated for each geography, so finding the right one can be tricky. Some tables report averages or shares (percent renters, average income) while some report total counts (count of renters, number of people earning between $25-35k).</p>
 <p>While <code>tidycensus</code> provides a function to import the whole list of all variables, we can also use the <a href="https://data.census.gov">data.census.gov</a> website. We are looking for <strong>tables</strong>, so click on “explore tables”.</p>
 <p>First thing we want to do is set our geography level (e.g.&nbsp;block, block-group, tract, county, etc.) so that we are searching for data that exists at the level we want. No sense in searching for something you want at the county level to find out it’s only available at the state level! On the left side under “geography” click on the level you want (say, “census tract”) then choose a random state and tract – you’re only using this to find the variable’s code, not to actually retrieve data. I always use the first county in Alabama just because it’s small-ish so it doesn’t take long to load up.</p>
 <p>I’m also going to select the year 2022 by scrolling down and checking the 2022 box, just so we’re only looking at ACS census data (in a decennial year like 2020, the decennial tables show up mixed in with the ACS ones). Not all variables exist for all years (especially over long periods of time). I’m going to search “house heating fuel” to find the type of heating fuel used. I’ll select “B25117”, which is the variable ID number for “House Heating Fuel” data.</p>
@@ -1058,7 +1058,7 @@ Geodetic CRS:  NAD83
 <ul>
 <li><a href="https://lib.msu.edu/data">MSU Data Librarian start page</a>
 <ul>
-<li>MSU-subscribed datasets, may of which (but not all) are available to undergraduates</li>
+<li>MSU-subscribed datasets, many of which (but not all) are available to undergraduates</li>
 </ul></li>
 <li><a href="https://www.deweydata.io/">Dewey Data Catalog</a>
 <ul>
@@ -1103,7 +1103,7 @@ Geodetic CRS:  NAD83
 <li><p>Click on the “network” tab</p></li>
 <li><p>In the “filter” or “filter URL” bar, type “query”. This will highlight one or more entries where the “feature server” or “map server” was queried (just one if you only clicked once). It may just say “query”.</p></li>
 <li><p>Click on one and look at the URL or URL summary. You’re looking for an address that starts with the URL of the mapping site (for mine, gisagoegle.state.mi.us), then followed by <code>/arcgis/rest</code> and eventually ending with <code>/featureserver</code> or <code>mapserver</code> followed by a number. We want to copy everything up to and including the number after <code>featureserver</code> or <code>mapserver</code>. In this example, the full address we want to copy is: <code>https://gisagoegle.state.mi.us/arcgis/rest/services/EGLE/WrdOpenData/MapServer/1/</code>.</p></li>
-<li><p>Using <code>arcgislayer</code>:</p></li>
+<li><p>Using <code>arcgislayers</code>:</p></li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arcgislayers)</span>

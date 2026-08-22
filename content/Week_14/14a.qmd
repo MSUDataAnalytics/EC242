@@ -28,7 +28,7 @@ library(knitr)
 include_graphics(here('images','classification.png'))
 ```
 
-That is, the classifier $\hat{C}(x)$ returns the predicted category $\hat{y}(X)$.
+That is, the classifier $\hat{C}(x)$ returns the predicted category $\hat{y}(x)$.
 
 $$
 \hat{y}(x) = \hat{C}(x)
@@ -61,7 +61,7 @@ default_tst = Default[-default_idx, ]
 
 ## Visualization for Classification
 
-Often, some simple visualizations can suggest simple classification rules. To quickly create some useful visualizations, we use the `featurePlot()` function from the `caret()` package.
+Often, some simple visualizations can suggest simple classification rules. To quickly create some useful visualizations, we use the `featurePlot()` function from the `caret` package.
 
 ```{r, message = FALSE, warning = FALSE, error = FALSE}
 library(caret)
@@ -261,7 +261,7 @@ Accuracy values can be found by calling `confusionMatrix()`, or, if stored, can 
 # Note, R doesn't know to rename the result "err", so it keeps the name "Accuracy"
 ```
 
-We can go back to the `tst_con_mat` table (called `tst_tab`) before and hand-calculate the error rate
+We can go back to the test confusion matrix from before (called `tst_tab`) and hand-calculate the error rate
 ```{r}
 
 print(tst_tab)
@@ -283,7 +283,7 @@ Which means...
 - $P = TP + FN$ 
 - $N = TN + FP$
 
-Sometimes guarding against making certain errors, FP or FN, are more important than simply finding the best accuracy. Thus, sometimes we will consider **sensitivity** and **specificity**.
+Sometimes guarding against making certain errors, FP or FN, is more important than simply finding the best accuracy. Thus, sometimes we will consider **sensitivity** and **specificity**.
 
 $$
 \text{Sensitivity} = \text{True Positive Rate} = \frac{\text{TP}}{\text{P}} = \frac{\text{TP}}{\text{TP + FN}}
@@ -322,7 +322,7 @@ trn_con_mat$byClass["Prevalence"]
 tst_con_mat$byClass["Prevalence"]
 ```
 
-Here, we see an extremely low prevalence, which suggests an even simpler classifier than our current based on `balance`.
+Here, we see an extremely low prevalence, which suggests an even simpler classifier than our current one based on `balance`.
 
 $$
 \hat{C}(\texttt{balance}) =
@@ -353,13 +353,13 @@ calc_class_err(actual = default_tst$default,
                predicted = pred_all_no)
 ```
 
-Here we see that the error rate is exactly the prevelance of the minority class.
+Here we see that the error rate is exactly the prevalence of the minority class.
 
 ```{r}
 table(default_tst$default) / length(default_tst$default)
 ```
 
-This classifier does better than the previous. But the point is, in reality, to create a good classifier, we should obtain a test error better than the 0.033, which is obtained by simply manipulating the prevalences. Next section, we'll introduce much better classifiers which should have no problem accomplishing this task. Point is, think carefully about what you're putting your classifier up against. In March 2020 when we were very worried about COVID test accuracy, and when *prevalance* was, say, 1%, it was pointed out that we could make a 99% accurate COVID test by simply returning "No COVID" for every test! We'd be the new Theranos!
+This classifier does better than the previous. But the point is, in reality, to create a good classifier, we should obtain a test error better than the 0.033, which is obtained by simply manipulating the prevalences. Next section, we'll introduce much better classifiers which should have no problem accomplishing this task. Point is, think carefully about what you're putting your classifier up against. In March 2020 when we were very worried about COVID test accuracy, and when *prevalence* was, say, 1%, it was pointed out that we could make a 99% accurate COVID test by simply returning "No COVID" for every test! We'd be the new Theranos!
 
 
 # Logistic Regression
@@ -501,7 +501,7 @@ $$
 p(x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p x_p)}} = \sigma(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots  + \beta_p x_p)
 $$
 
-Above, $\sigma$ is a function, the **sigmoid** function. It is shorthand notation which appears often in deep learning literature. It takes any real input, and outputs a number *between* 0 and 1. How useful! (This is actualy a particular sigmoid function called the logistic function, but since it is by far the most popular sigmoid function, often sigmoid function is used to refer to the logistic function)
+Above, $\sigma$ is a function, the **sigmoid** function. It is shorthand notation which appears often in deep learning literature. It takes any real input, and outputs a number *between* 0 and 1. How useful! (This is actually a particular sigmoid function called the logistic function, but since it is by far the most popular sigmoid function, often sigmoid function is used to refer to the logistic function.)
 
 $$
 \sigma(x) = \frac{e^x}{1 + e^x} = \frac{1}{1 + e^{-x}}
@@ -689,7 +689,7 @@ $$
 \hat{p}(x) = \hat{P}(Y = 1 \mid { X = x}) = 0.5
 $$
 
-This is equivalent to point that satisfy
+This is equivalent to points that satisfy
 
 $$
 \hat{\beta}_0 + \hat{\beta}_1 x_1 = 0.
@@ -840,7 +840,7 @@ The AUC is the "area under the curve". One interpretation of the AUC is that it 
 What if the response contains more than two categories? For that we need multinomial logistic regression.
 
 $$
-P(Y = k \mid { X = x}) = \frac{e^{\beta_{0k} + \beta_{1k} x_1 + \cdots +  + \beta_{pk} x_p}}{\sum_{g = 1}^{G} e^{\beta_{0g} + \beta_{1g} x_1 + \cdots + \beta_{pg} x_p}}
+P(Y = k \mid { X = x}) = \frac{e^{\beta_{0k} + \beta_{1k} x_1 + \cdots + \beta_{pk} x_p}}{\sum_{g = 1}^{G} e^{\beta_{0g} + \beta_{1g} x_1 + \cdots + \beta_{pg} x_p}}
 $$
 
 We will omit the details, as ISL has as well. If you are interested, the [Wikipedia page](https://en.wikipedia.org/wiki/Multinomial_logistic_regression) provides a rather thorough coverage. Also note that the above is an example of the [softmax function](https://en.wikipedia.org/wiki/Softmax_function).
@@ -865,7 +865,7 @@ model_multi = multinom(Species ~ ., data = iris_trn, trace = FALSE)
 summary(model_multi)$coefficients
 ```
 
-Notice we are only given coefficients for two of the three class, much like only needing coefficients for one class in logistic regression.
+Notice we are only given coefficients for two of the three classes, much like only needing coefficients for one class in logistic regression.
 
 A difference between `glm()` and `multinom()` is how the `predict()` function operates.
 

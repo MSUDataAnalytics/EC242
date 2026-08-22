@@ -765,7 +765,7 @@ Note
 </section>
 <section id="the-expected-value-and-standard-error" class="level2">
 <h2 class="anchored" data-anchor-id="the-expected-value-and-standard-error">The expected value and standard error</h2>
-<p>We have described sampling models for draws. We will now go over the mathematical theory that lets us approximate the probability distributions for the sum of draws. Once we do this, we will be able to help the casino predict how much money they will make. The same approach we use for the sum of draws will be useful for describing the distribution of averages and proportion which we will need to understand how polls work.</p>
+<p>We have described sampling models for draws. We will now go over the mathematical theory that lets us approximate the probability distributions for the sum of draws. Once we do this, we will be able to help the casino predict how much money they will make. The same approach we use for the sum of draws will be useful for describing the distribution of averages and proportions, which we will need to understand how polls work.</p>
 <p>The first important concept to learn is the <em>expected value</em>. In statistics books, it is common to use letter <span class="math inline">\(\mbox{E}\)</span> like this:</p>
 <p><span class="math display">\[\mbox{E}[X]\]</span></p>
 <p>to denote the expected value of the random variable <span class="math inline">\(X\)</span>.</p>
@@ -889,7 +889,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <h1>Statistical Inference</h1>
 <section id="central-limit-theorem" class="level2">
 <h2 class="anchored" data-anchor-id="central-limit-theorem">Central Limit Theorem</h2>
-<p>We really want to know the probability that a casino will lose money. We know the probability distribution of roulette which let us calculate the expected value and the standard deviation of a random variable that consists of 1,000 people playing roulette, but we don’t know the distribution of the sum of those random variables.</p>
+<p>We really want to know the probability that a casino will lose money. We know the probability distribution of roulette, which let us calculate the expected value and the standard error of the sum of 1,000 people playing roulette, but we don’t know the shape of that sum’s distribution.</p>
 <p>The Central Limit Theorem (CLT) tells us that when the number of plays (or “draws”), also called the <em>sample size</em>, is large, the probability distribution of the <strong>sum</strong> of the independent draws is approximately normal. Because sampling models are used for so many data generation processes, the CLT is considered one of the most important mathematical insights in history.</p>
 <p>Previously, we discussed that if we know that the distribution of a list of numbers is approximated by the normal distribution, all we need to describe the list are the average and standard deviation. We also know that the same applies to probability distributions. If a random variable has a probability distribution that is approximated with the normal distribution, then all we need to describe the probability distribution are the average and standard deviation, referred to as the expected value and standard error.</p>
 <p>We previously ran this Monte Carlo simulation:</p>
@@ -1031,11 +1031,11 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <p>Perhaps the best known opinion polls are those conducted to determine which candidate is preferred by voters in a given election. Political strategists make extensive use of polls to decide, among other things, how to invest resources. For example, they may want to know in which geographical locations to focus their “get out the vote” efforts.</p>
 <p>Elections are a particularly interesting case of opinion polls because the actual opinion of the entire population is revealed on election day. Of course, it costs millions of dollars to run an actual election which makes polling a cost effective strategy for those that want to forecast the results.</p>
 <p>Although typically the results of these polls are kept private, similar polls are conducted by news organizations because results tend to be of interest to the general public and made public. We will eventually be looking at such data.</p>
-<p>Real Clear Politics<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> is an example of a news aggregator that organizes and publishes poll results. For example, they present the following poll results reporting estimates of the popular vote for the 2016 presidential election<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>:</p>
+<p>Real Clear Politics<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> is an example of a news aggregator that organizes and publishes poll results. For example, they collect poll results reporting estimates of the popular vote for the 2016 presidential election<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. We aren’t reproducing their table here, but you can find it at that link.</p>
 <!-- (Source: [Real Clear Politics](https://www.realclearpolitics.com/epolls/2016/president/us/general_election_trump_vs_clinton-5491.html)) -->
 <p>Although in the United States the popular vote does not determine the result of the presidential election, we will use it as an illustrative and simple example of how well polls work. Forecasting the election is a more complex process since it involves combining results from 50 states and DC and we will go into some detail on this later.</p>
 <p>Let’s make some observations about the polls Real Clear Politics collected in the week before that election. First, note that different polls, all taken days before the election, report a different <em>spread</em>: the estimated difference between support for the two candidates. Notice also that the reported spreads hover around what ended up being the actual result: Clinton won the popular vote by 2.1%. Each poll also reports a number labeled <strong>MoE</strong>, which stands for <em>margin of error</em>.</p>
-<p>In this example, we will show how the probability concepts we learned in the previous content can be applied to develop the statistical approaches that make polls an effective tool. We will learn the statistical concepts necessary to define <em>estimates</em> and <em>margins of errors</em>, and show how we can use these to forecast final results relatively well and also provide an estimate of the precision of our forecast. Once we learn this, we will be able to understand two concepts that are ubiquitous in data science: <em>confidence intervals</em> and <em>p-values</em>. Finally, to understand probabilistic statements about the probability of a candidate winning, we will have to learn about Bayesian modeling. In the final sections, we put it all together to recreate the simplified version of the FiveThirtyEight model and apply it to the 2016 election.</p>
+<p>In this example, we will show how the probability concepts we learned in the previous content can be applied to develop the statistical approaches that make polls an effective tool. We will learn the statistical concepts necessary to define <em>estimates</em> and <em>margins of errors</em>, and show how we can use these to forecast final results relatively well and also provide an estimate of the precision of our forecast. Once we learn this, we will be able to understand two concepts that are ubiquitous in data science: <em>confidence intervals</em> and <em>p-values</em>, which we take up in a couple of weeks. Understanding statements like “Clinton has an 81.4% chance of winning” would require Bayesian statistics, which we don’t cover in this course.</p>
 <p>We start by connecting probability theory to the task of using polls to learn about a population.</p>
 <section id="the-sampling-model-for-polls" class="level3">
 <h3 class="anchored" data-anchor-id="the-sampling-model-for-polls">The sampling model for polls</h3>
@@ -1074,7 +1074,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Above, we knew what was in the urn (the probability distribution) and calculated things from that. Now, we’re in a world where we don’t know what’s in the urn, but we can take samples. The two will meet in the middle – we can caluclate sample versions of things, and see what we can infer about population values.</p>
+<p>Above, we knew what was in the urn (the probability distribution) and calculated things from that. Now, we’re in a world where we don’t know what’s in the urn, but we can take samples. The two will meet in the middle – we can calculate sample versions of things, and see what we can infer about population values.</p>
 <p>Here we go!</p>
 </div>
 </div>
@@ -1100,14 +1100,14 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </section>
 <section id="parameters" class="level3">
 <h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
-<p>Just like we use variables to define unknowns in systems of equations, in statistical inference we define <em>parameters</em> to define unknown parts of our models. In the urn model which we are using to mimic an opinion poll, <strong>we do not know the proportion of blue beads in the urn</strong>. We define the parameters <span class="math inline">\(p\)</span> to represent this quantity. <span class="math inline">\(p\)</span> is the average of the urn because if we take the average of the 1s (blue) and 0s (red), we get the proportion of blue beads. Since our main goal is figuring out what is <span class="math inline">\(p\)</span>, we are going to <em>estimate this parameter</em>.</p>
+<p>Just like we use variables to define unknowns in systems of equations, in statistical inference we define <em>parameters</em> to define unknown parts of our models. In the urn model which we are using to mimic an opinion poll, <strong>we do not know the proportion of blue beads in the urn</strong>. We define the parameter <span class="math inline">\(p\)</span> to represent this quantity. <span class="math inline">\(p\)</span> is the average of the urn because if we take the average of the 1s (blue) and 0s (red), we get the proportion of blue beads. Since our main goal is figuring out what is <span class="math inline">\(p\)</span>, we are going to <em>estimate this parameter</em>.</p>
 <p>The ideas presented here on how we estimate parameters, and provide insights into how good these estimates are, extrapolate to many data science tasks. For example, we may want to determine the difference in health improvement between patients receiving treatment and a control group. We may ask, what are the health effects of smoking on a population? What are the differences in racial groups of fatal shootings by police? What is the rate of change in life expectancy in the US during the last 10 years? All these questions can be framed as a task of estimating a parameter from a sample.</p>
 <!-- ### Polling versus forecasting -->
 <!-- Before we continue, let's make an important clarification related to the practical problem of forecasting the election. If a poll is conducted four months before the election, it is estimating the $p$ for that moment and not for election day. The $p$ for election night might be different since people's opinions fluctuate through time. The polls provided the night before the election tend to be the most accurate since opinions don't change that much in a day. However, forecasters try to build tools that model how opinions vary across time and try to predict the election night results taking into consideration the fact that opinions fluctuate. We will describe some approaches for doing this in a later section. -->
 </section>
 <section id="properties-of-our-estimate-expected-value-and-standard-error" class="level3">
 <h3 class="anchored" data-anchor-id="properties-of-our-estimate-expected-value-and-standard-error">Properties of our estimate: expected value and standard error</h3>
-<p>To understand how good our estimate is, we will describe the statistical properties of the random variable defined above: the sample proportion <span class="math inline">\(\bar{X}\)</span>. Remember that <span class="math inline">\(\bar{X}\)</span> is the sum of independent draws so the rules we covered in the probability chapter apply.</p>
+<p>To understand how good our estimate is, we will describe the statistical properties of the random variable defined above: the sample proportion <span class="math inline">\(\bar{X}\)</span>. Remember that <span class="math inline">\(\bar{X}\)</span> is the sum of independent draws divided by <span class="math inline">\(N\)</span>, so the rules we covered above apply.</p>
 <p>Using what we have learned, the expected value of the sum <span class="math inline">\(N\bar{X}\)</span> is <span class="math inline">\(N \times\)</span> the average of the urn, <span class="math inline">\(p\)</span>. So dividing by the non-random constant <span class="math inline">\(N\)</span> gives us that the expected value of the average <span class="math inline">\(\bar{X}\)</span> is <span class="math inline">\(p\)</span>. We can write it using our mathematical notation:</p>
 <p><span class="math display">\[
 \mbox{E}(\bar{X}) = p
@@ -1128,14 +1128,14 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 </div>
 </div>
 </div>
-<p>From the plot we see that we would need a poll of about 2,500 people to get the standard error that low – and about 10,000 to get the <em>margin of error</em> (roughly two standard errors) down to 1%. We rarely see polls of that size due in part to costs. From the Real Clear Politics table, we learn that the sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and <span class="math inline">\(p=0.51\)</span>, the standard error is:</p>
+<p>From the plot we see that we would need a poll of about 2,500 people to get the standard error that low – and about 10,000 to get the <em>margin of error</em> (roughly two standard errors) down to 1%. We rarely see polls of 10,000 people due in part to costs. From the Real Clear Politics polls linked above, we learn that the sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and <span class="math inline">\(p=0.51\)</span>, the standard error is:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.01580823</code></pre>
 </div>
 </div>
-<p>or 1.5 percentage points. So even with large polls, for close elections, <span class="math inline">\(\bar{X}\)</span> can lead us astray if we don’t realize it is a random variable. Nonetheless, we can actually say more about how close we get the <span class="math inline">\(p\)</span>.</p>
+<p>or 1.6 percentage points. So even with large polls, for close elections, <span class="math inline">\(\bar{X}\)</span> can lead us astray if we don’t realize it is a random variable. Nonetheless, we can actually say more about how close we get to <span class="math inline">\(p\)</span>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1164,7 +1164,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <p><span class="math display">\[
 \hat{\mbox{SE}}(\bar{X})=\sqrt{\bar{X}(1-\bar{X})/N}
 \]</span> In statistics textbooks, we use a little hat to denote estimates. The estimate can be constructed using the observed data and <span class="math inline">\(N\)</span>.</p>
-<p>Now we continue with our calculation, but dividing by <span class="math inline">\(\hat{\mbox{SE}}(\bar{X})=\sqrt{\bar{X}(1-\bar{X})/N})\)</span> instead. In our first sample we had 12 blue and 13 red so <span class="math inline">\(\bar{X} = 0.48\)</span> and our estimate of standard error is:</p>
+<p>Now we continue with our calculation, but dividing by <span class="math inline">\(\hat{\mbox{SE}}(\bar{X})=\sqrt{\bar{X}(1-\bar{X})/N}\)</span> instead. In our first sample we had 12 blue and 13 red so <span class="math inline">\(\bar{X} = 0.48\)</span> and our estimate of standard error is:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>x_hat <span class="ot">&lt;-</span> <span class="fl">0.48</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(x_hat<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x_hat)<span class="sc">/</span><span class="dv">25</span>)</span>
@@ -1259,7 +1259,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <pre><code>[1] 0.01579523</code></pre>
 </div>
 </div>
-<p>A histogram and qq-plot confirm that the normal approximation is accurate as well. A qq-plot simply plots the observed quantile values (for quantiles 1-100 usually) agains the <em>theoretical</em> quantiles from a normal distribution with the same mean and standard error (from the sample’s SD):</p>
+<p>A histogram and qq-plot confirm that the normal approximation is accurate as well. A qq-plot simply plots the observed quantile values (for quantiles 1-100 usually) against the <em>theoretical</em> quantiles from a normal distribution with the same mean and standard error (from the sample’s SD):</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1276,7 +1276,7 @@ s =  \sqrt{\frac{1}{N-1} \sum_{i=1}^N (X_i - \bar{X})^2}
 <section id="the-spread" class="level3">
 <h3 class="anchored" data-anchor-id="the-spread">The spread</h3>
 <p>The competition is to predict the spread, not the proportion <span class="math inline">\(p\)</span>. However, because we are assuming there are only two parties, we know that the spread is <span class="math inline">\(p - (1-p) = 2p - 1\)</span>. As a result, everything we have done can easily be adapted to an estimate of <span class="math inline">\(2p - 1\)</span>. Once we have our estimate <span class="math inline">\(\bar{X}\)</span> and <span class="math inline">\(\hat{\mbox{SE}}(\bar{X})\)</span>, we estimate the spread with <span class="math inline">\(2\bar{X} - 1\)</span> and, since we are multiplying by 2, the standard error is <span class="math inline">\(2\hat{\mbox{SE}}(\bar{X})\)</span>. Note that subtracting 1 does not add any variability so it does not affect the standard error.</p>
-<p>For our 25 item sample above, our estimate <span class="math inline">\(p\)</span> is <code>.48</code> with margin of error <code>.20</code> and our estimate of the spread is <code>0.04</code> with margin of error <code>.40</code>. Again, not a very useful sample size. However, the point is that once we have an estimate and standard error for <span class="math inline">\(p\)</span>, we have it for the spread <span class="math inline">\(2p-1\)</span>.</p>
+<p>For our 25 item sample above, our estimate <span class="math inline">\(p\)</span> is <code>.48</code> with margin of error <code>.20</code> and our estimate of the spread is <code>-0.04</code> with margin of error <code>.40</code>. Again, not a very useful sample size. However, the point is that once we have an estimate and standard error for <span class="math inline">\(p\)</span>, we have it for the spread <span class="math inline">\(2p-1\)</span>.</p>
 </section>
 <section id="bias-why-not-run-a-very-large-poll" class="level3">
 <h3 class="anchored" data-anchor-id="bias-why-not-run-a-very-large-poll">Bias: why not run a very large poll?</h3>
