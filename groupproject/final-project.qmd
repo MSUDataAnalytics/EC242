@@ -54,7 +54,7 @@ Briefly summarize the dataset including the number of observations and statistic
 
 - **Cleaning** (15 points): Did you address missing data appropriately and with clear assumptions? Did you generate meaningful categories for data that contained too much detail? Does your work show technical mastery of the process? Was it efficiently coded?
 
-- **Memo** (5 points): Did you describe the necessary parts of the data construction, merging, cleaning process, and final dataset in a readable and *concise* maner?
+- **Memo** (5 points): Did you describe the necessary parts of the data construction, merging, cleaning process, and final dataset in a readable and *concise* manner?
 
 
 ## Section 2 of 3: Analysis with Visuals (45 points)
@@ -63,7 +63,7 @@ With your dataset(s) cleaned and ready, explore the data. Focusing on 1-2 aspect
 
 You will present this analysis primarily through visuals, as in Project 1. Your memo will guide the reader through the visuals, but should let the visuals do the "talking". As in Project 1, do **not** narrarate the data exploration process ("we tried X, but it didn't show anything, so we tried Y"). The memo should communicate a clear flow of logic that starts with the question and ends with a clear pattern in the data not easily expressed in a closed form. 
 
-You should not need more than 3 visualizations for this (4 max) -- you should not substitute many shallow explorations for one deep exploration. Follow the thread through the data and take the reader along for the ride.
+Use 3 visualizations for this (4 max) -- you should not substitute many shallow explorations for one deep exploration. Follow the thread through the data and take the reader along for the ride.
 
 I will be irrationally militant about the fine details in your plots. Your plots should be of publication quality, have perfect labeling and capitalization, have color-blind friendly colors, and should make a striking impact on first glance.
 
@@ -78,7 +78,7 @@ I will be irrationally militant about the fine details in your plots. Your plots
 
 
 ## Section 3 of  3: Predictive Model (40 points)
-Your final section requires estimating a predictive model on your data using a method of your choice. Similar to Project 3, you will need to setup your dataset such that it is appropriate for use in your chosen predictive method. You must use LASSO, K-Nearest Neighbors, or a Regression Tree (or random forest, if you wish to be adventureous). You will predict your outcome of interest, basing the model construction (to the extent there is an underlying model structure) on your knowledge of the data gleaned from Section 2.
+Your final section requires estimating a predictive model on your data using a method of your choice. Similar to Project 3, you will need to setup your dataset such that it is appropriate for use in your chosen predictive method. You must use LASSO, ridge, elastic net, K-Nearest Neighbors, or a Regression Tree -- the same menu as Project 3. A random forest is allowed if you want to be adventurous, but we never wrote random-forest code in class, so the syntax and the RMSE plot are on you. You will predict your outcome of interest, basing the model construction (to the extent there is an underlying model structure) on your knowledge of the data gleaned from Section 2.
 
 Start with a very complex specification in your formula. Unless you have thousands of predictors (explanatory variables), then starting with a simple multivariate regression with no interactions won't get you very far. Remember that your model tuning parameters (e.g. lambda) can decrease complexity, but cannot increase beyond what you start out with. If you have panel data (e.g. multiple observations of the same unit) consider adding interactions between the unit of observation and the explanatory variables. Look back at our linear regression unit to understand the role of interactions.
 
@@ -102,7 +102,7 @@ In this section, the memo writing will be quite brief. In one paragraph, discuss
 
 One person in the group will turn in the assignment to D2L no later than **{{< meta duedate >}}**. **I allow you the maximum amount of time to complete the project. Grades are due 48 hours after the due date, and thus I cannot extend anyone's project for any reason**. 
 
-You must turn in **TWO** PDF's, properly rendered as per our usual course requirements. ONE copy will have all code output turned off (`echo=F`). Do this by setting the global `knitr` option in the first code chunk (and set that first code chunk's echo to the appropriate setting) to `echo=F`, knitting to PDF, then turning the global `echo` setting on using `echo=T` and knitting it again to a differently-named PDF file. You will turn in both PDF's, and I will use them both in grading. Both PDF's should be rendered from the same .rmd file, just with `echo` set differently.
+You must turn in **TWO** PDF's, properly rendered as per our usual course requirements. ONE copy will have all code output turned off (`echo=F`). Do this by setting the global `knitr` option in the first code chunk (and set that first code chunk's echo to the appropriate setting) to `echo=F`, knitting to PDF, then turning the global `echo` setting on using `echo=T` and knitting it again to a differently-named PDF file. You will turn in both PDF's, and I will use them both in grading. Both PDF's should be rendered from the same .rmd file, just with `echo` set differently. Every group member's name must appear at the top of both PDF's.
 
 ### Scoring Rubric
 

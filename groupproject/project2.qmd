@@ -12,7 +12,7 @@ This project is due on **{{< meta duedate >}}**
 :::
 
 ## Presenting Your Data (Quickly!)
-Project 2 is an in-class presentation which will occur during class on {{< var duedates.project2present >}}. That is our only meeting that week, since Monday and Tuesday, October 26--27 is Fall Break. Each group will make and present a short data analysis using one of the data sets you listed in Section 2 of Project 1 (or a new one, I'm not keeping track). Your presentation will introduce and detail a new ggplot `geom_` or aesthetic mapping that we haven't yet covered in class. You will be limited to a total of six slides (plus a cover slide), presented in no more than eight minutes, including questions/discussion.
+Project 2 is an in-class presentation which will occur during class on {{< var duedates.project2present >}}. That is our only meeting that week, since Monday and Tuesday, October 26--27 is Fall Break. Each group will make and present a short data analysis using one of the data sets you listed in Part 2 of Project 1 (or a new one, I'm not keeping track). Your presentation will introduce and detail a new ggplot `geom_` or aesthetic mapping that we haven't yet covered in class. You will be limited to a total of six slides (plus a cover slide), presented in no more than eight minutes, including questions/discussion.
 
 ## Some specifics
 
@@ -24,7 +24,7 @@ Your task is to find one interesting relationship in the data that you wish to s
 You will present your analysis in the form of two visuals made with `ggplot`. No memo, no text. You get two visuals to communicate it.
 
 ### Communicate your data with a new `geom_` or aesthetic
-**Each group will be assigned a ggplot `geom_` or aesthetic**. The list is at the bottom of this page. Your plots must show both your interesting relationship in the data, and one must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic. 
+**Each group will be assigned a ggplot `geom_` or aesthetic**. Assignments will be posted to Slack and announced in class. Your plots must show both your interesting relationship in the data, and one must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic. 
 
 ### Put it all together
 Your presentation will have six slides.
@@ -50,7 +50,7 @@ Your presentation will have six slides.
   
 
 #### Submit it on D2L
-Submit a single powerpoint file on D2L that contains your cover slide + your 5 content slides by {{< var duedates.project2 >}}, ahead of the presentations on {{< var duedates.project2present >}}. I will assemble everyone's submissions into one big powerpoint that we can move through without delay. Powerpoint is preferred but I can accept a PDF if necessary.
+Only one group member should post on D2L. Submit a single powerpoint file that contains your cover slide + your 5 content slides by {{< var duedates.project2 >}}, ahead of the presentations on {{< var duedates.project2present >}}. I will assemble everyone's submissions into one big powerpoint that we can move through without delay. Powerpoint is preferred but I can accept a PDF if necessary.
   
 ### This will be short
 There are five content slides and three of you in the group. Each person can take 1-2 slides. **Do not plan on speaking for more than 1-2 minute or so per person**, we have a lot of class to get through. Just as a good visual boils the message down to it's most pure form, so too should your presentation.
@@ -67,7 +67,7 @@ Out of 40 points:
 
 - Presentation (10 points): Was your group organized and concise? Did you clearly cover all the discussion necessary in the allotted time? Did you show that you knew your material (and didn't read or have a wall of text on the slide).
 
-Remember, this is a 7-8 minute presentation that we'll run back-to-back-to-back over all the groups, so efficiency is key. The plot has to hit fast and hard!
+Remember, every group presents back-to-back-to-back inside a single 80-minute class, so your slot is short. I'll post the exact per-group time and the running order on Slack once groups are set; plan on tight. The plot has to hit fast and hard!
 
 ## Assigned Geometries / aesthetics / methods
 If you have any questions, please email me {{< var email.instructor >}}.

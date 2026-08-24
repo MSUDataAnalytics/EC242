@@ -25,7 +25,7 @@ Part of being a data analyst is learning your data. While our predictive models 
 
 Each observation has a `TOTALBTU` that you want to predict (your "target"). There are also subcategories of `TOTALBTU` that you will need to drop right away, these are listed below so you can drop them.
 
-It will take you some time to digest the data, so you won't start predicting right out of the gate. Take your time to understand the data, and explore it as you work your way through the data dictionary. For many of our predictive models, you have to specify (possibly many, many, many) potential interactions or functional form transformations. You'll need to have some idea of what might be an important interaction to do this. For instance, `HDD65` tells you how many cold days the household had. An interaction with `TOTSQFT` is probably useful to include.
+It will take you some time to digest the data, so you won't start predicting right out of the gate. Take your time to understand the data, and explore it as you work your way through the data dictionary. For many of our predictive models, you have to specify (possibly many, many, many) potential interactions or functional form transformations. You'll need to have some idea of what might be an important interaction to do this. For instance, `HDD65` tells you how many cold days the household had. An interaction with `TOTSQFT_EN` is probably useful to include.
 
 
 ### Data Details
@@ -92,6 +92,8 @@ This project will take the form of a short memo-style documentation and evaluati
 
 - Digest and understand your data. The data is described in detail using codebooks found here: [https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata](https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata).
 
+- Ten of the surviving columns carry `NA`s: `MEDICALDEV` (210 rows) plus `EVCHRGHOME`, `EVCHRGWKS`, `EVCHRGBUS`, `EVCHRGMUNI`, `EVCHRGDLR`, `EVCHRGHWY`, `EVCHRGOTH`, `EVHOMEAMT` and `EVCHRGTYPE` -- 290 incomplete rows in all. `glmnet` refuses an `x` matrix containing them outright. `knnreg` is worse: it quietly drops the incomplete rows and hands you back a prediction vector shorter than the data you predicted on, so your RMSE comes out wrong with nothing more than a warning. Drop those ten *columns* -- not the rows -- so that the row counts below still work out. (If you would rather drop the rows with `na.omit()`, say so in your write-up and report your actual sample sizes, which will be smaller than the numbers below.)
+
 - Use `set.seed(2422025)` and then immediately do the following:
 
   - Sample exactly 1,000 households to hold as the final evaluation data. This is neither test nor train, but a third holdout "evaluation" set with which we will use to evaluate the final model.
@@ -114,7 +116,7 @@ __Section 1 (10 points)__
 
 __Part 2 (6 points, 2 points per prior)__
 
-- Do your three priorsand their description make sense?
+- Do your three priors and their description make sense?
 - Does your plot show the relationship?
 - Does the plot meet the technical requirements (properly labeled, clear, colorblind-friendly, etc.)
 
@@ -141,7 +143,7 @@ __Part 5 (6 points, 2 points per hypothesis/prediction)__
 
 ## Turning it in
 
-[You are required to turn in both your final, rendered project with no code showing (except as stated in Section 1) AND your .RMD file used to render the project. All code generated with generative AI (e.g. ChatGPT) must be labeled as such as required in the syllabus.]{.text-red}.
+[You are required to turn in both your final, rendered project as a PDF (RMarkdown rendered to PDF using LaTeX, as usual) with no code showing (except as stated in Section 1) AND your .RMD file used to render the project. All code generated with generative AI (e.g. ChatGPT) must be labeled as such as required in the syllabus.]{.text-red}.
 
 Only one group member should post on D2L. Please make sure you coordinate to ensure this is done.
 

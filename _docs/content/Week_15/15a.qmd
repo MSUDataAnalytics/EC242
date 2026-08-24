@@ -214,5 +214,3 @@ Finding census variables via `tidycensus` can be frustrating, and other sources 
 :::
 
 
-
-<!-- preflight test -->

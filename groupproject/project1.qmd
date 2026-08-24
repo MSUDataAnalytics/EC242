@@ -23,7 +23,7 @@ New York City is full of urban wildlife, and rats are one of the city's most inf
 
 {{< video https://www.youtube.com/embed/PeJUqcbool4 >}}
 
-NYC keeps incredibly detailed data regarding animal sightings, including rats, and [it makes this data publicly available](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9) through 311. (Note the source: NYC Open Data, not Kaggle. See Part 2 for why I care.)
+NYC keeps incredibly detailed data regarding animal sightings, including rats, and it makes this data publicly available through 311. (Note the source: NYC Open Data, not Kaggle. See Part 2 for why I care.) The city has since split its 311 archive in two: [2020 to present](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2020-to-Present/erm2-nwe9) and [2010 to 2019](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-2019/76ig-c548). The file below already stitches the two together, so you do not need either link for Part 1 --- but you will if you want to go back for more.
 
 For this first project, pretend that you are an analyst with the NYC Mayor's office, and you have been tasked with getting a better understanding of the rat problem. Your job is to use **R and ggplot2** to tell an interesting story hidden in the data. You must create a story by looking carefully at the data, finding some insight into where or when rat sightings occur, and describing to the Mayor how this insight may inform a strategy to address the rats. Your assignment will take the form of a professional memo that presents the data and insights along with appropriate visualizations that communicate the story in-line. Your memo should be approximately 2-4 pages (including plots) and, of course, will use Rmarkdown rendered to PDF using LaTeX.
 
@@ -31,7 +31,7 @@ For this first project, pretend that you are an analyst with the NYC Mayor's off
 
 Here's what you need to do:
 
-One thing worth knowing before you start. Rat sightings roughly doubled between 2013 and 2022. In April 2023 the city responded by appointing a Director of Rodent Mitigation --- the press immediately called her the rat czar --- and phasing in rules requiring commercial and residential waste to go out in lidded containers rather than bags on the curb. The data below runs through this month, so it covers the whole arc: the rise, the intervention, and whatever has happened since. Whether any of that shows up in 311 calls is a question you can actually answer, and "it didn't" is a perfectly good finding.
+One thing worth knowing before you start. Rat sightings roughly doubled between 2013 and 2022. In April 2023 the city responded by appointing a Director of Rodent Mitigation --- the press immediately called her the rat czar --- and phasing in rules requiring commercial and residential waste to go out in lidded containers rather than bags on the curb. The data below ends on August 23, 2026, so it covers the whole arc: the rise, the intervention, and whatever has happened since. One trap to avoid: 2026 is only two-thirds of a year in this file, so a plot of sightings per year will show a cliff at the right edge that is mostly an artifact of when I pulled the data rather than a collapse in the rat population. Compare like with like --- restrict to comparable months across years, or annualize. Whether any of that shows up in 311 calls is a question you can actually answer, and "it didn't" is a perfectly good finding.
 
 1. **Download** New York City's database of rat sightings since 2010:
 
@@ -39,7 +39,7 @@ One thing worth knowing before you start. Rat sightings roughly doubled between 
 
 2. **Summarize** the data somehow. The raw data has more than 290,000 rows covering 2010 through this month, which means you'll need to aggregate the data (`filter()`, `group_by()`, and `summarize()` will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number of sightings across the 5 boroughs between 2010 and today. Consider the meaning of variables you create -- remember how the total numbers of murders in a state was mostly just a function of size, but that murder *rate* was a more useful variable. (Of course, I just gave you these ideas, so you'll need to be a bit more creative than just doing exactly what I just said.)
 
-3. **Explore** the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use `case_when()` to add data that's at a coarse level (year, borough, etc.), or `merge()` if you're comfortable with it. [Be create]{.font-orange}, but do so to further explore and analyze. Drill down on something you see in the data to *tell a story*. Remember, as analysts, we are looking for "patterns in the data" that are not easily written in closed form.
+3. **Explore** the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use `case_when()` to add data that's at a coarse level (year, borough, etc.), or `merge()` if you're comfortable with it. **Be creative**, but do so to further explore and analyze. Drill down on something you see in the data to *tell a story*. Remember, as analysts, we are looking for "patterns in the data" that are not easily written in closed form.
 
 4. **Create** appropriate visualizations based on the data you summarized and explored. Pay attention to every detail - color choice, labels, axis text, etc. Use proper capitalization. Make sure everything lays out in your final product. This is not trivial - it will take you some time to get everything just right.
 
@@ -53,7 +53,7 @@ One thing worth knowing before you start. Rat sightings roughly doubled between 
   
 6. **Upload** the following outputs to D2L:
 
-    - A PDF file of your memo with your graphics embedded in it.^[You can approach this in a couple different ways—you can write the memo and then include the full figure and code at the end, [similar to this blog post](https://rud.is/b/2017/09/18/mapping-fall-foliage-with-sf/), or you can write the memo in an incremental way, describing the analytical steps that each figure illuminates, ultimately arriving at a final figure, [like this blog post](https://github.com/rudeboybert/fivethirtyeight).] This means you'll need to do all your coding in an `R` Markdown file and embed your code in chunks. 
+    - A PDF file of your memo with your graphics embedded in it.^[You can approach this in a couple different ways—you can write the memo and then include the full set of figures at the end, [similar to this blog post](https://rud.is/b/2017/09/18/mapping-fall-foliage-with-sf/), or you can write the memo in an incremental way, describing the analytical steps that each figure illuminates, ultimately arriving at a final figure, [like this blog post](https://github.com/rudeboybert/fivethirtyeight).] This means you'll need to do all your coding in an `R` Markdown file and embed your code in chunks. 
     - Note that Part 2 of this project should be included in this PDF in it's own section (see below).
     - Nothing else. **No .Rmd, no code**, nothing but your clean, polished memo with Part 1 and Part 2. 
     
@@ -73,7 +73,7 @@ I've provided some starter code below. A couple comments about it:
 - To make life easier, I've renamed some of the key variables you might work with. You can rename others if you want.
 - I've also created a few date-related variables (`sighting_year`, `sighting_month`, `sighting_day`, and `sighting_weekday`). You don't have to use them, but they're there if you need them. The functions that create these, like `year()` and `wday()` are part of the **lubridate** library.
 - The date/time variables are formatted like `04/03/2017 12:00:00 AM`, which R is not able to automatically parse as a date when reading the CSV file. You can use the `mdy_hms()` function in the **lubridate** library to parse dates that are structured as "month-day-year-hour-minute". There are also a bunch of other iterations of this function, like `ymd()`, `dmy()`, etc., for other date formats.
-- There's one row with an unspecified borough, so I filter that out.
+- Twenty rows have no usable borough (18 marked "Unspecified", two blank), so I filter them out. The blanks become `NA` under the `na =` argument above, and `filter()` drops those too.
 
 ```{r load-clean-data, eval=FALSE}
 library(tidyverse)
@@ -106,11 +106,13 @@ You'll summarize the data with functions from **dplyr** in the **tidyverse**, in
 
 ## Part 2: Data Hunting
 
-For the second part of the project, your task is simple. Your group must identify three different data sources^[The three different sources need not be different websites or from different organizations. For example, three different tables from the US Census would be sufficient] for potential use in your final project. You are not bound to this decision.
+Start this part early. We cover data hunting in Week 5, and the bulk of it lands Thursday, October 1 --- days before this memo is due. Do not wait on lecture to start looking.
+
+For the second part of the project, your task is simple. Your group must identify three different data sources^[The three different sources need not be different websites or from different organizations. For example, three different tables from the US Census would be sufficient] for potential use in your final project. You are not bound to this decision, but choose with the rest of the semester in mind. Project 2 asks you to present one of these datasets and requires real-world data --- nothing that ships inside an R package --- with a sample size in the thousands. Project 3 sends you back to these three to develop hypotheses from one of them. The final project requires you to merge at least two datasets and fit a predictive model on the result. So: at least two of your three should share a plausible key --- the same geography, the same unit of observation, or the same time period --- and at least one should have observations numbering in the thousands.
 
 Do **not** use Kaggle data. While Kaggle is useful for learning data science, part of this assignment is learning how to find actual data in the wild. I give zero credit for data links to Kaggle data. You must find your data from the source.
 
-For each dataset, you must write a single short *paragraph* about what about this data interests the group and what general questions one could answer with it. Add this to the memo from Part 1, using `##` to make a new header in Rmarkdown for this section. 
+For each dataset, give the name of the source, a working link to the page you would download it from, the unit of observation, and roughly how many rows it has. Then write a single short *paragraph* about what about this data interests the group and what general questions one could answer with it. Add this to the memo from Part 1, using `##` to make a new header in Rmarkdown for this section. 
 
 
 ## Evaluations
@@ -119,7 +121,7 @@ I will only give top marks to those groups showing initiative and cleverness. I 
 
 __Part 1__
 
-1. Technical difficulty: Does the final project show mastery of the R and ggplot skills we've discussed thus far? Did the underlying data analysis use and expand on the tools we learned in class? Full credit requires going beyond the basic **tidyverse** filtering / grouping / summarizing. (10 points)
+1. Technical difficulty: Does the memo show mastery of the R and ggplot skills we've discussed thus far? Did the underlying data analysis use and expand on the tools we learned in class? Full credit requires going beyond the basic **tidyverse** filtering / grouping / summarizing. (10 points)
 
 2. Clarity / use of ggplot: Are all of the design elements property executed in the plots and memo. Are axes and legends appropriately labeled and are colorblind-friendly colors used? Does the plot display properly in the memo without any cut-off axes? Is everything properly spelled? (5 points)
 
