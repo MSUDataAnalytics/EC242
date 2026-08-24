@@ -90,7 +90,9 @@ You can convey information about your data by mapping the aesthetics in your plo
 ::: {.callout-note}
 ## Exercise 2 of 3
 
-Using your previous scatterplot of `displ` and `hwy`, map the colors of your points to the class variable to reveal the class of each car. What conclusions can we make?
+Using your previous scatterplot of `displ` and `hwy`, map the colors of your points to the class variable to reveal the class of each car.
+
+Then render a verdict on the hybrid hypothesis above: was it right? Name the class those outliers actually belong to, and say what those cars are. If the hypothesis was wrong, say so plainly --- a hypothesis that survives contact with the data is not more valuable than one that doesn't, it's just luckier.
 
 :::
 

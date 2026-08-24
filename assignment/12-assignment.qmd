@@ -12,9 +12,13 @@ This assignment is due on **{{< meta duedate >}}**
 {{< var blurbs.homeworkdue >}}
 
 
-## Oh no. Really? Ames again?
+## Ames again. On purpose this time.
 
-Yes, Ames again. Let's predict some `SalePrice`s!
+You still work for Zillow (sorry). Here's something you probably missed, because you were about fifteen when it happened: for a couple of years Zillow didn't just *predict* house prices, it bought them. Sight unseen, on the strength of the model. That business was called Zillow Offers, and in November 2021 Zillow shut it down, wrote off more than half a billion dollars of houses, and laid off a quarter of the company. The official reason was that home prices turned out to be harder to forecast than anyone expected. The unofficial reason, muttered by junior analysts like you, was that nobody in the building could say which parts of the model were doing the work.
+
+So your VP has a request, and it isn't the one you were expecting. She doesn't want a *better* model. She wants a *smaller* one -- something that fits on a slide and that she can defend in a meeting without saying the words "it's complicated." That's what LASSO is for.
+
+And that's why it's Ames again. In [Lab 10](/assignment/10-assignment.html) you picked 15 variables and built an OLS model out of them. Today you find out how many of them you actually needed.
 
 
 ```{r}
@@ -91,7 +95,7 @@ For the assignment below, we'll use `glmnet::cv.glmnet` to estimate a LASSO mode
 
 1. Clean your data as described above.
 
-2. Choose up to **16** predictor variables and clean your data so that no `NA` values are left
+2. Choose up to **16** predictor variables and clean your data so that no `NA` values are left. **Start from the 15 you used in Lab 10** -- add a sixteenth if you've thought of a better one since. We want the two labs comparable.
 
 3. Choose at least 5 interactions between your predictor variables and print out the formula you'll use to predict `SalePrice`.
 
@@ -106,6 +110,8 @@ For the assignment below, we'll use `glmnet::cv.glmnet` to estimate a LASSO mode
 7. Answer the following question: What is the optimal `lambda` based on the plot/data? Do you see a minimum point in the plot?
 
 8. Extracting the non-zero coefficients is a little tricky, but let's do it. We'll use the `coef` function to extract the coefficients. The `coef` function, when used on a `glmnet` object, takes the argument `s` which is the `lambda` value for which you'd like to extract coefficients. Our `s` value should be the best value of lambda, which we can extract from `net_cv$lambda.min`. Put those together: `coef(net_cv, s = net_cv$lambda.min)`. **This may be kinda long, that's OK**.
+
+9. Now answer the VP. Of everything you handed LASSO, which predictors survived with a non-zero coefficient and which got zeroed out? Name the ones that died. Were any of them variables you were sure about in Lab 10? Write two or three sentences telling her which variables her slide actually needs -- and if the honest answer is "most of them," say that. Sometimes it is, and a VP who gets told that is better off than one who doesn't.
 
 
 :::

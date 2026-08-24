@@ -366,7 +366,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -383,7 +382,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.</p>
 <section id="backstory-and-set-up" class="level2">
 <h2 class="anchored" data-anchor-id="backstory-and-set-up">Backstory and Set Up</h2>
-<p>You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They’ve given you a dataset on defaults (encoded as the variable <code>y</code>, and <strong>not</strong> the column called <em>default</em>). You’re going to try to predict this.</p>
+<p>You work in marketing analytics at a Portuguese bank. The call center phoned 4,521 customers to pitch a term deposit and talked 521 of them into it. Management has looked at that ratio and concluded, as management does, that the problem is analytics. You get the call logs and the job of working out who is worth calling.</p>
+<p>The variable <code>y</code> records whether the customer opened the account. That’s your target. There is also a column called <code>default</code> – whether the customer is already in default on some other credit. That’s a predictor, not the thing you’re predicting, and with only 76 of the 4,521 in default it does approximately nothing, so the snippet below drops it.</p>
 <p>This is some new data. The snippet below loads it.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>bank <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"https://ec242.netlify.app/data/bank.csv"</span>,</span>
@@ -404,9 +404,10 @@ Note
 <div class="callout-body-container callout-body">
 <p><strong>EXERCISE 1 of 1</strong></p>
 <ol type="1">
-<li><p>Encode the outcome we’re trying to predict (<code>y</code>, and not <code>default</code>) as a binary. <strong>Drop</strong> the <code>default</code> column.</p></li>
+<li><p>Encode the outcome we’re trying to predict (<code>y</code>) as a binary 0/1. (The <code>default</code> column is already gone – the snippet above dropped it.)</p></li>
 <li><p>Check your data for any <code>NA</code>s (as should be customary).</p></li>
 <li><p>Split the data into an 80/20 train vs.&nbsp;test split. Make sure you explicitly set the seed for replicability.</p></li>
+<li><p>Before you fit anything, work out how accurate you would be if you skipped the modeling entirely and predicted “no” for every customer in your test set. It’s one line. Write the number down – it should land around 88%. That is the number every model below has to beat, and I want it reported next to every accuracy you produce.</p></li>
 <li><p>Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).</p></li>
 <li><p>Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. <strong>Briefly discuss your findings.</strong> How does the error rate, sensitivity, and specificity change as the number of predictors increases?</p></li>
 </ol>
@@ -416,6 +417,11 @@ Note
 <li>It might be the case that your model perfectly predicts the outcome variable when the setup cutoff probability is too high.</li>
 <li>You need to make sure your predictions take the same possible values as the <code>actual</code> data (which, remember, you had to convert to a binary 0/1 variable)</li>
 </ul>
+<ol start="7" type="1">
+<li><p>Now make a decision with it. Your call center can make 200 calls next week. Not 201. Take your best model, rank everyone in the test set by predicted probability, call the top 200, and report how many of them actually opened a term deposit. Then report how many you’d have landed by picking 200 people at random. One sentence, two numbers.</p>
+<p>Two rules. You may <strong>not</strong> use <code>duration</code> – it’s the length of the call, and you’re deciding whom to call. You do not know how long a call lasted until you’ve made it. Put it in and your model will look fantastic and mean nothing. Second, make sure at least one predictor is numeric, or hundreds of customers tie at the same probability and no cutoff gives you exactly 200.</p>
+<p>Finally: what cutoff probability does “call the top 200” work out to, and why isn’t it 0.5?</p></li>
+</ol>
 </div>
 </div>
 

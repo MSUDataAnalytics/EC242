@@ -380,9 +380,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>All assignments are due on D2L by 11:59pm on the due date. Late work is not accepted. You do not need to submit your .rmd file - just the properly-knitted PDF. All assignments must be properly rendered to PDF using Latex. Make sure you start your assignment sufficiently early such that you have time to address rendering issues. Come to office hours or use the course Slack if you have issues. Using an Rstudio instance on posit.cloud is always a feasible alternative. Remember, if you use any AI for coding, you must comment each line with your own interpretation of what that line of code does.</p>
-<section id="oh-no.-really-ames-again" class="level2">
-<h2 class="anchored" data-anchor-id="oh-no.-really-ames-again">Oh no. Really? Ames again?</h2>
-<p>Yes, Ames again. Let’s predict some <code>SalePrice</code>s!</p>
+<section id="ames-again.-on-purpose-this-time." class="level2">
+<h2 class="anchored" data-anchor-id="ames-again.-on-purpose-this-time.">Ames again. On purpose this time.</h2>
+<p>You still work for Zillow (sorry). Here’s something you probably missed, because you were about fifteen when it happened: for a couple of years Zillow didn’t just <em>predict</em> house prices, it bought them. Sight unseen, on the strength of the model. That business was called Zillow Offers, and in November 2021 Zillow shut it down, wrote off more than half a billion dollars of houses, and laid off a quarter of the company. The official reason was that home prices turned out to be harder to forecast than anyone expected. The unofficial reason, muttered by junior analysts like you, was that nobody in the building could say which parts of the model were doing the work.</p>
+<p>So your VP has a request, and it isn’t the one you were expecting. She doesn’t want a <em>better</em> model. She wants a <em>smaller</em> one – something that fits on a slide and that she can defend in a meeting without saying the words “it’s complicated.” That’s what LASSO is for.</p>
+<p>And that’s why it’s Ames again. In <a href="../assignment/10-assignment.html">Lab 10</a> you picked 15 variables and built an OLS model out of them. Today you find out how many of them you actually needed.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Ames <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">'https://ec242.netlify.app/data/ames.csv'</span>, </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
@@ -408,7 +410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li><p>Clean your data as described above.</p></li>
-<li><p>Choose up to <strong>16</strong> predictor variables and clean your data so that no <code>NA</code> values are left</p></li>
+<li><p>Choose up to <strong>16</strong> predictor variables and clean your data so that no <code>NA</code> values are left. <strong>Start from the 15 you used in Lab 10</strong> – add a sixteenth if you’ve thought of a better one since. We want the two labs comparable.</p></li>
 <li><p>Choose at least 5 interactions between your predictor variables and print out the formula you’ll use to predict <code>SalePrice</code>.</p></li>
 <li><p>In your code, use <code>set.seed(24224)</code> so that your results will always be the same. Why do we need to set seed? When we (well, <code>glmnet::cvglmnet</code>) makes the Train and Test sample(s), it’ll select them randomly. If you don’t set seed, every time you run it, you’ll get slightly different answers!</p></li>
 <li><p>Using <code>glmnet::cv.glmnet</code> to estimate a LASSO model (see lecture notes this week) that predicts <code>SalePrice</code> given the observed data and using your formula. Slide 33 shows cross-validation using both <code>alpha</code> and <code>lambda</code> – a LASSO model holds <code>alpha</code> fixed at <code>alpha = 1</code>. We’ll search using <code>lambda</code> as our tuning parameter. Call the resulting object <code>net_cv</code>.</p></li>
@@ -420,6 +422,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>The resulting object will be a <code>glmnet</code> object. You can see the optimal lambda just by printing the object <code>print(net_cv)</code> and looking at the min value for Lambda. <strong>Make sure the optimal (RMSE-minimizing) value of lambda is not the largest or smallest value of lambda you gave it</strong>. If it is, then extend the range of lambdas until you get an interior solution. Following the instructions from our lecture note’s <strong>TRY IT</strong>, extract the lambdas and their respective RMSE values into a data.frame and make a plot similar to the RMSE plot from lecture.</p></li>
 <li><p>Answer the following question: What is the optimal <code>lambda</code> based on the plot/data? Do you see a minimum point in the plot?</p></li>
 <li><p>Extracting the non-zero coefficients is a little tricky, but let’s do it. We’ll use the <code>coef</code> function to extract the coefficients. The <code>coef</code> function, when used on a <code>glmnet</code> object, takes the argument <code>s</code> which is the <code>lambda</code> value for which you’d like to extract coefficients. Our <code>s</code> value should be the best value of lambda, which we can extract from <code>net_cv$lambda.min</code>. Put those together: <code>coef(net_cv, s = net_cv$lambda.min)</code>. <strong>This may be kinda long, that’s OK</strong>.</p></li>
+<li><p>Now answer the VP. Of everything you handed LASSO, which predictors survived with a non-zero coefficient and which got zeroed out? Name the ones that died. Were any of them variables you were sure about in Lab 10? Write two or three sentences telling her which variables her slide actually needs – and if the honest answer is “most of them,” say that. Sometimes it is, and a VP who gets told that is better off than one who doesn’t.</p></li>
 </ol>
 </div>
 </div>

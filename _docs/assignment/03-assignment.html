@@ -387,8 +387,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>The New York City Department of Buildings (DOB) maintains a list of construction sites that have been categorized as “essential” during the city’s shelter-in-place pandemic order. They’ve provided <a href="https://www1.nyc.gov/assets/buildings/html/essential-active-construction.html">an interactive map here</a> where you can see the different projects. There’s also a link there to download the complete dataset.</p>
-<p>For this exercise, you’re going to use this data to visualize the amounts or proportions of different types of essential projects in the five boroughs of New York City (Brooklyn, Manhattan, the Bronx, Queens, and Staten Island).</p>
+<p>When New York City shut down in spring 2020, construction stopped with it — unless the Department of Buildings decided your site was “essential.” Somebody in an office made that call one site at a time, and because this is a public agency, the list of what they decided is now <a href="https://www1.nyc.gov/assets/buildings/html/essential-active-construction.html">a map</a> and a CSV you can download.</p>
+<p>You work in that office. So does the deputy commissioner, who has just been told a reporter has the same file you do and is running a piece Friday under the headline <strong>“Manhattan Never Stopped Building.”</strong> She wants to know whether the reporter has a point. She wants it on one page, in plots she can look at for four seconds and understand, because that is roughly how long she will look at them.</p>
 <p>As you hopefully figured out by now, you’ll be doing all your <code>R</code> work in <code>R Markdown</code>. You can use an RStudio Project to keep your files well organized (either on your computer or on RStudio.cloud), but this is optional. If you decide to do so, either create a new project for this exercise only, or make a project for all your work in this class.</p>
 <p>You’ll need to download one CSV file and put it somewhere on your computer (or upload it to RStudio.cloud if you’ve gone that direction)—preferably in a folder named <code>data</code> in your project folder. You can download the data from <a href="https://www1.nyc.gov/assets/buildings/html/essential-active-construction.html">the DOB’s map</a>, or use this link to get it directly:</p>
 <ul>
@@ -420,6 +420,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>essential <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">'EssentialConstruction.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Once loaded, note that each row is an approved project (the JOB NUMBERS are approved projects, so each row is one approved project).</p>
+<p>Two things to fix before you plot anything.</p>
+<p>First: one of our columns has inconsistent capitalization — <code>BRONX</code> and <code>Bronx</code> are two different strings as far as R is concerned, and every borough in this file shows up both ways. Use <code>case_when</code> (or any other method) to make them consistent.</p>
+<p>Second, the denominator. Counting projects tells you where the most projects were. It doesn’t tell you where the most projects were <em>per person</em>. Tuesday’s murder plot was this same trick, and I made you sit through it for a reason. Here are the 2020 Census populations. Type them in, it’s five rows.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>boro_pop <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>BOROUGH,        <span class="sc">~</span>population,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bronx"</span>,            <span class="dv">1472654</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Brooklyn"</span>,         <span class="dv">2736074</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Manhattan"</span>,        <span class="dv">1694251</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Queens"</span>,           <span class="dv">2405464</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Staten Island"</span>,     <span class="dv">495747</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>left_join</code> that on. And note what happens if you skipped the capitalization fix: about a third of your rows come back with a population of <code>NA</code>. The bad news is that your plot still draws. It just draws the wrong answer, and nothing tells you.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -430,9 +444,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Uh-oh! One of our columns has different capitalization. Use <code>case_when</code> (or any other method) to make sure you have consistent character strings for each borough.</p>
-<p>Then, assume that each row (observation) is an approved construction project.</p>
-<p>A. Show the count or proportion of approved projects by borough using a bar chart. Make sure all the elements of your plot (axes, legend, etc.) are labeled.</p>
+<p>Each row is an approved construction project.</p>
+<p>A. Show approved projects <strong>per 100,000 residents</strong> by borough using a bar chart, ordered from most to least — use <code>reorder()</code>, because alphabetical order tells the reader nothing. Make sure all the elements of your plot (axes, legend, etc.) are labeled.</p>
+<pre><code>One warning: `geom_bar` counts rows, and you are no longer counting rows. Look up what `stat = "identity"` does, or use `geom_col`.</code></pre>
 <p>B. Show the count or proportion of approved projects by <em>category</em> using a lollipop chart. Not sure of what a lollipop chart is? Google <code>R ggplot lollipop</code>. A huge portion of knowing how to code is knowing how to google, find examples, and figure out where to put your variables from your data! Make sure all the elements of your plot (axes, legend, etc.) are labeled. Make sure ticks are well-placed, numbers are properly formatted, etc. Everything should look professional. Grading will be very picky on this!</p>
 </div>
 </div>
@@ -446,7 +460,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Now, use an apprpriate <code>facet</code> function (wrap or grid) to re-make this plot across each <code>CATEGORY</code>. Again, make sure everything is labeled well and properly formatted.</p>
+<p>Now use an appropriate <code>facet</code> function (wrap or grid) to re-make your <strong>borough</strong> bar chart from Exercise 1A across each <code>CATEGORY</code>. Again, make sure everything is labeled well and properly formatted.</p>
+<p>Then answer the deputy commissioner in three sentences or fewer: does the reporter have a point? Point at the specific plot that makes your case.</p>
+<p>One warning — <code>Approved Work</code> is more than half the rows and it is a residual bucket. It means “approved,” not a kind of building. Don’t build an argument on it without saying so.</p>
 </div>
 </div>
 </section>

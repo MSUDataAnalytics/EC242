@@ -14,6 +14,10 @@ This assignment is due on **{{< meta duedate >}}**
 ::: {.callout-tip}
 # Note:
 For this exercise you will need to ensure that you've carefully read this week's content and example. We will build on both. The exercises (which you will turn in as this week's lab) are at the bottom. Note that this week's lab is much more theoretical than any other week in this class. This is to ensure that you have the foundations necessary to build rich statistical models and apply them to real-world data.
+
+
+One note on the story below, which is adapted from Rafael Irizarry's *Introduction to Data Science*. FiveThirtyEight is the hero of it, and at the time that is genuinely how it looked. FiveThirtyEight is also gone --- ABC shut it down in March 2025 and pointed the domain at abcnews.com. Nate Silver had left two years before that and now runs the same model out of a Substack. The model outlived the newsroom. Being right is apparently not the same as being kept around.
+
 :::
 
 # Statistical models {#models}
@@ -406,6 +410,8 @@ c. Noting that $\bar{Y}_2$ and $\bar{Y}_1$ are sample averages, if we assume $N_
 d. The data are not 0 or 1, so CLT does not apply.
 
 7. The new random variable defined as $\bar{Y}_2 - \bar{Y}_1$ has an expected value of $b_2 - b_1$. To see this, take the equation from problem 2 defined for each pollster, write out the difference, and take expectations. $b_2 = b_1$ is the pollster bias difference we want to learn about statistically. If our model holds, then this random variable has an approximately normal distribution and we know its standard error -- by the rules of random variable variance, the standard error is the square root of the variance of the new random variable, and the variance of the new variable is the *sum of the variances minus twice the covariance (which is zero by our assumptions)*. The standard error of our new random variable depends on (and can be calculated using) the standard errors of the $Y$ above, which we already estimated in 3-5.
+
+8. Report your estimate of $b_2 - b_1$ in percentage points and say whether zero falls inside your 95% interval. Then go further. Compute each pollster's average spread on its own and compare both to the actual election night result, a 2.1% Clinton win. Which of the two was closer? Now average the two pollster averages together and compare *that* to 2.1%. Your boss can afford a data subscription to exactly one of these two shops. In two or three sentences, tell her which one to buy --- or tell her why that is the wrong question.
 
 The statistic formed by dividing our estimate of $b_2-b_1$ by its estimated standard error:
 

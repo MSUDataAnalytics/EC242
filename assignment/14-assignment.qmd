@@ -3,7 +3,6 @@ title: "14: Applied Logistic Regression - Classification"
 duedate: "{{< var duedates.lab14 >}}"
 ---
 
-<!-- Updated 8.30.22, but classdata/bank.csv may need to be updated still -- it also uses 'y' instead of 'default' (though data/bank23 was fixed; this is maybe different data?) -->
 
 
 
@@ -18,7 +17,9 @@ This assignment is due on **{{< meta duedate >}}**
 
 
 ## Backstory and Set Up
-You work for a bank. This bank is trying to predict defaults on loans (a relatively uncommon occurence, but one that costs the bank a great deal of money when it does happen.) They've given you a dataset on defaults (encoded as the variable `y`, and **not** the column called *default*). You're going to try to predict this.
+You work in marketing analytics at a Portuguese bank. The call center phoned 4,521 customers to pitch a term deposit and talked 521 of them into it. Management has looked at that ratio and concluded, as management does, that the problem is analytics. You get the call logs and the job of working out who is worth calling.
+
+The variable `y` records whether the customer opened the account. That's your target. There is also a column called `default` -- whether the customer is already in default on some other credit. That's a predictor, not the thing you're predicting, and with only 76 of the 4,521 in default it does approximately nothing, so the snippet below drops it.
 
 This is some new data. The snippet below loads it.
 
@@ -36,21 +37,29 @@ There's not going to be a whole lot of wind-up here. You should be well-versed i
 
 __EXERCISE 1 of 1__
 
-1. Encode the outcome we're trying to predict (`y`, and not `default`) as a binary. **Drop** the `default` column. 
+1. Encode the outcome we're trying to predict (`y`) as a binary 0/1. (The `default` column is already gone -- the snippet above dropped it.) 
 
 2. Check your data for any `NA`s (as should be customary).
 
 3. Split the data into an 80/20 train vs. test split. Make sure you explicitly set the seed for replicability.
 
-4. Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).
+4. Before you fit anything, work out how accurate you would be if you skipped the modeling entirely and predicted "no" for every customer in your test set. It's one line. Write the number down -- it should land around 88%. That is the number every model below has to beat, and I want it reported next to every accuracy you produce.
 
-5. Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. **Briefly discuss your findings.** How does the error rate, sensitivity, and specificity change as the number of predictors increases? 
+5. Run a series of logistic regressions with between 1 and 4 predictors of your choice (you can use interactions).
+
+6. Create eight total confusion matrices: four by applying your models to the training data, and four by applying your models to the test data. **Briefly discuss your findings.** How does the error rate, sensitivity, and specificity change as the number of predictors increases? 
 
 A few hints:
 
 - If you are not getting a 2x2 confusion matrix, you might need to adjust your cutoff probability.
 - It might be the case that your model perfectly predicts the outcome variable when the setup cutoff probability is too high.
 - You need to make sure your predictions take the same possible values as the `actual` data (which, remember, you had to convert to a binary 0/1 variable)
+
+7. Now make a decision with it. Your call center can make 200 calls next week. Not 201. Take your best model, rank everyone in the test set by predicted probability, call the top 200, and report how many of them actually opened a term deposit. Then report how many you'd have landed by picking 200 people at random. One sentence, two numbers.
+
+    Two rules. You may **not** use `duration` -- it's the length of the call, and you're deciding whom to call. You do not know how long a call lasted until you've made it. Put it in and your model will look fantastic and mean nothing. Second, make sure at least one predictor is numeric, or hundreds of customers tie at the same probability and no cutoff gives you exactly 200.
+
+    Finally: what cutoff probability does "call the top 200" work out to, and why isn't it 0.5?
 
 :::
 

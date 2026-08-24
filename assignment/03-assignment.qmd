@@ -28,9 +28,9 @@ library(tidyverse)
 
 ## Background
 
-The New York City Department of Buildings (DOB) maintains a list of construction sites that have been categorized as "essential" during the city's shelter-in-place pandemic order. They've provided [an interactive map here](https://www1.nyc.gov/assets/buildings/html/essential-active-construction.html) where you can see the different projects. There's also a link there to download the complete dataset.
+When New York City shut down in spring 2020, construction stopped with it --- unless the Department of Buildings decided your site was "essential." Somebody in an office made that call one site at a time, and because this is a public agency, the list of what they decided is now [a map](https://www1.nyc.gov/assets/buildings/html/essential-active-construction.html) and a CSV you can download.
 
-For this exercise, you're going to use this data to visualize the amounts or proportions of different types of essential projects in the five boroughs of New York City (Brooklyn, Manhattan, the Bronx, Queens, and Staten Island).
+You work in that office. So does the deputy commissioner, who has just been told a reporter has the same file you do and is running a piece Friday under the headline **"Manhattan Never Stopped Building."** She wants to know whether the reporter has a point. She wants it on one page, in plots she can look at for four seconds and understand, because that is roughly how long she will look at them.
 
 As you hopefully figured out by now, you'll be doing all your `R` work in `R Markdown`. You can use an RStudio Project to keep your files well organized (either on your computer or on RStudio.cloud), but this is optional. If you decide to do so, either create a new project for this exercise only, or make a project for all your work in this class.
 
@@ -69,16 +69,34 @@ essential = read_csv('https://EC242.netlify.app/data/EssentialConstruction.csv')
 
 Once loaded, note that each row is an approved project (the JOB NUMBERS are approved projects, so each row is one approved project).
 
+Two things to fix before you plot anything.
+
+First: one of our columns has inconsistent capitalization --- `BRONX` and `Bronx` are two different strings as far as R is concerned, and every borough in this file shows up both ways. Use `case_when` (or any other method) to make them consistent.
+
+Second, the denominator. Counting projects tells you where the most projects were. It doesn't tell you where the most projects were *per person*. Tuesday's murder plot was this same trick, and I made you sit through it for a reason. Here are the 2020 Census populations. Type them in, it's five rows.
+
+```{r, eval=F}
+boro_pop <- tribble(
+  ~BOROUGH,        ~population,
+  "Bronx",            1472654,
+  "Brooklyn",         2736074,
+  "Manhattan",        1694251,
+  "Queens",           2405464,
+  "Staten Island",     495747
+)
+```
+
+`left_join` that on. And note what happens if you skipped the capitalization fix: about a third of your rows come back with a population of `NA`. The bad news is that your plot still draws. It just draws the wrong answer, and nothing tells you.
+
 
 
 ::: {.callout-note}
 ## Exercise 1 of 2: Essential pandemic construction
-Uh-oh! One of our columns has different capitalization. Use `case_when` (or any other method) to make sure you have consistent character strings for each borough.
+Each row is an approved construction project.
 
-Then, assume that each row (observation) is an approved construction project.
+A. Show approved projects **per 100,000 residents** by borough using a bar chart, ordered from most to least --- use `reorder()`, because alphabetical order tells the reader nothing. Make sure all the elements of your plot (axes, legend, etc.) are labeled.
 
-
-A. Show the count or proportion of approved projects by borough using a bar chart. Make sure all the elements of your plot (axes, legend, etc.) are labeled.
+    One warning: `geom_bar` counts rows, and you are no longer counting rows. Look up what `stat = "identity"` does, or use `geom_col`.
 
 B. Show the count or proportion of approved projects by *category* using a lollipop chart. Not sure of what a lollipop chart is? Google `R ggplot lollipop`. A huge portion of knowing how to code is knowing how to google, find examples, and figure out where to put your variables from your data! Make sure all the elements of your plot (axes, legend, etc.) are labeled. Make sure ticks are well-placed, numbers are properly formatted, etc. Everything should look professional. Grading will be very picky on this!
 
@@ -89,7 +107,11 @@ B. Show the count or proportion of approved projects by *category* using a lolli
 ::: {.callout-note}
 ## Exercise 2 of 2: Essential pandemic construction
 
-Now, use an apprpriate `facet` function (wrap or grid) to re-make this plot across each `CATEGORY`. Again, make sure everything is labeled well and properly formatted.
+Now use an appropriate `facet` function (wrap or grid) to re-make your **borough** bar chart from Exercise 1A across each `CATEGORY`. Again, make sure everything is labeled well and properly formatted.
+
+Then answer the deputy commissioner in three sentences or fewer: does the reporter have a point? Point at the specific plot that makes your case.
+
+One warning --- `Approved Work` is more than half the rows and it is a residual bucket. It means "approved," not a kind of building. Don't build an argument on it without saying so.
 
 :::
 
