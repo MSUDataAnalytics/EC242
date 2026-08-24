@@ -23,7 +23,7 @@ New York City is full of urban wildlife, and rats are one of the city's most inf
 
 {{< video https://www.youtube.com/embed/PeJUqcbool4 >}}
 
-NYC keeps incredibly detailed data regarding animal sightings, including rats, and [it makes this data publicly available](https://www.kaggle.com/new-york-city/nyc-rat-sightings/data).
+NYC keeps incredibly detailed data regarding animal sightings, including rats, and [it makes this data publicly available](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9) through 311. (Note the source: NYC Open Data, not Kaggle. See Part 2 for why I care.)
 
 For this first project, pretend that you are an analyst with the NYC Mayor's office, and you have been tasked with getting a better understanding of the rat problem. Your job is to use **R and ggplot2** to tell an interesting story hidden in the data. You must create a story by looking carefully at the data, finding some insight into where or when rat sightings occur, and describing to the Mayor how this insight may inform a strategy to address the rats. Your assignment will take the form of a professional memo that presents the data and insights along with appropriate visualizations that communicate the story in-line. Your memo should be approximately 2-4 pages (including plots) and, of course, will use Rmarkdown rendered to PDF using LaTeX.
 
@@ -31,11 +31,13 @@ For this first project, pretend that you are an analyst with the NYC Mayor's off
 
 Here's what you need to do:
 
+One thing worth knowing before you start. Rat sightings roughly doubled between 2013 and 2022. In April 2023 the city responded by appointing a Director of Rodent Mitigation --- the press immediately called her the rat czar --- and phasing in rules requiring commercial and residential waste to go out in lidded containers rather than bags on the curb. The data below runs through this month, so it covers the whole arc: the rise, the intervention, and whatever has happened since. Whether any of that shows up in 311 calls is a question you can actually answer, and "it didn't" is a perfectly good finding.
+
 1. **Download** New York City's database of rat sightings since 2010:
 
     - [<i class="fas fa-file-csv"></i> `Rat_sightings.csv`](/data/Rat_sightings.csv)
 
-2. **Summarize** the data somehow. The raw data has more than 150,000 rows, which means you'll need to aggregate the data (`filter()`, `group_by()`, and `summarize()` will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number sightings across the 5 boroughs between 2010 and 2020. Consider the meaning of variables you create -- remember how the total numbers of murders in a state was mostly just a function of size, but that murder *rate* was a more useful variable. (Of course, I just gave you these ideas, so you'll need to be a bit more creative than just doing exactly what I just said.)
+2. **Summarize** the data somehow. The raw data has more than 290,000 rows covering 2010 through this month, which means you'll need to aggregate the data (`filter()`, `group_by()`, and `summarize()` will be your friends). Consider looking at the number of sightings per borough, per year, per dwelling type, etc., or a combination of these, like the change in the number of sightings across the 5 boroughs between 2010 and today. Consider the meaning of variables you create -- remember how the total numbers of murders in a state was mostly just a function of size, but that murder *rate* was a more useful variable. (Of course, I just gave you these ideas, so you'll need to be a bit more creative than just doing exactly what I just said.)
 
 3. **Explore** the data further. Once you have summarized the data in one way, use what you find to further explore other patterns you see in the data. You may bring in other data (it is not hard to find and add to your data the population of each borough or the average daily temperature by month, etc.). You can use `case_when()` to add data that's at a coarse level (year, borough, etc.), or `merge()` if you're comfortable with it. [Be create]{.font-orange}, but do so to further explore and analyze. Drill down on something you see in the data to *tell a story*. Remember, as analysts, we are looking for "patterns in the data" that are not easily written in closed form.
 
