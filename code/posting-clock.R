@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# "Who is awake at 3am?"  --  EC242, Week 1
+# "Who is awake at 3am?"  --  EC242, Week 2
 #
 # Inspired by the Wall Street Journal's analysis of Elon Musk's posting habits:
 #   https://graphics.wsj.com/elon-musk-twitter-habit-analysis/
@@ -8,9 +8,11 @@
 # without a paid plan -- so this uses Bluesky, whose AT Protocol serves public
 # posts to anyone who asks, no key and no account required.
 #
-# Nothing here is on the exam. It is here because you asked (or will ask) how
-# the figures in the news get made, and the answer is: like this, in about a
-# hundred lines, by someone who fussed over the colors for an hour.
+# You are of course not required to do any of this. It is here because you
+# asked (or will ask) how the figures in the news get made, and the answer is:
+# like this, in about a hundred lines, by someone who fussed over the colors
+# for an hour. Take it and hack it into something of your own the next time you
+# need a visualization that has to look good.
 #
 # You need two packages beyond the tidyverse:
 #   install.packages(c("patchwork", "ragg"))
