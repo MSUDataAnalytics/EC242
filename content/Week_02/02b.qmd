@@ -533,52 +533,61 @@ Clearly, the second call to `geom_text` does not use `x = population` and `y = t
 ::: {.callout-note}
 ## Try it!
 
-Select one of the following five sets of tasks. If your ID number ends in 1-5, choose the corresponding task. If your ID ends in 6-9, then do 6-->1, 7-->2, ..., 9-->4, and 0-->5. 
+Scroll back up to the measles figure. It stops in 2011, because the data behind
+it stops in 2011. Two things have happened since. The US declared measles
+eliminated in 2000, and then, starting around 2024, measles came back.
 
-Each set of tasks asks you to learn about an aesthetic and put it into action with the `murders` data. We'll leave about 5 minutes to do the task, then have you come back and share your results with the class.
+So let's redraw that figure with data that ends last week.
 
-For each task, we'll start with the following code:
+**Where this data came from.** CDC publishes weekly counts of every nationally
+notifiable disease, by state, going back to 2022, as part of the
+[NNDSS weekly tables](https://data.cdc.gov/resource/x9gk-5huc). I pulled the two
+measles rows out of it (`Measles, Indigenous` and `Measles, Imported`), threw
+away the regional subtotals so we're not double-counting, and worked out weekly
+new cases --- CDC reports a running year-to-date total, not a weekly count, which
+is the sort of thing you find out the hard way. It is worth knowing that this is
+about twenty minutes of work with an API and no special access, and we will do
+exactly this ourselves in Week 5.
 
+```{r, eval = FALSE}
+measles <- read_csv('https://ec242.netlify.app/data/measles_cdc_weekly.csv')
 ```
-p + geom_point(aes(x = population/10^6, y = total)) +
-  geom_text(aes(x = population/10^6, y = total, label = abb))
-```
 
+You get `state`, `date`, `year`, `week`, `new_cases` (that week) and `cases_ytd`
+(running total). 52 states plus DC and New York City, January 2022 through
+August 2026.
 
-1. The `alpha` aesthetic mapping.
-    a. The `alpha` aesthetic can only take a number between 0 and 1. So first, in `murders`, create a `murders_per_capita` column by dividing `total` by `population`. Second, find the `max(murders$murders_per_capita)` and then create another new column called `murders_per_capita_rescaled` which divides `murders_per_capita` by the max value. `murders_per_capita_rescaled` will be between 0 and 1, with the value of 1 for the state with the max murder rate. This is a little hard to do on the fly in `ggplot`.
-    b. Set the `alpha` aesthetic mapping to `murders_per_capita_rescaled` for `geom_point`.
-    c. Turn off the legend using `show.legend=FALSE`
-    d. Include the `geom_text` labels, but make sure the aesthetic mapping does **not** apply to the labels. 
-    e. Use `nudge_x = 1.5` as before to offset the labels.
-    f. Be able to explain the plot.
-        - Does the `alpha` aesthetic help present the data here? It's OK if it doesn't!
-  
-2. The `stroke` aesthetic mapping.
-    a. The `stroke` aesthetic works a bit like the `size` aesthetic. It must be used with a plot that has both a border and a fill, like shapes 21-25, so use one of those.
-    b. Use the `stroke` aesthetic mapping (meaning the stroke will change according to a value in the data) to set a different stroke size based on murders *per capita*. You can create a murders per capita variable on the fly, or add it to your `murders` data.
-        - Include the text labels as before and use `nudge_x = 1.5`.
-        - Make sure you're only setting the aesthetic for the points on the scatterplot!
+Your job is to rebuild the heatmap above for the modern era. About fifteen
+minutes. Steal the colour palette from the figure above --- it's in the source of
+this page, and stealing a palette that works is a perfectly respectable thing to do.
 
-3. The `angle` aesthetic
-    a. Using the `?geom_text` help, note that `geom_text` takes an aesthetic of `angle`.
-    b. Use the `angle` aesthetic (not aesthetic mapping) in the appropriate place (e.g. on `geom_text` and not on other geometries) to adjust the labels on our plot.
-    c. Now, try using the `angle` aesthetic mapping by using the `total` field as both the `y` value **and** the `angle` value in the `geom_text` layer. 
-    d. Does using `angle` as an aesthetic help? What about as an aesthetic mapping?
-  
-4. The `color` aesthetic mapping
-    a. Set the `color` aesthetic mapping in `geom_text` to `total/population`.
-        - Use the `nudge_x = 1.5` aesthetic in `geom_text` still
-    b. Try it with and without the legend using `show.legend`.
-    c. Be able to explain the plot.
-        - Does the `color` aesthetic mapping help present the data here?
+1. Plot `date` on x, `state` on y, and map `new_cases` to the `fill` aesthetic
+   with `geom_tile()`.
 
-5. `geom_label` and the `fill` aesthetic
-    a. Looking at `?geom_label` (which is the same help as `geom_text`), we note that "The `fill` aesthetic controls the background colour of the label".
-    b. Set the `fill` aesthetic mapping to `total/population` in `geom_label` (replacing `geom_text` but still using `nudge_x=1.5`)
-    c. Set the `fill` aesthetic (not mapping) to the color of your choice.
-    d. Be able to explain the plots.
-    - Does the `fill` aesthetic mapping help present the data here?
-    - What color did you choose for the non-mapped fill aesthetic?
-    
+2. Note that `geom_tile` takes a `color` argument as well. Set `color = "white"`
+   so the tiles are separated. Set it, don't map it --- if you find yourself
+   writing `aes(color = ...)` here, stop and ask why that's different.
+
+3. Right now your states are in alphabetical order, which tells the reader
+   nothing. Use `reorder()` to sort them by how many cases they've had.
+
+4. Label it properly. Someone should be able to read the title and know what
+   they're looking at without you standing next to them.
+
+Then answer two questions, because a plot that doesn't answer anything is
+just decoration:
+
+- **Which three states would you point at?** Name them and say what's different
+  about each one --- a single sharp burst is a different story from a long smoulder.
+
+- **Put the two figures side by side in your head.** The 1928--2011 panel is a
+  wall of red that empties out after 1963. Yours is almost entirely blank with a
+  few bright marks. Both are pictures of the same disease. What is each one
+  actually showing you, and which one would worry you more?
+
+**If you finish early:** the old figure plots a *rate* per 100,000, not a count,
+and there's a reason for that --- we hammered this with the murders data. You do
+not have state populations in this file. Where would you get them, and would
+switching to a rate change which three states you pointed at?
+
 :::
