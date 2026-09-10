@@ -266,33 +266,40 @@ of it as data, and it quietly records when you were awake.
 
 We can't redo their exact analysis --- X now charges for the data. But the same
 trick works anywhere people post in public, so here is 2026, on Bluesky: two
-newsrooms and one person.
+newsrooms and one person. Every dot is a single post.
 
 ```{r posting-clock, echo=FALSE, out.width="100%"}
 knitr::include_graphics(here('images','posting-clock.png'))
 ```
 
-Three organisations, three completely different animals.
+Three accounts, three completely different animals. The cleanest way to see it
+is to compare each account's quietest hour against its busiest one.
 
-The **Associated Press** never sleeps. Look along the 3am column --- it is nearly
-as busy as 3pm, and Saturday looks like Tuesday. That is what a wire service
-with staff in every timezone looks like from the outside.
+The **Associated Press** barely has a night. Its slowest hour still carries
+just under a quarter of the traffic of its busiest, nineteen percent of
+everything it posts goes out between midnight and 6am, and the weekend only
+dents it --- 38 posts on a weekday, 29 on a Saturday. That is what a wire
+service with staff in every timezone looks like from the outside.
 
-The **New York Times** clearly has a working week. Weekends are visibly darker
-and there is a hard spike around noon.
+The **New York Times** posts *more* than the AP does in this window, and yet the
+shaded band is nearly empty: its 4am hour runs at about an eighth of its noon
+hour. The weekend is the sharper tell --- 63 posts on a weekday, 37 on a
+Saturday. The vertical streaks are days when something happened.
 
-**George Takei** --- one man, 1.3 million followers --- goes quiet before 7am and
-after about 6pm, with a bright band in the early afternoon. That is not a man
-firing off thoughts as they occur to him. That is a job, and quite possibly
-somebody else's.
+**George Takei** --- one man, 1.3 million followers --- has the shape of a
+person with a schedule. His quietest hour is six percent of his busiest,
+essentially nothing runs before 10am or after 9pm Pacific, and Saturdays are
+half-off (15 posts a weekday, 7 on a weekend day). That is not a man firing off
+thoughts as they occur to him. That is a job, and quite possibly somebody
+else's.
 
-None of that came from asking anyone anything. It came from 21,000 timestamps
-and about forty lines of code, which you can
+None of that came from asking anyone anything. It came from seventeen thousand
+timestamps and about a hundred lines of code, which you can
 [read here](https://github.com/MSUDataAnalytics/EC242/blob/FS26/code/posting-clock.R).
 You will not be able to write that code in week one, and I do not expect you to.
-By the end of this course you will --- the whole thing is `read_csv`, a timezone
-conversion, `count`, and `geom_tile`, and you will meet all four of those before
-October.
+Strip out the hour I spent fussing over the color of the paper and what remains
+is `read_csv`, a timezone conversion, `count`, and two geoms --- and you will
+meet all of those before October.
 
 The rest of today is about *why* you would want to.
 
