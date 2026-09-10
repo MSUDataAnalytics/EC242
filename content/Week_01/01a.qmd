@@ -253,58 +253,6 @@ There is much overlap; however, a few points of distinction:
 **Obviously true:** machine learning has the upper hand in marketing.
 
 
-## First, something to look at
-
-In 2022 the *Wall Street Journal* worked out
-[when Elon Musk tweets](https://graphics.wsj.com/elon-musk-twitter-habit-analysis/).
-Not what he tweeted --- *when*. It turns out he was posting heavily somewhere
-around 3am, which is a fact about a man running several companies that no
-press release was ever going to tell you.
-
-They did it with nothing but timestamps. Every post carries one, nobody thinks
-of it as data, and it quietly records when you were awake.
-
-We can't redo their exact analysis --- X now charges for the data. But the same
-trick works anywhere people post in public, so here is 2026, on Bluesky: two
-newsrooms and one person. Every dot is a single post, placed at the hour it
-went out in its author's own local time. The bars along the right edge are
-those same posts counted by hour of the day, with the small hours in red.
-
-```{r posting-clock, echo=FALSE, out.width="100%"}
-knitr::include_graphics(here('images','posting-clock.png'))
-```
-
-Three accounts, three completely different animals. The cleanest way to see it
-is to compare each account's quietest hour against its busiest one.
-
-The **Associated Press** barely has a night. Its slowest hour still carries
-just under a quarter of the traffic of its busiest, nineteen percent of
-everything it posts goes out between midnight and 6am, and the weekend only
-dents it --- 38 posts on a weekday, 29 on a Saturday. That is what a wire
-service with staff in every timezone looks like from the outside.
-
-The **New York Times** posts *more* than the AP does in this window, and yet the
-shaded band is nearly empty: its 4am hour runs at about an eighth of its noon
-hour. The weekend is the sharper tell --- 63 posts on a weekday, 37 on a
-Saturday. The vertical streaks are days when something happened.
-
-**George Takei** --- one man, 1.3 million followers --- has the shape of a
-person with a schedule. His quietest hour is six percent of his busiest,
-essentially nothing runs before 10am or after 9pm Pacific, and Saturdays are
-half-off (15 posts a weekday, 7 on a weekend day). That is not a man firing off
-thoughts as they occur to him. That is a job, and quite possibly somebody
-else's.
-
-None of that came from asking anyone anything. It came from seventeen thousand
-timestamps and about a hundred lines of code, which you can
-[read here](https://github.com/MSUDataAnalytics/EC242/blob/FS26/code/posting-clock.R).
-You will not be able to write that code in week one, and I do not expect you to.
-Strip out the hour I spent fussing over the color of the paper and what remains
-is `read_csv`, a timezone conversion, `count`, and two geoms --- and you will
-meet all of those before October.
-
-The rest of today is about *why* you would want to.
-
 ## Case study 1: Global Renewable Energy Production
 
 Imagine you are evaluating countries for a potential investment in renewable energy. Headlines like "Renewable Energy Capacity Growth Worldwide" have piqued your interest. Reports from various sources show diverse graphs and charts and you're curious about the underlying data. You want to know which countries are leading the way in renewable energy production and which are lagging behind. You want to know which countries are growing their renewable energy production the fastest. In short: you want to know which countries are the best bets for investment. You might see something like the following: 

@@ -554,7 +554,6 @@ window.Quarto = {
   <li><a href="#what-is-data-analytics" id="toc-what-is-data-analytics" class="nav-link" data-scroll-target="#what-is-data-analytics">What is “Data Analytics”?</a>
   <ul class="collapse">
   <li><a href="#starting-point-for-this-course" id="toc-starting-point-for-this-course" class="nav-link" data-scroll-target="#starting-point-for-this-course">Starting point for this course</a></li>
-  <li><a href="#first-something-to-look-at" id="toc-first-something-to-look-at" class="nav-link" data-scroll-target="#first-something-to-look-at">First, something to look at</a></li>
   <li><a href="#case-study-1-global-renewable-energy-production" id="toc-case-study-1-global-renewable-energy-production" class="nav-link" data-scroll-target="#case-study-1-global-renewable-energy-production">Case study 1: Global Renewable Energy Production</a></li>
   <li><a href="#case-study-2-us-homicides-by-firearm" id="toc-case-study-2-us-homicides-by-firearm" class="nav-link" data-scroll-target="#case-study-2-us-homicides-by-firearm">Case study 2: US homicides by firearm</a></li>
   </ul></li>
@@ -825,27 +824,6 @@ window.Quarto = {
 </ul>
 <p><strong>Obviously true:</strong> machine learning has the upper hand in marketing.</p>
 </section>
-</section>
-<section id="first-something-to-look-at" class="level2">
-<h2 class="anchored" data-anchor-id="first-something-to-look-at">First, something to look at</h2>
-<p>In 2022 the <em>Wall Street Journal</em> worked out <a href="https://graphics.wsj.com/elon-musk-twitter-habit-analysis/">when Elon Musk tweets</a>. Not what he tweeted — <em>when</em>. It turns out he was posting heavily somewhere around 3am, which is a fact about a man running several companies that no press release was ever going to tell you.</p>
-<p>They did it with nothing but timestamps. Every post carries one, nobody thinks of it as data, and it quietly records when you were awake.</p>
-<p>We can’t redo their exact analysis — X now charges for the data. But the same trick works anywhere people post in public, so here is 2026, on Bluesky: two newsrooms and one person. Every dot is a single post, placed at the hour it went out in its author’s own local time. The bars along the right edge are those same posts counted by hour of the day, with the small hours in red.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="../../images/posting-clock.png" class="img-fluid figure-img" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Three accounts, three completely different animals. The cleanest way to see it is to compare each account’s quietest hour against its busiest one.</p>
-<p>The <strong>Associated Press</strong> barely has a night. Its slowest hour still carries just under a quarter of the traffic of its busiest, nineteen percent of everything it posts goes out between midnight and 6am, and the weekend only dents it — 38 posts on a weekday, 29 on a Saturday. That is what a wire service with staff in every timezone looks like from the outside.</p>
-<p>The <strong>New York Times</strong> posts <em>more</em> than the AP does in this window, and yet the shaded band is nearly empty: its 4am hour runs at about an eighth of its noon hour. The weekend is the sharper tell — 63 posts on a weekday, 37 on a Saturday. The vertical streaks are days when something happened.</p>
-<p><strong>George Takei</strong> — one man, 1.3 million followers — has the shape of a person with a schedule. His quietest hour is six percent of his busiest, essentially nothing runs before 10am or after 9pm Pacific, and Saturdays are half-off (15 posts a weekday, 7 on a weekend day). That is not a man firing off thoughts as they occur to him. That is a job, and quite possibly somebody else’s.</p>
-<p>None of that came from asking anyone anything. It came from seventeen thousand timestamps and about a hundred lines of code, which you can <a href="https://github.com/MSUDataAnalytics/EC242/blob/FS26/code/posting-clock.R">read here</a>. You will not be able to write that code in week one, and I do not expect you to. Strip out the hour I spent fussing over the color of the paper and what remains is <code>read_csv</code>, a timezone conversion, <code>count</code>, and two geoms — and you will meet all of those before October.</p>
-<p>The rest of today is about <em>why</em> you would want to.</p>
 </section>
 <section id="case-study-1-global-renewable-energy-production" class="level2">
 <h2 class="anchored" data-anchor-id="case-study-1-global-renewable-energy-production">Case study 1: Global Renewable Energy Production</h2>
