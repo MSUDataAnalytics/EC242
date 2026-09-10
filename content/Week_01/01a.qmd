@@ -266,7 +266,9 @@ of it as data, and it quietly records when you were awake.
 
 We can't redo their exact analysis --- X now charges for the data. But the same
 trick works anywhere people post in public, so here is 2026, on Bluesky: two
-newsrooms and one person. Every dot is a single post.
+newsrooms and one person. Every dot is a single post, placed at the hour it
+went out in its author's own local time. The bars along the right edge are
+those same posts counted by hour of the day, with the small hours in red.
 
 ```{r posting-clock, echo=FALSE, out.width="100%"}
 knitr::include_graphics(here('images','posting-clock.png'))

@@ -54,22 +54,12 @@ posts <- posts_raw %>%
 
 X0 <- min(posts$day); X1 <- max(posts$day)
 
-# --- 3. The words on the chart ---------------------------------------------
-# Every number in the labels is computed, never typed. If the data changes the
-# sentence changes with it, which is the only way to keep a caption honest.
-
-hdr <- posts %>%
-  group_by(who) %>%
-  summarise(n = n(), night = mean(tod < 6), .groups = "drop") %>%
-  mutate(lab = sprintf("%s      %s posts      %.0f%% of them between midnight and 6am",
-                       who, format(n, big.mark = ","), night * 100))
-
-note <- c("The wire runs all night: one post in five goes out while the eastern seaboard is asleep.",
-          "The overnight lull is real, and so is the weekend one — 63 posts on a weekday, 37 on a Saturday.",
-          "A day job. The shape sits between 10am and 9pm Pacific, and the busiest hour of the week is 4pm.")
-names(note) <- levels(posts$who)
-
+# --- 3. The one summary that stays on the chart -----------------------------
 # The little bar profile at the right edge: the same posts, counted by hour.
+# Everything else the chart used to say in words is said in the surrounding
+# text instead. A figure that needs three sentences of caption is a figure
+# that has not finished being a figure.
+
 prof <- posts %>%
   mutate(h = floor(tod)) %>%
   count(who, h) %>%
@@ -103,18 +93,16 @@ scatter <- function(w, last) {
                        expand = c(0, 0)) +
     scale_x_date(limits = c(X0 - 1, X1 + 1), date_breaks = "1 month",
                  date_labels = "%B", expand = c(0, 0)) +
-    labs(title = hdr$lab[hdr$who == w], subtitle = note[[w]]) +
+    labs(title = as.character(w)) +
     theme_minimal(base_family = FONT) +
     theme(panel.grid.minor = element_blank(),
           panel.grid.major = element_line(colour = RULE, linewidth = .25),
           axis.title       = element_blank(),
           axis.text.y      = element_text(size = 7.5, colour = MUTE),
-          axis.text.x      = if (last) element_text(size = 8.5, colour = MUTE)
-                             else element_blank(),
-          plot.title    = element_text(face = "bold", size = 10, colour = INK,
-                                       margin = margin(b = 2)),
-          plot.subtitle = element_text(size = 9, colour = DECK, margin = margin(b = 7)),
-          plot.margin   = margin(0, 0, if (last) 0 else 22, 0),
+          axis.text.x      = element_blank(),
+          plot.title    = element_text(face = "bold", size = 11, colour = INK,
+                                       margin = margin(b = 7)),
+          plot.margin   = margin(0, 0, if (last) 0 else 26, 0),
           plot.background  = element_rect(fill = NA, colour = NA),
           panel.background = element_rect(fill = NA, colour = NA))
 }
@@ -128,18 +116,15 @@ profile <- function(w, last) {
     geom_col(aes(share, h + .5, fill = night), orientation = "y", width = .68) +
     scale_fill_manual(values = c(`FALSE` = DOT, `TRUE` = RUST), guide = "none") +
     scale_y_continuous(limits = c(0, 24), expand = c(0, 0)) +
-    scale_x_continuous(limits = c(0, PMAX), expand = c(0, 0),
-                       breaks = c(0, .04, .08), labels = c("", "4%", "8%")) +
-    labs(title = " ", subtitle = " ") +     # blank, to keep the rows aligned
+    scale_x_continuous(limits = c(0, PMAX), expand = c(0, 0)) +
+    labs(title = " ") +                     # blank, to keep the rows aligned
     theme_minimal(base_family = FONT) +
     theme(panel.grid  = element_blank(),
           axis.title  = element_blank(),
           axis.text.y = element_blank(),
-          axis.text.x = if (last) element_text(size = 7, colour = MUTE)
-                        else element_blank(),
-          plot.title    = element_text(face = "bold", size = 10, margin = margin(b = 2)),
-          plot.subtitle = element_text(size = 9, margin = margin(b = 7)),
-          plot.margin   = margin(0, 0, if (last) 0 else 22, 10),
+          axis.text.x = element_blank(),
+          plot.title  = element_text(face = "bold", size = 11, margin = margin(b = 7)),
+          plot.margin = margin(0, 0, if (last) 0 else 26, 10),
           plot.background = element_rect(fill = NA, colour = NA))
 }
 
@@ -154,21 +139,15 @@ rows <- map(seq_along(accounts), function(i) {
 figure <- (rows[[1]] / rows[[2]] / rows[[3]]) +
   plot_annotation(
     title = "Who is awake at 3am?",
-    subtitle = paste0(
-      "Every Bluesky post from three accounts between April and September 2026. One dot is one post, placed on the day it went out\n",
-      "and at the local hour it went out. The bars at the right edge stack those same posts by hour of the day; red marks the small hours."),
-    caption = paste(format(nrow(posts), big.mark = ","),
-                    "posts, collected from the Bluesky AT Protocol · each account is plotted in its own time zone, corrected for daylight saving"),
+    subtitle = "Every Bluesky post from three accounts between April and September 2026.",
     theme = theme(
       plot.background = element_rect(fill = PAPER, colour = NA),
       plot.title    = element_text(family = FONT, face = "bold", size = 30,
                                    colour = INK, margin = margin(b = 8, l = LEFT)),
-      plot.subtitle = element_text(family = FONT, size = 11, colour = DECK,
-                                   lineheight = 1.4, margin = margin(b = 20, l = LEFT)),
-      plot.caption  = element_text(family = FONT, size = 8, colour = MUTE,
-                                   hjust = 0, margin = margin(t = 18, l = LEFT)),
-      plot.margin   = margin(28, 30, 18, 30)))
+      plot.subtitle = element_text(family = FONT, size = 11.5, colour = DECK,
+                                   margin = margin(b = 26, l = LEFT)),
+      plot.margin   = margin(30, 30, 26, 30)))
 
-agg_png("posting-clock.png", width = 1650, height = 1120, res = 150)
+agg_png("posting-clock.png", width = 1650, height = 950, res = 150)
 print(figure)
 dev.off()
