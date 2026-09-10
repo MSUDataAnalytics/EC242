@@ -49,21 +49,21 @@ if [ -n "$missing" ]; then
 fi
 echo "    R packages: all present"
 
-before=$(find _docs -name '*.html' 2>/dev/null | wc -l | tr -d ' ')
+before=$(find _docs -name '*.html' ! -name '* [0-9].html' 2>/dev/null | wc -l | tr -d ' ')
 echo "    _docs currently has $before html pages"
 
 echo "==> quarto render ${*:-（whole site）}"
 if quarto render "$@"; then
-  after=$(find _docs -name '*.html' | wc -l | tr -d ' ')
+  after=$(find _docs -name '*.html' ! -name '* [0-9].html' | wc -l | tr -d ' ')
   echo "==> OK. _docs now has $after html pages (was $before)"
   if [ "$after" -lt "$before" ]; then
     echo "    WARNING: page count dropped. Check that's intended before committing."
   fi
 else
   echo "==> RENDER FAILED"
-  after=$(find _docs -name '*.html' 2>/dev/null | wc -l | tr -d ' ')
+  after=$(find _docs -name '*.html' ! -name '* [0-9].html' 2>/dev/null | wc -l | tr -d ' ')
   echo "    _docs has $after html pages; restoring from git..."
-  git checkout -- _docs && echo "    _docs restored ($(find _docs -name '*.html' | wc -l | tr -d ' ') pages). Site is safe."
+  git checkout -- _docs && echo "    _docs restored ($(find _docs -name '*.html' ! -name '* [0-9].html' | wc -l | tr -d ' ') pages). Site is safe."
   echo "    Scroll up for the actual error."
   exit 1
 fi
