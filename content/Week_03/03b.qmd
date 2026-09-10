@@ -507,7 +507,7 @@ ggplot(pd, aes(x = middate, y = Obama_diff, col = state)) + geom_line() + facet_
 ```
 
 
-Use {{< var url.bitly >}} to share. Happy visualizing!
+Use {{< var url.zoom >}} to share. Happy visualizing!
 
 :::
 

@@ -89,7 +89,7 @@ website:
       - icon: slack
         href: "{{< var slack.linkclean >}}"
       - icon: caret-up-square
-        href: "{{< var url.sharelinkclean >}}"
+        href: "{{< var url.zoomclean >}}"
   sidebar:
     - id: contents
       style: "docked"

@@ -295,7 +295,7 @@ Let's use that `RECS` data to regress `EnergyUsed` on one of the variables from 
 
 Using the formulas and codes for regression, choose the variable you want to use in the regression, run it, and visualize the result.
 
-We'll have you share your work and interpret the results when done. [https://bit.ly/EC242](https://bit.ly/EC242)
+We'll have you share your work and interpret the results when done -- use our {{< var url.zoom >}} room.
 
 :::
 

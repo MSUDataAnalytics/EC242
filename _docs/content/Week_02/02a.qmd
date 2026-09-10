@@ -46,7 +46,7 @@ If you read ahead, you'd have seen a bit about our group project. I'd like to wa
 ### Share your screen
 We will often do some shared coding results -- you'll be asked to execute some code, and we'll use Zoom to share screen so the class can see volunteer's results. I'll ask you a few easy questions about your code, and you'll get participation points (or EC). 
 
-I have set up a Zoom room with a short link: {{< var url.bitly >}}. The right-most icon on the course site header will take you there as well.
+I have set up a Zoom room for this: {{< var url.zoom >}}. The right-most icon on the course site header will take you there as well.
 
 We'll use that link/zoom room all semester to share screen (since this room doesn't have a screen sharing protocol).
 
