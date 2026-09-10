@@ -557,12 +557,40 @@ You get `state`, `date`, `year`, `week`, `new_cases` (that week) and `cases_ytd`
 (running total). 52 states plus DC and New York City, January 2022 through
 August 2026.
 
-Your job is to rebuild the heatmap above for the modern era. About fifteen
-minutes. Steal the colour palette from the figure above --- it's in the source of
-this page, and stealing a palette that works is a perfectly respectable thing to do.
+### First, three states
 
-1. Plot `date` on x, `state` on y, and map `new_cases` to the `fill` aesthetic
-   with `geom_tile()`.
+Before we do fifty-two at once, look at three. Plot `date` on x and `new_cases`
+on y for South Carolina, Texas and Ohio, mapping `color` to `state`, using
+`geom_line()`.
+
+```{r, eval = FALSE}
+measles %>%
+  filter(state %in% c("South Carolina", "Texas", "Ohio")) %>%
+  ggplot(aes(date, new_cases, color = state)) +
+  geom_line()
+```
+
+Three states, three completely different shapes: Ohio has a cluster in 2023 and
+then nothing, Texas rumbles along through 2025, and South Carolina sits flat for
+four years and then goes nearly vertical in January 2026.
+
+Now the question that motivates the rest of this exercise: **what happens to that
+plot if you take the `filter` out?** Try it. Fifty-two lines on one set of axes
+is not a chart, it's a haystack. The problem isn't your code --- it's that a line
+chart gives every state the whole vertical axis, and there is only one of those.
+
+A heatmap solves it by spending the y-axis on *states* instead and pushing the
+number into colour. That is the trade the WSJ made, and it is why their figure
+has fifty rows in it.
+
+### Now the heatmap
+
+About fifteen minutes. Steal the colour palette from the figure above --- it's in
+the source of this page, and stealing a palette that works is a perfectly
+respectable thing to do.
+
+1. Same data, but now `date` on x, `state` on y, and map `new_cases` to the
+   `fill` aesthetic with `geom_tile()`.
 
 2. Note that `geom_tile` takes a `color` argument as well. Set `color = "white"`
    so the tiles are separated. Set it, don't map it --- if you find yourself
@@ -574,11 +602,22 @@ this page, and stealing a palette that works is a perfectly respectable thing to
 4. Label it properly. Someone should be able to read the title and know what
    they're looking at without you standing next to them.
 
-Then answer two questions, because a plot that doesn't answer anything is
-just decoration:
+A success might look something like this:
+
+```{r measles-target, echo=FALSE, out.width="100%"}
+knitr::include_graphics(here('images','measles-heatmap-target.png'))
+```
+
+Yours doesn't have to match mine exactly. If your colours or proportions differ,
+fine --- and if you found a better arrangement than I did, say so.
+
+### Then answer two questions
+
+Because a plot that doesn't answer anything is just decoration.
 
 - **Which three states would you point at?** Name them and say what's different
-  about each one --- a single sharp burst is a different story from a long smoulder.
+  about each one --- a single sharp burst is a different story from a long
+  smoulder. The line plot gave you a head start on this.
 
 - **Put the two figures side by side in your head.** The 1928--2011 panel is a
   wall of red that empties out after 1963. Yours is almost entirely blank with a

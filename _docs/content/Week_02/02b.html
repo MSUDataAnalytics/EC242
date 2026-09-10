@@ -1049,19 +1049,49 @@ NULL</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>measles <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://ec242.netlify.app/data/measles_cdc_weekly.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You get <code>state</code>, <code>date</code>, <code>year</code>, <code>week</code>, <code>new_cases</code> (that week) and <code>cases_ytd</code> (running total). 52 states plus DC and New York City, January 2022 through August 2026.</p>
-<p>Your job is to rebuild the heatmap above for the modern era. About fifteen minutes. Steal the colour palette from the figure above — it’s in the source of this page, and stealing a palette that works is a perfectly respectable thing to do.</p>
+<section id="first-three-states" class="level3">
+<h3 class="anchored" data-anchor-id="first-three-states">First, three states</h3>
+<p>Before we do fifty-two at once, look at three. Plot <code>date</code> on x and <code>new_cases</code> on y for South Carolina, Texas and Ohio, mapping <code>color</code> to <code>state</code>, using <code>geom_line()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>measles <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(state <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"South Carolina"</span>, <span class="st">"Texas"</span>, <span class="st">"Ohio"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, new_cases, <span class="at">color =</span> state)) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Three states, three completely different shapes: Ohio has a cluster in 2023 and then nothing, Texas rumbles along through 2025, and South Carolina sits flat for four years and then goes nearly vertical in January 2026.</p>
+<p>Now the question that motivates the rest of this exercise: <strong>what happens to that plot if you take the <code>filter</code> out?</strong> Try it. Fifty-two lines on one set of axes is not a chart, it’s a haystack. The problem isn’t your code — it’s that a line chart gives every state the whole vertical axis, and there is only one of those.</p>
+<p>A heatmap solves it by spending the y-axis on <em>states</em> instead and pushing the number into colour. That is the trade the WSJ made, and it is why their figure has fifty rows in it.</p>
+</section>
+<section id="now-the-heatmap" class="level3">
+<h3 class="anchored" data-anchor-id="now-the-heatmap">Now the heatmap</h3>
+<p>About fifteen minutes. Steal the colour palette from the figure above — it’s in the source of this page, and stealing a palette that works is a perfectly respectable thing to do.</p>
 <ol type="1">
-<li><p>Plot <code>date</code> on x, <code>state</code> on y, and map <code>new_cases</code> to the <code>fill</code> aesthetic with <code>geom_tile()</code>.</p></li>
+<li><p>Same data, but now <code>date</code> on x, <code>state</code> on y, and map <code>new_cases</code> to the <code>fill</code> aesthetic with <code>geom_tile()</code>.</p></li>
 <li><p>Note that <code>geom_tile</code> takes a <code>color</code> argument as well. Set <code>color = "white"</code> so the tiles are separated. Set it, don’t map it — if you find yourself writing <code>aes(color = ...)</code> here, stop and ask why that’s different.</p></li>
 <li><p>Right now your states are in alphabetical order, which tells the reader nothing. Use <code>reorder()</code> to sort them by how many cases they’ve had.</p></li>
 <li><p>Label it properly. Someone should be able to read the title and know what they’re looking at without you standing next to them.</p></li>
 </ol>
-<p>Then answer two questions, because a plot that doesn’t answer anything is just decoration:</p>
+<p>A success might look something like this:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="../../images/measles-heatmap-target.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Yours doesn’t have to match mine exactly. If your colours or proportions differ, fine — and if you found a better arrangement than I did, say so.</p>
+</section>
+<section id="then-answer-two-questions" class="level3">
+<h3 class="anchored" data-anchor-id="then-answer-two-questions">Then answer two questions</h3>
+<p>Because a plot that doesn’t answer anything is just decoration.</p>
 <ul>
-<li><p><strong>Which three states would you point at?</strong> Name them and say what’s different about each one — a single sharp burst is a different story from a long smoulder.</p></li>
+<li><p><strong>Which three states would you point at?</strong> Name them and say what’s different about each one — a single sharp burst is a different story from a long smoulder. The line plot gave you a head start on this.</p></li>
 <li><p><strong>Put the two figures side by side in your head.</strong> The 1928–2011 panel is a wall of red that empties out after 1963. Yours is almost entirely blank with a few bright marks. Both are pictures of the same disease. What is each one actually showing you, and which one would worry you more?</p></li>
 </ul>
 <p><strong>If you finish early:</strong> the old figure plots a <em>rate</em> per 100,000, not a count, and there’s a reason for that — we hammered this with the murders data. You do not have state populations in this file. Where would you get them, and would switching to a rate change which three states you pointed at?</p>
+</section>
 </div>
 </div>
 
