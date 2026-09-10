@@ -113,8 +113,9 @@ dat %>% ggplot(aes(year, state, fill = rate)) +
 
 (Source: [Wall Street Journal](http://graphics.wsj.com/infectious-diseases-and-vaccines/))
 
-The same paper pulled the same trick on a completely different subject. In 2022
-it worked out [when Elon Musk
+That chart runs on data somebody set out to collect: a century of state health
+departments counting cases and filing reports. The *Journal* is just as good at
+the opposite. In 2022 it worked out [when Elon Musk
 tweets](https://graphics.wsj.com/elon-musk-twitter-habit-analysis/) --- not what
 he tweeted, *when*. It turns out he was posting heavily somewhere around 3am,
 which is a fact about a man running several companies that no press release was
@@ -123,8 +124,8 @@ ever going to tell you.
 They did it with nothing but timestamps. Every post carries one, nobody thinks
 of it as data, and it quietly records when you were awake.
 
-We can't redo their exact analysis --- X now charges for the data. But the same
-trick works anywhere people post in public, so here is 2026, on Bluesky: two
+We can't redo their exact analysis --- X now charges for the data. But it works
+anywhere people post in public, so here is 2026, on Bluesky: two
 newsrooms and one person. Every dot is a single post, placed at the hour it
 went out in its author's own local time. The bars along the right edge are
 those same posts counted by hour of the day, with the small hours in red.
@@ -133,14 +134,14 @@ those same posts counted by hour of the day, with the small hours in red.
 knitr::include_graphics(here('images','posting-clock.png'))
 ```
 
-Three accounts, three completely different animals. The cleanest way to see it
-is to compare each account's quietest hour against its busiest one.
+Compare each account's quietest hour against its busiest, and the three come
+apart immediately.
 
 The **Associated Press** barely has a night. Its slowest hour still carries
 just under a quarter of the traffic of its busiest, nineteen percent of
 everything it posts goes out between midnight and 6am, and the weekend only
-dents it --- 38 posts on a weekday, 29 on a Saturday. That is what a wire
-service with staff in every timezone looks like from the outside.
+dents it --- 38 posts on a weekday, 29 on a Saturday. A wire service with staff
+in every time zone looks exactly like that from the outside.
 
 The **New York Times** posts *more* than the AP does in this window, and yet the
 shaded band is nearly empty: its 4am hour runs at about an eighth of its noon
@@ -619,9 +620,9 @@ measles %>%
   geom_line()
 ```
 
-Three states, three completely different shapes: Ohio has a cluster in 2023 and
-then nothing, Texas rumbles along through 2025, and South Carolina sits flat for
-four years and then goes nearly vertical in January 2026.
+Ohio has a cluster in 2023 and then nothing. Texas rumbles along through 2025.
+South Carolina sits flat for four years and then goes nearly vertical in
+January 2026.
 
 Now the question that motivates the rest of this exercise: **what happens to that
 plot if you take the `filter` out?** Try it. Fifty-two lines on one set of axes
