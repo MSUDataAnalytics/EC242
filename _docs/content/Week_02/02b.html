@@ -1064,12 +1064,18 @@ NULL</code></pre>
 </section>
 <section id="now-the-heatmap" class="level3">
 <h3 class="anchored" data-anchor-id="now-the-heatmap">Now the heatmap</h3>
-<p>About fifteen minutes. Steal the colour palette from the figure above — it’s in the source of this page, and stealing a palette that works is a perfectly respectable thing to do.</p>
+<p>About fifteen minutes.</p>
 <ol type="1">
 <li><p>Same data, but now <code>date</code> on x, <code>state</code> on y, and map <code>new_cases</code> to the <code>fill</code> aesthetic with <code>geom_tile()</code>.</p></li>
 <li><p>Note that <code>geom_tile</code> takes a <code>color</code> argument as well. Set <code>color = "white"</code> so the tiles are separated. Set it, don’t map it — if you find yourself writing <code>aes(color = ...)</code> here, stop and ask why that’s different.</p></li>
-<li><p>Right now your states are in alphabetical order, which tells the reader nothing. Use <code>reorder()</code> to sort them by how many cases they’ve had.</p></li>
-<li><p>Label it properly. Someone should be able to read the title and know what they’re looking at without you standing next to them.</p></li>
+<li><p>Almost every tile you have is a zero: 97% of state-weeks in this file had no measles at all, which is rather the point. Colouring all of those the same as “one case” buries the signal. Turn the zeros into missing values first, and tell the fill scale to leave missing values white:</p>
+<p>::: {.cell}</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>measles <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">new_cases =</span> <span class="fu">na_if</span>(new_cases, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>:::</p>
+<p>then add <code>scale_fill_continuous(type = 'viridis', na.value = "white")</code>.</p>
+<p>A word on that palette. The WSJ figure at the top of this page uses a rainbow — pale blue through yellow and orange to dark red. It looks striking, and it is a bad default: a chunk of your classmates cannot reliably tell parts of it apart, and even those who can will misjudge which of two colours is “bigger”. <code>viridis</code> is built to avoid both problems. We will spend real time on this next week, and colourblind-friendly palettes are required on your group projects, so start now.</p></li>
+<li><p>Right now your states are in alphabetical order, which tells the reader nothing. Use <code>reorder()</code> to sort them by how many cases they’ve had. (You now have <code>NA</code>s in that column, so you’ll need <code>sum(x, na.rm = TRUE)</code> inside it.)</p></li>
+<li><p>Label it properly. Someone should be able to read the title and know what they’re looking at without you standing next to them — and say somewhere that white means no reported cases, because otherwise white reads as “missing”.</p></li>
 </ol>
 <p>A success might look something like this:</p>
 <div class="cell">
@@ -1090,7 +1096,7 @@ NULL</code></pre>
 <li><p><strong>Which three states would you point at?</strong> Name them and say what’s different about each one — a single sharp burst is a different story from a long smoulder. The line plot gave you a head start on this.</p></li>
 <li><p><strong>Put the two figures side by side in your head.</strong> The 1928–2011 panel is a wall of red that empties out after 1963. Yours is almost entirely blank with a few bright marks. Both are pictures of the same disease. What is each one actually showing you, and which one would worry you more?</p></li>
 </ul>
-<p><strong>If you finish early:</strong> the old figure plots a <em>rate</em> per 100,000, not a count, and there’s a reason for that — we hammered this with the murders data. You do not have state populations in this file. Where would you get them, and would switching to a rate change which three states you pointed at?</p>
+<p><strong>If you finish early:</strong> the old figure plots a <em>rate</em> per 100,000, not a count, and there’s a reason for that — we hammered this with the murders data. You do not have state populations in this file. Where would you get them, and would switching to a rate change which three states you pointed at? We come back to exactly this in Week 4, where we put the historical measles <em>rates</em> on a map.</p>
 </section>
 </div>
 </div>

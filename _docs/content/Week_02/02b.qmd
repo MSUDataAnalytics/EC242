@@ -585,9 +585,7 @@ has fifty rows in it.
 
 ### Now the heatmap
 
-About fifteen minutes. Steal the colour palette from the figure above --- it's in
-the source of this page, and stealing a palette that works is a perfectly
-respectable thing to do.
+About fifteen minutes.
 
 1. Same data, but now `date` on x, `state` on y, and map `new_cases` to the
    `fill` aesthetic with `geom_tile()`.
@@ -596,11 +594,33 @@ respectable thing to do.
    so the tiles are separated. Set it, don't map it --- if you find yourself
    writing `aes(color = ...)` here, stop and ask why that's different.
 
-3. Right now your states are in alphabetical order, which tells the reader
-   nothing. Use `reorder()` to sort them by how many cases they've had.
+3. Almost every tile you have is a zero: 97% of state-weeks in this file had no
+   measles at all, which is rather the point. Colouring all of those the same as
+   "one case" buries the signal. Turn the zeros into missing values first, and
+   tell the fill scale to leave missing values white:
 
-4. Label it properly. Someone should be able to read the title and know what
-   they're looking at without you standing next to them.
+    ```{r, eval = FALSE}
+    measles %>% mutate(new_cases = na_if(new_cases, 0)) %>% ...
+    ```
+
+    then add `scale_fill_continuous(type = 'viridis', na.value = "white")`.
+
+    A word on that palette. The WSJ figure at the top of this page uses a
+    rainbow --- pale blue through yellow and orange to dark red. It looks
+    striking, and it is a bad default: a chunk of your classmates cannot reliably
+    tell parts of it apart, and even those who can will misjudge which of two
+    colours is "bigger". `viridis` is built to avoid both problems. We will spend
+    real time on this next week, and colourblind-friendly palettes are required
+    on your group projects, so start now.
+
+4. Right now your states are in alphabetical order, which tells the reader
+   nothing. Use `reorder()` to sort them by how many cases they've had. (You now
+   have `NA`s in that column, so you'll need `sum(x, na.rm = TRUE)` inside it.)
+
+5. Label it properly. Someone should be able to read the title and know what
+   they're looking at without you standing next to them --- and say somewhere
+   that white means no reported cases, because otherwise white reads as
+   "missing".
 
 A success might look something like this:
 
@@ -627,6 +647,7 @@ Because a plot that doesn't answer anything is just decoration.
 **If you finish early:** the old figure plots a *rate* per 100,000, not a count,
 and there's a reason for that --- we hammered this with the murders data. You do
 not have state populations in this file. Where would you get them, and would
-switching to a rate change which three states you pointed at?
+switching to a rate change which three states you pointed at? We come back to
+exactly this in Week 4, where we put the historical measles *rates* on a map.
 
 :::
