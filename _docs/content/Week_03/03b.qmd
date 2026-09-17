@@ -51,8 +51,8 @@ p <- ggplot(data = murders, aes(x = population, y = total, label = abb))
 
 # Scales and transformations
 
-### Log transformations
-In our first visualization lecture, we re-scaled our population by 10^6 (millions), but still had a lot of variation because some states are tiny and some are huge. Sometimes, we want to have one (or both) of our axes scaled non-linearly. For instance, if we wanted to have our x-axis be in log base 10, then each major tick would represent a factor of 10 over the last. This is not the default, so this change needs to be added through a _scales_ layer. A quick look at the cheat sheet reveals the `scale_x_continuous` function lets us control the behavior of scales. We use them like this:
+## Log transformations
+In our first visualization lecture, we re-scaled our population by 10^6 (millions), but still had a lot of variation because some states are tiny and some are huge. Sometimes, we want to have one (or both) of our axes scaled non-linearly. For instance, if we wanted to have our x-axis be in log base 10, then each factor of 10 would take up the same distance on the axis. This is not the default, so this change needs to be added through a _scales_ layer. A quick look at the cheat sheet reveals the `scale_x_continuous` function lets us control the behavior of scales. We use them like this:
 
 
 ```{r ggplot-example-9}
@@ -75,10 +75,10 @@ p + geom_point(size = 3) +
 
 This can make a plot much easier to read, though one has to be sure to pay attention to the values on the axes. Plotting anything with very large outliers will almost always be better if done in log-scale. Adding the scale layer is an easy way to fix this.
 
-We can also use one of many built-in transformations. Of note: **reverse** just inverts the scale, which can be helpful, **log** uses the natural log, **sqrt** takes the square root (dropping anything with a negative value), **reciprocal** takes 1/x. If your x-axis is in a date format, you can also scale to **hms** (hour-minute-second) or **date**.
+We can also use one of many built-in transformations. Of note: **reverse** just inverts the scale, which can be helpful, **log** uses the natural log, **sqrt** takes the square root (dropping anything with a negative value), **reciprocal** takes 1/x. If your x-axis is in a date format, you can also scale to **date**; **hms** (hour-minute-second) is for times of day and durations.
 
 
-### Transforming data vs. transforming using `scale_...`
+## Transforming data vs. transforming using `scale_...`
 We could simply take the log of population and log of total in the call and we'd get something very similar. Note that we had to override the aesthetic mapping set in `p` in each of the geometries:
 
 ```{r, eval=TRUE}
@@ -147,8 +147,8 @@ To change the tick mark labels, we have to set the tick mark locations. Then we 
 p + geom_point(aes(color = region), size = 3) +
   geom_text(nudge_x = .05) +
   scale_x_log10() +
-  scale_y_log10(breaks = c(0,50, 100, 500,1000,1500), 
-                     labels = c('Zero','Fifty','One hundred','Five hundred','One thousand','Fifteen hundred')) +
+  scale_y_log10(breaks = c(50, 100, 500,1000,1500), 
+                     labels = c('Fifty','One hundred','Five hundred','One thousand','Fifteen hundred')) +
   labs(x = 'Population', y = 'Total murders', color = 'US Region')
 ```
 We have manually set both the location and the label for the y-axis. Note that R filled in the in-between "minor" tick lines, but we can take those out. Since we are setting the location of the lines, we can do anything we want:
@@ -157,8 +157,8 @@ We have manually set both the location and the label for the y-axis. Note that R
 p + geom_point(aes(color = region), size = 3) +
   geom_text(nudge_x = .05) +
   scale_x_log10() +
-  scale_y_log10(breaks = c(0,50, 100, 721, 1000,1500), 
-                     labels = c('Zero','Fifty','One hundred','Seven hundred twenty one','One thousand','Fifteen hundred'),
+  scale_y_log10(breaks = c(50, 100, 721, 1000,1500), 
+                     labels = c('Fifty','One hundred','Seven hundred twenty one','One thousand','Fifteen hundred'),
                      minor_breaks = NULL) +
   labs(x = 'Population', y = 'Total murders', color = 'US Region')
 ```
@@ -208,13 +208,13 @@ scalefun.dollar(numbers.vector)
 Note that we could set the `accuracy` and `scale` arguments in `scales::label_percent` and `scales::label_dollar`. The `accuracy` argument determines rounding. We don't need cents when we have dollar values up to 1M, but we do need fractions of a percent when we use the murder rate (not multiplied by 100,000).
 
 ## Using labeler functions {#labelerFunctions}
-The above was just an illustration of how the labelers work. To use it in practice, we need only give the function name to ggplot:
+The above was just an illustration of how the labelers work. To use it in practice, we need only give the labeler to ggplot -- note the parentheses, since `label_comma()` is what hands back the function:
 
 ```{r, echo=TRUE}
 p + geom_point(aes(color = region), size = 3) +
   geom_text(nudge_x = .05) +
   scale_x_log10(labels= scales::label_comma()) +
-  scale_y_log10(breaks = c(0,50, 100, 721, 1000,1500), 
+  scale_y_log10(breaks = c(50, 100, 721, 1000,1500), 
                      labels = scales::label_comma(accuracy=.01),
                      minor_breaks = NULL) +
   labs(x = 'Population', y = 'Total murders', color = 'US Region')
@@ -222,7 +222,7 @@ p + geom_point(aes(color = region), size = 3) +
 
 We don't need the decimals on the y-axis tick labels, it's just there for illustration.
 
-Sometimes, our axis tick labels are still too long. When numbers get long, we usually have standard ways of representing them (like k, M, G, and T for kilo-, mega-, giga- and terabytes). Labeler functions can make this easy for us.
+Sometimes, our axis tick labels are still too long. When numbers get long, we usually have standard ways of representing them (like K, M, B, and T for thousand, million, billion, and trillion). Labeler functions can make this easy for us.
 
 We can use the `labels = label_comma(scale_cut = cut_short_scale())` argument to shorten the display and use the common suffix.
 
@@ -236,41 +236,41 @@ p + geom_point(aes(color = region), size = 3) +
 
 Of course, we could also transform the `Population` and `total` variables, dividing by 1,000,000 or 1,000, then add "Thousands" or "Millions" to the label. But this way is cleaner. Also, notice on the Y-axis that the suffix "K" is only used when necessary -- we don't have ".01K" on there.
 
-There is also a `cut_si()` function that takes as an input a scientific unit (like "g" for grams). It'll use the full scientific notation for larger quantities, so `cut_si("g")` would have "g", then "kg", then "Mg" where needed on the axis.
+There is also a `cut_si()` function that takes as an input a scientific unit (like "g" for grams). It'll use SI prefixes, so `cut_si("g")` would have "g", then "kg", then "Mg" where needed on the axis.
 
 There are lots of other neat tricks for axis labels on the tidyverse [scales vignette](https://tidyverse.org/blog/2022/04/scales-1-2-0/)
 
 ## Axis tick label orientation
 
-While the `label_comma` kindly leaves room for us on the x-axis breaks (by eliminating some of the tick labels), we can also alter the orientation of the labels. This occurs in the `theme()` call since it adjusts the layout or styling of the plot. Here, I've put in a bunch of breaks at 1 million to 40 million, and then asked `ggplot` to rotate and adjust the x-axis tick labels. `hjust` and `vjust` move the horizontal and vertical justification of the label -- where the text sits relative to its tick mark. `angle` changes the orientation. Careful, though: justification follows the rotated text, so at `angle = 90` it's `hjust` that slides the label up and down and `vjust` that centers it on its tick.
+While the default log-scale breaks leave some room on the x-axis, we can also alter the orientation of the labels. This occurs in the `theme()` call since it adjusts the layout or styling of the plot. Here, I've put in a bunch of breaks at 1 million to 40 million, and then asked `ggplot` to rotate and adjust the x-axis tick labels. `hjust` and `vjust` move the horizontal and vertical justification of the label -- where the text sits relative to its tick mark. `angle` changes the orientation. Careful, though: justification follows the rotated text, so at `angle = 90` it's `hjust` that slides the label up and down and `vjust` that centers it on its tick.
 
 ```{r, echo=TRUE}
 p + geom_point(aes(color = region), size = 3) +
   geom_text(nudge_x = .05) +
   scale_x_log10(breaks = c(1,2,3,4,5,10,15,20,25,30, 40)*1000000, labels= scales::label_comma()) +
-  scale_y_log10(breaks = c(0,50, 100, 721, 1000,1500), 
+  scale_y_log10(breaks = c(50, 100, 721, 1000,1500), 
                      labels = scales::label_comma(accuracy=1),
                      minor_breaks = NULL) +
   labs(x = 'Population', y = 'Total murders', color = 'US Region') + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 ```
 
-Note that rotating the axis text unfortunately doesn't allow the labeler to add more breaks by default (leaving `breaks = ...` empty wouldn't add more breaks to the x axis). Also, `?element_text` will let you see the other things you can change (color, font family)
+Note that rotating the axis text unfortunately doesn't add more breaks by default (leaving `breaks = ...` empty wouldn't add more breaks to the x axis). Also, `?element_text` will let you see the other things you can change (color, font family)
 
 
 
 ## Additional geometries
 Let's say we are happy with our axis tick locations, but we want to add a single additional line. Maybe we want to divide at 1,000,000 population (a vertical line at 1,000,000) because we think those over 1,000,000 are somehow different, and we want to call attention to the data around that point. As a more general example, if we were to plot, say, car accidents by age, we would maybe want to label age 21, when people can legally purchase alcohol (and subsequently cause car accidents).
 
-`geom_vline` lets us add a single vertical line (without aesthetic mappings). If we look at `?geom_vline` we see that it requires one aesthetic: `xintercept`. It also takes aesthetics like color and size, and introduces the `linetype` aesthetic:
+`geom_vline` lets us add a single vertical line (without aesthetic mappings). If we look at `?geom_vline` we see that it requires one aesthetic: `xintercept`. It also takes aesthetics like color and linewidth, and introduces the `linetype` aesthetic:
 
 ```{r, echo=TRUE}
 p + geom_point(aes(color = region), size = 3) +
   geom_text(nudge_x = .05) +
-  geom_vline(aes(xintercept = 1000000), col = 'red', linewidth = 2, linetype = 2) +
+  geom_vline(xintercept = 1000000, col = 'red', linewidth = 2, linetype = 2) +
   scale_x_log10() +
-  scale_y_log10(breaks = c(0,50, 100, 721, 1000,1500), 
-                     labels = c('Zero','Fifty','One hundred','Seven hundred twenty one','One thousand','Fifteen hundred'),
+  scale_y_log10(breaks = c(50, 100, 721, 1000,1500), 
+                     labels = c('Fifty','One hundred','Seven hundred twenty one','One thousand','Fifteen hundred'),
                      minor_breaks = NULL) +
   labs(x = 'Population', y = 'Total murders', color = 'US Region')
 ```
@@ -313,7 +313,7 @@ ggplot(AAPLNFLX, aes(x = date, y = close, color = symbol)) +
   geom_line() +
   labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
 ```
-Well there we go! We can now see each stock price over time, with a convenient legend. Later on, we'll learn how to change the color palette. If we don't necessarily want a different color but we do want to separate the lines, we can use the `group` aesthetic.
+Well there we go! We can now see each stock price over time, with a convenient legend. If we don't necessarily want a different color but we do want to separate the lines, we can use the `group` aesthetic.
 
 ```{r, echo=T}
 AAPLNFLX = tq_get(c("AAPL","NFLX"), from = '2021-01-01', to = '2021-08-01', get = 'stock.prices')
@@ -384,7 +384,7 @@ p + geom_point(aes(color = region), size = 3) +
   labs(x = 'Population', y = 'Total murders', color = 'US Region')
 ```
 
-Note that we get the same color mapping -- this isn't necessarily automatic. Rather, it's because `region` is a factor with *the exact same levels* in both `murders` and `murders.summary`, and `ggplot` assigns colors in level order -- not in the order the rows happen to show up. If the levels didn't match, we'd have to set them using `factor` and overwriting our old `region` column:
+Note that we get the same color mapping -- this is automatic, because every layer in a plot shares one color scale, so `South` gets the same color in both layers as long as it's spelled the same way. What the factor levels control is *which* color each region gets (and the legend order): `ggplot` assigns colors in level order -- not in the order the rows happen to show up. If we want to control that, we set the levels using `factor` and overwrite our old `region` column:
 
 ```{r, echo=T}
 murders.summary = murders %>%
@@ -465,7 +465,7 @@ avg_polls <- polling_data %>%
 combined_data <- merge(electoral_votes, avg_polls, by = "state")
 ```
 
-Then, we need to generate a variable that represents the discrepancy between results (`Obama` and `McCain`) and the polling average (`Obama_avg`). Use `mutate()` to do so.
+Then, we need to generate a variable that represents the discrepancy between results (`Obama` and `McCain`) and the polling averages (`Obama_avg` and `McCain_avg`). Use `mutate()` to do so.
 
 Finally, we want something to cut the data -- below, we have some definitions for region. Use those (perhaps with `case_when()`?) to load in the state-to-region mapping.
 
@@ -492,7 +492,7 @@ You might find the region definitions above to be useful for this (hint: use the
 ggplot(combined_data, aes(x = region, y = Obama_avg - Obama )) + geom_boxplot()
 ```
 
-B: Visualize the relationship between the actual results and the poll results *over time* for the following states: `c('MI','WI','IA','FL','NC','GA')`. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*? To do this, you'll need to merge the final `Obama` and `McCain` results from `electoral_votes` into the original `polling_data`. Both contain `state` columns!
+B: Visualize the relationship between the actual results and the poll results *over time* for the following states: `c('MI','WI','IA','FL','NC','GA')`. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*? To do this, you'll need to merge the final `Obama` and `McCain` results from `electoral_votes` into the original `polling_data`. Both contain `state` columns! (They also both contain `Obama` and `McCain`, so rename one set first or you'll end up with `Obama.x` and `Obama.y`.)
 
 **Make sure you label your axes, legends, and other elements correctly.** You may work in groups of up to three.
 

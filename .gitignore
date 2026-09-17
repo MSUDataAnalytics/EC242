@@ -22,10 +22,13 @@ _docs/renv/
 # This repo lives in a synced folder that creates these continuously.
 # Verified: matches no .qmd source, only build artifacts and data duplicates.
 # Any extension: the per-extension list missed .json, .css, .js and .txt, and
-# two of those reached a commit. Single digit only -- "DOE Schools 2009.shp" is
-# a real shapefile named for a year, and must NOT be ignored.
+# two of those reached a commit. One or two digits only -- "DOE Schools 2009.shp"
+# is a real shapefile named for a year, and must NOT be ignored. (Copies reached
+# " 10" in Sep 2026, which the single-digit rule missed.)
 * [0-9].*
 * [0-9]/
+* [0-9][0-9].*
+* [0-9][0-9]/
 
 # API keys live in ~/.Renviron, never in the project
 .Renviron
