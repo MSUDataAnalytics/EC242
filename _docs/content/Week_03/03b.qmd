@@ -49,6 +49,35 @@ p <- ggplot(data = murders, aes(x = population, y = total, label = abb))
 ```
 
 
+```{r before-after, echo=FALSE, message=FALSE, warning=FALSE, fig.width=11, fig.height=4.8, out.width="100%"}
+library(patchwork)
+(p + geom_point()) |
+  (p + geom_point(aes(color = region), size = 3) +
+     geom_text(nudge_x = .05, size = 3) +
+     scale_x_log10(labels = scales::label_comma(scale_cut = scales::cut_short_scale())) +
+     scale_y_log10(labels = scales::label_comma()) +
+     labs(x = 'Population', y = 'Total murders', color = 'US Region',
+          title = 'US gun murders by state, 2010'))
+```
+
+The left panel is `p + geom_point()`. The right panel is the same `p`. The rest of this page is how you get from one to the other.
+
+## A puzzle
+
+```{r puzzle-data, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyquant)
+AAPLNFLX = tq_get(c("AAPL","NFLX"), from = '2021-01-01', to = '2021-08-01', get = 'stock.prices')
+```
+
+`AAPLNFLX` holds the daily closing price of two stocks, Apple and Netflix, from January through July 2021. One row per stock per day.
+
+```{r puzzle}
+ggplot(AAPLNFLX, aes(x = date, y = close)) +
+  geom_line()
+```
+
+What's wrong with this plot? We'll come back to it.
+
 # Scales and transformations
 
 ## Log transformations
@@ -222,6 +251,8 @@ p + geom_point(aes(color = region), size = 3) +
 
 We don't need the decimals on the y-axis tick labels, it's just there for illustration.
 
+**Try it:** put the murder rate, `total/population`, on the y-axis with `label_percent`.
+
 Sometimes, our axis tick labels are still too long. When numbers get long, we usually have standard ways of representing them (like K, M, B, and T for thousand, million, billion, and trillion). Labeler functions can make this easy for us.
 
 We can use the `labels = label_comma(scale_cut = cut_short_scale())` argument to shorten the display and use the common suffix.
@@ -277,6 +308,8 @@ p + geom_point(aes(color = region), size = 3) +
 
 Combining geometries is as easy as adding the layers with `+`.
 
+**Try it:** move the line to the median state population.
+
 ### `geom_line`
 For a good old line plot, we use the line geometry at `geom_line`. The help for `?geom_line` tells us that we need an x and a y aesthetic (much like `geom_point`). Since our `murders` data isn't really suited to a line graph, we'll use a daily stock price. We'll get this using `tidyquant`, which pulls stock prices from Yahoo Finance and maintains the "tidy" format. You'll need to `install.packages('tidyquant')` before you run this the first time.
 
@@ -303,7 +336,9 @@ ggplot(AAPLNFLX, aes(x = date, y = close)) +
   labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
 ```
 
-That looks kinda strange. That's because, for every date, we have two values - the NFLX and the AAPL value, so each day has a vertical line drawn between the two prices. This is nonsense, especially since what we want to see is the history of NFLX and AAPL over time.
+That's the puzzle from the top of the page. For every date, we have two values - the NFLX and the AAPL value, so each day has a vertical line drawn between the two prices. This is nonsense, especially since what we want to see is the history of NFLX and AAPL over time.
+
+**Try it:** fix it with one change inside `aes()`.
 
 Aesthetics to the rescue! Remember, when we use an aesthetic mapping, we are able to separate out data by things like color or linetype. Let's use color as the aesthetic here, and map it to the stock ticker:
 
@@ -355,6 +390,8 @@ ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
 ```
 
 Now, we don't lose a lot of space to a legend, and we haven't had to use color to separate the stock symbols.
+
+**Try it:** label each line on its last day instead of its 100th.
 
 
 ## Summarizing data and including in ggplot
@@ -483,13 +520,19 @@ West = c('AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY', 'AK', 'CA', 'HI', 'OR',
 
 You are tasked with two different things:
 
-A: Explore and visualize the discrepancies between polls and actual results using `combined_data`. How do you want to go about representing the data? How many observations do you have per state? What about per region?
+A: The discrepancy between polls and results, using `combined_data`. In this order:
 
-You might find the region definitions above to be useful for this (hint: use them with `case_when`).
+- One number per state. Plot the discrepancy for all 51 states, largest to smallest. How many polls went into each state's average? Look at DC's.
+- By region. Add regions with the definitions above and `case_when()`. Do the polls miss by more in some regions than others?
+- The polls and the results don't add to 100. Compute `100 - Obama - McCain` and `100 - Obama_avg - McCain_avg`. Were the polls wrong, or incomplete?
 
 
 ```{r, eval=F, echo=F}
+ggplot(combined_data, aes(x = Obama - Obama_avg, y = reorder(state, Obama - Obama_avg))) + geom_point()
 ggplot(combined_data, aes(x = region, y = Obama_avg - Obama )) + geom_boxplot()
+combined_data %>%
+  mutate(other_poll = 100 - Obama_avg - McCain_avg, other_result = 100 - Obama - McCain) %>%
+  ggplot(aes(x = other_poll - other_result, y = Obama - Obama_avg, label = state)) + geom_text()
 ```
 
 B: Visualize the relationship between the actual results and the poll results *over time* for the following states: `c('MI','WI','IA','FL','NC','GA')`. *Does this relationship change over time?* Or, put another way, *were early polls or later polls more accurate*? To do this, you'll need to merge the final `Obama` and `McCain` results from `electoral_votes` into the original `polling_data`. Both contain `state` columns! (They also both contain `Obama` and `McCain`, so rename one set first or you'll end up with `Obama.x` and `Obama.y`.)
