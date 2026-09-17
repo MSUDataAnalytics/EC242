@@ -36,7 +36,105 @@ execute:
 
 
 
-### Prep
+# Line plots
+
+`AAPLNFLX` holds the daily closing price of two stocks, Apple and Netflix, from January through July 2021.^[Pulled from Yahoo Finance with `tidyquant`: `tq_get(c("AAPL","NFLX"), from = '2021-01-01', to = '2021-08-01', get = 'stock.prices')`. `install.packages('tidyquant')` if you want to pull your own. Yahoo adjusts its history for later stock splits, so these are not the prices you would have seen in 2021.]
+
+```{r stocks-load, echo=FALSE, message=FALSE}
+library(tidyverse)
+AAPLNFLX <- read_csv(here::here('data', 'AAPLNFLX.csv'))
+```
+
+```{r, eval=FALSE}
+library(tidyverse)
+AAPLNFLX <- read_csv('https://ec242.netlify.app/data/AAPLNFLX.csv')
+```
+
+```{r}
+head(AAPLNFLX)
+```
+
+For a good old line plot, we use the line geometry at `geom_line`. The help for `?geom_line` tells us that we need an x and a y aesthetic (much like `geom_point`). We want this to be a time series, so the x-axis will be the date and the y-axis will be the closing price. Apple first:
+
+```{r geomPath, echo=T}
+AAPL <- AAPLNFLX %>% filter(symbol == "AAPL")
+ggplot(AAPL, aes(x = date, y = close)) +
+  geom_line() +
+  labs(x = 'Date', y = 'Closing price', title = 'Apple stock price')
+```
+
+Let's see an example with two stocks:
+
+```{r, echo=T}
+ggplot(AAPLNFLX, aes(x = date, y = close)) +
+  geom_line() +
+  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
+```
+
+**Try it:** make it one line per stock.
+
+Look at one day:
+
+```{r}
+AAPLNFLX %>% filter(date == as.Date('2021-03-01'))
+```
+
+Two rows for one date. In `geom_line`, R will automatically sort on the x-variable. If you don't want this, then `geom_path` will use whatever order the data is in. Either way, if you have multiple observations for the same value on the x-axis, then you'll get something pretty messy because R will try to connect, in some order, all the points. Here, for every date, we have two values - the NFLX and the AAPL value, so each day has a vertical line drawn between the two prices. This is nonsense, especially since what we want to see is the history of NFLX and AAPL over time.
+
+Aesthetics to the rescue! Remember, when we use an aesthetic mapping, we are able to separate out data by things like color or linetype. Let's use color as the aesthetic here, and map it to the stock ticker:
+
+```{r, echo=T}
+ggplot(AAPLNFLX, aes(x = date, y = close, color = symbol)) +
+  geom_line() +
+  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
+```
+Well there we go! We can now see each stock price over time, with a convenient legend. If we don't necessarily want a different color but we do want to separate the lines, we can use the `group` aesthetic.
+
+```{r, echo=T}
+ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
+  geom_line() + 
+  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
+```
+
+Similar result as mapping `color`, but without the color difference (which makes it rather hard to tell what you're looking at). But if we add labels using `geom_label`, we'll get one label for every point, which will be overwhelming. The solution? Use some filtered data so that there is only one point for each label. But that means replacing the `data` in `ggplot`. Here's how.
+
+
+
+# Using different data with different geometries
+
+Just as we can use different aesthetic mappings on each geometry, we can use different *data* entirely. This is useful when we want one geometry to have one set of data (like the stock prices above), but another geometry to only have a subset of the data. Why would we want that? Well, we'd like to label just *one* part of each of the lines in our plot, right? That means we want to label a *subset* of the stock data.
+
+To replace data in a geometry, we just need to specify the `data = ` argument separately:
+
+```{r, echo=T}
+ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
+  geom_line() +
+  geom_label(data = AAPLNFLX %>% group_by(symbol) %>% slice(100),
+             aes(label = symbol),
+             nudge_y = 20) + 
+  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
+```
+
+In `geom_label`, we specified we wanted the 100th observation from each symbol to be the label location. Then, we nudged it up along y by 20 so that it's clear of the line.
+
+R also has a very useful `ggrepel` package that gives us `geom_label_repel` which takes care of the nudging for us, even in complicated situations (lots of points, lines, etc.). It does a decent job here of moving the label to a point where it doesn't cover a lot of data.
+
+```{r, echo=T, message = F, warning = F, error = F}
+library(ggrepel)
+ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
+  geom_line() +
+  geom_label_repel(data = AAPLNFLX %>% group_by(symbol) %>% slice(100),
+             aes(label = symbol)) + 
+  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
+```
+
+Now, we don't lose a lot of space to a legend, and we haven't had to use color to separate the stock symbols.
+
+**Try it:** label each line on its last day instead of its 100th.
+
+
+# Back to the murders data
+
 Load up our `murders` data
 
 ```{r, warning = FALSE, error = FALSE, message = FALSE}
@@ -61,22 +159,6 @@ library(patchwork)
 ```
 
 The left panel is `p + geom_point()`. The right panel is the same `p`. The rest of this page is how you get from one to the other.
-
-## A puzzle
-
-```{r puzzle-data, echo=FALSE, message=FALSE, warning=FALSE}
-library(tidyquant)
-AAPLNFLX = tq_get(c("AAPL","NFLX"), from = '2021-01-01', to = '2021-08-01', get = 'stock.prices')
-```
-
-`AAPLNFLX` holds the daily closing price of two stocks, Apple and Netflix, from January through July 2021. One row per stock per day.
-
-```{r puzzle}
-ggplot(AAPLNFLX, aes(x = date, y = close)) +
-  geom_line()
-```
-
-What's wrong with this plot? We'll come back to it.
 
 # Scales and transformations
 
@@ -310,91 +392,7 @@ Combining geometries is as easy as adding the layers with `+`.
 
 **Try it:** move the line to the median state population.
 
-### `geom_line`
-For a good old line plot, we use the line geometry at `geom_line`. The help for `?geom_line` tells us that we need an x and a y aesthetic (much like `geom_point`). Since our `murders` data isn't really suited to a line graph, we'll use a daily stock price. We'll get this using `tidyquant`, which pulls stock prices from Yahoo Finance and maintains the "tidy" format. You'll need to `install.packages('tidyquant')` before you run this the first time.
-
-```{r getStock, echo=T, warning = FALSE, error = FALSE, message = FALSE}
-library(tidyquant)
-AAPL = tq_get("AAPL", from = '2009-01-01', to = '2021-08-01', get = 'stock.prices')
-head(AAPL)
-```
-
-Now, we can plot a line graph of the Apple closing stock price over the requested date range. We want this to be a time series, so the x-axis will be the date and the y-axis will be the closing price.
-
-```{r geomPath, echo=T}
-ggplot(AAPL, aes(x = date, y = close)) +
-  geom_line() +
-  labs(x = 'Date', y = 'Closing price', title = 'Apple stock price')
-```
-
-In `geom_line`, R will automatically sort on the x-variable. If you don't want this, then `geom_path` will use whatever order the data is in. Either way, if you have multiple observations for the same value on the x-axis, then you'll get something pretty messy because R will try to connect, in some order, all the points. Let's see an example with two stocks:
-
-```{r, echo=T}
-AAPLNFLX = tq_get(c("AAPL","NFLX"), from = '2021-01-01', to = '2021-08-01', get = 'stock.prices')
-ggplot(AAPLNFLX, aes(x = date, y = close)) +
-  geom_line() +
-  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
-```
-
-That's the puzzle from the top of the page. For every date, we have two values - the NFLX and the AAPL value, so each day has a vertical line drawn between the two prices. This is nonsense, especially since what we want to see is the history of NFLX and AAPL over time.
-
-**Try it:** fix it with one change inside `aes()`.
-
-Aesthetics to the rescue! Remember, when we use an aesthetic mapping, we are able to separate out data by things like color or linetype. Let's use color as the aesthetic here, and map it to the stock ticker:
-
-```{r, echo=T}
-AAPLNFLX = tq_get(c("AAPL","NFLX"), from = '2021-01-01', to = '2021-08-01', get = 'stock.prices')
-ggplot(AAPLNFLX, aes(x = date, y = close, color = symbol)) +
-  geom_line() +
-  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
-```
-Well there we go! We can now see each stock price over time, with a convenient legend. If we don't necessarily want a different color but we do want to separate the lines, we can use the `group` aesthetic.
-
-```{r, echo=T}
-AAPLNFLX = tq_get(c("AAPL","NFLX"), from = '2021-01-01', to = '2021-08-01', get = 'stock.prices')
-ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
-  geom_line() + 
-  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
-```
-
-Similar result as mapping `color`, but without the color difference (which makes it rather hard to tell what you're looking at). But if we add labels using `geom_label`, we'll get one label for every point, which will be overwhelming. The solution? Use some filtered data so that there is only one point for each label. But that means replacing the `data` in `ggplot`. Here's how.
-
-
-
-# Using different data with different geometries
-
-Just as we can use different aesthetic mappings on each geometry, we can use different *data* entirely. This is useful when we want one geometry to have one set of data (like the stock prices above), but another geometry to only have a subset of the data. Why would we want that? Well, we'd like to label just *one* part of each of the lines in our plot, right? That means we want to label a *subset* of the stock data.
-
-To replace data in a geometry, we just need to specify the `data = ` argument separately:
-
-```{r, echo=T}
-ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
-  geom_line() +
-  geom_label(data = AAPLNFLX %>% group_by(symbol) %>% slice(100),
-             aes(label = symbol),
-             nudge_y = 20) + 
-  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
-```
-
-In `geom_label`, we specified we wanted the 100th observation from each symbol to be the label location. Then, we nudged it up along y by 20 so that it's clear of the line.
-
-R also has a very useful `ggrepel` package that gives us `geom_label_repel` which takes care of the nudging for us, even in complicated situations (lots of points, lines, etc.). It does a decent job here of moving the label to a point where it doesn't cover a lot of data.
-
-```{r, echo=T, message = F, warning = F, error = F}
-library(ggrepel)
-ggplot(AAPLNFLX, aes(x = date, y = close, group = symbol)) +
-  geom_line() +
-  geom_label_repel(data = AAPLNFLX %>% group_by(symbol) %>% slice(100),
-             aes(label = symbol)) + 
-  labs(x = 'Date', y = 'Closing price', title = 'Apple and Netflix stock price')
-```
-
-Now, we don't lose a lot of space to a legend, and we haven't had to use color to separate the stock symbols.
-
-**Try it:** label each line on its last day instead of its 100th.
-
-
-## Summarizing data and including in ggplot
+# Summarizing data and including in ggplot
 Often, we'll want to have lines or highlights in places that are derived from the data. In the above example from `murders`, we added a line at an arbitrary x-value (population) of 1,000,000. Often, though, **we'll want to show some summary of the data** on the plot. That also requires using a second dataset (derived from the first).
 
 Let's say we want to show the average state population for each region. We'll need to use two different data objects, one for the original, one for the summary. Create the summary first:
