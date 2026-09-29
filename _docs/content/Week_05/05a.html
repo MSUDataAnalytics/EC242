@@ -669,7 +669,6 @@ window.Quarto = {
 <li>Map both with <code>geom_sf()</code>: <code>holc</code> filled by <code>grade</code>, the houses on top as points. Use <code>size = .2, alpha = .3</code> for the points or they will bury the map.</li>
 <li>Which grade has lost the most houses? Count them.</li>
 </ol>
-<p>Step 3 needs a spatial join. That is most of today.</p>
 </div>
 </div>
 <div class="cell">
@@ -1127,12 +1126,12 @@ Dimension:     XY
 Bounding box:  xmin: -115.7061 ymin: 31.5082 xmax: -111.5061 ymax: 39.30285
 Geodetic CRS:  NAD83
                         Name Description randomData STATEFP  STATENS
-1             Lower Colorado                     26      06 01779778
-1.1           Lower Colorado                     26      32 01779793
-1.2           Lower Colorado                     26      04 01779777
-2   Lower Colorado-Lake Mead                     23      49 01455989
-2.1 Lower Colorado-Lake Mead                     23      32 01779793
-2.2 Lower Colorado-Lake Mead                     23      04 01779777
+1             Lower Colorado                     15      06 01779778
+1.1           Lower Colorado                     15      32 01779793
+1.2           Lower Colorado                     15      04 01779777
+2   Lower Colorado-Lake Mead                     17      49 01455989
+2.1 Lower Colorado-Lake Mead                     17      32 01779793
+2.2 Lower Colorado-Lake Mead                     17      04 01779777
         GEOIDFQ GEOID STUSPS       NAME LSAD        ALAND      AWATER
 1   0400000US06    06     CA California   00 403673433805 20291632828
 1.1 0400000US32    32     NV     Nevada   00 284537045743  1839880833
@@ -1174,12 +1173,12 @@ Dimension:     XY
 Bounding box:  xmin: -121.255 ymin: 31.5082 xmax: -111.5061 ymax: 42.3448
 Geodetic CRS:  NAD83
                           Name Description randomData STATEFP  STATENS
-1               Lower Colorado                     26      04 01779777
-2     Lower Colorado-Lake Mead                     23      04 01779777
-3    Northern Mojave-Mono Lake                     15      06 01779778
+1               Lower Colorado                     15      04 01779777
+2     Lower Colorado-Lake Mead                     17      04 01779777
+3    Northern Mojave-Mono Lake                     18      06 01779778
 4 Central Nevada Desert Basins                     17      32 01779793
 5               North Lahontan                     16      06 01779778
-6   Black Rock Desert-Humboldt                     24      32 01779793
+6   Black Rock Desert-Humboldt                     19      32 01779793
       GEOIDFQ GEOID STUSPS       NAME LSAD        ALAND      AWATER
 1 0400000US04    04     AZ    Arizona   00 294366118294   853991999
 2 0400000US04    04     AZ    Arizona   00 294366118294   853991999
@@ -1208,12 +1207,12 @@ Dimension:     XY
 Bounding box:  xmin: -121.255 ymin: 31.5082 xmax: -111.5061 ymax: 42.3448
 Geodetic CRS:  NAD83
                           Name Description randomData STATEFP STATENS GEOIDFQ
-1               Lower Colorado                     26    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-2     Lower Colorado-Lake Mead                     23    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-3    Northern Mojave-Mono Lake                     15    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+1               Lower Colorado                     15    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+2     Lower Colorado-Lake Mead                     17    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+3    Northern Mojave-Mono Lake                     18    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
 4 Central Nevada Desert Basins                     17    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
 5               North Lahontan                     16    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-6   Black Rock Desert-Humboldt                     24    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
+6   Black Rock Desert-Humboldt                     19    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
   GEOID STUSPS NAME LSAD ALAND AWATER                       geometry
 1  &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    NA     NA POLYGON ((-114.6233 36.0304...
 2  &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    NA     NA POLYGON ((-115.0786 39.3005...
@@ -1241,11 +1240,11 @@ Dimension:     XY
 Bounding box:  xmin: -120.4649 ymin: 35.20662 xmax: -114.7152 ymax: 42.3448
 Geodetic CRS:  NAD83
                             Name Description randomData STATEFP  STATENS
-6     Black Rock Desert-Humboldt                     24      06 01779778
-6.1   Black Rock Desert-Humboldt                     24      32 01779793
-6.2   Black Rock Desert-Humboldt                     24      41 01155107
-7               Central Lahontan                     13      06 01779778
-7.1             Central Lahontan                     13      32 01779793
+6     Black Rock Desert-Humboldt                     19      06 01779778
+6.1   Black Rock Desert-Humboldt                     19      32 01779793
+6.2   Black Rock Desert-Humboldt                     19      41 01155107
+7               Central Lahontan                     12      06 01779778
+7.1             Central Lahontan                     12      32 01779793
 4   Central Nevada Desert Basins                     17      06 01779778
         GEOIDFQ GEOID STUSPS       NAME LSAD        ALAND      AWATER
 6   0400000US06    06     CA California   00 403673433805 20291632828
@@ -1293,12 +1292,12 @@ Dimension:     XY
 Bounding box:  xmin: -120.4649 ymin: 32.2603 xmax: -111.5061 ymax: 41.10578
 Geodetic CRS:  NAD83
                             Name randomData STUSPS
-1.2               Lower Colorado         26     AZ
-2.2     Lower Colorado-Lake Mead         23     AZ
-6     Black Rock Desert-Humboldt         24     CA
-7               Central Lahontan         13     CA
+1.2               Lower Colorado         15     AZ
+2.2     Lower Colorado-Lake Mead         17     AZ
+6     Black Rock Desert-Humboldt         19     CA
+7               Central Lahontan         12     CA
 4   Central Nevada Desert Basins         17     CA
-1                 Lower Colorado         26     CA
+1                 Lower Colorado         15     CA
                           geometry
 1.2 POLYGON ((-114.8165 32.5069...
 2.2 POLYGON ((-114.7368 36.0159...
@@ -1332,12 +1331,12 @@ Geodetic CRS:  NAD83
 # A tibble: 6 × 3
   STUSPS mean.randomData                                                geometry
   &lt;chr&gt;            &lt;dbl&gt;                                          &lt;GEOMETRY [°]&gt;
-1 AZ                24.3 POLYGON ((-114.7368 36.01591, -114.737 36.01577, -114.…
-2 CA                16.3 POLYGON ((-118.9235 38.25064, -118.9497 38.26894, -118…
-3 ID                24.5 POLYGON ((-117.243 44.39097, -117.2351 44.37385, -117.…
-4 MT                26   MULTIPOLYGON (((-111.3842 44.75446, -111.3846 44.75484…
-5 NV                19.9 POLYGON ((-118.7021 38.09324, -118.6216 38.03439, -118…
-6 OR                24.2 POLYGON ((-116.7012 45.24284, -116.7016 45.24301, -116…</code></pre>
+1 AZ                16.1 POLYGON ((-114.7368 36.01591, -114.737 36.01577, -114.…
+2 CA                17.1 POLYGON ((-118.9235 38.25064, -118.9497 38.26894, -118…
+3 ID                20.2 POLYGON ((-117.243 44.39097, -117.2351 44.37385, -117.…
+4 MT                19   MULTIPOLYGON (((-111.3842 44.75446, -111.3846 44.75484…
+5 NV                17.3 POLYGON ((-118.7021 38.09324, -118.6216 38.03439, -118…
+6 OR                23.5 POLYGON ((-116.7012 45.24284, -116.7016 45.24301, -116…</code></pre>
 </div>
 </div>
 <p><code>sf</code> with the <code>tidyverse</code> makes it really easy to apply spatial versions of <code>summarize</code> and <code>mutate</code>. Very useful.</p>

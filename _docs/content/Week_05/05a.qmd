@@ -33,8 +33,6 @@ demos = read_csv('https://ec242.netlify.app/data/detroit_demolitions.csv')
 1. `holc` is spatial. `demos` is a plain table. Make it spatial: `st_as_sf(demos, coords = c('lon', 'lat'), crs = 4326)`.
 2. Map both with `geom_sf()`: `holc` filled by `grade`, the houses on top as points. Use `size = .2, alpha = .3` for the points or they will bury the map.
 3. Which grade has lost the most houses? Count them.
-
-Step 3 needs a spatial join. That is most of today.
 :::
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
