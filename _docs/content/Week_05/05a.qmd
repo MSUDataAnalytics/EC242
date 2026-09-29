@@ -18,6 +18,37 @@ library(tidyverse)
 library(here)
 ```
 
+# Warm-up
+
+::: {.callout-note}
+## Try it
+
+Two files. `holc` is the 1939 [HOLC map of Detroit](https://dsl.richmond.edu/panorama/redlining): one polygon per neighborhood, graded A ("best") to D ("hazardous"). `demos` is every house the City of Detroit has demolished since 2019 -- one row per house, with a longitude and latitude.
+
+```{r, eval=FALSE}
+holc  = st_read('https://ec242.netlify.app/data/detroit_holc_1939.geojson')
+demos = read_csv('https://ec242.netlify.app/data/detroit_demolitions.csv')
+```
+
+1. `holc` is spatial. `demos` is a plain table. Make it spatial: `st_as_sf(demos, coords = c('lon', 'lat'), crs = 4326)`.
+2. Map both with `geom_sf()`: `holc` filled by `grade`, the houses on top as points. Use `size = .2, alpha = .3` for the points or they will bury the map.
+3. Which grade has lost the most houses? Count them.
+
+Step 3 needs a spatial join. That is most of today.
+:::
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+holc  = st_read(here('data', 'detroit_holc_1939.geojson'), quiet = TRUE)
+demos = read_csv(here('data', 'detroit_demolitions.csv'), show_col_types = FALSE)
+demos.sf = st_as_sf(demos, coords = c('lon', 'lat'), crs = 4326)
+
+ggplot() +
+  geom_sf(data = holc, aes(fill = grade), color = NA) +
+  geom_sf(data = demos.sf, size = .2, alpha = .3) +
+  scale_fill_manual(values = c('A' = 'darkgreen', 'B' = 'blue', 'C' = 'yellow', 'D' = 'red')) +
+  theme_minimal()
+```
+
 # Reading spatial data
 While it's fun to draw our own shapes (caution: my definition of fun $\neq$ your definition of fun), we're probably most interested in finding and using existing spatial data. Let's talk briefly about the types of spatial data out there:
 
@@ -209,6 +240,22 @@ ggplot() +
 
 Huh. Most gas plants in Michigan are to the north of here. Interesting.
 
+**Try it:** back to the warm-up. `st_join` the houses to `holc`, then count by `grade`.
+
+```{r}
+demos.sf = st_as_sf(demos, coords = c('lon', 'lat'), crs = 4326) %>%
+  st_transform(st_crs(holc))
+
+demos.by.grade = demos.sf %>%
+  st_join(holc, left = TRUE) %>%
+  st_drop_geometry() %>%
+  count(grade)
+
+demos.by.grade
+```
+
+The `NA` row is houses that fall outside every graded area.
+
 ## Mapview
 Sometimes, we want to be able to zoom in and out. `ggplot` is static, so that won't work too well. Thanks to the `leaflet` engine, the `mapview` package is stellar for exploration of spatial data. You can specify `zcol = 'NAME'` if you want to color by the `NAME` field -- `zcol` wants the column name in quotes. I can't embed this in the website, but you can run this at home. It will appear in the "Viewer" pane, not in the "Plots" pane. Unlike the static image here, you will be able to zoom and pan.
 
@@ -350,6 +397,27 @@ head(poly.int.summary)
 `sf` with the `tidyverse` makes it really easy to apply spatial versions of `summarize` and `mutate`. Very useful.
 
 If we had wanted to just take the average (ignoring area), we'd just leave out the `w = State.HUC.area` or just use `mean`. If we had wanted to take, say, the minimum, we would use `min(randomData)` instead of `weighted.mean`. We can use whatever function we want in `summarize`, just as we did with non-spatial data.
+
+**Try it:** the warm-up counts again, per square kilometer this time. `st_area` on `holc`, sum it by `grade`, divide.
+
+```{r}
+holc %>%
+  mutate(km2 = as.numeric(st_area(.)) / 1e6) %>%
+  st_drop_geometry() %>%
+  group_by(grade) %>%
+  summarize(km2 = sum(km2)) %>%
+  left_join(demos.by.grade, by = 'grade') %>%
+  mutate(per_km2 = n / km2)
+```
+
+::: {.callout-note}
+# Let's discuss
+
+Why isn't D the highest?
+
+What would be a better denominator than area, and where would you get it?
+
+:::
 
 ## Choosing the right summarization
 
@@ -599,9 +667,27 @@ erase_water(area_threshold = .999)
 ggplot(MI) + geom_sf()
 ```
 
+# One more
 
+::: {.callout-note}
+## Try it
 
+270 Michigan breweries, from [Open Brewery DB](https://www.openbrewerydb.org/), each with a longitude and latitude.
 
+```{r, eval=FALSE}
+breweries = read_csv('https://ec242.netlify.app/data/breweries_mi.csv')
+```
 
+1. Make it spatial and put it on `MI.counties`.
+2. Which county has the most breweries? `st_join`, then `count`.
+3. Which brewery is closest to Beaumont Tower, at longitude -84.4823 and latitude 42.7319? Build a one-row `sf` for the tower (a one-row tibble through `st_as_sf`), then `st_nearest_feature`.
+4. How many breweries are within 50 km of the tower? `st_buffer` the tower by 50000 (meters, as in the Great Lakes example), then `st_join`.
+:::
 
-
+```{r, eval=FALSE, echo=FALSE}
+breweries.sf = st_as_sf(breweries, coords = c('lon', 'lat'), crs = 4326) %>% st_transform(st_crs(MI.counties))
+breweries.sf %>% st_join(MI.counties) %>% st_drop_geometry() %>% count(NAME, sort = TRUE)   # Kent 29, Oakland 25, Wayne 19
+tower = st_as_sf(tibble(lon = -84.4823, lat = 42.7319), coords = c('lon', 'lat'), crs = 4326) %>% st_transform(st_crs(breweries.sf))
+breweries.sf$name[st_nearest_feature(tower, breweries.sf)]                                   # Harpers, 0.4 km
+breweries.sf %>% st_join(st_buffer(tower, 50000), left = FALSE) %>% NROW()                    # 19
+```
