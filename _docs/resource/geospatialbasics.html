@@ -575,7 +575,7 @@ window.Quarto = {
 </ul></li>
 <li>GEOJSON
 <ul>
-<li>JSON is a way of structuring text data (like a .csv) but with the potential for nests in the data (like our <code>list</code> object) where each nest has a different data structure. GEOJSON pairs this with <strong>WKT</strong> or Well-Known Text representations of coordinates and takes care of making sure that each observation in the JSON data has a corresponding polygon in WKT coordinates.</li>
+<li>JSON is a way of structuring text data (like a .csv) but with the potential for nests in the data (like our <code>list</code> object) where each nest has a different data structure. GEOJSON pairs this with a <strong>geometry</strong> field – the coordinates of each point or polygon, stored as nested arrays – and takes care of making sure that each observation in the JSON data has a corresponding shape.</li>
 </ul></li>
 <li>KML
 <ul>
@@ -613,7 +613,7 @@ window.Quarto = {
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `natural-gas-processing-plants' from data source 
-  `D:\Courses\EC242\data\natural-gas-processing-plants.geojson' 
+  `/Users/bbushong/Documents/GitHub/EC242/data/natural-gas-processing-plants.geojson' 
   using driver `GeoJSON'
 Simple feature collection with 478 features and 18 fields
 Geometry type: POINT
@@ -707,6 +707,7 @@ PROJCRS["WGS 84 / Pseudo-Mercator",
             MEMBER["World Geodetic System 1984 (G1674)"],
             MEMBER["World Geodetic System 1984 (G1762)"],
             MEMBER["World Geodetic System 1984 (G2139)"],
+            MEMBER["World Geodetic System 1984 (G2296)"],
             ELLIPSOID["WGS 84",6378137,298.257223563,
                 LENGTHUNIT["metre",1]],
             ENSEMBLEACCURACY[2.0]],

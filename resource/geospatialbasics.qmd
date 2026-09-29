@@ -142,7 +142,7 @@ While it's fun to draw our own shapes (caution: my definition of fun $\neq$ your
   - Shapefiles are not actually single files - they're usually 4-6 files with similar names and different suffixes like .dbf, .shx, etc. This is because the shapefile format kind of pre-dates our current way of thinking of file storage. The most common program for reading or making shapefiles is ESRI's ArcGIS. It is expensive, cumbersome, and some may say bloated. Our goal in this section is to be able to rescue shapefiles from the clutches of ArcGIS and open them in R
   
 - GEOJSON
-  - JSON is a way of structuring text data (like a .csv) but with the potential for nests in the data (like our `list` object) where each nest has a different data structure. GEOJSON pairs this with **WKT** or Well-Known Text representations of coordinates and takes care of making sure that each observation in the JSON data has a corresponding polygon in WKT coordinates.
+  - JSON is a way of structuring text data (like a .csv) but with the potential for nests in the data (like our `list` object) where each nest has a different data structure. GEOJSON pairs this with a **geometry** field -- the coordinates of each point or polygon, stored as nested arrays -- and takes care of making sure that each observation in the JSON data has a corresponding shape.
   
 - KML
   - Bare-bones storage of coordinates and basic data

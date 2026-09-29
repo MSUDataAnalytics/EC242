@@ -7,7 +7,7 @@ output:
 ---
 
 
-### Some new packages
+## Some new packages
 We'll be using `tmaptools` geocoder today, so you'll need to install that package. And `tigris` if you didn't already. And `mapview`, which shows up later on -- I can't embed its output in the website, so those chunks don't run here, but you'll want it installed if you're playing along at home.
 
 ```{r}
@@ -25,7 +25,7 @@ While it's fun to draw our own shapes (caution: my definition of fun $\neq$ your
   - Shapefiles are not actually single files - they're usually 4-6 files with similar names and different suffixes like .dbf, .shx, etc. This is because the shapefile format kind of pre-dates our current way of thinking of file storage. The most common program for reading or making shapefiles is ESRI's ArcGIS. It is expensive, cumbersome, and some may say bloated. Our goal in this section is to be able to rescue shapefiles from the clutches of ArcGIS and open them in R
   
 - GEOJSON
-  - JSON is a way of structuring text data (like a .csv) but with the potential for nests in the data (like our `list` object) where each nest has a different data structure. GEOJSON pairs this with **WKT** or Well-Known Text representations of coordinates and takes care of making sure that each observation in the JSON data has a corresponding polygon in WKT coordinates.
+  - JSON is a way of structuring text data (like a .csv) but with the potential for nests in the data (like our `list` object) where each nest has a different data structure. GEOJSON pairs this with a **geometry** field -- the coordinates of each point or polygon, stored as nested arrays -- and takes care of making sure that each observation in the JSON data has a corresponding shape.
   
 - KML
   - Bare-bones storage of coordinates and basic data
@@ -38,22 +38,19 @@ While it's fun to draw our own shapes (caution: my definition of fun $\neq$ your
 
 We can open and use any one of these filetypes. I will cover Shapefiles and GEOJSON as the latter has become a very popular way of sharing spatial datasets.
 
-### Where to find spatial data
+## Where to find spatial data
 We'll go through more on finding data on Thursday. But for now, let's use some data from the HIFLD Open Database, which ~~is one of my favorite sources for spatial data put out by the DHS [HIFLD Open database](https://hifld-geoplatform.hub.arcgis.com). It has lots of government datasets that are well-organized by category. Click through, choose the "open" database, and when you find something you like, click the "Download" button.~~ 
 
 As of November 2025, this dataset has been taken offline. I have a copy of the publicly available geojson file so that I can continue to use this lesson. You can load it from [this link](/data/natural-gas-processing-plants.geojson). 
 
 
-### Loading the data
+## Loading the data
 We'll use the `sf` package's `st_read` to open spatial data. Here, I'm loading the Natural Gas Processing Plants data from the Energy section of HIFLD. I'm using the **GeoJSON** option, which `st_read()` knows how to handle:
 ```{r, echo=F}
 library(sf)
 ```
 
 ```{r, eval = F, echo=T}
-# gasplants = st_read('https://services7.arcgis.com/FGr1D95XCGALKXqM/arcgis/rest/services/NaturalGas_ProcessingPlants_US_EIA/FeatureServer/23/query?outFields=*&where=1%3D1&f=geojson') %>%
-#   dplyr::select(name = Plant_Name)
-
 gasplants = st_read('https://ec242.netlify.app/data/natural-gas-processing-plants.geojson') %>%
   dplyr::select(name = Plant_Name)
 
@@ -100,7 +97,7 @@ ggplot() + geom_sf(data = MI, col = 'gray50') +
 
 Well, now we have a different problem. We want to have only the `gasplants` that are `over` the state of Michigan. That requires a **spatial join**. Luckily, our `tidyverse` syntax **works pretty seamlessly on `sf` objects**. First, we have to take care of a little issue with spatial data. The **projection**
 
-### Projections, briefly
+## Projections, briefly
 
 The *projection* for spatial data is the translation from a 3-D object (e.g. the globe) to a 2-D space (a map, or the cartesian x-y coordinates of our screen). This is no simple matter! There are entire PhD programs dedicated to forming and processing projections and datum (which refer to the shape of the globe, which is not actually round). It can all be a nightmare. Worst of all, projections determine the definition of your coordinates, so you may be at -81 longitude, +30 latitude, but in another projection, you might be 1245349m above some reference point, and -2452849m to the left of that point. Projections define the distance along the X and Y axis, the scale of the coordinates, and a lot of other stuff about your 2-D polygons.
 
@@ -110,7 +107,7 @@ Luckily, over the last few years, very smart people have been working on regular
 2. The *projection* you want your data to be in when you map it
 3. The *projection* of other spatial data you may want to combine.
 
-#### Importing projected data
+### Importing projected data
 GEOJSON, shapefiles, and KML files usually come with embedded projections stored as **EPSG** numbers like '4326' (incidentally, '4326' is the usual projection for GPS coordinates). Thus, the first one is usually already taken care of. If your data doesn't have a PROJ4 or EPSG number but the coordinates are all between -180 and +180, it's likely in EPSG=4326. If none of those, then the data creator should have *metadata* stating the projection. It might take some googling and some trial and error.
 
 For mapping, you might need to *transform* your data between projections (or "reproject" it, same thing). We use `st_transform` for this. We only need to give `R` the EPSG (Geodetic Parameter Dataset) of the projection you want to end up in. As long as it's already in a known projection, `R` can re-project it. The projection is referred to by the Coordinate Reference System (CRS). `st_crs` will tell us the projection (EPSG number and a lot more) of any spatial object. If they do not match, then `R` will give an error or, worse, plot them on totally different scales - sometimes you end up with points from the US landing in the middle of the Indian Ocean! Look back at our map of gas plants and the US: that one came out fine anyway, because `ggplot` quietly re-projects every `geom_sf()` layer into the CRS of the first one. `st_join()` does no such favor -- it just errors. 
@@ -133,7 +130,7 @@ ggplot(gasplants) + geom_sf() + theme_minimal()
 But in a bit, when we spatially join, we'll avoid an error.
 
 
-#### Importing unprojected data
+### Importing unprojected data
 Sometimes, we have data only in .csv format, but with X and Y coordinates (e.g. Longitude and Latitude). To import this data, we do the following:
 
 - Read in from .csv, .xls, etc.
@@ -167,7 +164,7 @@ ggplot() +
   theme_minimal()
 ```
 
-#### Mis-projected data
+### Mis-projected data
 
 Let's see a *bad* example that assumes the wrong projection when importing `ourCities.spatial`:
 
@@ -182,13 +179,13 @@ ggplot() +
 **Ope!** That sure doesn't look right. The wrong projection can derail a project. Luckily, most shapefiles we find in the wild have the projection (CRS) attached. Now you know what a bad one looks like. Back to our correctly-projected data.
 
 
-## Spatial merges
+# Spatial merges
 Combining spatial data is the strength of geospatial analysis. We have our map of MI, and we have our points. Let's "merge" the points to the map, meaning let's connect the elements in our map (the state of MI) to the elements in our points (gas plants). This is a point-to-polygon merge.
 
-### Point-to-polygon merges
+## Point-to-polygon merges
 We'll use `st_join` to produce an inner join, so we keep only those points that are "in" (spatially) the state of Michigan. I'm specifying `join = st_intersects` though this is the default. Note that all the points that remain in the merged `MI.gasplants` are in Michigan, and note that all the data columns from `MI.counties` are now in `MI.gasplants`. We'll use a county map of MI here so we will have the *county* data for each county containing a gas plant.
 
-```{r, warning = F, message = F, result = 'hide'}
+```{r, warning = F, message = F}
 
 MI.counties = counties(state = 'MI', cb = TRUE, progress_bar = FALSE)
 
@@ -212,7 +209,7 @@ ggplot() +
 
 Huh. Most gas plants in Michigan are to the north of here. Interesting.
 
-### Mapview
+## Mapview
 Sometimes, we want to be able to zoom in and out. `ggplot` is static, so that won't work too well. Thanks to the `leaflet` engine, the `mapview` package is stellar for exploration of spatial data. You can specify `zcol = 'NAME'` if you want to color by the `NAME` field -- `zcol` wants the column name in quotes. I can't embed this in the website, but you can run this at home. It will appear in the "Viewer" pane, not in the "Plots" pane. Unlike the static image here, you will be able to zoom and pan.
 
 ```
@@ -241,7 +238,7 @@ knitr::include_graphics(here('images','mapview_ex2.png'))
 ```
 
 
-### Polygon-to-polygon merges
+## Polygon-to-polygon merges
 The gas plants and state merge, above, was very simple because points are always either within or not within a polygon. Worst that can happen is some of your points are not over any polygon at all (resulting in `NA` values). But what if you're merging polygons to polygons?
 
 First, let's load some (overlapping) polygons. We can load up all of our states again (dropping the territories). We'll also use a map of watersheds (which cross state boundaries). This is the HUC-4 map of the Rockies from the [US Geological Survey](https://hub.arcgis.com/datasets/7f8632f3e3114623b4f5c8f97d935dca_1?geometry=-157.095%2C32.305%2C-73.379%2C44.324). The HUC-4 is a definition of a watershed where the area of the HUC-4 is the area drained by a major tributary:
@@ -296,7 +293,7 @@ HUC4 %>%
 
 None of the HUC-4's completely cover a state, so we get `NA` for all the state data.
 
-### `st_intersection()`
+## `st_intersection()`
 
 The other thing we can do is ask `R` to create separate polygons - one for every HUC-4 / state combination. That isn't a merge, but it plays a similar role. Note this uses `st_intersection`:
 
@@ -319,7 +316,7 @@ ggplot() +
 
 Here, I've set the fill to the state, but you can see that the HUC-4's have boundaries at the state line.
 
-### Summarizing 
+## Summarizing 
 Our `summarize` function let us collapse by groups and calculate interesting things like average (over a group or region). The neat part is that *it works on spatial data as well*. Let's look at the data again:
 
 ```{r}
@@ -354,7 +351,7 @@ head(poly.int.summary)
 
 If we had wanted to just take the average (ignoring area), we'd just leave out the `w = State.HUC.area` or just use `mean`. If we had wanted to take, say, the minimum, we would use `min(randomData)` instead of `weighted.mean`. We can use whatever function we want in `summarize`, just as we did with non-spatial data.
 
-### Choosing the right summarization
+## Choosing the right summarization
 
 What's the "right" way to summarize data after using `st_intersection`? Well, it's going to depend on the data context. Above, we used the area-weighted mean to take the data from the smaller parts and add it up to the larger state measure.
 
@@ -370,7 +367,7 @@ What other ways could we weight data?
 :::
 
 
-## Cropping vs. merging
+# Cropping vs. merging
 Sometimes, we wish to only crop to a region rather than merging. `sf` has the `st_crop` function to do this. Let's crop our `HUC-4` data to just the **bounding box** of the state of Nevada
 
 ```{r, echo=T, warning = F, message = F}
@@ -398,7 +395,7 @@ ggplot(HUC4.nv) + geom_sf(aes(fill = Name), show.legend = F) +
 
 Note that the data for each HUC-4 remains unchanged. If there were something in that data (like "population" or "area") that is specific to the entire polygon representing the HUC, then cropping the HUC outside of Nevada may lead to misleading data. The moral of the story is: be careful and thoughtful!
 
-### Bounding boxes
+## Bounding boxes
 
 This introduces a useful concept: the *bounding box*. The bounding box is the smallest box -- given by an `xmin`, `ymin`, `xmax`, and `ymax` -- that perfectly encloses the object (even when the object is not a rectangle). The extent of the above plot is the bounding box for Nevada.
 
@@ -439,7 +436,7 @@ ggplot(mi.redlining) +
 ```
 
 
-## Distance matrices
+# Distance matrices
 One of the most common spatial statistics we'd use in data analytics is the *distance* matrix. If we have a set of points and we think that we can explain some data about those points (unemployment, ag production, murders per capita) based on the distance to some explanatory source (gas plants, superfund site, etc.), then we might want to include *distance to gas plants* in our model as a predictor. Frequently, we'll use inverse distance, $\frac{1}{d}$, so that closer things can have more of an impact. To do this, we need a distance matrix.
 
 Let's combine our `gasplants` and our `ourCities` to get the distance from each of our cities to the nearest gas plant. Maybe we have city-level data on student achievements and we want to see if gas plants lower student achievement. While we would need a lot more information to make this model, we can look at what we have for now.
@@ -482,7 +479,7 @@ max.index
 
 we want to select from our distance matrix the 1st row, 3rd column; the 2nd row, 3rd column; 3rd row, 4th column; 4th row, 4th column; 5th row, 2nd column; and 6th row, 1st column. This means the row index and column index are not ranges, but are paired. Using `cbind(1:6, max.index)` makes them paired entries, and we can select specific row x column combinations that way.
 
-### st_nearest_feature
+## st_nearest_feature
 As is common in R, there is a function that will get the closest points between two spatial objects. `st_nearest_feature` takes two geometries, and returns the *index* of the nearest feature in `y` for every point in `x`, which is what we did with the MI gas plants.
 
 ```{r}
@@ -501,7 +498,7 @@ ourCities %>% dplyr::mutate(Closest.GreatLake = GL$FEAT_NAME[closest.GL.index])
 ```
 
 
-### Proximity-based merges
+## Proximity-based merges
 What if we wanted to identify every polygon (or point) within some distance (say, "X km") of a gasplant rather than finding the closest gasplant? Of course, we could do the above steps, and then filter the distance matrix to keep only those within X km. Or, we could look for the polygons that intersect an X km circle around a gasplant. Doing this is easy in R.
 
 To do so, we use `st_buffer()` along with a distance in some linear measure (meters, say, rather than degrees of lat or lon). This is because a degree of longitude *changes* when we get closer to the poles. Let's find all counties in Michigan that are within 50 km of any Great Lake. To do so, we first buffer our Great Lakes by 50km. `GL` is in EPSG:4269, whose *coordinates* are degrees -- but when the data are lon/lat, `sf` does the geometry on the sphere and takes `dist` in meters anyway, so we can buffer by 50,000:
@@ -564,7 +561,7 @@ MI.lakeside.counties %>%
   labs(fill = 'Near Great Lake')
 ```
 
-## Other resources
+# Other resources
 - Claudia Engel's "[Using Spatial Data with R](https://cengel.github.io/R-spatial/)" is a very useful resource. It covers `sf` and an older geospatial library called `sp` that has similar functionality but was not tidyverse-friendly. 
 
 - The [Rstudio Spatial Cheat Sheet](https://rstudio.github.io/cheatsheets/sf.pdf).
