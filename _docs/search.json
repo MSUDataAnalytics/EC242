@@ -3346,7 +3346,7 @@
     "href": "content/Week_07/07b.html",
     "title": "Introduction to Regression",
     "section": "",
-    "text": "For this example, we’re going to use historical weather data from Dark Sky about wind speed and temperature trends for downtown Atlanta (specifically 33.754557, -84.390009) in 2019. We downloaded this data using Dark Sky’s (about-to-be-retired-because-they-were-bought-by-Apple) API using the darksky package.\nIf you want to follow along with this example, you can download the data below (you’ll likely need to right click and choose “Save Link As…” and place it in a data folder next to your working R script):\n\n atl-weather-2019.csv",
+    "text": "Today we will use a regression line to make a prediction, interpret its slope, and inspect its mistakes. By the end, you should be able to use lm(), extract the coefficients, draw the fitted line, and explain what a residual means. You will need those skills for Lab 7.\nKeep four questions in mind:\n\nWhat does a regression line add to a correlation?\nWhat does the slope mean in the units of our data?\nHow much better is the line than giving everyone the same prediction?\nWhat can a convincing-looking line still get wrong?",
     "crumbs": [
       "Course Content",
       "Week 07",
@@ -4721,6 +4721,198 @@
       "Course Content",
       "Week 06",
       "Uncertainty"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#before-we-start",
+    "href": "content/Week_07/07b.html#before-we-start",
+    "title": "Introduction to Regression",
+    "section": "",
+    "text": "Today we will use a regression line to make a prediction, interpret its slope, and inspect its mistakes. By the end, you should be able to use lm(), extract the coefficients, draw the fitted line, and explain what a residual means. You will need those skills for Lab 7.\nKeep four questions in mind:\n\nWhat does a regression line add to a correlation?\nWhat does the slope mean in the units of our data?\nHow much better is the line than giving everyone the same prediction?\nWhat can a convincing-looking line still get wrong?",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#the-data-and-its-units",
+    "href": "content/Week_07/07b.html#the-data-and-its-units",
+    "title": "Introduction to Regression",
+    "section": "The data and its units",
+    "text": "The data and its units\nOur source is the U.S. Census Bureau’s 2020–2024 American Community Survey five-year estimates. These estimates combine five years of survey responses. Income amounts are expressed in 2024 inflation-adjusted dollars.\nDownload the prepared file:\n\n county_education_income_2024.csv\nSource tables, variable codes, and preparation notes\n\nThe file contains 3,144 counties and county equivalents in the 50 states and D.C. One county has no usable income estimate; our income examples use the remaining 3,143. All three regressions below use the same rows.\n\n\n\n\n\n\n\n\nVariable\nMeaning\nUnits\n\n\n\n\nCollegePct\nAdults age 25+ with a bachelor’s degree or more\nPercent, from 0 to 100\n\n\nIncomeK\nMedian household income\nThousands of 2024 dollars\n\n\nPovertyPct\nResidents below the poverty threshold, among those for whom poverty status is determined\nPercent\n\n\nMedianAge\nMedian age of residents\nYears\n\n\nPopulation\nTotal population estimate\nPeople\n\n\nCountyFIPS\nCounty identifier\nA five-character code, including leading zeros\n\n\n\nOne row is a county, not a person. A median describes the middle household in that county. It does not say that every household receives that income. Our unweighted regressions give each county the same weight, so a small county counts just as much as Wayne County.\n\nLoad it\n\nlibrary(tidyverse)\nlibrary(GGally)     # Scatterplot matrices\n\nIf you saved the CSV in your data folder, load it like this:\n\ncounty_raw &lt;- read_csv(\n  \"data/county_education_income_2024.csv\",\n  col_types = cols(\n    CountyFIPS = col_character(),\n    StateFIPS = col_character()\n  )\n)\n\nYou can also load the course copy directly:\n\ncounty_raw &lt;- read_csv(\n  \"https://ec242.netlify.app/data/county_education_income_2024.csv\",\n  col_types = cols(\n    CountyFIPS = col_character(),\n    StateFIPS = col_character()\n  )\n)\n\nWe keep FIPS codes as text so that a code beginning with 0 keeps its 0. Then we remove rows missing either variable in our first model:\n\ncounties &lt;- county_raw %&gt;%\n  drop_na(CollegePct, IncomeK)\n\ncounties %&gt;%\n  select(County, State, CollegePct, IncomeK) %&gt;%\n  slice_head(n = 6)\n\n# A tibble: 6 × 4\n  County         State   CollegePct IncomeK\n  &lt;chr&gt;          &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;\n1 Autauga County Alabama      29.1     72.5\n2 Baldwin County Alabama      33.7     78.8\n3 Barbour County Alabama      10.6     46.0\n4 Bibb County    Alabama      11.7     52.5\n5 Blount County  Alabama      15.8     64.2\n6 Bullock County Alabama       8.12    31.3\n\n\nA basic version of the opening figure takes only a few lines:\n\nggplot(counties, aes(x = CollegePct, y = IncomeK)) +\n  geom_point(alpha = 0.2) +\n  labs(x = \"College-educated adults (%)\",\n       y = \"Median household income ($1,000s)\") +\n  theme_minimal()\n\n\n\n\n\n\n\nNoteTRY IT: Read the dots before fitting anything\n\n\n\n\nFilter to Michigan and find Ingham and Ottawa.\nWhich has the higher college share? Which has the higher income?\nWould a single prediction based only on education get both right?",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#fit-with-lm",
+    "href": "content/Week_07/07b.html#fit-with-lm",
+    "title": "Introduction to Regression",
+    "section": "Fit the same line with lm()",
+    "text": "Fit the same line with lm()\nWe do not need to repeat that arithmetic every time. R’s lm() fits the line for us:\n\neducation_model &lt;- lm(IncomeK ~ CollegePct, data = counties)\ncoef(education_model)\n\n(Intercept)  CollegePct \n      37.27        1.24 \n\n\nRead the formula from left to right:\n\nIncomeK is the response, or Y: the quantity we want to predict.\n~ means “modeled as a function of.”\nCollegePct is the predictor, or X.\ndata = counties tells R where to find the columns.\n\nWe say that income is regressed on education. Swapping the two variables asks a different question and fits a different line. Correlation is symmetric; regression chooses an outcome.\nThe object education_model stores the fitted model. coef() extracts its coefficients:\n\nb0 &lt;- coef(education_model)[[\"(Intercept)\"]]\nb1 &lt;- coef(education_model)[[\"CollegePct\"]]\n\nc(intercept = b0, slope = b1)\n\nintercept     slope \n    37.27      1.24 \n\n\nThese match our hand calculation. In our units, the fitted equation is approximately\n\\[\n\\widehat{\\text{IncomeK}}\n= 37.27 + 1.244\\times\\text{CollegePct}.\n\\]\nThe hat means fitted or predicted. We are using a straight line to approximate the conditional mean of income given education. We have estimated that line from data; we have not discovered an exact law for every county.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#example-1-a-ten-point-difference",
+    "href": "content/Week_07/07b.html#example-1-a-ten-point-difference",
+    "title": "Introduction to Regression",
+    "section": "Example 1: A ten-point difference",
+    "text": "Example 1: A ten-point difference\nGoing from 30% to 40% is a ten-percentage-point difference. Multiply the slope by ten:\n\n10 * b1 * 1000\n\n[1] 12436\n\n\n\n\n\n\n\nMove ten percentage points to the right, then up to the line. The vertical change is ten times the slope. The two marked points are fitted values, not two actual counties.\n\n\n\n\n\n\n\n\n\n\nNoteTRY IT: Say what the coefficient means\n\n\n\nA classmate writes: “Getting a college degree raises household income by $1,244.”\nExplain two problems with that sentence. Then write a sentence that the county regression actually supports.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#example-2-make-a-prediction-with-predict",
+    "href": "content/Week_07/07b.html#example-2-make-a-prediction-with-predict",
+    "title": "Introduction to Regression",
+    "section": "Example 2: Make a prediction with predict()",
+    "text": "Example 2: Make a prediction with predict()\nTo predict income for a county with CollegePct = 30, substitute 30 into the fitted equation:\n\n(b0 + b1 * 30) * 1000\n\n[1] 74579\n\n\nFor several values at once, use predict(). The new data must have a column with the same predictor name used in the model:\n\nnew_counties &lt;- tibble(CollegePct = c(30, 40))\n\nnew_counties %&gt;%\n  mutate(predicted_income_dollars =\n           1000 * predict(education_model, newdata = new_counties))\n\n# A tibble: 2 × 2\n  CollegePct predicted_income_dollars\n       &lt;dbl&gt;                    &lt;dbl&gt;\n1         30                   74579.\n2         40                   87015.\n\n\nThe model predicts in the units of its response. Since we fit IncomeK, predict() returns thousands of dollars. We multiply by 1,000 to report dollars.\n\nWhat about the intercept?\nThe intercept is the fitted value at CollegePct = 0: about $37,271. Before giving it a substantive interpretation, check whether zero is represented in our data. The observed shares in this model range from about 0% to 80.5%.\nZero appears in one county in this snapshot: Loving County, Texas, whose estimated population is just 33. That is little support for a broad story about communities with no college graduates. Here, the intercept mainly helps position the line. In other datasets, zero may be outside the observed range altogether.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#example-3-change-the-units-keep-the-relationship",
+    "href": "content/Week_07/07b.html#example-3-change-the-units-keep-the-relationship",
+    "title": "Introduction to Regression",
+    "section": "Example 3: Change the units, keep the relationship",
+    "text": "Example 3: Change the units, keep the relationship\nNow fit the same model with income in dollars instead of thousands of dollars:\n\ndollar_model &lt;- lm(MedianIncome ~ CollegePct, data = counties)\n\ncoef(education_model)\n\n(Intercept)  CollegePct \n      37.27        1.24 \n\ncoef(dollar_model)\n\n(Intercept)  CollegePct \n      37271        1244 \n\n\n\n\n\n\n\nThe geometry is unchanged. Multiplying Y by 1,000 multiplies the intercept and slope by 1,000. The correlation and R-squared stay the same.\n\n\n\n\nAlways attach units to a coefficient. A slope of 1.244 and a slope of 1,243.6 can describe exactly the same relationship.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#squared-errors",
+    "href": "content/Week_07/07b.html#squared-errors",
+    "title": "Introduction to Regression",
+    "section": "Why this line? Squared errors",
+    "text": "Why this line? Squared errors\nResiduals above and below a line can cancel. Squaring them makes every miss count positively and gives large misses more weight.\nOrdinary least squares, or OLS, chooses the intercept and slope to minimize\n\\[\n\\text{SSE}=\\sum_{i=1}^{n}(Y_i-\\widehat{Y}_i)^2.\n\\]\nHere are three candidate slopes. For each slope, we position the line through the sample means, giving it the best intercept for that slope.\n\n\n\n\n\nThe OLS fit has the lowest squared-error loss of these three candidates. RMSE is the square root of the average squared error, so it ranks these lines in the same order and is easier to interpret in income units.\n\n\n\n\nA convenient summary is root mean squared error:\n\\[\n\\text{RMSE}\n=\\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}e_i^2}.\n\\]\nThe baseline’s RMSE is about $17,772. The education model’s RMSE is about $12,338. These describe errors on the same data used to fit the model. Later we will ask how well a model does on observations it has not seen.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#r-squared",
+    "href": "content/Week_07/07b.html#r-squared",
+    "title": "Introduction to Regression",
+    "section": "How much variation did we account for?",
+    "text": "How much variation did we account for?\n\\(R^2\\) compares the line’s squared errors with the baseline’s squared errors:\n\\[\nR^2\n=1-\\frac{\\sum_i(Y_i-\\widehat{Y}_i)^2}\n          {\\sum_i(Y_i-\\bar{Y})^2}.\n\\]\n\nsse_model &lt;- sum(resid(education_model)^2)\nsse_baseline &lt;- sum((counties$IncomeK - mean(counties$IncomeK))^2)\n\n1 - sse_model / sse_baseline\n\n[1] 0.518\n\nsummary(education_model)$r.squared\n\n[1] 0.518\n\n\nHere, \\(R^2\\) is about 51.8%. The fitted line reduces squared error by that proportion relative to the baseline.\nIt does not mean that education causes that proportion of income, or that this proportion of counties is predicted exactly. For simple OLS with an intercept, \\(R^2\\) also equals the squared sample correlation.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#two-pictures-worth-checking",
+    "href": "content/Week_07/07b.html#two-pictures-worth-checking",
+    "title": "Introduction to Regression",
+    "section": "Two pictures worth checking",
+    "text": "Two pictures worth checking\n\n\n\n\n\nThe left panel asks whether residuals change with the fitted value. The right shows their distribution. The spread is substantial, and some counties have large positive misses. A fitted line does not make those features disappear.\n\n\n\n\nA line gives us an average tendency. These pictures remind us how much individual counties can differ from that tendency.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#example-4-a-negative-slope",
+    "href": "content/Week_07/07b.html#example-4-a-negative-slope",
+    "title": "Introduction to Regression",
+    "section": "Example 4: A negative slope",
+    "text": "Example 4: A negative slope\nWhat do you expect if we regress median household income on the poverty rate?\n\npoverty_model &lt;- lm(IncomeK ~ PovertyPct, data = counties)\ncoef(poverty_model)\n\n(Intercept)  PovertyPct \n      98.80       -2.17 \n\n\nA one-percentage-point higher poverty rate is associated with about $2,167 lower fitted median household income.\nIncome and poverty are related descriptions of local economic conditions. This is a descriptive comparison, rather than a forecast made before we know anything about income.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#example-5-a-predictor-that-tells-us-little",
+    "href": "content/Week_07/07b.html#example-5-a-predictor-that-tells-us-little",
+    "title": "Introduction to Regression",
+    "section": "Example 5: A predictor that tells us little",
+    "text": "Example 5: A predictor that tells us little\nMaybe older counties have higher incomes because residents have had more time to accumulate earnings. Maybe retired households have lower incomes. Let’s check:\n\nage_model &lt;- lm(IncomeK ~ MedianAge, data = counties)\ncoef(age_model)\n\n(Intercept)   MedianAge \n     82.383      -0.344 \n\nsummary(age_model)$r.squared\n\n[1] 0.011\n\n\nThere is a fitted slope. There is also very little reduction in squared error. R will fit a line even when the predictor is not especially useful.\n\n\n\n\n\nThe education and poverty models have opposite signs but similar R-squared values. Median age explains much less of the county income variation. Each panel fits its own simple regression; these are not coefficients from a multiple regression.\n\n\n\n\nNotice the poverty model’s far-right tail: the fitted line drops below zero even though the observed county incomes are positive. It misses that part of the relationship badly. A respectable \\(R^2\\) does not guarantee that every prediction is sensible.\n\n\n\n\n\n\nNoteTRY IT: Compare the models\n\n\n\n\nWhich model has the larger \\(R^2\\): education or poverty?\nDoes a negative slope mean a model is bad?\nWould comparing the absolute slopes of the age and education models tell us which is more useful? Check their units before answering.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#a-compact-correlation-picture",
+    "href": "content/Week_07/07b.html#a-compact-correlation-picture",
+    "title": "Introduction to Regression",
+    "section": "A compact correlation picture",
+    "text": "A compact correlation picture\n\ncounty_cor &lt;- cor(county_numeric)\nround(county_cor, 2)\n\n           CollegePct IncomeK PovertyPct MedianAge\nCollegePct       1.00    0.72      -0.46     -0.10\nIncomeK          0.72    1.00      -0.73     -0.10\nPovertyPct      -0.46   -0.73       1.00     -0.17\nMedianAge       -0.10   -0.10      -0.17      1.00\n\n\nA correlogram puts those numbers into a heatmap:\n\n\n\n\n\nOnly one triangle is needed because correlation is symmetric. The diagonal would be all ones. The education-income and poverty-income correlations have opposite signs and similar magnitudes.\n\n\n\n\n\n\nShow me how to build the heatmap with ggplot\n\nThe correlation matrix needs to become a long table with one row per pair. as.table() preserves the row and column labels; as.data.frame() puts them into columns.\n\ncor_long &lt;- as.data.frame(as.table(county_cor)) %&gt;%\n  rename(variable_x = Var1, variable_y = Var2, correlation = Freq) %&gt;%\n  filter(as.integer(variable_x) &lt; as.integer(variable_y))\n\nggplot(cor_long, aes(variable_x, variable_y, fill = correlation)) +\n  geom_tile(color = \"white\") +\n  geom_text(aes(label = round(correlation, 2))) +\n  scale_fill_gradient2(low = \"#D9A27F\", mid = \"white\", high = \"#8DB4A3\",\n                       limits = c(-1, 1)) +\n  coord_equal() +\n  labs(x = NULL, y = NULL) +\n  theme_minimal()\n\nThe ordering check keeps one triangle and removes the diagonal. The numbers and signs matter more than choosing an elaborate plotting style.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#a-small-correlation-does-not-rule-out-a-pattern",
+    "href": "content/Week_07/07b.html#a-small-correlation-does-not-rule-out-a-pattern",
+    "title": "Introduction to Regression",
+    "section": "1. A small correlation does not rule out a pattern",
+    "text": "1. A small correlation does not rule out a pattern\n\n\n\n\n\nThese are simulated teaching examples. The curved example has a clear relationship but a correlation near zero: a straight line misses the U-shape.\n\n\n\n\nCorrelation summarizes a linear relationship. Always look at the scatterplot before deciding that a small correlation means there is nothing to learn.\n\n\n\n\n\n\nNoteTRY IT: Predict before calculating\n\n\n\nFor the U-shaped example, imagine increasing X from a very negative value toward zero, and then from zero toward a very positive value. How does Y change on each part of the picture? Why does one straight slope struggle?",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#a-large-residual-is-not-the-same-as-influence",
+    "href": "content/Week_07/07b.html#a-large-residual-is-not-the-same-as-influence",
+    "title": "Introduction to Regression",
+    "section": "2. A large residual is not the same as influence",
+    "text": "2. A large residual is not the same as influence\n\n\n\n\n\nSimulated teaching examples. A point can be far above the line without changing the slope much when its X is near the mean. A point at an unusual X can pull the slope substantially. Neither fact, by itself, is a reason to delete an observation.\n\n\n\n\nWhen you see an unusual point, inspect it. Check the units, the source, and what the observation represents. “The regression looks nicer without it” is not a data-cleaning rule.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#extrapolation-is-easy-to-request-and-hard-to-defend",
+    "href": "content/Week_07/07b.html#extrapolation-is-easy-to-request-and-hard-to-defend",
+    "title": "Introduction to Regression",
+    "section": "3. Extrapolation is easy to request and hard to defend",
+    "text": "3. Extrapolation is easy to request and hard to defend\n\n\n\n\n\nThe green segment lies within the observed education range. Dashed orange segments extend beyond it. A numerical prediction outside the data does not supply evidence that the relationship continues there.\n\n\n\n\nBefore reporting a prediction, compare the requested X with the X values used to fit the model:\n\nrange(counties$CollegePct)\n\n[1]  0.0 80.5\n\n\nAlso ask whether the new observation is comparable to the ones we used. A county-level model is not a salary calculator for an individual graduate.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
+    ]
+  },
+  {
+    "objectID": "content/Week_07/07b.html#our-coefficients-depend-on-the-sample",
+    "href": "content/Week_07/07b.html#our-coefficients-depend-on-the-sample",
+    "title": "Introduction to Regression",
+    "section": "4. Our coefficients depend on the sample",
+    "text": "4. Our coefficients depend on the sample\nRecall last week’s discussion of sampling variation. A slope is calculated from the observations we happen to use. Change those observations and the estimated slope changes.\n\n\n\n\n\nEight classroom samples of 50 counties are drawn without replacement from the published county file, with a separate line fitted to each. This illustrates variation from selecting counties; it does not represent the ACS’s survey margins of error.\n\n\n\n\nYou can produce one of those smaller-sample fits yourself:\n\nset.seed(15)\n\nsmall_sample &lt;- counties %&gt;% slice_sample(n = 50)\nsmall_model &lt;- lm(IncomeK ~ CollegePct, data = small_sample)\n\ncoef(small_model)\n\n(Intercept)  CollegePct \n      31.75        1.52 \n\ncoef(education_model)\n\n(Intercept)  CollegePct \n      37.27        1.24 \n\n\nWe will return to uncertainty about coefficients. For now, remember that a coefficient is an estimate built from data.",
+    "crumbs": [
+      "Course Content",
+      "Week 07",
+      "Introduction to Regression"
     ]
   }
 ]

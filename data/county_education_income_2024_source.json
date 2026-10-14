@@ -1,0 +1,30 @@
+{
+  "source": "U.S. Census Bureau, 2020–2024 American Community Survey five-year estimates",
+  "source_url": "https://www.census.gov/data/developers/data-sets/acs-5year.html",
+  "public_query": "https://api.census.gov/data/2024/acs/acs5?get=NAME,B01003_001E,B15003_001E,B15003_022E,B15003_023E,B15003_024E,B15003_025E,B19013_001E,B17001_001E,B17001_002E,B01002_001E&for=county:*",
+  "downloaded": "2026-10-14",
+  "geography": "All counties and county equivalents in the 50 states and District of Columbia; Puerto Rico excluded",
+  "income_units": "Median household income in 2024 inflation-adjusted dollars",
+  "education_universe": "Population age 25 and older",
+  "poverty_universe": "Population for whom poverty status is determined",
+  "variables": {
+    "Population": "B01003_001E",
+    "Adults25Plus": "B15003_001E",
+    "Bachelors": "B15003_022E",
+    "Masters": "B15003_023E",
+    "Professional": "B15003_024E",
+    "Doctorate": "B15003_025E",
+    "MedianIncome": "B19013_001E",
+    "PovertyUniverse": "B17001_001E",
+    "BelowPoverty": "B17001_002E",
+    "MedianAge": "B01002_001E"
+  },
+  "transformations": {
+    "BachelorsPlus": "Bachelors + Masters + Professional + Doctorate",
+    "CollegePct": "100 * BachelorsPlus / Adults25Plus",
+    "IncomeK": "MedianIncome / 1000",
+    "PovertyPct": "100 * BelowPoverty / PovertyUniverse",
+    "missing": "Negative Census sentinel values replaced by missing values"
+  },
+  "rows": 3144
+}
