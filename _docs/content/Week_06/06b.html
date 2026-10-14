@@ -583,7 +583,14 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#part-i-random-variables" id="toc-part-i-random-variables" class="nav-link active" data-scroll-target="#part-i-random-variables">Part I: Random variables</a>
+  <li><a href="#bell-curve" id="toc-bell-curve" class="nav-link active" data-scroll-target="#bell-curve">Before we start: Where does the bell curve come from?</a>
+  <ul class="collapse">
+  <li><a href="#start-with-a-diagonal" id="toc-start-with-a-diagonal" class="nav-link" data-scroll-target="#start-with-a-diagonal">1. Start with a diagonal</a></li>
+  <li><a href="#why-does-the-formula-usually-have-e-rather-than-2" id="toc-why-does-the-formula-usually-have-e-rather-than-2" class="nav-link" data-scroll-target="#why-does-the-formula-usually-have-e-rather-than-2">2. Why does the formula usually have <span class="math inline">\(e\)</span>, rather than <span class="math inline">\(2\)</span>?</a></li>
+  <li><a href="#where-does-pi-enter" id="toc-where-does-pi-enter" class="nav-link" data-scroll-target="#where-does-pi-enter">3. Where does <span class="math inline">\(\pi\)</span> enter?</a></li>
+  <li><a href="#what-about-the-formula-in-the-textbook" id="toc-what-about-the-formula-in-the-textbook" class="nav-link" data-scroll-target="#what-about-the-formula-in-the-textbook">4. What about the formula in the textbook?</a></li>
+  </ul></li>
+  <li><a href="#part-i-random-variables" id="toc-part-i-random-variables" class="nav-link" data-scroll-target="#part-i-random-variables">Part I: Random variables</a>
   <ul class="collapse">
   <li><a href="#definition-of-random-variables" id="toc-definition-of-random-variables" class="nav-link" data-scroll-target="#definition-of-random-variables">Definition of Random variables</a></li>
   <li><a href="#sampling-models" id="toc-sampling-models" class="nav-link" data-scroll-target="#sampling-models">Sampling models</a></li>
@@ -639,6 +646,221 @@ window.Quarto = {
 <!-- - [<i class="fas fa-external-link-square-alt"></i> `About this Dataset`](https://github.com/fivethirtyeight/data/tree/master/congress-biden-score) -->
 <!-- **Task:** -->
 <!-- Explore the relationship between the vote margin in a given district and whether the congressperson voted with or against President Biden's position. -->
+<section id="bell-curve" class="level1">
+<h1>Before we start: Where does the bell curve come from?</h1>
+<p>Imagine throwing thousands of darts at a target. Most land near the center. Some miss by a little; a few miss by a lot.</p>
+<p>We want to describe the pattern of hits. Rather than start with a formula, let’s make two assumptions about our imaginary dart thrower:</p>
+<ol type="1">
+<li><strong>There is no preferred direction.</strong> Missing two inches to the left is just as likely as missing two inches above the center—or two inches away in any other direction. Rotating the target would not change the pattern.</li>
+<li><strong>The horizontal and vertical errors are independent.</strong> Learning how far left or right a dart went tells you nothing about how far up or down it went.</li>
+</ol>
+<p>These are assumptions, not facts about all real dart throwers. Our question is: <strong>What shape fits both assumptions?</strong></p>
+<section id="start-with-a-diagonal" class="level2">
+<h2 class="anchored" data-anchor-id="start-with-a-diagonal">1. Start with a diagonal</h2>
+<p>Think of the target as covered with tiny, equal-sized squares. A square near the center gets lots of hits; one farther away gets fewer. We will compare how crowded these little squares are. The mathematical word for this crowdedness is <strong>density</strong>.</p>
+<p>Choose our unit of distance so that the density one unit to the right is half the density at the center. This just sets the size of our ruler. Because there is no preferred direction, the density one unit above the center must also be half as large.</p>
+<p>Now consider a spot that is both one unit right and one unit up. How crowded is it?</p>
+<p>Moving one unit right reduces the density by a factor of <span class="math inline">\(1/2\)</span>. Because the horizontal and vertical errors are independent, moving one unit up produces the same reduction, regardless of the horizontal position. The two reductions multiply:</p>
+<p><span class="math display">\[
+\frac12\times\frac12=\frac14.
+\]</span></p>
+<p>So the density at this diagonal spot is one-quarter of the density at the center. But how far is that spot from the center? Pythagoras tells us:</p>
+<p><span class="math display">\[
+\text{distance}^2=1^2+1^2=2.
+\]</span></p>
+<p>Its distance is <span class="math inline">\(\sqrt2\)</span>, not <span class="math inline">\(2\)</span>. And because direction does not matter, every spot at distance <span class="math inline">\(\sqrt2\)</span> must have one-quarter of the central density.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Distance from the center</th>
+<th style="text-align: center;">Density relative to the center</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\sqrt2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/4\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Let’s do one more. Go <span class="math inline">\(\sqrt2\)</span> units right and one unit up. The horizontal change gives a factor of <span class="math inline">\(1/4\)</span>; the vertical change gives a factor of <span class="math inline">\(1/2\)</span>. Together:</p>
+<p><span class="math display">\[
+\frac14\times\frac12=\frac18.
+\]</span></p>
+<p>Pythagoras gives the distance:</p>
+<p><span class="math display">\[
+\text{distance}^2=(\sqrt2)^2+1^2=3.
+\]</span></p>
+<p>So at distance <span class="math inline">\(\sqrt3\)</span>, the density is one-eighth as large. The pattern becomes much easier to see when we write <strong>squared distance</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Squared distance</th>
+<th style="text-align: center;"><span class="math inline">\(0\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(3\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Relative density</td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/4\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/8\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/16\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Each time squared distance increases by one, density is cut in half. That is an exponential pattern. If <span class="math inline">\(r\)</span> is distance from the center, the rule is</p>
+<p><span class="math display">\[
+\boxed{\text{Relative density}=2^{-r^2}.}
+\]</span></p>
+<p>We have illustrated the rule at whole-number values of squared distance. The same argument with smaller steps fills in the fractions; assuming the density changes smoothly fills in the rest.</p>
+<p>Now take a straight slice through the middle of the target and plot density against position. The curve rises toward the center, reaches its peak, and falls away on the other side:</p>
+<p><span class="math display">\[
+\text{Height at position }x=2^{-x^2}.
+\]</span></p>
+<p>There is our bell shape. Independence also means that the horizontal error has this same density shape: moving up or down changes the height of the slice, but not its shape.</p>
+<p>We did not choose it because it looked nice. <strong>Independence made the reductions multiply. Pythagoras made squared distances add. The bell curve makes those two rules agree.</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="06b_files/figure-html/bell-curve-geometry-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A shaded dartboard shows a right triangle with two unit legs and a diagonal of square root two. A dashed circle passes through the diagonal endpoint. Beside it, a bell curve marks relative densities of one at zero, one-half at one, and one-quarter at square root two."></p>
+<figcaption>One unit right and one unit up puts us on the dashed circle, at distance <span class="math inline">\(\sqrt2\)</span>. Every point on that circle has one-quarter of the central density. A slice through the center gives the bell curve on the right.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="why-does-the-formula-usually-have-e-rather-than-2" class="level2">
+<h2 class="anchored" data-anchor-id="why-does-the-formula-usually-have-e-rather-than-2">2. Why does the formula usually have <span class="math inline">\(e\)</span>, rather than <span class="math inline">\(2\)</span>?</h2>
+<p>Our formula with a <span class="math inline">\(2\)</span> is perfectly good. There is no mathematical law requiring us to write the curve using <span class="math inline">\(e\)</span>. The number</p>
+<p><span class="math display">\[
+e\approx2.71828
+\]</span></p>
+<p>is a particularly convenient base for describing continuous growth and decline.</p>
+<p>What makes it convenient? The function <span class="math inline">\(e^t\)</span> grows at a rate equal to its current height. The function <span class="math inline">\(e^{-t}\)</span> falls at a rate equal to its current height. Other bases introduce an extra constant into that rate. We will use that simple property shortly.</p>
+<p>Changing from base <span class="math inline">\(2\)</span> to base <span class="math inline">\(e\)</span> does not change our curve. Since <span class="math inline">\(2=e^{\ln 2}\)</span>,</p>
+<p><span class="math display">\[
+2^{-x^2}=e^{-(\ln 2)x^2}=e^{-0.693\ldots\,x^2}.
+\]</span></p>
+<p>These are two ways of writing exactly the same thing. Changing our horizontal units can also change the coefficient in the exponent. For the next part, let’s choose units that make the shape</p>
+<p><span class="math display">\[
+e^{-x^2}.
+\]</span></p>
+<p>Our assumptions explain why the curve is exponential in squared distance. Using <span class="math inline">\(e\)</span> is the convenient way to write that exponential.</p>
+</section>
+<section id="where-does-pi-enter" class="level2">
+<h2 class="anchored" data-anchor-id="where-does-pi-enter">3. Where does <span class="math inline">\(\pi\)</span> enter?</h2>
+<p>We have found the curve’s shape, but we have not yet chosen its height.</p>
+<p>For a probability curve, probabilities are represented by <strong>areas under the curve</strong>. The area between two horizontal positions gives the chance that the horizontal error falls between them. The total area must therefore be one: the dart’s horizontal position has to be somewhere.</p>
+<p>Let’s multiply our shape by an unknown number <span class="math inline">\(C\)</span>:</p>
+<p><span class="math display">\[
+f(x)=C e^{-x^2}.
+\]</span></p>
+<p>Our remaining job is to find <span class="math inline">\(C\)</span>.</p>
+<p>Return to the dartboard. Landing in a tiny square requires both a particular horizontal position and a particular vertical position. Because those errors are independent, their densities multiply:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Density at }(x,y)
+&amp;=\left(Ce^{-x^2}\right)\left(Ce^{-y^2}\right)\\
+&amp;=C^2e^{-(x^2+y^2)}\\
+&amp;=C^2e^{-r^2}.
+\end{aligned}
+\]</span></p>
+<p>Now imagine drawing circles around the bull’s-eye. Instead of counting probability square by square, we can count it ring by ring. This is where <span class="math inline">\(\pi\)</span> enters: we need the areas of those rings.</p>
+<section id="an-easier-way-to-measure-the-rings" class="level3">
+<h3 class="anchored" data-anchor-id="an-easier-way-to-measure-the-rings">An easier way to measure the rings</h3>
+<p>A circle of radius <span class="math inline">\(r\)</span> has area <span class="math inline">\(\pi r^2\)</span>. Let’s use the letter <span class="math inline">\(s\)</span> for squared radius:</p>
+<p><span class="math display">\[
+s=r^2.
+\]</span></p>
+<p>Then the circle’s area is simply <span class="math inline">\(\pi s\)</span>. Increasing <span class="math inline">\(s\)</span> by a small amount <span class="math inline">\(\Delta s\)</span> adds a thin ring with area <span class="math inline">\(\pi\Delta s\)</span>.</p>
+<p>The density in that ring is approximately <span class="math inline">\(C^2e^{-s}\)</span>. So the probability in the ring is approximately</p>
+<p><span class="math display">\[
+\underbrace{C^2e^{-s}}_{\text{density}}
+\times
+\underbrace{\pi\Delta s}_{\text{ring area}}.
+\]</span></p>
+<p>To find the total probability, add up all these rings, from the center outward. Apart from the fixed multiplier <span class="math inline">\(C^2\pi\)</span>, we are adding little pieces of the form <span class="math inline">\(e^{-s}\Delta s\)</span>. Those pieces are rectangles under the ordinary exponential curve <span class="math inline">\(e^{-s}\)</span>. As the rings get thinner, the approximation becomes exact:</p>
+<p><span class="math display">\[
+\text{Total probability}
+=C^2\pi\times
+\left[\text{area under }e^{-s}\text{ for }s\geq0\right].
+\]</span></p>
+<p>We have turned the bell-curve problem into a much simpler exponential-curve problem.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="06b_files/figure-html/bell-curve-rings-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Concentric rings of equal area become thinner farther from the center. The ring between squared radii one and one-point-five is orange. Beside it, rectangles of width one-half approximate the area under exp of negative s, with the corresponding rectangle also orange."></p>
+<figcaption>Every ring on the left has the same area, <span class="math inline">\(\pi\Delta s\)</span>, even though the outer rings are thinner. Its density falls as <span class="math inline">\(e^{-s}\)</span>. On the right, each rectangle approximates the matching ring’s probability after setting aside the constant <span class="math inline">\(C^2\pi\)</span>. Smaller steps make the approximation better.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="why-is-that-exponential-area-equal-to-one" class="level3">
+<h3 class="anchored" data-anchor-id="why-is-that-exponential-area-equal-to-one">Why is that exponential area equal to one?</h3>
+<p>Here we use the special property of <span class="math inline">\(e\)</span>.</p>
+<p>The curve <span class="math inline">\(e^{-s}\)</span> falls at a rate equal to its current height. Over a tiny horizontal step, its decrease in height is therefore approximately</p>
+<p><span class="math display">\[
+\text{current height}\times\text{step width}.
+\]</span></p>
+<p>But that is also the area of the little rectangle under the curve. So adding the rectangle areas gives the same answer as adding all the decreases in height. As the steps get smaller, this becomes exact.</p>
+<p>The curve starts at height <span class="math inline">\(1\)</span> and falls toward height <span class="math inline">\(0\)</span>. Its total decrease is one. Therefore, its total area is also one. Our probability calculation is now</p>
+<p><span class="math display">\[
+1=C^2\pi\times1.
+\]</span></p>
+<p>Solving gives <span class="math inline">\(C=1/\sqrt\pi\)</span>. We have found a normal probability density:</p>
+<p><span class="math display">\[
+\boxed{f(x)=\frac{1}{\sqrt\pi}e^{-x^2}.}
+\]</span></p>
+<p>The <span class="math inline">\(\pi\)</span> came from the areas of circles. The square root appeared because the two independent coordinates each contributed a factor of <span class="math inline">\(C\)</span>.</p>
+</section>
+</section>
+<section id="what-about-the-formula-in-the-textbook" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-the-formula-in-the-textbook">4. What about the formula in the textbook?</h2>
+<p>The familiar <strong>standard normal</strong> density is</p>
+<p><span class="math display">\[
+\boxed{f(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}.}
+\]</span></p>
+<p>This is the same curve stretched horizontally by a factor of <span class="math inline">\(\sqrt2\)</span>. Stretching the curve makes the area underneath it larger. To keep the total area equal to one, we must lower its height by the same factor, <span class="math inline">\(\sqrt2\)</span>. That explains both changes to the formula:</p>
+<p><span class="math display">\[
+e^{-x^2}\quad\longrightarrow\quad e^{-x^2/2},
+\qquad
+\frac1{\sqrt\pi}\quad\longrightarrow\quad\frac1{\sqrt{2\pi}}.
+\]</span></p>
+<p>This particular choice of width gives a standard deviation of one.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="The ingredients">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The ingredients
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The squared distance came from <strong>Pythagoras</strong>; the exponential came from <strong>multiplying independent densities</strong>; and <span class="math inline">\(\pi\)</span> came from <strong>counting probability in circles</strong>.</p>
+</div>
+</div>
+<p>Later in today’s lesson, the Central Limit Theorem will explain why this same shape appears in sums and averages of many independent draws. First, we need to describe what can vary and how to measure its uncertainty.</p>
+<hr>
+</section>
+</section>
 <section id="part-i-random-variables" class="level1">
 <h1>Part I: Random variables</h1>
 <p>In data science, we often deal with data that is affected by chance in some way: the data comes from a random sample, the data is affected by measurement error, or the data measures some outcome that is random in nature. Being able to quantify the uncertainty introduced by randomness is one of the most important jobs of a data analyst. Statistical inference offers a framework, as well as several practical tools, for doing this. The first step is to learn how to mathematically describe random variables.</p>

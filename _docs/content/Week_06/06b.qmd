@@ -44,6 +44,239 @@ filter = dplyr::filter
 <!-- Explore the relationship between the vote margin in a given district and whether the congressperson voted with or against President Biden's position. -->
 
 
+# Before we start: Where does the bell curve come from? {#bell-curve}
+
+Imagine throwing thousands of darts at a target. Most land near the center. Some miss by a little; a few miss by a lot.
+
+We want to describe the pattern of hits. Rather than start with a formula, let's make two assumptions about our imaginary dart thrower:
+
+1. **There is no preferred direction.** Missing two inches to the left is just as likely as missing two inches above the center---or two inches away in any other direction. Rotating the target would not change the pattern.
+2. **The horizontal and vertical errors are independent.** Learning how far left or right a dart went tells you nothing about how far up or down it went.
+
+These are assumptions, not facts about all real dart throwers. Our question is: **What shape fits both assumptions?**
+
+## 1. Start with a diagonal
+
+Think of the target as covered with tiny, equal-sized squares. A square near the center gets lots of hits; one farther away gets fewer. We will compare how crowded these little squares are. The mathematical word for this crowdedness is **density**.
+
+Choose our unit of distance so that the density one unit to the right is half the density at the center. This just sets the size of our ruler. Because there is no preferred direction, the density one unit above the center must also be half as large.
+
+Now consider a spot that is both one unit right and one unit up. How crowded is it?
+
+Moving one unit right reduces the density by a factor of $1/2$. Because the horizontal and vertical errors are independent, moving one unit up produces the same reduction, regardless of the horizontal position. The two reductions multiply:
+
+$$
+\frac12\times\frac12=\frac14.
+$$
+
+So the density at this diagonal spot is one-quarter of the density at the center. But how far is that spot from the center? Pythagoras tells us:
+
+$$
+\text{distance}^2=1^2+1^2=2.
+$$
+
+Its distance is $\sqrt2$, not $2$. And because direction does not matter, every spot at distance $\sqrt2$ must have one-quarter of the central density.
+
+| Distance from the center | Density relative to the center |
+|:-----------------------:|:------------------------------:|
+| $0$                     | $1$                            |
+| $1$                     | $1/2$                          |
+| $\sqrt2$                | $1/4$                          |
+
+Let's do one more. Go $\sqrt2$ units right and one unit up. The horizontal change gives a factor of $1/4$; the vertical change gives a factor of $1/2$. Together:
+
+$$
+\frac14\times\frac12=\frac18.
+$$
+
+Pythagoras gives the distance:
+
+$$
+\text{distance}^2=(\sqrt2)^2+1^2=3.
+$$
+
+So at distance $\sqrt3$, the density is one-eighth as large. The pattern becomes much easier to see when we write **squared distance**:
+
+| Squared distance | $0$ | $1$   | $2$   | $3$   | $4$    |
+|:-----------------|:---:|:-----:|:-----:|:-----:|:------:|
+| Relative density | $1$ | $1/2$ | $1/4$ | $1/8$ | $1/16$ |
+
+Each time squared distance increases by one, density is cut in half. That is an exponential pattern. If $r$ is distance from the center, the rule is
+
+$$
+\boxed{\text{Relative density}=2^{-r^2}.}
+$$
+
+We have illustrated the rule at whole-number values of squared distance. The same argument with smaller steps fills in the fractions; assuming the density changes smoothly fills in the rest.
+
+Now take a straight slice through the middle of the target and plot density against position. The curve rises toward the center, reaches its peak, and falls away on the other side:
+
+$$
+\text{Height at position }x=2^{-x^2}.
+$$
+
+There is our bell shape. Independence also means that the horizontal error has this same density shape: moving up or down changes the height of the slice, but not its shape.
+
+We did not choose it because it looked nice. **Independence made the reductions multiply. Pythagoras made squared distances add. The bell curve makes those two rules agree.**
+
+```{r bell-curve-geometry}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 5
+#| dpi: 180
+#| out-width: "100%"
+#| fig-align: center
+#| fig-cap: "One unit right and one unit up puts us on the dashed circle, at distance $\\sqrt2$. Every point on that circle has one-quarter of the central density. A slice through the center gives the bell curve on the right."
+#| fig-alt: "A shaded dartboard shows a right triangle with two unit legs and a diagonal of square root two. A dashed circle passes through the diagonal endpoint. Beside it, a bell curve marks relative densities of one at zero, one-half at one, and one-quarter at square root two."
+source(here::here("code", "bell-curve-visuals.R"))
+bell_curve_geometry_plot()
+```
+
+## 2. Why does the formula usually have $e$, rather than $2$?
+
+Our formula with a $2$ is perfectly good. There is no mathematical law requiring us to write the curve using $e$. The number
+
+$$
+e\approx2.71828
+$$
+
+is a particularly convenient base for describing continuous growth and decline.
+
+What makes it convenient? The function $e^t$ grows at a rate equal to its current height. The function $e^{-t}$ falls at a rate equal to its current height. Other bases introduce an extra constant into that rate. We will use that simple property shortly.
+
+Changing from base $2$ to base $e$ does not change our curve. Since $2=e^{\ln 2}$,
+
+$$
+2^{-x^2}=e^{-(\ln 2)x^2}=e^{-0.693\ldots\,x^2}.
+$$
+
+These are two ways of writing exactly the same thing. Changing our horizontal units can also change the coefficient in the exponent. For the next part, let's choose units that make the shape
+
+$$
+e^{-x^2}.
+$$
+
+Our assumptions explain why the curve is exponential in squared distance. Using $e$ is the convenient way to write that exponential.
+
+## 3. Where does $\pi$ enter?
+
+We have found the curve's shape, but we have not yet chosen its height.
+
+For a probability curve, probabilities are represented by **areas under the curve**. The area between two horizontal positions gives the chance that the horizontal error falls between them. The total area must therefore be one: the dart's horizontal position has to be somewhere.
+
+Let's multiply our shape by an unknown number $C$:
+
+$$
+f(x)=C e^{-x^2}.
+$$
+
+Our remaining job is to find $C$.
+
+Return to the dartboard. Landing in a tiny square requires both a particular horizontal position and a particular vertical position. Because those errors are independent, their densities multiply:
+
+$$
+\begin{aligned}
+\text{Density at }(x,y)
+&=\left(Ce^{-x^2}\right)\left(Ce^{-y^2}\right)\\
+&=C^2e^{-(x^2+y^2)}\\
+&=C^2e^{-r^2}.
+\end{aligned}
+$$
+
+Now imagine drawing circles around the bull's-eye. Instead of counting probability square by square, we can count it ring by ring. This is where $\pi$ enters: we need the areas of those rings.
+
+### An easier way to measure the rings
+
+A circle of radius $r$ has area $\pi r^2$. Let's use the letter $s$ for squared radius:
+
+$$
+s=r^2.
+$$
+
+Then the circle's area is simply $\pi s$. Increasing $s$ by a small amount $\Delta s$ adds a thin ring with area $\pi\Delta s$.
+
+The density in that ring is approximately $C^2e^{-s}$. So the probability in the ring is approximately
+
+$$
+\underbrace{C^2e^{-s}}_{\text{density}}
+\times
+\underbrace{\pi\Delta s}_{\text{ring area}}.
+$$
+
+To find the total probability, add up all these rings, from the center outward. Apart from the fixed multiplier $C^2\pi$, we are adding little pieces of the form $e^{-s}\Delta s$. Those pieces are rectangles under the ordinary exponential curve $e^{-s}$. As the rings get thinner, the approximation becomes exact:
+
+$$
+\text{Total probability}
+=C^2\pi\times
+\left[\text{area under }e^{-s}\text{ for }s\geq0\right].
+$$
+
+We have turned the bell-curve problem into a much simpler exponential-curve problem.
+
+```{r bell-curve-rings}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 5
+#| dpi: 180
+#| out-width: "100%"
+#| fig-align: center
+#| fig-cap: "Every ring on the left has the same area, $\\pi\\Delta s$, even though the outer rings are thinner. Its density falls as $e^{-s}$. On the right, each rectangle approximates the matching ring's probability after setting aside the constant $C^2\\pi$. Smaller steps make the approximation better."
+#| fig-alt: "Concentric rings of equal area become thinner farther from the center. The ring between squared radii one and one-point-five is orange. Beside it, rectangles of width one-half approximate the area under exp of negative s, with the corresponding rectangle also orange."
+bell_curve_rings_plot()
+```
+
+### Why is that exponential area equal to one?
+
+Here we use the special property of $e$.
+
+The curve $e^{-s}$ falls at a rate equal to its current height. Over a tiny horizontal step, its decrease in height is therefore approximately
+
+$$
+\text{current height}\times\text{step width}.
+$$
+
+But that is also the area of the little rectangle under the curve. So adding the rectangle areas gives the same answer as adding all the decreases in height. As the steps get smaller, this becomes exact.
+
+The curve starts at height $1$ and falls toward height $0$. Its total decrease is one. Therefore, its total area is also one. Our probability calculation is now
+
+$$
+1=C^2\pi\times1.
+$$
+
+Solving gives $C=1/\sqrt\pi$. We have found a normal probability density:
+
+$$
+\boxed{f(x)=\frac{1}{\sqrt\pi}e^{-x^2}.}
+$$
+
+The $\pi$ came from the areas of circles. The square root appeared because the two independent coordinates each contributed a factor of $C$.
+
+## 4. What about the formula in the textbook?
+
+The familiar **standard normal** density is
+
+$$
+\boxed{f(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}.}
+$$
+
+This is the same curve stretched horizontally by a factor of $\sqrt2$. Stretching the curve makes the area underneath it larger. To keep the total area equal to one, we must lower its height by the same factor, $\sqrt2$. That explains both changes to the formula:
+
+$$
+e^{-x^2}\quad\longrightarrow\quad e^{-x^2/2},
+\qquad
+\frac1{\sqrt\pi}\quad\longrightarrow\quad\frac1{\sqrt{2\pi}}.
+$$
+
+This particular choice of width gives a standard deviation of one.
+
+::: {.callout-note title="The ingredients"}
+The squared distance came from **Pythagoras**; the exponential came from **multiplying independent densities**; and $\pi$ came from **counting probability in circles**.
+:::
+
+Later in today's lesson, the Central Limit Theorem will explain why this same shape appears in sums and averages of many independent draws. First, we need to describe what can vary and how to measure its uncertainty.
+
+---
+
 # Part I: Random variables
 
 In data science, we often deal with data that is affected by chance in some way: the data comes from a random sample, the data is affected by measurement error, or the data measures some outcome that is random in nature. Being able to quantify the uncertainty introduced by randomness is one of the most important jobs of a data analyst. Statistical inference offers a framework, as well as several practical tools, for doing this. The first step is to learn how to mathematically describe random variables.
@@ -816,5 +1049,3 @@ qplot(p, SE, geom = "line")
 ```
 
 One reason is that running such a poll is very expensive. Another possibly more important reason is that theory has its limitations. Polling is much more complicated than picking beads from an urn. Some people might lie to pollsters and others might not have phones. But perhaps the most important way an actual poll differs from an urn model is that we actually don't know for sure who is in our population and who is not. How do we know who is going to vote? Are we reaching all possible voters? Hence, even if our margin of error is very small, it might not be exactly right that our expected value is $p$. We call this bias. Historically, we observe that polls are indeed biased, although not by that much. The typical bias appears to be about 1-2%. This makes election forecasting a bit more interesting and we will talk about how to model this in our Assignment for this week.
-
-
