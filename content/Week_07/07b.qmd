@@ -37,42 +37,37 @@ source(here::here("code", "regression-lesson-visuals.R"))
 county_figures <- regression_lesson_figures(counties)
 ```
 
-## Before we start
+## Today
 
-Today we will use a regression line to make a prediction, interpret its slope, and inspect its mistakes. By the end, you should be able to use `lm()`, extract the coefficients, draw the fitted line, and explain what a residual means. You will need those skills for [Lab 7](/assignment/07-assignment.html).
+Today's job: predict a county's median household income. We'll fit a line, read its slope in dollars, and check where it misses. You'll use the same tools in [Lab 7](/assignment/07-assignment.html).
 
-Keep four questions in mind:
-
-- What does a regression line add to a correlation?
-- What does the slope mean in the units of our data?
-- How much better is the line than giving everyone the same prediction?
-- What can a convincing-looking line still get wrong?
+We'll use `lm()` for the arithmetic. The harder part is saying what the answer means.
 
 # Start with a prediction {#start-with-a-prediction}
 
-Suppose you are helping an organization compare local labor markets. You know the share of adults in a county who have a college degree. How much does that tell you about the county's household income?
+Pick a county. You know the share of adults who have a college degree. Can you make a decent guess about household income?
 
-Before looking at the figure, commit to an answer: **If we compare counties with more college graduates to counties with fewer, what pattern do you expect? How much variation do you think will be left over?**
+**Make your guess before you scroll:** Do counties with more college graduates tend to have higher incomes? How closely do you expect the dots to follow that pattern?
 
 ```{r county-income-opening}
 #| echo: false
-#| fig-cap: "The overall relationship is positive, but knowing the education share does not pin down a county's income. Ingham and Ottawa have similar education shares and quite different household incomes."
+#| fig-cap: "Higher college shares generally go with higher incomes. Look at Ingham and Ottawa, though: similar college shares, very different incomes."
 #| fig-alt: "A scatterplot of college attainment and median household income for U.S. counties. The relationship is positive with substantial scatter. Michigan counties are orange, and Ingham and Ottawa are labeled."
 county_figures$opening
 ```
 
-There is a pattern. There is also a lot of room to be wrong. Regression gives us a way to describe both.
+Ingham has the larger college share. Ottawa has the higher income. Education helps us predict income across counties, but it can't settle every comparison. Let's fit a line and see how much it helps.
 
 ## The data and its units
 
-Our source is the **U.S. Census Bureau's [2020–2024 American Community Survey five-year estimates](https://www.census.gov/data/developers/data-sets/acs-5year.html)**. These estimates combine five years of survey responses. Income amounts are expressed in [2024 inflation-adjusted dollars](https://www.census.gov/programs-surveys/acs/guidance/comparing-acs-data/2024.html).
+We'll use the **U.S. Census Bureau's [2020–2024 American Community Survey five-year estimates](https://www.census.gov/data/developers/data-sets/acs-5year.html)**. The Census Bureau combines five years of survey responses to produce these estimates. All incomes use [2024 inflation-adjusted dollars](https://www.census.gov/programs-surveys/acs/guidance/comparing-acs-data/2024.html).
 
 Download the prepared file:
 
 - [{{< fa file-arrow-down >}} `county_education_income_2024.csv`](/data/county_education_income_2024.csv)
 - [Source tables, variable codes, and preparation notes](/data/county_education_income_2024_source.json)
 
-The file contains `r scales::comma(nrow(county_raw))` counties and county equivalents in the 50 states and D.C. One county has no usable income estimate; our income examples use the remaining **`r scales::comma(nrow(counties))`**. All three regressions below use the same rows.
+The file has `r scales::comma(nrow(county_raw))` counties and county equivalents in the 50 states and D.C. One county has no usable income estimate. That leaves **`r scales::comma(nrow(counties))` counties** for our examples. All three regressions use these same rows.
 
 | Variable | Meaning | Units |
 |:--|:--|:--|
@@ -83,7 +78,9 @@ The file contains `r scales::comma(nrow(county_raw))` counties and county equiva
 | `Population` | Total population estimate | People |
 | `CountyFIPS` | County identifier | A five-character code, including leading zeros |
 
-**One row is a county, not a person.** A median describes the middle household in that county. It does not say that every household receives that income. Our unweighted regressions give each county the same weight, so a small county counts just as much as Wayne County.
+**Each dot represents a whole county.** The median is the income of the middle household when we sort households from lowest to highest income. Households within that county can earn much more or much less.
+
+We give each county the same weight in these regressions. A tiny county gets as much say in the fit as Wayne County.
 
 ### Load it
 
@@ -116,7 +113,7 @@ county_raw <- read_csv(
 )
 ```
 
-We keep FIPS codes as text so that a code beginning with `0` keeps its `0`. Then we remove rows missing either variable in our first model:
+Keep FIPS codes as text. Otherwise, R can drop a leading `0` from a code. Next, remove rows that lack either variable in our first model:
 
 ```{r complete-case-counties}
 counties <- county_raw %>%
@@ -127,7 +124,7 @@ counties %>%
   slice_head(n = 6)
 ```
 
-A basic version of the opening figure takes only a few lines:
+Here's the code for a simple version of that scatterplot:
 
 ```{r basic-county-scatter, eval=FALSE}
 ggplot(counties, aes(x = CollegePct, y = IncomeK)) +
@@ -137,26 +134,28 @@ ggplot(counties, aes(x = CollegePct, y = IncomeK)) +
   theme_minimal()
 ```
 
-::: {.callout-note title="TRY IT: Read the dots before fitting anything"}
-1. Filter to Michigan and find Ingham and Ottawa.
-2. Which has the higher college share? Which has the higher income?
-3. Would a single prediction based only on education get both right?
+::: {.callout-note title="TRY IT: Check the Michigan numbers"}
+1. Filter the data to Michigan.
+2. Find Ingham and Ottawa. Compare their college shares and incomes.
+3. If income always rose with college share, which county would have the higher income? Does it?
 :::
 
 # Give the line a job {#give-the-line-a-job}
 
-If we knew nothing about a county, we could predict the same value for every county: the **average of the county median incomes**, about `r fmt_money(county_mean * 1000)`. This is our baseline. It is not the national median household income.
+Start with the lowest-effort guess: give every county the same prediction. Use the **average of the county median incomes**, about `r fmt_money(county_mean * 1000)`. We'll call this our **baseline**.
 
-Knowing `CollegePct` gives us a chance to do better. The regression line lets the prediction change with education.
+Careful with that number. We averaged county medians. We didn't calculate the national median household income.
+
+Now use `CollegePct` to let the prediction change from county to county. Does that beat our one-size-fits-all guess?
 
 ```{r county-baseline-versus-line}
 #| echo: false
-#| fig-cap: "The left-hand prediction ignores education. The right-hand prediction uses it. Both make mistakes, but the sloped line has smaller total squared errors in this dataset."
+#| fig-cap: "Left: one prediction for everyone. Right: the prediction changes with college share. The sloped line makes smaller total squared errors. We'll calculate those errors below."
 #| fig-alt: "Two versions of the same county scatterplot. One has a horizontal line at the average county income; the other has an upward-sloping fitted regression line."
 county_figures$baseline
 ```
 
-From [Tuesday's lecture](/content/Week_07/07a.html#the-regression-line), we have a formula for the slope and intercept:
+Here are the slope and intercept formulas from [Tuesday](/content/Week_07/07a.html#the-regression-line):
 
 $$
 \widehat{\beta}_1 = r\frac{s_Y}{s_X},
@@ -164,9 +163,9 @@ $$
 \widehat{\beta}_0 = \bar{Y}-\widehat{\beta}_1\bar{X}.
 $$
 
-The correlation gives the direction and strength of the linear association. The ratio of standard deviations puts the slope back into the units of `Y` per unit of `X`.
+The correlation tells us the direction and strength of the linear relationship. Multiplying by $s_Y/s_X$ gives the slope its units: units of `Y` per unit of `X`.
 
-We can translate the formulas directly into R:
+Translate the formulas into R:
 
 ```{r county-line-by-hand}
 line_by_hand <- counties %>%
@@ -185,11 +184,11 @@ line_by_hand <- counties %>%
 line_by_hand %>% select(r, intercept, slope)
 ```
 
-The line passes through the point $(\bar{X}, \bar{Y})$. That is why the intercept formula subtracts $\widehat{\beta}_1\bar{X}$ from $\bar{Y}$.
+The line must pass through $(\bar{X}, \bar{Y})$, the point at the two sample means. Once we have the slope, the intercept formula puts the line through that point.
 
 ## Fit the same line with `lm()` {#fit-with-lm}
 
-We do not need to repeat that arithmetic every time. R's `lm()` fits the line for us:
+That was the long route. For everyday use, let `lm()` fit the line:
 
 ```{r fit-education-model}
 education_model <- lm(IncomeK ~ CollegePct, data = counties)
@@ -203,9 +202,9 @@ Read the formula from left to right:
 - `CollegePct` is the **predictor**, or `X`.
 - `data = counties` tells R where to find the columns.
 
-We say that income is **regressed on** education. Swapping the two variables asks a different question and fits a different line. Correlation is symmetric; regression chooses an outcome.
+We say that income is **regressed on** education. Keep the order straight. Predicting income from education asks a different question from predicting education from income. Swapping the variables changes the regression line, even though the correlation stays the same.
 
-The object `education_model` stores the fitted model. `coef()` extracts its coefficients:
+Save the model as `education_model`. Use `coef()` to pull out its **coefficients**: the intercept and slope.
 
 ```{r extract-education-coefficients}
 b0 <- coef(education_model)[["(Intercept)"]]
@@ -214,24 +213,24 @@ b1 <- coef(education_model)[["CollegePct"]]
 c(intercept = b0, slope = b1)
 ```
 
-These match our hand calculation. In our units, the fitted equation is approximately
+Same answers as before, with less typing. Our fitted equation is approximately
 
 $$
 \widehat{\text{IncomeK}}
 = `r round(b0, 2)` + `r round(b1, 3)`\times\text{CollegePct}.
 $$
 
-The hat means **fitted or predicted**. We are using a straight line to approximate the conditional mean of income given education. We have estimated that line from data; we have not discovered an exact law for every county.
+The hat means **fitted or predicted**. For a given college share, the line estimates the average county median income. Actual counties can sit above or below that estimate.
 
 # Interpret it in dollars {#interpret-the-slope}
 
-A one-unit increase in `CollegePct` means **one percentage point**, such as going from 30% to 31%. It does not mean increasing the share by 100%.
+A one-unit increase in `CollegePct` means **one percentage point**: from 30% to 31%, for example. Keep "percentage point" in your explanation. It saves a lot of confusion.
 
-Our slope says:
+Read the slope like this:
 
-> Counties with a college share one percentage point higher have fitted median household income about **`r fmt_money(b1 * 1000)` higher**, on average in this linear model.
+> A one-percentage-point increase in a county's college share corresponds to about **`r fmt_money(b1 * 1000)` more** in predicted median household income.
 
-That is an association across counties. It is not the effect of giving one resident a degree.
+We're comparing counties here. This slope can't tell us how much one person's income would change if they earned a degree.
 
 ## Example 1: A ten-point difference
 
@@ -243,26 +242,26 @@ Going from 30% to 40% is a ten-percentage-point difference. Multiply the slope b
 
 ```{r county-slope-walk}
 #| echo: false
-#| fig-cap: "Move ten percentage points to the right, then up to the line. The vertical change is ten times the slope. The two marked points are fitted values, not two actual counties."
+#| fig-cap: "Move ten percentage points right. Then move up to the line. That rise is ten times the slope. Both orange dots are predictions; neither represents an actual county."
 #| fig-alt: "A county scatterplot with a fitted line and an orange right-angle step between predicted incomes at college shares of 30 and 40 percent. The step labels the ten-point education change and its corresponding fitted income change."
 county_figures$slope
 ```
 
-::: {.callout-note title="TRY IT: Say what the coefficient means"}
+::: {.callout-note title="TRY IT: Fix this sentence"}
 A classmate writes: "Getting a college degree raises household income by `r fmt_money(b1 * 1000)`."
 
-Explain two problems with that sentence. Then write a sentence that the county regression actually supports.
+Find two problems with that claim. Then rewrite it using what our county model can tell us.
 :::
 
 ## Example 2: Make a prediction with `predict()`
 
-To predict income for a county with `CollegePct = 30`, substitute 30 into the fitted equation:
+What income does the line predict at `CollegePct = 30`? Plug in 30:
 
 ```{r predict-by-arithmetic}
 (b0 + b1 * 30) * 1000
 ```
 
-For several values at once, use `predict()`. The new data must have a column with **the same predictor name** used in the model:
+Use `predict()` to do several values at once. Put the values in a new table. Its predictor column must have **the same name** as the predictor in the model:
 
 ```{r predict-new-counties}
 new_counties <- tibble(CollegePct = c(30, 40))
@@ -272,13 +271,15 @@ new_counties %>%
            1000 * predict(education_model, newdata = new_counties))
 ```
 
-The model predicts in the units of its response. Since we fit `IncomeK`, `predict()` returns thousands of dollars. We multiply by 1,000 to report dollars.
+We fit the model with `IncomeK`, so `predict()` returns thousands of dollars. Multiply by 1,000 to get dollars. R won't do that conversion for you.
 
 ### What about the intercept?
 
-The intercept is the fitted value at `CollegePct = 0`: about `r fmt_money(b0 * 1000)`. Before giving it a substantive interpretation, check whether zero is represented in our data. The observed shares in this model range from about `r round(min(counties$CollegePct), 1)`% to `r round(max(counties$CollegePct), 1)`%.
+The intercept gives the prediction at `CollegePct = 0`: about `r fmt_money(b0 * 1000)`. Before we build a story around it, check the data. The college shares range from about `r round(min(counties$CollegePct), 1)`% to `r round(max(counties$CollegePct), 1)`%.
 
-Zero appears in one county in this snapshot: Loving County, Texas, whose estimated population is just 33. That is little support for a broad story about communities with no college graduates. Here, the intercept mainly helps position the line. In other datasets, zero may be outside the observed range altogether.
+Exactly one county has a zero in this file: Loving County, Texas. Its estimated population is 33. That's a thin basis for a grand theory about places with no college graduates.
+
+Here, the intercept mainly sets the line's position. In other datasets, zero may fall outside the data entirely.
 
 ## Example 3: Change the units, keep the relationship
 
@@ -293,16 +294,16 @@ coef(dollar_model)
 
 ```{r county-units}
 #| echo: false
-#| fig-cap: "The geometry is unchanged. Multiplying Y by 1,000 multiplies the intercept and slope by 1,000. The correlation and R-squared stay the same."
+#| fig-cap: "Same dots, same line, different labels. Measuring income in dollars makes both coefficients 1,000 times larger. The correlation and R-squared stay the same."
 #| fig-alt: "The same fitted county relationship shown with income measured in thousands of dollars and in dollars. The lines have the same visual shape, while the reported slopes differ by a factor of one thousand."
 county_figures$units
 ```
 
-Always attach units to a coefficient. A slope of `r round(b1, 3)` and a slope of `r scales::comma(b1 * 1000, accuracy = 0.1)` can describe exactly the same relationship.
+A bigger coefficient doesn't earn bragging rights. A slope of `r round(b1, 3)` and a slope of `r scales::comma(b1 * 1000, accuracy = 0.1)` describe the same relationship here. **Report the units with the number.**
 
 # Look at the mistakes {#residuals}
 
-A prediction is not an observation. For county $i$, the **residual** is
+How far did the prediction miss? Subtract the fitted income from the observed income. For county $i$, that difference is the **residual**:
 
 $$
 e_i = Y_i-\widehat{Y}_i.
@@ -311,7 +312,7 @@ $$
 - A positive residual means observed income is above the line: we **underpredicted**.
 - A negative residual means observed income is below the line: we **overpredicted**.
 
-R gives us fitted values with `fitted()` and residuals with `resid()`:
+Use `fitted()` for the predictions and `resid()` for the residuals:
 
 ```{r county-residual-data}
 county_results <- counties %>%
@@ -328,14 +329,14 @@ county_results %>%
 
 ```{r county-residual-segments}
 #| echo: false
-#| fig-cap: "A residual is a vertical distance in the units of Y. These gaps compare each county's observed income with the national county model's fitted income. They do not measure the effect of an omitted variable."
+#| fig-cap: "Read each orange gap vertically: observed income minus fitted income. A gap tells us how far the model missed. It can't tell us why."
 #| fig-alt: "The education-income scatterplot with vertical orange segments between the fitted line and the observed values for Ingham, Ottawa, and Washtenaw counties. Labels show signed residuals."
 county_figures$residuals
 ```
 
-For Ingham, the model overpredicts income. Ottawa is above the line. What might a one-predictor model miss about the kinds of households living in these counties? About their industries, housing costs, or age distributions?
+The model guesses too high for Ingham and too low for Ottawa. What did it miss? Maybe household composition matters. Maybe industries, housing costs, or age matter.
 
-Those are questions for further analysis. The residual by itself does not tell us which explanation is correct.
+Those are leads to investigate. We can't pick the winning explanation from a residual alone.
 
 ::: {.callout-note title="TRY IT: Find a county the line misses"}
 1. Use `county_results` to find the largest **positive** residual in Michigan.
@@ -346,35 +347,37 @@ Those are questions for further analysis. The residual by itself does not tell u
 
 ## Why this line? Squared errors {#squared-errors}
 
-Residuals above and below a line can cancel. Squaring them makes every miss count positively and gives large misses more weight.
+Add up the raw residuals and positive misses can cancel negative ones. Square them first. Now every nonzero miss adds to the total, and big misses count much more than small ones.
 
-Ordinary least squares, or **OLS**, chooses the intercept and slope to minimize
+**Ordinary least squares (OLS)** chooses the intercept and slope with the smallest **sum of squared errors**, or SSE:
 
 $$
 \text{SSE}=\sum_{i=1}^{n}(Y_i-\widehat{Y}_i)^2.
 $$
 
-Here are three candidate slopes. For each slope, we position the line through the sample means, giving it the best intercept for that slope.
+Try three slopes. For each one, put the line through the two sample means. That gives each slope its best possible intercept.
 
 ```{r county-squared-loss}
 #| echo: false
-#| fig-cap: "The OLS fit has the lowest squared-error loss of these three candidates. RMSE is the square root of the average squared error, so it ranks these lines in the same order and is easier to interpret in income units."
+#| fig-cap: "OLS wins this comparison: it has the smallest squared-error total. The labels report RMSE, which puts the errors back in income units and ranks these lines in the same order."
 #| fig-alt: "Three county scatterplots with a line that is too flat, the OLS line, and a line that is too steep. Each panel reports its root mean squared error, with the smallest value for OLS."
 county_figures$squared_loss
 ```
 
-A convenient summary is **root mean squared error**:
+Squared dollars are awkward to read. **Root mean squared error (RMSE)** puts the error measure back in the units of income. Average the squared residuals, then take the square root:
 
 $$
 \text{RMSE}
 =\sqrt{\frac{1}{n}\sum_{i=1}^{n}e_i^2}.
 $$
 
-The baseline's RMSE is about **`r fmt_money(baseline_rmse * 1000)`**. The education model's RMSE is about **`r fmt_money(model_rmse * 1000)`**. These describe errors on the same data used to fit the model. Later we will ask how well a model does on observations it has not seen.
+Our one-size-fits-all baseline has an RMSE of about **`r fmt_money(baseline_rmse * 1000)`**. Adding education brings that down to about **`r fmt_money(model_rmse * 1000)`**.
 
-## How much variation did we account for? {#r-squared}
+That's an improvement on the data we used to fit the line. To check predictions for new counties, we'd need to test the model on data we held out.
 
-$R^2$ compares the line's squared errors with the baseline's squared errors:
+## Did we beat the baseline? {#r-squared}
+
+$R^2$ reports the share of the baseline's squared error that our line removes:
 
 $$
 R^2
@@ -390,24 +393,26 @@ sse_baseline <- sum((counties$IncomeK - mean(counties$IncomeK))^2)
 summary(education_model)$r.squared
 ```
 
-Here, $R^2$ is about **`r scales::percent(summary(education_model)$r.squared, accuracy = 0.1)`**. The fitted line reduces squared error by that proportion relative to the baseline.
+Here, $R^2$ is about **`r scales::percent(summary(education_model)$r.squared, accuracy = 0.1)`**. Compared with our baseline, the line cuts total squared error by that share.
 
-It does not mean that education *causes* that proportion of income, or that this proportion of counties is predicted exactly. For simple OLS with an intercept, $R^2$ also equals the squared sample correlation.
+Don't read that as "education causes 52% of income" or "we got 52% of counties exactly right." $R^2$ measures a reduction in squared error.
 
-## Two pictures worth checking
+For a simple OLS regression with an intercept, $R^2$ also equals the sample correlation squared. Conveniently, the name checks out.
+
+## Check where the line misses
 
 ```{r county-residual-diagnostics}
 #| echo: false
-#| fig-cap: "The left panel asks whether residuals change with the fitted value. The right shows their distribution. The spread is substantial, and some counties have large positive misses. A fitted line does not make those features disappear."
+#| fig-cap: "Left: check how the residuals change as fitted income rises. Right: check the size and spread of the misses. Several counties earn much more than the line predicts."
 #| fig-alt: "A residual-versus-fitted scatterplot and a histogram of residuals for the county education model, both with zero reference lines."
 county_figures$diagnostics
 ```
 
-A line gives us an average tendency. These pictures remind us how much individual counties can differ from that tendency.
+Look at the long positive tail. Our model makes some very large underpredictions. A decent $R^2$ leaves plenty of room for those.
 
 # Two more worked examples {#more-examples}
 
-Keep the outcome and the counties fixed. Change only the predictor.
+Keep income as the response. Keep the same counties. Try a different predictor.
 
 ## Example 4: A negative slope
 
@@ -420,11 +425,11 @@ coef(poverty_model)
 
 A one-percentage-point higher poverty rate is associated with about **`r fmt_money(abs(coef(poverty_model)[2]) * 1000)` lower** fitted median household income.
 
-Income and poverty are related descriptions of local economic conditions. This is a descriptive comparison, rather than a forecast made before we know anything about income.
+There's a reason this relationship is strong: both variables describe the county's incomes. The poverty rate already tells us something about who has low income. We're describing the same period here, so don't treat this as a forecast of future income.
 
-## Example 5: A predictor that tells us little
+## Example 5: Age doesn't get us very far
 
-Maybe older counties have higher incomes because residents have had more time to accumulate earnings. Maybe retired households have lower incomes. Let's check:
+Could median age help? Older residents may earn more after years in the workforce. Retired households may earn less. The stories point in different directions. Let's check the data:
 
 ```{r fit-age-model}
 age_model <- lm(IncomeK ~ MedianAge, data = counties)
@@ -432,16 +437,16 @@ coef(age_model)
 summary(age_model)$r.squared
 ```
 
-There is a fitted slope. There is also very little reduction in squared error. R will fit a line even when the predictor is not especially useful.
+Median age barely improves on the baseline. R still returns a slope, of course. Ask for a line and you'll get a line. You have to decide whether it helps.
 
 ```{r county-three-predictors}
 #| echo: false
-#| fig-cap: "The education and poverty models have opposite signs but similar R-squared values. Median age explains much less of the county income variation. Each panel fits its own simple regression; these are not coefficients from a multiple regression."
+#| fig-cap: "Education slopes up. Poverty slopes down. Both beat the age model by a lot. Each panel shows a separate regression with one predictor."
 #| fig-alt: "Three county scatterplots: income rises with college attainment, falls with poverty, and has a weak relationship with median age. Each panel gives its own slope and R-squared."
 county_figures$compare
 ```
 
-Notice the poverty model's far-right tail: the fitted line drops below zero even though the observed county incomes are positive. It misses that part of the relationship badly. A respectable $R^2$ does not guarantee that every prediction is sensible.
+Check the far-right end of the poverty plot. The line predicts negative income. All the observed incomes are positive. Ope. The model misses that part of the pattern badly, despite its respectable $R^2$.
 
 ::: {.callout-note title="TRY IT: Compare the models"}
 1. Which model has the larger $R^2$: education or poverty?
@@ -451,10 +456,10 @@ Notice the poverty model's far-right tail: the fitted line drops below zero even
 
 # Explore several relationships {#scatterplot-matrices}
 
-When we have several candidate variables, a **scatterplot matrix** gives us a first look at all their pairwise relationships.
+Four variables give us six pairs to inspect. A **scatterplot matrix** puts them in one figure:
 
 ```{r county-pairs, fig.width=9, fig.height=7}
-#| fig-cap: "The diagonal shows each variable's distribution. Lower panels show the county pairs; upper panels give their correlations. Use this to choose relationships worth inspecting, then return to a full-size scatterplot."
+#| fig-cap: "Scan one pair at a time. The diagonal shows distributions, the lower panels show scatterplots, and the upper panels report correlations. Open a full-size scatterplot when a pair catches your eye."
 #| fig-alt: "A four-by-four scatterplot matrix for college attainment, income, poverty, and median age, with distributions on the diagonal and correlations in the upper triangle."
 county_numeric <- counties %>%
   select(CollegePct, IncomeK, PovertyPct, MedianAge)
@@ -468,8 +473,6 @@ ggpairs(
   theme_minimal(base_size = 12)
 ```
 
-Read one pair at a time. The diagonal describes each variable's distribution. The off-diagonal panels show pairs of variables. The upper panels summarize those pairs with correlations.
-
 **Don't feed an ID code into `cor()` just because R stored it as a number.** FIPS codes identify places. They are not measurements of how much "county" a place has.
 
 ## A compact correlation picture
@@ -479,11 +482,11 @@ county_cor <- cor(county_numeric)
 round(county_cor, 2)
 ```
 
-A correlogram puts those numbers into a heatmap:
+Turn those numbers into a heatmap and you have a **correlogram**:
 
 ```{r county-correlogram, fig.width=7, fig.height=5}
 #| echo: false
-#| fig-cap: "Only one triangle is needed because correlation is symmetric. The diagonal would be all ones. The education-income and poverty-income correlations have opposite signs and similar magnitudes."
+#| fig-cap: "We only need one triangle: swapping X and Y gives the same correlation. The diagonal would be all ones. Income's correlations with education and poverty are about equally strong, with opposite signs."
 #| fig-alt: "A triangular correlation heatmap for college attainment, income, poverty, and median age, with numeric correlations printed in each tile."
 county_figures$heatmap
 ```
@@ -491,7 +494,7 @@ county_figures$heatmap
 <details class="collapsible-bg">
 <summary><strong>Show me how to build the heatmap with ggplot</strong></summary>
 
-The correlation matrix needs to become a long table with one row per pair. `as.table()` preserves the row and column labels; `as.data.frame()` puts them into columns.
+First, turn the matrix into a long table with one row per pair. `as.table()` keeps the row and column labels. `as.data.frame()` puts them into columns.
 
 ```{r county-correlogram-recipe, eval=FALSE}
 cor_long <- as.data.frame(as.table(county_cor)) %>%
@@ -508,69 +511,71 @@ ggplot(cor_long, aes(variable_x, variable_y, fill = correlation)) +
   theme_minimal()
 ```
 
-The ordering check keeps one triangle and removes the diagonal. The numbers and signs matter more than choosing an elaborate plotting style.
+The `filter()` step keeps one triangle and drops the diagonal. Keep the numbers visible. Color helps us scan; the labels tell us what we're looking at.
 
 </details>
 
 # Four ways to fool yourself {#check-the-line}
 
-These are short examples to return to as you work. We do not need a complicated model to make a complicated mistake.
+Before you trust a line, check the scatterplot, unusual points, prediction range, and sample. Here's how each can trip us up.
 
-## 1. A small correlation does not rule out a pattern
+## 1. A curve can hide from correlation
 
 ```{r regression-curved-patterns}
 #| echo: false
-#| fig-cap: "These are simulated teaching examples. The curved example has a clear relationship but a correlation near zero: a straight line misses the U-shape."
+#| fig-cap: "These dots are simulated. The U-shape is easy to see, but its correlation is near zero. One straight line can't follow the drop and the rise."
 #| fig-alt: "Simulated positive, negative, and U-shaped relationships. Orange straight-line fits follow the first two patterns but miss the curve, whose correlation is near zero."
 county_figures$curves
 ```
 
-Correlation summarizes a **linear** relationship. Always look at the scatterplot before deciding that a small correlation means there is nothing to learn.
+Correlation measures a **linear** relationship. A small correlation can send you right past a strong curve. Plot the dots before you declare "nothing going on here."
 
 ::: {.callout-note title="TRY IT: Predict before calculating"}
-For the U-shaped example, imagine increasing X from a very negative value toward zero, and then from zero toward a very positive value. How does Y change on each part of the picture? Why does one straight slope struggle?
+Start at the left edge of the U. Move toward zero. What happens to Y? Now move from zero to the right edge. What changes? Explain why one slope can't describe both parts well.
 :::
 
-## 2. A large residual is not the same as influence
+## 2. Some points pull the line harder
 
 ```{r regression-influence}
 #| echo: false
-#| fig-cap: "Simulated teaching examples. A point can be far above the line without changing the slope much when its X is near the mean. A point at an unusual X can pull the slope substantially. Neither fact, by itself, is a reason to delete an observation."
+#| fig-cap: "These examples are simulated. Left: a large residual near the mean of X barely changes the slope. Right: a point far out on X pulls the slope sharply. Check unusual points before deciding what to do with them."
 #| fig-alt: "Two simulated datasets compare a high-residual point near the center of X with a high-residual point far outside the other X values. Original and refitted lines show a much larger slope change in the second case."
 county_figures$influence
 ```
 
-When you see an unusual point, inspect it. Check the units, the source, and what the observation represents. "The regression looks nicer without it" is not a data-cleaning rule.
+A **large residual** means the line missed that observation by a lot. An **influential point** changes the fitted line by a lot when we include it. The pictures show why those can differ.
 
-## 3. Extrapolation is easy to request and hard to defend
+Inspect an unusual point. Check its units and source. Find out what it represents. "It ruined my beautiful regression" is not a data-cleaning rule.
+
+## 3. R will predict past the data
 
 ```{r county-extrapolation}
 #| echo: false
-#| fig-cap: "The green segment lies within the observed education range. Dashed orange segments extend beyond it. A numerical prediction outside the data does not supply evidence that the relationship continues there."
-#| fig-alt: "The county scatterplot with its observed education range shaded. The fitted line is solid green inside the range and dashed orange when extended toward zero or one hundred percent college attainment."
+#| fig-cap: "Green: the range of college shares in our data. Dashed orange: the line extended beyond that range. R can calculate those extra predictions. We still need evidence that the pattern holds there."
+#| fig-alt: "The county scatterplot with its observed education range shaded, from zero to about eighty-one percent. The fitted line is solid green inside that range and dashed orange above it, up to one hundred percent."
 county_figures$extrapolation
 ```
 
-Before reporting a prediction, compare the requested X with the X values used to fit the model:
+Predicting beyond the observed X values is called **extrapolation**. Check the range before you report a prediction:
 
 ```{r check-prediction-range}
 range(counties$CollegePct)
 ```
 
-Also ask whether the new observation is comparable to the ones we used. A county-level model is not a salary calculator for an individual graduate.
+Check who the prediction is for, too. We fit this model to counties. Using it as a salary calculator for one graduate would change the question completely.
 
-## 4. Our coefficients depend on the sample
+## 4. Change the sample, change the slope
 
-Recall last week's discussion of sampling variation. A slope is calculated from the observations we happen to use. Change those observations and the estimated slope changes.
+Remember sampling variation from last week? It applies to slopes, too. Choose a different set of counties and you'll usually get a different line.
 
 ```{r county-sampling-variation}
 #| echo: false
-#| fig-cap: "Eight classroom samples of 50 counties are drawn without replacement from the published county file, with a separate line fitted to each. This illustrates variation from selecting counties; it does not represent the ACS's survey margins of error."
+#| fig-cap: "Each orange line uses a separate sample of 50 counties, drawn without replacement. Green uses the full file. This exercise shows what changes when we select different counties. The ACS survey margins of error are a separate source of uncertainty."
 #| fig-alt: "Eight orange regression lines estimated from separate samples of fifty counties, overlaid on the county scatterplot. A thicker green line shows the fit using the full county file."
 county_figures$sampling
 ```
 
-You can produce one of those smaller-sample fits yourself:
+Try a sample of 50:
 
 ```{r county-sample-example}
 set.seed(15)
@@ -582,22 +587,25 @@ coef(small_model)
 coef(education_model)
 ```
 
-We will return to uncertainty about coefficients. For now, remember that a coefficient is an estimate built from data.
+Compare the two sets of coefficients. The small-sample slope won't exactly match the full-file slope. We'll put numbers on that uncertainty in a later lesson.
 
 # Your turn, then Lab 7 {#practice-for-lab-7}
 
-::: {.callout-note title="TRY IT: Put the pieces together"}
+::: {.callout-note title="TRY IT: Take the wheel"}
 Use `PovertyPct` as the predictor and `IncomeK` as the response.
 
-1. Draw the scatterplot before fitting anything.
-2. Fit the model with `lm()` and save it.
-3. Extract the intercept and slope with `coef()`. Write a sentence interpreting the slope with its units.
-4. Add the fitted line with `geom_abline()`, using the two coefficients you extracted.
-5. Use `predict()` for poverty rates of 10% and 20%. Convert the predictions to dollars.
-6. Find the county with the largest positive residual. Explain what the positive sign means.
+1. Draw the scatterplot.
+2. Fit and save the model with `lm()`.
+3. Extract the intercept and slope with `coef()`.
+4. Explain the slope in one sentence. Include its units.
+5. Add the line with `geom_abline()`. Use the coefficients you extracted.
+6. Use `predict()` for poverty rates of 10% and 20%.
+7. Convert those predictions to dollars.
+8. Find the county with the largest positive residual.
+9. Explain what its positive residual means.
 :::
 
-Here is the pattern for drawing a line from a saved model. Adapt it to your poverty model:
+Here's how to draw the line from a saved model. Adapt this code for your poverty model:
 
 ```{r line-from-saved-model, eval=FALSE}
 ggplot(counties, aes(CollegePct, IncomeK)) +
@@ -610,8 +618,8 @@ ggplot(counties, aes(CollegePct, IncomeK)) +
   theme_minimal()
 ```
 
-`geom_smooth(method = "lm", se = FALSE)` would draw the same line. Saving the model gives us the coefficients, predictions, and residuals as well.
+`geom_smooth(method = "lm", se = FALSE)` draws the same line. Saving the model also lets you pull out coefficients, predictions, and residuals.
 
-For **[Lab 7](/assignment/07-assignment.html)**, the data changes to Ames home sales. The workflow carries over: inspect the variables, visualize their relationships, fit the requested model, extract its coefficients, and find a large positive residual. Keep track of which variable is on each side of `~` and what units the response uses.
+In **[Lab 7](/assignment/07-assignment.html)**, you'll switch to Ames home sales. Same moves: plot, fit, read the coefficients, check the residuals. Watch the order of the variables around `~`. Keep the response units handy.
 
-One last sentence to have ready before you leave: **What is the difference between a pattern across counties and the effect of sending a person to college?**
+Before you pack up: **What would you tell someone who used our county slope to predict the raise they'd get from a college degree?**

@@ -50,7 +50,7 @@ regression_lesson_figures <- function(counties) {
     scale_color_manual(values = c("Michigan" = orange, "Other counties" = gray)) +
     guides(color = guide_legend(override.aes = list(alpha = 1, size = 3))) +
     scale_y_continuous(labels = dollar_k) +
-    labs(title = "What does education tell us about a county's income?",
+    labs(title = "Can college share help us predict income?",
           subtitle = "Each dot is one county or county equivalent",
           x = "Adults 25+ with a bachelor's degree or more (%)",
           y = "Median household income") +
@@ -63,7 +63,7 @@ regression_lesson_figures <- function(counties) {
             subtitle = sprintf("Average county median: %s", dollar_k(income_mean))),
     scatter() +
       geom_abline(intercept = b[1], slope = b[2], color = green, linewidth = 1) +
-      labs(title = "Use what we know about X",
+      labs(title = "Let the guess change",
             subtitle = "Predictions change with education"),
     nrow = 1
   )
@@ -84,15 +84,15 @@ regression_lesson_figures <- function(counties) {
               color = orange, fill = "white", linewidth = 0, size = 4) +
     annotate("label", x = 54, y = mean(walk$y), label = sprintf("+%s", dollar_k(diff(walk$y))),
               color = orange, fill = "white", linewidth = 0, size = 4) +
-    labs(title = "A slope is a change in Y for a change in X",
-          subtitle = sprintf("Ten percentage points correspond to about %s in fitted income",
+    labs(title = "Read the slope in dollars",
+          subtitle = sprintf("Ten more percentage points: about %s higher predicted income",
                               dollar_k(10 * b[2])))
 
   units <- patchwork::wrap_plots(
     ggplot(counties, aes(CollegePct, IncomeK)) +
       geom_point(alpha = 0.17, color = gray, size = 0.7) +
       geom_abline(intercept = b[1], slope = b[2], color = green, linewidth = 1) +
-      labs(title = "Income in thousands of dollars",
+      labs(title = "Income in $1,000s",
             subtitle = sprintf("Slope = %.3f", b[2]), x = "College-educated adults (%)",
             y = "Income ($1,000s)") + county_theme,
     ggplot(counties, aes(CollegePct, MedianIncome)) +
@@ -149,8 +149,8 @@ regression_lesson_figures <- function(counties) {
                    color = green, linewidth = 1) +
     facet_wrap(~candidate, nrow = 1) +
     scale_y_continuous(labels = dollar_k) +
-    labs(title = "Choose a line by the errors it makes",
-          subtitle = "Each candidate passes through the sample means; OLS minimizes squared vertical gaps",
+    labs(title = "Which line makes the smallest errors?",
+          subtitle = "All three pass through the sample means. OLS has the smallest sum of squared errors.",
           x = "College-educated adults (%)", y = "Median household income") +
     county_theme
 
@@ -187,8 +187,8 @@ regression_lesson_figures <- function(counties) {
     facet_wrap(~panel, scales = "free_x", nrow = 1) +
     scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
     scale_y_continuous(labels = dollar_k) +
-    labs(title = "Positive, negative, and barely useful",
-          subtitle = "Three separate regressions, each with one predictor and the same counties",
+    labs(title = "Which predictor earns its keep?",
+          subtitle = "Same counties, same response. A separate regression for each predictor.",
           x = NULL, y = "Median household income") +
     county_theme + theme(panel.spacing.x = grid::unit(1.1, "lines"))
 
@@ -207,8 +207,8 @@ regression_lesson_figures <- function(counties) {
                            guide = guide_colorbar(barwidth = grid::unit(6, "cm"),
                                                   barheight = grid::unit(0.4, "cm"))) +
     coord_equal() +
-    labs(title = "Correlation keeps the sign",
-          subtitle = "Unit-free; the same in either direction",
+    labs(title = "Six pairs, one picture",
+          subtitle = "Read the sign and the size.",
           x = NULL, y = NULL) +
     county_theme + theme(panel.grid = element_blank())
 
@@ -258,8 +258,8 @@ regression_lesson_figures <- function(counties) {
     facet_wrap(~panel, nrow = 1) +
     scale_color_manual(values = c("Original fit" = green, "With highlighted point" = orange)) +
     coord_cartesian(xlim = c(0, 12), ylim = c(0, 48)) +
-    labs(title = "A surprising outcome and an influential point are different things",
-          subtitle = "Simulated examples; compare how much the fitted slope changes",
+    labs(title = "Which point pulls the slope?",
+          subtitle = "Simulated examples. Compare the green and orange lines.",
           x = "X", y = "Y") +
     county_theme
 
@@ -277,7 +277,7 @@ regression_lesson_figures <- function(counties) {
     scale_color_manual(values = c("Observed range" = green, "Extrapolation" = orange)) +
     scale_linetype_manual(values = c("Observed range" = "solid", "Extrapolation" = "dashed")) +
     scale_y_continuous(labels = dollar_k) +
-    labs(title = "R will happily predict where we have no observations",
+    labs(title = "Check the range before you predict",
           subtitle = "The shaded band marks the observed education range",
           x = "College-educated adults (%)", y = "Median household income") +
     county_theme

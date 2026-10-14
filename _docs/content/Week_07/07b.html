@@ -583,7 +583,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
 
   <ul class="collapse">
-  <li><a href="#before-we-start" id="toc-before-we-start" class="nav-link active" data-scroll-target="#before-we-start">Before we start</a></li>
+  <li><a href="#today" id="toc-today" class="nav-link active" data-scroll-target="#today">Today</a></li>
   <li><a href="#start-with-a-prediction" id="toc-start-with-a-prediction" class="nav-link" data-scroll-target="#start-with-a-prediction">Start with a prediction</a>
   <ul class="collapse">
   <li><a href="#the-data-and-its-units" id="toc-the-data-and-its-units" class="nav-link" data-scroll-target="#the-data-and-its-units">The data and its units</a></li>
@@ -601,13 +601,13 @@ window.Quarto = {
   <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals">Look at the mistakes</a>
   <ul class="collapse">
   <li><a href="#squared-errors" id="toc-squared-errors" class="nav-link" data-scroll-target="#squared-errors">Why this line? Squared errors</a></li>
-  <li><a href="#r-squared" id="toc-r-squared" class="nav-link" data-scroll-target="#r-squared">How much variation did we account for?</a></li>
-  <li><a href="#two-pictures-worth-checking" id="toc-two-pictures-worth-checking" class="nav-link" data-scroll-target="#two-pictures-worth-checking">Two pictures worth checking</a></li>
+  <li><a href="#r-squared" id="toc-r-squared" class="nav-link" data-scroll-target="#r-squared">Did we beat the baseline?</a></li>
+  <li><a href="#check-where-the-line-misses" id="toc-check-where-the-line-misses" class="nav-link" data-scroll-target="#check-where-the-line-misses">Check where the line misses</a></li>
   </ul></li>
   <li><a href="#more-examples" id="toc-more-examples" class="nav-link" data-scroll-target="#more-examples">Two more worked examples</a>
   <ul class="collapse">
   <li><a href="#example-4-a-negative-slope" id="toc-example-4-a-negative-slope" class="nav-link" data-scroll-target="#example-4-a-negative-slope">Example 4: A negative slope</a></li>
-  <li><a href="#example-5-a-predictor-that-tells-us-little" id="toc-example-5-a-predictor-that-tells-us-little" class="nav-link" data-scroll-target="#example-5-a-predictor-that-tells-us-little">Example 5: A predictor that tells us little</a></li>
+  <li><a href="#example-5-age-doesnt-get-us-very-far" id="toc-example-5-age-doesnt-get-us-very-far" class="nav-link" data-scroll-target="#example-5-age-doesnt-get-us-very-far">Example 5: Age doesn’t get us very far</a></li>
   </ul></li>
   <li><a href="#scatterplot-matrices" id="toc-scatterplot-matrices" class="nav-link" data-scroll-target="#scatterplot-matrices">Explore several relationships</a>
   <ul class="collapse">
@@ -615,10 +615,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#check-the-line" id="toc-check-the-line" class="nav-link" data-scroll-target="#check-the-line">Four ways to fool yourself</a>
   <ul class="collapse">
-  <li><a href="#a-small-correlation-does-not-rule-out-a-pattern" id="toc-a-small-correlation-does-not-rule-out-a-pattern" class="nav-link" data-scroll-target="#a-small-correlation-does-not-rule-out-a-pattern">1. A small correlation does not rule out a pattern</a></li>
-  <li><a href="#a-large-residual-is-not-the-same-as-influence" id="toc-a-large-residual-is-not-the-same-as-influence" class="nav-link" data-scroll-target="#a-large-residual-is-not-the-same-as-influence">2. A large residual is not the same as influence</a></li>
-  <li><a href="#extrapolation-is-easy-to-request-and-hard-to-defend" id="toc-extrapolation-is-easy-to-request-and-hard-to-defend" class="nav-link" data-scroll-target="#extrapolation-is-easy-to-request-and-hard-to-defend">3. Extrapolation is easy to request and hard to defend</a></li>
-  <li><a href="#our-coefficients-depend-on-the-sample" id="toc-our-coefficients-depend-on-the-sample" class="nav-link" data-scroll-target="#our-coefficients-depend-on-the-sample">4. Our coefficients depend on the sample</a></li>
+  <li><a href="#a-curve-can-hide-from-correlation" id="toc-a-curve-can-hide-from-correlation" class="nav-link" data-scroll-target="#a-curve-can-hide-from-correlation">1. A curve can hide from correlation</a></li>
+  <li><a href="#some-points-pull-the-line-harder" id="toc-some-points-pull-the-line-harder" class="nav-link" data-scroll-target="#some-points-pull-the-line-harder">2. Some points pull the line harder</a></li>
+  <li><a href="#r-will-predict-past-the-data" id="toc-r-will-predict-past-the-data" class="nav-link" data-scroll-target="#r-will-predict-past-the-data">3. R will predict past the data</a></li>
+  <li><a href="#change-the-sample-change-the-slope" id="toc-change-the-sample-change-the-slope" class="nav-link" data-scroll-target="#change-the-sample-change-the-slope">4. Change the sample, change the slope</a></li>
   </ul></li>
   <li><a href="#practice-for-lab-7" id="toc-practice-for-lab-7" class="nav-link" data-scroll-target="#practice-for-lab-7">Your turn, then Lab 7</a></li>
   </ul>
@@ -646,41 +646,35 @@ window.Quarto = {
 </header>
 
 
-<section id="before-we-start" class="level2">
-<h2 class="anchored" data-anchor-id="before-we-start">Before we start</h2>
-<p>Today we will use a regression line to make a prediction, interpret its slope, and inspect its mistakes. By the end, you should be able to use <code>lm()</code>, extract the coefficients, draw the fitted line, and explain what a residual means. You will need those skills for <a href="../../assignment/07-assignment.html">Lab 7</a>.</p>
-<p>Keep four questions in mind:</p>
-<ul>
-<li>What does a regression line add to a correlation?</li>
-<li>What does the slope mean in the units of our data?</li>
-<li>How much better is the line than giving everyone the same prediction?</li>
-<li>What can a convincing-looking line still get wrong?</li>
-</ul>
+<section id="today" class="level2">
+<h2 class="anchored" data-anchor-id="today">Today</h2>
+<p>Today’s job: predict a county’s median household income. We’ll fit a line, read its slope in dollars, and check where it misses. You’ll use the same tools in <a href="../../assignment/07-assignment.html">Lab 7</a>.</p>
+<p>We’ll use <code>lm()</code> for the arithmetic. The harder part is saying what the answer means.</p>
 </section>
 <section id="start-with-a-prediction" class="level1">
 <h1>Start with a prediction</h1>
-<p>Suppose you are helping an organization compare local labor markets. You know the share of adults in a county who have a college degree. How much does that tell you about the county’s household income?</p>
-<p>Before looking at the figure, commit to an answer: <strong>If we compare counties with more college graduates to counties with fewer, what pattern do you expect? How much variation do you think will be left over?</strong></p>
+<p>Pick a county. You know the share of adults who have a college degree. Can you make a decent guess about household income?</p>
+<p><strong>Make your guess before you scroll:</strong> Do counties with more college graduates tend to have higher incomes? How closely do you expect the dots to follow that pattern?</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-income-opening-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A scatterplot of college attainment and median household income for U.S. counties. The relationship is positive with substantial scatter. Michigan counties are orange, and Ingham and Ottawa are labeled."></p>
-<figcaption>The overall relationship is positive, but knowing the education share does not pin down a county’s income. Ingham and Ottawa have similar education shares and quite different household incomes.</figcaption>
+<figcaption>Higher college shares generally go with higher incomes. Look at Ingham and Ottawa, though: similar college shares, very different incomes.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>There is a pattern. There is also a lot of room to be wrong. Regression gives us a way to describe both.</p>
+<p>Ingham has the larger college share. Ottawa has the higher income. Education helps us predict income across counties, but it can’t settle every comparison. Let’s fit a line and see how much it helps.</p>
 <section id="the-data-and-its-units" class="level2">
 <h2 class="anchored" data-anchor-id="the-data-and-its-units">The data and its units</h2>
-<p>Our source is the <strong>U.S. Census Bureau’s <a href="https://www.census.gov/data/developers/data-sets/acs-5year.html">2020–2024 American Community Survey five-year estimates</a></strong>. These estimates combine five years of survey responses. Income amounts are expressed in <a href="https://www.census.gov/programs-surveys/acs/guidance/comparing-acs-data/2024.html">2024 inflation-adjusted dollars</a>.</p>
+<p>We’ll use the <strong>U.S. Census Bureau’s <a href="https://www.census.gov/data/developers/data-sets/acs-5year.html">2020–2024 American Community Survey five-year estimates</a></strong>. The Census Bureau combines five years of survey responses to produce these estimates. All incomes use <a href="https://www.census.gov/programs-surveys/acs/guidance/comparing-acs-data/2024.html">2024 inflation-adjusted dollars</a>.</p>
 <p>Download the prepared file:</p>
 <ul>
 <li><a href="../../data/county_education_income_2024.csv"><i class="fa-solid fa-file-arrow-down" aria-label="file-arrow-down"></i> <code>county_education_income_2024.csv</code></a></li>
 <li><a href="../../data/county_education_income_2024_source.json">Source tables, variable codes, and preparation notes</a></li>
 </ul>
-<p>The file contains 3,144 counties and county equivalents in the 50 states and D.C. One county has no usable income estimate; our income examples use the remaining <strong>3,143</strong>. All three regressions below use the same rows.</p>
+<p>The file has 3,144 counties and county equivalents in the 50 states and D.C. One county has no usable income estimate. That leaves <strong>3,143 counties</strong> for our examples. All three regressions use these same rows.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -727,7 +721,8 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p><strong>One row is a county, not a person.</strong> A median describes the middle household in that county. It does not say that every household receives that income. Our unweighted regressions give each county the same weight, so a small county counts just as much as Wayne County.</p>
+<p><strong>Each dot represents a whole county.</strong> The median is the income of the middle household when we sort households from lowest to highest income. Households within that county can earn much more or much less.</p>
+<p>We give each county the same weight in these regressions. A tiny county gets as much say in the fit as Wayne County.</p>
 <section id="load-it" class="level3">
 <h3 class="anchored" data-anchor-id="load-it">Load it</h3>
 <div class="cell" data-layout-align="center">
@@ -754,7 +749,7 @@ window.Quarto = {
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We keep FIPS codes as text so that a code beginning with <code>0</code> keeps its <code>0</code>. Then we remove rows missing either variable in our first model:</p>
+<p>Keep FIPS codes as text. Otherwise, R can drop a leading <code>0</code> from a code. Next, remove rows that lack either variable in our first model:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>counties <span class="ot">&lt;-</span> county_raw <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(CollegePct, IncomeK)</span>
@@ -774,7 +769,7 @@ window.Quarto = {
 6 Bullock County Alabama       8.12    31.3</code></pre>
 </div>
 </div>
-<p>A basic version of the opening figure takes only a few lines:</p>
+<p>Here’s the code for a simple version of that scatterplot:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(counties, <span class="fu">aes</span>(<span class="at">x =</span> CollegePct, <span class="at">y =</span> IncomeK)) <span class="sc">+</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
@@ -782,20 +777,20 @@ window.Quarto = {
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Median household income ($1,000s)"</span>) <span class="sc">+</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Read the dots before fitting anything">
+<div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Check the Michigan numbers">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>TRY IT: Read the dots before fitting anything
+<span class="screen-reader-only">Note</span>TRY IT: Check the Michigan numbers
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li>Filter to Michigan and find Ingham and Ottawa.</li>
-<li>Which has the higher college share? Which has the higher income?</li>
-<li>Would a single prediction based only on education get both right?</li>
+<li>Filter the data to Michigan.</li>
+<li>Find Ingham and Ottawa. Compare their college shares and incomes.</li>
+<li>If income always rose with college share, which county would have the higher income? Does it?</li>
 </ol>
 </div>
 </div>
@@ -804,26 +799,27 @@ window.Quarto = {
 </section>
 <section id="give-the-line-a-job" class="level1">
 <h1>Give the line a job</h1>
-<p>If we knew nothing about a county, we could predict the same value for every county: the <strong>average of the county median incomes</strong>, about $67,976. This is our baseline. It is not the national median household income.</p>
-<p>Knowing <code>CollegePct</code> gives us a chance to do better. The regression line lets the prediction change with education.</p>
+<p>Start with the lowest-effort guess: give every county the same prediction. Use the <strong>average of the county median incomes</strong>, about $67,976. We’ll call this our <strong>baseline</strong>.</p>
+<p>Careful with that number. We averaged county medians. We didn’t calculate the national median household income.</p>
+<p>Now use <code>CollegePct</code> to let the prediction change from county to county. Does that beat our one-size-fits-all guess?</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-baseline-versus-line-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Two versions of the same county scatterplot. One has a horizontal line at the average county income; the other has an upward-sloping fitted regression line."></p>
-<figcaption>The left-hand prediction ignores education. The right-hand prediction uses it. Both make mistakes, but the sloped line has smaller total squared errors in this dataset.</figcaption>
+<figcaption>Left: one prediction for everyone. Right: the prediction changes with college share. The sloped line makes smaller total squared errors. We’ll calculate those errors below.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>From <a href="../../content/Week_07/07a.html#the-regression-line">Tuesday’s lecture</a>, we have a formula for the slope and intercept:</p>
+<p>Here are the slope and intercept formulas from <a href="../../content/Week_07/07a.html#the-regression-line">Tuesday</a>:</p>
 <p><span class="math display">\[
 \widehat{\beta}_1 = r\frac{s_Y}{s_X},
 \qquad
 \widehat{\beta}_0 = \bar{Y}-\widehat{\beta}_1\bar{X}.
 \]</span></p>
-<p>The correlation gives the direction and strength of the linear association. The ratio of standard deviations puts the slope back into the units of <code>Y</code> per unit of <code>X</code>.</p>
-<p>We can translate the formulas directly into R:</p>
+<p>The correlation tells us the direction and strength of the linear relationship. Multiplying by <span class="math inline">\(s_Y/s_X\)</span> gives the slope its units: units of <code>Y</code> per unit of <code>X</code>.</p>
+<p>Translate the formulas into R:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>line_by_hand <span class="ot">&lt;-</span> counties <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
@@ -846,10 +842,10 @@ window.Quarto = {
 1 0.720      37.3  1.24</code></pre>
 </div>
 </div>
-<p>The line passes through the point <span class="math inline">\((\bar{X}, \bar{Y})\)</span>. That is why the intercept formula subtracts <span class="math inline">\(\widehat{\beta}_1\bar{X}\)</span> from <span class="math inline">\(\bar{Y}\)</span>.</p>
+<p>The line must pass through <span class="math inline">\((\bar{X}, \bar{Y})\)</span>, the point at the two sample means. Once we have the slope, the intercept formula puts the line through that point.</p>
 <section id="fit-with-lm" class="level2">
 <h2 class="anchored" data-anchor-id="fit-with-lm">Fit the same line with <code>lm()</code></h2>
-<p>We do not need to repeat that arithmetic every time. R’s <code>lm()</code> fits the line for us:</p>
+<p>That was the long route. For everyday use, let <code>lm()</code> fit the line:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>education_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(IncomeK <span class="sc">~</span> CollegePct, <span class="at">data =</span> counties)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(education_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -865,8 +861,8 @@ window.Quarto = {
 <li><code>CollegePct</code> is the <strong>predictor</strong>, or <code>X</code>.</li>
 <li><code>data = counties</code> tells R where to find the columns.</li>
 </ul>
-<p>We say that income is <strong>regressed on</strong> education. Swapping the two variables asks a different question and fits a different line. Correlation is symmetric; regression chooses an outcome.</p>
-<p>The object <code>education_model</code> stores the fitted model. <code>coef()</code> extracts its coefficients:</p>
+<p>We say that income is <strong>regressed on</strong> education. Keep the order straight. Predicting income from education asks a different question from predicting education from income. Swapping the variables changes the regression line, even though the correlation stays the same.</p>
+<p>Save the model as <code>education_model</code>. Use <code>coef()</code> to pull out its <strong>coefficients</strong>: the intercept and slope.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(education_model)[[<span class="st">"(Intercept)"</span>]]</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(education_model)[[<span class="st">"CollegePct"</span>]]</span>
@@ -877,22 +873,22 @@ window.Quarto = {
     37.27      1.24 </code></pre>
 </div>
 </div>
-<p>These match our hand calculation. In our units, the fitted equation is approximately</p>
+<p>Same answers as before, with less typing. Our fitted equation is approximately</p>
 <p><span class="math display">\[
 \widehat{\text{IncomeK}}
 = 37.27 + 1.244\times\text{CollegePct}.
 \]</span></p>
-<p>The hat means <strong>fitted or predicted</strong>. We are using a straight line to approximate the conditional mean of income given education. We have estimated that line from data; we have not discovered an exact law for every county.</p>
+<p>The hat means <strong>fitted or predicted</strong>. For a given college share, the line estimates the average county median income. Actual counties can sit above or below that estimate.</p>
 </section>
 </section>
 <section id="interpret-the-slope" class="level1">
 <h1>Interpret it in dollars</h1>
-<p>A one-unit increase in <code>CollegePct</code> means <strong>one percentage point</strong>, such as going from 30% to 31%. It does not mean increasing the share by 100%.</p>
-<p>Our slope says:</p>
+<p>A one-unit increase in <code>CollegePct</code> means <strong>one percentage point</strong>: from 30% to 31%, for example. Keep “percentage point” in your explanation. It saves a lot of confusion.</p>
+<p>Read the slope like this:</p>
 <blockquote class="blockquote">
-<p>Counties with a college share one percentage point higher have fitted median household income about <strong>$1,244 higher</strong>, on average in this linear model.</p>
+<p>A one-percentage-point increase in a county’s college share corresponds to about <strong>$1,244 more</strong> in predicted median household income.</p>
 </blockquote>
-<p>That is an association across counties. It is not the effect of giving one resident a degree.</p>
+<p>We’re comparing counties here. This slope can’t tell us how much one person’s income would change if they earned a degree.</p>
 <section id="example-1-a-ten-point-difference" class="level2">
 <h2 class="anchored" data-anchor-id="example-1-a-ten-point-difference">Example 1: A ten-point difference</h2>
 <p>Going from 30% to 40% is a ten-percentage-point difference. Multiply the slope by ten:</p>
@@ -907,36 +903,36 @@ window.Quarto = {
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-slope-walk-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A county scatterplot with a fitted line and an orange right-angle step between predicted incomes at college shares of 30 and 40 percent. The step labels the ten-point education change and its corresponding fitted income change."></p>
-<figcaption>Move ten percentage points to the right, then up to the line. The vertical change is ten times the slope. The two marked points are fitted values, not two actual counties.</figcaption>
+<figcaption>Move ten percentage points right. Then move up to the line. That rise is ten times the slope. Both orange dots are predictions; neither represents an actual county.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Say what the coefficient means">
+<div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Fix this sentence">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>TRY IT: Say what the coefficient means
+<span class="screen-reader-only">Note</span>TRY IT: Fix this sentence
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>A classmate writes: “Getting a college degree raises household income by $1,244.”</p>
-<p>Explain two problems with that sentence. Then write a sentence that the county regression actually supports.</p>
+<p>Find two problems with that claim. Then rewrite it using what our county model can tell us.</p>
 </div>
 </div>
 </section>
 <section id="example-2-make-a-prediction-with-predict" class="level2">
 <h2 class="anchored" data-anchor-id="example-2-make-a-prediction-with-predict">Example 2: Make a prediction with <code>predict()</code></h2>
-<p>To predict income for a county with <code>CollegePct = 30</code>, substitute 30 into the fitted equation:</p>
+<p>What income does the line predict at <code>CollegePct = 30</code>? Plug in 30:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(b0 <span class="sc">+</span> b1 <span class="sc">*</span> <span class="dv">30</span>) <span class="sc">*</span> <span class="dv">1000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 74579</code></pre>
 </div>
 </div>
-<p>For several values at once, use <code>predict()</code>. The new data must have a column with <strong>the same predictor name</strong> used in the model:</p>
+<p>Use <code>predict()</code> to do several values at once. Put the values in a new table. Its predictor column must have <strong>the same name</strong> as the predictor in the model:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>new_counties <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">CollegePct =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">40</span>))</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -951,11 +947,12 @@ window.Quarto = {
 2         40                   87015.</code></pre>
 </div>
 </div>
-<p>The model predicts in the units of its response. Since we fit <code>IncomeK</code>, <code>predict()</code> returns thousands of dollars. We multiply by 1,000 to report dollars.</p>
+<p>We fit the model with <code>IncomeK</code>, so <code>predict()</code> returns thousands of dollars. Multiply by 1,000 to get dollars. R won’t do that conversion for you.</p>
 <section id="what-about-the-intercept" class="level3">
 <h3 class="anchored" data-anchor-id="what-about-the-intercept">What about the intercept?</h3>
-<p>The intercept is the fitted value at <code>CollegePct = 0</code>: about $37,271. Before giving it a substantive interpretation, check whether zero is represented in our data. The observed shares in this model range from about 0% to 80.5%.</p>
-<p>Zero appears in one county in this snapshot: Loving County, Texas, whose estimated population is just 33. That is little support for a broad story about communities with no college graduates. Here, the intercept mainly helps position the line. In other datasets, zero may be outside the observed range altogether.</p>
+<p>The intercept gives the prediction at <code>CollegePct = 0</code>: about $37,271. Before we build a story around it, check the data. The college shares range from about 0% to 80.5%.</p>
+<p>Exactly one county has a zero in this file: Loving County, Texas. Its estimated population is 33. That’s a thin basis for a grand theory about places with no college graduates.</p>
+<p>Here, the intercept mainly sets the line’s position. In other datasets, zero may fall outside the data entirely.</p>
 </section>
 </section>
 <section id="example-3-change-the-units-keep-the-relationship" class="level2">
@@ -980,17 +977,17 @@ window.Quarto = {
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-units-1.png" class="img-fluid figure-img" style="width:100.0%" alt="The same fitted county relationship shown with income measured in thousands of dollars and in dollars. The lines have the same visual shape, while the reported slopes differ by a factor of one thousand."></p>
-<figcaption>The geometry is unchanged. Multiplying Y by 1,000 multiplies the intercept and slope by 1,000. The correlation and R-squared stay the same.</figcaption>
+<figcaption>Same dots, same line, different labels. Measuring income in dollars makes both coefficients 1,000 times larger. The correlation and R-squared stay the same.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Always attach units to a coefficient. A slope of 1.244 and a slope of 1,243.6 can describe exactly the same relationship.</p>
+<p>A bigger coefficient doesn’t earn bragging rights. A slope of 1.244 and a slope of 1,243.6 describe the same relationship here. <strong>Report the units with the number.</strong></p>
 </section>
 </section>
 <section id="residuals" class="level1">
 <h1>Look at the mistakes</h1>
-<p>A prediction is not an observation. For county <span class="math inline">\(i\)</span>, the <strong>residual</strong> is</p>
+<p>How far did the prediction miss? Subtract the fitted income from the observed income. For county <span class="math inline">\(i\)</span>, that difference is the <strong>residual</strong>:</p>
 <p><span class="math display">\[
 e_i = Y_i-\widehat{Y}_i.
 \]</span></p>
@@ -998,7 +995,7 @@ e_i = Y_i-\widehat{Y}_i.
 <li>A positive residual means observed income is above the line: we <strong>underpredicted</strong>.</li>
 <li>A negative residual means observed income is below the line: we <strong>overpredicted</strong>.</li>
 </ul>
-<p>R gives us fitted values with <code>fitted()</code> and residuals with <code>resid()</code>:</p>
+<p>Use <code>fitted()</code> for the predictions and <code>resid()</code> for the residuals:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>county_results <span class="ot">&lt;-</span> counties <span class="sc">%&gt;%</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -1024,13 +1021,13 @@ e_i = Y_i-\widehat{Y}_i.
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-residual-segments-1.png" class="img-fluid figure-img" style="width:100.0%" alt="The education-income scatterplot with vertical orange segments between the fitted line and the observed values for Ingham, Ottawa, and Washtenaw counties. Labels show signed residuals."></p>
-<figcaption>A residual is a vertical distance in the units of Y. These gaps compare each county’s observed income with the national county model’s fitted income. They do not measure the effect of an omitted variable.</figcaption>
+<figcaption>Read each orange gap vertically: observed income minus fitted income. A gap tells us how far the model missed. It can’t tell us why.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>For Ingham, the model overpredicts income. Ottawa is above the line. What might a one-predictor model miss about the kinds of households living in these counties? About their industries, housing costs, or age distributions?</p>
-<p>Those are questions for further analysis. The residual by itself does not tell us which explanation is correct.</p>
+<p>The model guesses too high for Ingham and too low for Ottawa. What did it miss? Maybe household composition matters. Maybe industries, housing costs, or age matter.</p>
+<p>Those are leads to investigate. We can’t pick the winning explanation from a residual alone.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Find a county the line misses">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1051,32 +1048,33 @@ e_i = Y_i-\widehat{Y}_i.
 </div>
 <section id="squared-errors" class="level2">
 <h2 class="anchored" data-anchor-id="squared-errors">Why this line? Squared errors</h2>
-<p>Residuals above and below a line can cancel. Squaring them makes every miss count positively and gives large misses more weight.</p>
-<p>Ordinary least squares, or <strong>OLS</strong>, chooses the intercept and slope to minimize</p>
+<p>Add up the raw residuals and positive misses can cancel negative ones. Square them first. Now every nonzero miss adds to the total, and big misses count much more than small ones.</p>
+<p><strong>Ordinary least squares (OLS)</strong> chooses the intercept and slope with the smallest <strong>sum of squared errors</strong>, or SSE:</p>
 <p><span class="math display">\[
 \text{SSE}=\sum_{i=1}^{n}(Y_i-\widehat{Y}_i)^2.
 \]</span></p>
-<p>Here are three candidate slopes. For each slope, we position the line through the sample means, giving it the best intercept for that slope.</p>
+<p>Try three slopes. For each one, put the line through the two sample means. That gives each slope its best possible intercept.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-squared-loss-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Three county scatterplots with a line that is too flat, the OLS line, and a line that is too steep. Each panel reports its root mean squared error, with the smallest value for OLS."></p>
-<figcaption>The OLS fit has the lowest squared-error loss of these three candidates. RMSE is the square root of the average squared error, so it ranks these lines in the same order and is easier to interpret in income units.</figcaption>
+<figcaption>OLS wins this comparison: it has the smallest squared-error total. The labels report RMSE, which puts the errors back in income units and ranks these lines in the same order.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>A convenient summary is <strong>root mean squared error</strong>:</p>
+<p>Squared dollars are awkward to read. <strong>Root mean squared error (RMSE)</strong> puts the error measure back in the units of income. Average the squared residuals, then take the square root:</p>
 <p><span class="math display">\[
 \text{RMSE}
 =\sqrt{\frac{1}{n}\sum_{i=1}^{n}e_i^2}.
 \]</span></p>
-<p>The baseline’s RMSE is about <strong>$17,772</strong>. The education model’s RMSE is about <strong>$12,338</strong>. These describe errors on the same data used to fit the model. Later we will ask how well a model does on observations it has not seen.</p>
+<p>Our one-size-fits-all baseline has an RMSE of about <strong>$17,772</strong>. Adding education brings that down to about <strong>$12,338</strong>.</p>
+<p>That’s an improvement on the data we used to fit the line. To check predictions for new counties, we’d need to test the model on data we held out.</p>
 </section>
 <section id="r-squared" class="level2">
-<h2 class="anchored" data-anchor-id="r-squared">How much variation did we account for?</h2>
-<p><span class="math inline">\(R^2\)</span> compares the line’s squared errors with the baseline’s squared errors:</p>
+<h2 class="anchored" data-anchor-id="r-squared">Did we beat the baseline?</h2>
+<p><span class="math inline">\(R^2\)</span> reports the share of the baseline’s squared error that our line removes:</p>
 <p><span class="math display">\[
 R^2
 =1-\frac{\sum_i(Y_i-\widehat{Y}_i)^2}
@@ -1095,27 +1093,28 @@ R^2
 <pre><code>[1] 0.518</code></pre>
 </div>
 </div>
-<p>Here, <span class="math inline">\(R^2\)</span> is about <strong>51.8%</strong>. The fitted line reduces squared error by that proportion relative to the baseline.</p>
-<p>It does not mean that education <em>causes</em> that proportion of income, or that this proportion of counties is predicted exactly. For simple OLS with an intercept, <span class="math inline">\(R^2\)</span> also equals the squared sample correlation.</p>
+<p>Here, <span class="math inline">\(R^2\)</span> is about <strong>51.8%</strong>. Compared with our baseline, the line cuts total squared error by that share.</p>
+<p>Don’t read that as “education causes 52% of income” or “we got 52% of counties exactly right.” <span class="math inline">\(R^2\)</span> measures a reduction in squared error.</p>
+<p>For a simple OLS regression with an intercept, <span class="math inline">\(R^2\)</span> also equals the sample correlation squared. Conveniently, the name checks out.</p>
 </section>
-<section id="two-pictures-worth-checking" class="level2">
-<h2 class="anchored" data-anchor-id="two-pictures-worth-checking">Two pictures worth checking</h2>
+<section id="check-where-the-line-misses" class="level2">
+<h2 class="anchored" data-anchor-id="check-where-the-line-misses">Check where the line misses</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-residual-diagnostics-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A residual-versus-fitted scatterplot and a histogram of residuals for the county education model, both with zero reference lines."></p>
-<figcaption>The left panel asks whether residuals change with the fitted value. The right shows their distribution. The spread is substantial, and some counties have large positive misses. A fitted line does not make those features disappear.</figcaption>
+<figcaption>Left: check how the residuals change as fitted income rises. Right: check the size and spread of the misses. Several counties earn much more than the line predicts.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>A line gives us an average tendency. These pictures remind us how much individual counties can differ from that tendency.</p>
+<p>Look at the long positive tail. Our model makes some very large underpredictions. A decent <span class="math inline">\(R^2\)</span> leaves plenty of room for those.</p>
 </section>
 </section>
 <section id="more-examples" class="level1">
 <h1>Two more worked examples</h1>
-<p>Keep the outcome and the counties fixed. Change only the predictor.</p>
+<p>Keep income as the response. Keep the same counties. Try a different predictor.</p>
 <section id="example-4-a-negative-slope" class="level2">
 <h2 class="anchored" data-anchor-id="example-4-a-negative-slope">Example 4: A negative slope</h2>
 <p>What do you expect if we regress median household income on the poverty rate?</p>
@@ -1128,11 +1127,11 @@ R^2
 </div>
 </div>
 <p>A one-percentage-point higher poverty rate is associated with about <strong>$2,167 lower</strong> fitted median household income.</p>
-<p>Income and poverty are related descriptions of local economic conditions. This is a descriptive comparison, rather than a forecast made before we know anything about income.</p>
+<p>There’s a reason this relationship is strong: both variables describe the county’s incomes. The poverty rate already tells us something about who has low income. We’re describing the same period here, so don’t treat this as a forecast of future income.</p>
 </section>
-<section id="example-5-a-predictor-that-tells-us-little" class="level2">
-<h2 class="anchored" data-anchor-id="example-5-a-predictor-that-tells-us-little">Example 5: A predictor that tells us little</h2>
-<p>Maybe older counties have higher incomes because residents have had more time to accumulate earnings. Maybe retired households have lower incomes. Let’s check:</p>
+<section id="example-5-age-doesnt-get-us-very-far" class="level2">
+<h2 class="anchored" data-anchor-id="example-5-age-doesnt-get-us-very-far">Example 5: Age doesn’t get us very far</h2>
+<p>Could median age help? Older residents may earn more after years in the workforce. Retired households may earn less. The stories point in different directions. Let’s check the data:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>age_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(IncomeK <span class="sc">~</span> MedianAge, <span class="at">data =</span> counties)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(age_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1145,18 +1144,18 @@ R^2
 <pre><code>[1] 0.011</code></pre>
 </div>
 </div>
-<p>There is a fitted slope. There is also very little reduction in squared error. R will fit a line even when the predictor is not especially useful.</p>
+<p>Median age barely improves on the baseline. R still returns a slope, of course. Ask for a line and you’ll get a line. You have to decide whether it helps.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-three-predictors-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Three county scatterplots: income rises with college attainment, falls with poverty, and has a weak relationship with median age. Each panel gives its own slope and R-squared."></p>
-<figcaption>The education and poverty models have opposite signs but similar R-squared values. Median age explains much less of the county income variation. Each panel fits its own simple regression; these are not coefficients from a multiple regression.</figcaption>
+<figcaption>Education slopes up. Poverty slopes down. Both beat the age model by a lot. Each panel shows a separate regression with one predictor.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Notice the poverty model’s far-right tail: the fitted line drops below zero even though the observed county incomes are positive. It misses that part of the relationship badly. A respectable <span class="math inline">\(R^2\)</span> does not guarantee that every prediction is sensible.</p>
+<p>Check the far-right end of the poverty plot. The line predicts negative income. All the observed incomes are positive. Ope. The model misses that part of the pattern badly, despite its respectable <span class="math inline">\(R^2\)</span>.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Compare the models">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1178,7 +1177,7 @@ R^2
 </section>
 <section id="scatterplot-matrices" class="level1">
 <h1>Explore several relationships</h1>
-<p>When we have several candidate variables, a <strong>scatterplot matrix</strong> gives us a first look at all their pairwise relationships.</p>
+<p>Four variables give us six pairs to inspect. A <strong>scatterplot matrix</strong> puts them in one figure:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>county_numeric <span class="ot">&lt;-</span> counties <span class="sc">%&gt;%</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CollegePct, IncomeK, PovertyPct, MedianAge)</span>
@@ -1194,12 +1193,11 @@ R^2
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-pairs-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A four-by-four scatterplot matrix for college attainment, income, poverty, and median age, with distributions on the diagonal and correlations in the upper triangle."></p>
-<figcaption>The diagonal shows each variable’s distribution. Lower panels show the county pairs; upper panels give their correlations. Use this to choose relationships worth inspecting, then return to a full-size scatterplot.</figcaption>
+<figcaption>Scan one pair at a time. The diagonal shows distributions, the lower panels show scatterplots, and the upper panels report correlations. Open a full-size scatterplot when a pair catches your eye.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Read one pair at a time. The diagonal describes each variable’s distribution. The off-diagonal panels show pairs of variables. The upper panels summarize those pairs with correlations.</p>
 <p><strong>Don’t feed an ID code into <code>cor()</code> just because R stored it as a number.</strong> FIPS codes identify places. They are not measurements of how much “county” a place has.</p>
 <section id="a-compact-correlation-picture" class="level2">
 <h2 class="anchored" data-anchor-id="a-compact-correlation-picture">A compact correlation picture</h2>
@@ -1214,13 +1212,13 @@ PovertyPct      -0.46   -0.73       1.00     -0.17
 MedianAge       -0.10   -0.10      -0.17      1.00</code></pre>
 </div>
 </div>
-<p>A correlogram puts those numbers into a heatmap:</p>
+<p>Turn those numbers into a heatmap and you have a <strong>correlogram</strong>:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-correlogram-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A triangular correlation heatmap for college attainment, income, poverty, and median age, with numeric correlations printed in each tile."></p>
-<figcaption>Only one triangle is needed because correlation is symmetric. The diagonal would be all ones. The education-income and poverty-income correlations have opposite signs and similar magnitudes.</figcaption>
+<figcaption>We only need one triangle: swapping X and Y gives the same correlation. The diagonal would be all ones. Income’s correlations with education and poverty are about equally strong, with opposite signs.</figcaption>
 </figure>
 </div>
 </div>
@@ -1229,7 +1227,7 @@ MedianAge       -0.10   -0.10      -0.17      1.00</code></pre>
 <summary>
 <strong>Show me how to build the heatmap with ggplot</strong>
 </summary>
-<p>The correlation matrix needs to become a long table with one row per pair. <code>as.table()</code> preserves the row and column labels; <code>as.data.frame()</code> puts them into columns.</p>
+<p>First, turn the matrix into a long table with one row per pair. <code>as.table()</code> keeps the row and column labels. <code>as.data.frame()</code> puts them into columns.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>cor_long <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">as.table</span>(county_cor)) <span class="sc">%&gt;%</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">variable_x =</span> Var1, <span class="at">variable_y =</span> Var2, <span class="at">correlation =</span> Freq) <span class="sc">%&gt;%</span></span>
@@ -1244,26 +1242,26 @@ MedianAge       -0.10   -0.10      -0.17      1.00</code></pre>
 <span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
 <span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The ordering check keeps one triangle and removes the diagonal. The numbers and signs matter more than choosing an elaborate plotting style.</p>
+<p>The <code>filter()</code> step keeps one triangle and drops the diagonal. Keep the numbers visible. Color helps us scan; the labels tell us what we’re looking at.</p>
 </details>
 </section>
 </section>
 <section id="check-the-line" class="level1">
 <h1>Four ways to fool yourself</h1>
-<p>These are short examples to return to as you work. We do not need a complicated model to make a complicated mistake.</p>
-<section id="a-small-correlation-does-not-rule-out-a-pattern" class="level2">
-<h2 class="anchored" data-anchor-id="a-small-correlation-does-not-rule-out-a-pattern">1. A small correlation does not rule out a pattern</h2>
+<p>Before you trust a line, check the scatterplot, unusual points, prediction range, and sample. Here’s how each can trip us up.</p>
+<section id="a-curve-can-hide-from-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="a-curve-can-hide-from-correlation">1. A curve can hide from correlation</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/regression-curved-patterns-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Simulated positive, negative, and U-shaped relationships. Orange straight-line fits follow the first two patterns but miss the curve, whose correlation is near zero."></p>
-<figcaption>These are simulated teaching examples. The curved example has a clear relationship but a correlation near zero: a straight line misses the U-shape.</figcaption>
+<figcaption>These dots are simulated. The U-shape is easy to see, but its correlation is near zero. One straight line can’t follow the drop and the rise.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Correlation summarizes a <strong>linear</strong> relationship. Always look at the scatterplot before deciding that a small correlation means there is nothing to learn.</p>
+<p>Correlation measures a <strong>linear</strong> relationship. A small correlation can send you right past a strong curve. Plot the dots before you declare “nothing going on here.”</p>
 <div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Predict before calculating">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1274,59 +1272,60 @@ MedianAge       -0.10   -0.10      -0.17      1.00</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For the U-shaped example, imagine increasing X from a very negative value toward zero, and then from zero toward a very positive value. How does Y change on each part of the picture? Why does one straight slope struggle?</p>
+<p>Start at the left edge of the U. Move toward zero. What happens to Y? Now move from zero to the right edge. What changes? Explain why one slope can’t describe both parts well.</p>
 </div>
 </div>
 </section>
-<section id="a-large-residual-is-not-the-same-as-influence" class="level2">
-<h2 class="anchored" data-anchor-id="a-large-residual-is-not-the-same-as-influence">2. A large residual is not the same as influence</h2>
+<section id="some-points-pull-the-line-harder" class="level2">
+<h2 class="anchored" data-anchor-id="some-points-pull-the-line-harder">2. Some points pull the line harder</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/regression-influence-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Two simulated datasets compare a high-residual point near the center of X with a high-residual point far outside the other X values. Original and refitted lines show a much larger slope change in the second case."></p>
-<figcaption>Simulated teaching examples. A point can be far above the line without changing the slope much when its X is near the mean. A point at an unusual X can pull the slope substantially. Neither fact, by itself, is a reason to delete an observation.</figcaption>
+<figcaption>These examples are simulated. Left: a large residual near the mean of X barely changes the slope. Right: a point far out on X pulls the slope sharply. Check unusual points before deciding what to do with them.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>When you see an unusual point, inspect it. Check the units, the source, and what the observation represents. “The regression looks nicer without it” is not a data-cleaning rule.</p>
+<p>A <strong>large residual</strong> means the line missed that observation by a lot. An <strong>influential point</strong> changes the fitted line by a lot when we include it. The pictures show why those can differ.</p>
+<p>Inspect an unusual point. Check its units and source. Find out what it represents. “It ruined my beautiful regression” is not a data-cleaning rule.</p>
 </section>
-<section id="extrapolation-is-easy-to-request-and-hard-to-defend" class="level2">
-<h2 class="anchored" data-anchor-id="extrapolation-is-easy-to-request-and-hard-to-defend">3. Extrapolation is easy to request and hard to defend</h2>
+<section id="r-will-predict-past-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="r-will-predict-past-the-data">3. R will predict past the data</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="07b_files/figure-html/county-extrapolation-1.png" class="img-fluid figure-img" style="width:100.0%" alt="The county scatterplot with its observed education range shaded. The fitted line is solid green inside the range and dashed orange when extended toward zero or one hundred percent college attainment."></p>
-<figcaption>The green segment lies within the observed education range. Dashed orange segments extend beyond it. A numerical prediction outside the data does not supply evidence that the relationship continues there.</figcaption>
+<p><img src="07b_files/figure-html/county-extrapolation-1.png" class="img-fluid figure-img" style="width:100.0%" alt="The county scatterplot with its observed education range shaded, from zero to about eighty-one percent. The fitted line is solid green inside that range and dashed orange above it, up to one hundred percent."></p>
+<figcaption>Green: the range of college shares in our data. Dashed orange: the line extended beyond that range. R can calculate those extra predictions. We still need evidence that the pattern holds there.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Before reporting a prediction, compare the requested X with the X values used to fit the model:</p>
+<p>Predicting beyond the observed X values is called <strong>extrapolation</strong>. Check the range before you report a prediction:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(counties<span class="sc">$</span>CollegePct)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  0.0 80.5</code></pre>
 </div>
 </div>
-<p>Also ask whether the new observation is comparable to the ones we used. A county-level model is not a salary calculator for an individual graduate.</p>
+<p>Check who the prediction is for, too. We fit this model to counties. Using it as a salary calculator for one graduate would change the question completely.</p>
 </section>
-<section id="our-coefficients-depend-on-the-sample" class="level2">
-<h2 class="anchored" data-anchor-id="our-coefficients-depend-on-the-sample">4. Our coefficients depend on the sample</h2>
-<p>Recall last week’s discussion of sampling variation. A slope is calculated from the observations we happen to use. Change those observations and the estimated slope changes.</p>
+<section id="change-the-sample-change-the-slope" class="level2">
+<h2 class="anchored" data-anchor-id="change-the-sample-change-the-slope">4. Change the sample, change the slope</h2>
+<p>Remember sampling variation from last week? It applies to slopes, too. Choose a different set of counties and you’ll usually get a different line.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07b_files/figure-html/county-sampling-variation-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Eight orange regression lines estimated from separate samples of fifty counties, overlaid on the county scatterplot. A thicker green line shows the fit using the full county file."></p>
-<figcaption>Eight classroom samples of 50 counties are drawn without replacement from the published county file, with a separate line fitted to each. This illustrates variation from selecting counties; it does not represent the ACS’s survey margins of error.</figcaption>
+<figcaption>Each orange line uses a separate sample of 50 counties, drawn without replacement. Green uses the full file. This exercise shows what changes when we select different counties. The ACS survey margins of error are a separate source of uncertainty.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>You can produce one of those smaller-sample fits yourself:</p>
+<p>Try a sample of 50:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">15</span>)</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1344,33 +1343,36 @@ MedianAge       -0.10   -0.10      -0.17      1.00</code></pre>
       37.27        1.24 </code></pre>
 </div>
 </div>
-<p>We will return to uncertainty about coefficients. For now, remember that a coefficient is an estimate built from data.</p>
+<p>Compare the two sets of coefficients. The small-sample slope won’t exactly match the full-file slope. We’ll put numbers on that uncertainty in a later lesson.</p>
 </section>
 </section>
 <section id="practice-for-lab-7" class="level1">
 <h1>Your turn, then Lab 7</h1>
-<div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Put the pieces together">
+<div class="callout callout-style-default callout-note callout-titled" title="TRY IT: Take the wheel">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>TRY IT: Put the pieces together
+<span class="screen-reader-only">Note</span>TRY IT: Take the wheel
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Use <code>PovertyPct</code> as the predictor and <code>IncomeK</code> as the response.</p>
 <ol type="1">
-<li>Draw the scatterplot before fitting anything.</li>
-<li>Fit the model with <code>lm()</code> and save it.</li>
-<li>Extract the intercept and slope with <code>coef()</code>. Write a sentence interpreting the slope with its units.</li>
-<li>Add the fitted line with <code>geom_abline()</code>, using the two coefficients you extracted.</li>
-<li>Use <code>predict()</code> for poverty rates of 10% and 20%. Convert the predictions to dollars.</li>
-<li>Find the county with the largest positive residual. Explain what the positive sign means.</li>
+<li>Draw the scatterplot.</li>
+<li>Fit and save the model with <code>lm()</code>.</li>
+<li>Extract the intercept and slope with <code>coef()</code>.</li>
+<li>Explain the slope in one sentence. Include its units.</li>
+<li>Add the line with <code>geom_abline()</code>. Use the coefficients you extracted.</li>
+<li>Use <code>predict()</code> for poverty rates of 10% and 20%.</li>
+<li>Convert those predictions to dollars.</li>
+<li>Find the county with the largest positive residual.</li>
+<li>Explain what its positive residual means.</li>
 </ol>
 </div>
 </div>
-<p>Here is the pattern for drawing a line from a saved model. Adapt it to your poverty model:</p>
+<p>Here’s how to draw the line from a saved model. Adapt this code for your poverty model:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(counties, <span class="fu">aes</span>(CollegePct, IncomeK)) <span class="sc">+</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
@@ -1381,9 +1383,9 @@ MedianAge       -0.10   -0.10      -0.17      1.00</code></pre>
 <span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>geom_smooth(method = "lm", se = FALSE)</code> would draw the same line. Saving the model gives us the coefficients, predictions, and residuals as well.</p>
-<p>For <strong><a href="../../assignment/07-assignment.html">Lab 7</a></strong>, the data changes to Ames home sales. The workflow carries over: inspect the variables, visualize their relationships, fit the requested model, extract its coefficients, and find a large positive residual. Keep track of which variable is on each side of <code>~</code> and what units the response uses.</p>
-<p>One last sentence to have ready before you leave: <strong>What is the difference between a pattern across counties and the effect of sending a person to college?</strong></p>
+<p><code>geom_smooth(method = "lm", se = FALSE)</code> draws the same line. Saving the model also lets you pull out coefficients, predictions, and residuals.</p>
+<p>In <strong><a href="../../assignment/07-assignment.html">Lab 7</a></strong>, you’ll switch to Ames home sales. Same moves: plot, fit, read the coefficients, check the residuals. Watch the order of the variables around <code>~</code>. Keep the response units handy.</p>
+<p>Before you pack up: <strong>What would you tell someone who used our county slope to predict the raise they’d get from a college degree?</strong></p>
 
 
 </section>
