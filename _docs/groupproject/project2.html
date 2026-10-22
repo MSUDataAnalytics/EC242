@@ -325,7 +325,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#this-will-be-short" id="toc-this-will-be-short" class="nav-link" data-scroll-target="#this-will-be-short">This will be short</a></li>
   </ul></li>
   <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading">Grading</a></li>
-  <li><a href="#assigned-geometries-aesthetics-methods" id="toc-assigned-geometries-aesthetics-methods" class="nav-link" data-scroll-target="#assigned-geometries-aesthetics-methods">Assigned Geometries / aesthetics / methods</a></li>
+  <li><a href="#finding-a-geometry-aesthetic-method" id="toc-finding-a-geometry-aesthetic-method" class="nav-link" data-scroll-target="#finding-a-geometry-aesthetic-method">Finding a geometry / aesthetic / method</a></li>
   </ul>
 </nav>
     </div>
@@ -366,7 +366,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="presenting-your-data-quickly" class="level2">
 <h2 class="anchored" data-anchor-id="presenting-your-data-quickly">Presenting Your Data (Quickly!)</h2>
-<p>Project 2 is an in-class presentation which will occur during class on Thursday, October 29th, in class. That is our only meeting that week, since Monday and Tuesday, October 26–27 is Fall Break. Each group will make and present a short data analysis using one of the data sets you listed in Part 2 of Project 1 (or a new one, I’m not keeping track). Your presentation will introduce and detail a new ggplot <code>geom_</code> or aesthetic mapping that we haven’t yet covered in class. You will be limited to a total of six slides (plus a cover slide), presented in no more than eight minutes, including questions/discussion.</p>
+<p>Project 2 is an in-class presentation which will occur during class on Thursday, October 29th, in class. That is our only meeting that week, since Monday and Tuesday, October 26–27 is Fall Break. Each group will make and present a short data analysis using one of the data sets you listed in Part 2 of Project 1 (or a new one, I’m not keeping track). Your presentation will introduce and detail a new ggplot <code>geom_</code> or aesthetic mapping that we haven’t yet covered in class – one your group picks, not one I hand you. You will be limited to a total of six slides (plus a cover slide), presented in no more than eight minutes, including questions/discussion. <strong>I will call groups up in random order, so be ready to go first.</strong></p>
 </section>
 <section id="some-specifics" class="level2">
 <h2 class="anchored" data-anchor-id="some-specifics">Some specifics</h2>
@@ -378,13 +378,13 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="communicate-your-data-with-a-new-geom_-or-aesthetic" class="level3">
 <h3 class="anchored" data-anchor-id="communicate-your-data-with-a-new-geom_-or-aesthetic">Communicate your data with a new <code>geom_</code> or aesthetic</h3>
-<p><strong>Each group will be assigned a ggplot <code>geom_</code> or aesthetic</strong>. Assignments will be posted to Slack and announced in class. Your plots must show both your interesting relationship in the data, and one must do so with this assigned geometry or aesthetic. This may mean adjusting your analysis to be compatible with the geometry or aesthetic.</p>
+<p><strong>Your group chooses its own <code>geom_</code> or aesthetic.</strong> I’m not assigning them this semester. There are two rules: it has to be something we haven’t covered in class, and it has to actually help show your relationship. A new geometry bolted onto a plot that would have been clearer as a bar chart doesn’t count. Beyond that, be creative and try something new – this is the part of the project where the rest of the class learns something from you, and nobody learns anything from a familiar plot in a new color. Your plots must show your interesting relationship in the data, and one must do so with your new geometry or aesthetic. This may mean adjusting your analysis to be compatible with it.</p>
 </section>
 <section id="put-it-all-together" class="level3">
 <h3 class="anchored" data-anchor-id="put-it-all-together">Put it all together</h3>
 <p>Your presentation will have six slides.</p>
 <ol type="1">
-<li><p>A cover slide with your group name/number, your group members’ names, your topic, and your assigned geometry on it.</p></li>
+<li><p>A cover slide with your group name/number, your group members’ names, your topic, and the geometry or aesthetic you chose on it.</p></li>
 <li><p>A slide briefly introducing your topic and main dataset, showing a snippet of the relevant data.</p>
 <ul>
 <li>In your presentation, you will highlight the relevant variables and the overarching topic you are exploring. For example “We are using the US Census ACS 5-year estimates to examine the relationship between income and commuting time. In this data, each observation is a census tract, and we have data on median tract income and average commuting time as well as marital status.” (where your slide shows a few rows of the data with the relevant values, plus any other variables you think are helpful.)</li>
@@ -392,17 +392,17 @@ ul.task-list li input[type="checkbox"] {
 <li><p>A slide showing, through visualization, a summary of the “interesting relationship” in the data you’re exploring. For example, if you’re interested in unemployment during COVID, you’d first show a visualization of how unemployment changed 2019-2020-2021 across counties or states or something.</p>
 <ul>
 <li>In your presentation, you will discuss the “interesting relationship” you found.</li>
-<li><em>Either</em> this visualization or your previous visualization <strong>must use your assigned geometry or aesthetic</strong></li>
+<li><em>Either</em> this visualization or your previous visualization <strong>must use your new geometry or aesthetic</strong></li>
 </ul></li>
 <li><p>A slide visualizing some feature of the “interesting relationship” in the data – drill down by some other variable and explore the relationship further from the first.</p>
 <ul>
 <li>In your presentation, you will discuss the detailed feature of the “interesting relationship” you found, and why you think it is happening.</li>
-<li><em>Either</em> this visualization or your previous visualization <strong>must use your assigned geometry or aesthetic</strong></li>
+<li><em>Either</em> this visualization or your previous visualization <strong>must use your new geometry or aesthetic</strong></li>
 </ul></li>
-<li><p>A slide showing the code from your visual that used your assigned geometry, function, or aesthetic. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it</p></li>
+<li><p>A slide showing the code from your visual that used your new geometry, function, or aesthetic. The point is that others can learn about the aesthetic or geometry and see a use case of how to use it</p></li>
 </ol>
 <ul>
-<li>In your presentation, walk through the code necessary to make the plot. Focus on the new geometry/aesthetic and how others may use it. Do not talk about the code for your other, non-assigned-geometry plot.</li>
+<li>In your presentation, walk through the code necessary to make the plot. Focus on the new geometry/aesthetic and how others may use it. Do not talk about the code for your other plot.</li>
 </ul>
 <ol start="6" type="1">
 <li>Next steps on your data analysis and exploration.</li>
@@ -426,29 +426,16 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><p>Data analysis (10 points): Did you find an interesting relationship? Does it give important context or lead one to want to explore the data further?</p></li>
 <li><p>Visuals (10 points): Is the visual clean, well-formatted, and free from errors. Does it adhere to our standards for good visualization? Does it clearly communicate it’s message with only basic discussion and description? Do your two visuals share coherent elements (colors, etc.)? Is it easy to see your plot (is it reasonably sized on the slide)?</p></li>
-<li><p>Application of new geometry/aesthetic/method (10 points): Did you successfully show your assigned geometry or aesthetic? Was the code clear enough for others to create something similar with minimal work?</p></li>
+<li><p>Application of new geometry/aesthetic/method (10 points): Did you pick something genuinely new to the class, and does it actually help show your relationship? Was the code clear enough for others to create something similar with minimal work?</p></li>
 <li><p>Presentation (10 points): Was your group organized and concise? Did you clearly cover all the discussion necessary in the allotted time? Did you show that you knew your material (and didn’t read or have a wall of text on the slide).</p></li>
 </ul>
-<p>Remember, every group presents back-to-back-to-back inside a single 80-minute class, so your slot is short. I’ll post the exact per-group time and the running order on Slack once groups are set; plan on tight. The plot has to hit fast and hard!</p>
+<p>Remember, every group presents back-to-back-to-back inside a single 80-minute class, so your slot is short. I’ll post the exact per-group time on Slack; plan on tight. There is no running order: I will call groups up at random, so every group needs to be ready to present from the first minute of class. “We figured we’d be near the end” is not a plan. The plot has to hit fast and hard!</p>
 </section>
-<section id="assigned-geometries-aesthetics-methods" class="level2">
-<h2 class="anchored" data-anchor-id="assigned-geometries-aesthetics-methods">Assigned Geometries / aesthetics / methods</h2>
+<section id="finding-a-geometry-aesthetic-method" class="level2">
+<h2 class="anchored" data-anchor-id="finding-a-geometry-aesthetic-method">Finding a geometry / aesthetic / method</h2>
 <p>If you have any questions, please email me <a href="mailto:bbushong@msu.edu">bbushong@msu.edu</a>.</p>
-<p>Many examples (from which I created this list) can be found <a href="https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html">here</a>. You can (and should!) use outside resources to get an understanding of what your assigned geometry/aesthetic/method looks like. For some of these geometries/aesthetics/methods, I’ve added a link to a package or example that should help.</p>
-<p>Not every dataset will work with your geometry. You may have to use one of your other datasets to find data that will work. If your group is assigned a method, just use that method in whatever visualization best illustrates it. Email me if you have questions.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Your assigned geometry
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Group geometry assignments will be posted to Slack and announced in class once groups are finalized.</p>
-</div>
-</div>
+<p>Need a place to start looking? <a href="https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html">This list of 50 ggplot visualizations</a> has plenty we haven’t covered, and the <a href="https://exts.ggplot2.tidyverse.org/gallery/">ggplot2 extensions gallery</a> has a great deal more – whole packages that add geometries, coordinate systems, and animation to <code>ggplot</code>. You can (and should!) use outside resources to figure out how whatever you pick works.</p>
+<p>Not every geometry works with every dataset. Pick one that suits your data, or go find data that suits the geometry you’re excited about – either direction is fine. A method counts too, if you’d rather use an extension package or a technique than a single <code>geom_</code>, as long as you can show it in a plot and walk us through the code.</p>
 
 
 </section>
