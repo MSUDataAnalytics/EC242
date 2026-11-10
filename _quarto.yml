@@ -42,7 +42,7 @@ project:
     - "!templates/"
   output-dir: _docs
   resources:
-    - "files/"
+    - "files/bad-ai-project/"
     - "content/"
     - "projects/"
     - "data/"

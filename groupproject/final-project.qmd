@@ -13,6 +13,16 @@ format:
 This Project is due on **{{< meta duedate >}}**. This is the absolute last day I can accept projects. No exceptions will be given.
 :::
 
+::: {.callout-warning}
+## Bad AI attempt at the project
+
+This AI-generated attempt is posted as a bad example for critique.
+
+- [Read the attempt (PDF)](/files/bad-ai-project/attempt.pdf)
+- [Read the attempt with code (PDF)](/files/bad-ai-project/attempt-with-code.pdf)
+- [Download the data and source (ZIP, 41 MB)](/files/bad-ai-project/source.zip)
+:::
+
 
 
 <!-- Maybe I should describe more what I want for the plots (a la British BakeOff). Mention color-blind friendly colors and proper names and such. Add where the plots should be in the flow? -->
