@@ -8,7 +8,7 @@ output:
 
 
 ## Our data and goal
-We'll use every Chicago Airbnb listing scraped by [Inside Airbnb](https://insideairbnb.com/get-the-data/) in September 2026 to build and tune a non-parametric model of nightly `price` using a regression tree (or decision tree, same thing). I've trimmed it to 17 columns and dropped the 1% of listings priced over $1,500.
+We'll use every Chicago Airbnb listing scraped by [Inside Airbnb](https://insideairbnb.com/get-the-data/) in September 2026 to build and tune a non-parametric model of nightly `price` using a regression tree (or decision tree, same thing). I've trimmed it to 18 columns and dropped the 1% of listings priced over $1,500.
 
 ```{r, eval=F}
 library(rpart)
@@ -26,6 +26,22 @@ library(skimr)
 airbnb = read.csv(here('data/airbnb_chicago.csv'))
 ```
 
+```{r, echo=F, fig.width=5, fig.height=6, fig.align='center', dev.args=list(bg='grey10')}
+ggplot(airbnb %>% arrange(price), aes(x = longitude, y = latitude, color = price)) +
+  geom_point(size = .5, alpha = .8) +
+  scale_color_viridis_c(trans = "log10", option = "plasma", name = "Price per night",
+                        labels = scales::label_dollar(accuracy = 1)) +
+  coord_quickmap() +
+  theme_void() +
+  theme(plot.background = element_rect(fill = "grey10", color = NA),
+        legend.text = element_text(color = "grey85"),
+        legend.title = element_text(color = "grey85"),
+        plot.title = element_text(color = "white", face = "bold", size = 16),
+        plot.subtitle = element_text(color = "grey70"),
+        plot.margin = margin(10, 10, 10, 10)) +
+  labs(title = "7,116 Chicago Airbnb listings", subtitle = "September 2026")
+```
+
 ## Guess the price
 
 Here are three real listings. Write down a nightly price for each one.
@@ -36,7 +52,8 @@ guess = airbnb[c(351, 7006, 1082), ]
 
 ```{r, echo=F}
 knitr::kable(guess %>%
-               dplyr::select(room_type, accommodates, bedrooms, bathrooms, minimum_nights,
+               dplyr::mutate(listing = c("A", "B", "C")) %>%
+               dplyr::select(listing, room_type, accommodates, bedrooms, bathrooms, minimum_nights,
                              number_of_reviews, superhost, host_listings),
              row.names = FALSE)
 ```
@@ -101,17 +118,29 @@ get_rmse(onetree, airbnb_clean, 'price')
 ### Breakout #1 discussion
 Let's choose a group to share their plot and discuss the results. The odd thing you should have hit: `quote_per_night` is the nightly price from a booking quote, so the tree splits on it and nothing else. Drop it. Then look at `estimated_revenue`: what is it computed from? Drop that too (`airbnb_clean$estimated_revenue = NULL`), re-run, and we'll keep using `airbnb_clean` for the rest of today.
 
+```{r, echo=F, fig.width=8, fig.height=4.5}
+rpart.plot(onetree, box.palette = "BuGn", type = 2, extra = 100, under = TRUE, roundint = FALSE, tweak = 1.1,
+           split.fun = function(x, labs, digits, varlen, faclen) gsub(" room", "", labs))
+```
+
 - Who are the hosts with 89 or more listings, and why are they so expensive?
 - Why would a private room with a one-night minimum cost more than one with a longer minimum?
 
 ### Check your guesses
 
 ```{r, eval=F}
-predict(onetree, guess)
-guess$price
+my_guess = c(150, 300, 400)   # replace with your guesses for A, B, C
+
+data.frame(listing = c("A", "B", "C"),
+           you     = my_guess,
+           tree    = predict(onetree, guess),
+           actual  = guess$price)
+
+rmse(guess$price, my_guess)
+rmse(guess$price, predict(onetree, guess))
 ```
 
-Who was closer, you or the tree?
+What was the RMSE of your guesses? What was the RMSE of the tree?
 
 :::
 
@@ -159,7 +188,7 @@ grid = expand.grid(longitude = seq(min(airbnb$longitude), max(airbnb$longitude),
 grid$pred = predict(maptree, grid)
 
 ggplot(grid, aes(x = longitude, y = latitude, fill = pred)) +
-  geom_tile() +
+  geom_raster() +
   geom_point(data = airbnb, aes(x = longitude, y = latitude),
              inherit.aes = FALSE, size = .1, alpha = .2) +
   coord_quickmap() +
@@ -237,6 +266,34 @@ cpList = lapply(myList, function(y){
 })
 
 unlist(cpList)
+```
+
+Here is `lapply` at work. Each panel is the location tree from Breakout #3 at a different value of `cp`.
+
+```{r, echo=F, fig.width=9, fig.height=4}
+cps = c(0.05, 0.01, 0.005, 0.001)
+maptrees = lapply(cps, function(x){
+  rpart(price ~ latitude + longitude, data = airbnb, cp = x)
+})
+
+grid = expand.grid(longitude = seq(min(airbnb$longitude), max(airbnb$longitude), length.out = 250),
+                   latitude  = seq(min(airbnb$latitude),  max(airbnb$latitude),  length.out = 250))
+
+leaves = sapply(maptrees, function(t){ sum(t$frame$var == "<leaf>") })
+panel_labels = paste0("cp = ", cps, "\n", leaves, ifelse(leaves == 1, " rectangle", " rectangles"))
+
+maps = lapply(seq_along(maptrees), function(i){
+  grid %>% mutate(pred = predict(maptrees[[i]], grid), panel = panel_labels[i])
+})
+
+ggplot(bind_rows(maps), aes(x = longitude, y = latitude)) +
+  geom_raster(aes(fill = pred)) +
+  geom_point(data = airbnb, size = .05, alpha = .15, color = "white") +
+  facet_wrap(~factor(panel, levels = panel_labels), nrow = 1) +
+  coord_quickmap() +
+  scale_fill_viridis_c(labels = scales::label_dollar(), name = "Predicted\nprice") +
+  theme_void() +
+  theme(strip.text = element_text(size = 11, face = "bold", margin = margin(b = 4)))
 ```
 
 

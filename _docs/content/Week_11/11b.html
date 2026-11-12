@@ -583,13 +583,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="our-data-and-goal" class="level2">
 <h2 class="anchored" data-anchor-id="our-data-and-goal">Our data and goal</h2>
-<p>We’ll use every Chicago Airbnb listing scraped by <a href="https://insideairbnb.com/get-the-data/">Inside Airbnb</a> in September 2026 to build and tune a non-parametric model of nightly <code>price</code> using a regression tree (or decision tree, same thing). I’ve trimmed it to 17 columns and dropped the 1% of listings priced over $1,500.</p>
+<p>We’ll use every Chicago Airbnb listing scraped by <a href="https://insideairbnb.com/get-the-data/">Inside Airbnb</a> in September 2026 to build and tune a non-parametric model of nightly <code>price</code> using a regression tree (or decision tree, same thing). I’ve trimmed it to 18 columns and dropped the 1% of listings priced over $1,500.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>airbnb <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://ec242.netlify.app/data/airbnb_chicago.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="11b_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="guess-the-price" class="level2">
@@ -602,17 +611,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 12%">
-<col style="width: 8%">
-<col style="width: 9%">
+<col style="width: 7%">
 <col style="width: 14%">
-<col style="width: 17%">
-<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 7%">
+<col style="width: 8%">
 <col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 12%">
 </colgroup>
 <thead>
 <tr class="header">
+<th style="text-align: left;">listing</th>
 <th style="text-align: left;">room_type</th>
 <th style="text-align: right;">accommodates</th>
 <th style="text-align: right;">bedrooms</th>
@@ -625,6 +636,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">A</td>
 <td style="text-align: left;">Private room</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
@@ -635,6 +647,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">4</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">B</td>
 <td style="text-align: left;">Entire home/apt</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">2</td>
@@ -645,6 +658,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">C</td>
 <td style="text-align: left;">Entire home/apt</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: right;">2</td>
@@ -705,6 +719,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="breakout-1-discussion" class="level3">
 <h3 class="anchored" data-anchor-id="breakout-1-discussion">Breakout #1 discussion</h3>
 <p>Let’s choose a group to share their plot and discuss the results. The odd thing you should have hit: <code>quote_per_night</code> is the nightly price from a booking quote, so the tree splits on it and nothing else. Drop it. Then look at <code>estimated_revenue</code>: what is it computed from? Drop that too (<code>airbnb_clean$estimated_revenue = NULL</code>), re-run, and we’ll keep using <code>airbnb_clean</code> for the rest of today.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11b_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
 <ul>
 <li>Who are the hosts with 89 or more listings, and why are they so expensive?</li>
 <li>Why would a private room with a one-night minimum cost more than one with a longer minimum?</li>
@@ -713,10 +736,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-guesses" class="level3">
 <h3 class="anchored" data-anchor-id="check-your-guesses">Check your guesses</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(onetree, guess)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>guess<span class="sc">$</span>price</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>my_guess <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">150</span>, <span class="dv">300</span>, <span class="dv">400</span>)   <span class="co"># replace with your guesses for A, B, C</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">listing =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">you     =</span> my_guess,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">tree    =</span> <span class="fu">predict</span>(onetree, guess),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">actual  =</span> guess<span class="sc">$</span>price)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(guess<span class="sc">$</span>price, my_guess)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(guess<span class="sc">$</span>price, <span class="fu">predict</span>(onetree, guess))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Who was closer, you or the tree?</p>
+<p>What was the RMSE of your guesses? What was the RMSE of the tree?</p>
 </section>
 </div>
 </div>
@@ -762,7 +792,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>pred <span class="ot">=</span> <span class="fu">predict</span>(maptree, grid)</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grid, <span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude, <span class="at">fill =</span> pred)) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>() <span class="sc">+</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> airbnb, <span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude),</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_quickmap</span>() <span class="sc">+</span></span>
@@ -824,6 +854,16 @@ myList[[3]] = rpart(price ~ ., data = airbnb_clean, cp = x)</code></pre>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(cpList)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here is <code>lapply</code> at work. Each panel is the location tree from Breakout #3 at a different value of <code>cp</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11b_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
