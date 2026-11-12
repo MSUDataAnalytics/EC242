@@ -8,42 +8,63 @@ output:
 
 
 ## Our data and goal
-We want to use the `wooldridge::wage2` data on wages to generate and tune a non-parametric model of wages using a regression tree (or decision tree, same thing). Use `?wage2` (after you've loaded the `wooldridge` package) to see the data dictionary. 
+We'll use every Chicago Airbnb listing scraped by [Inside Airbnb](https://insideairbnb.com/get-the-data/) in September 2026 to build and tune a non-parametric model of nightly `price` using a regression tree (or decision tree, same thing). I've trimmed it to 17 columns and dropped the 1% of listings priced over $1,500.
 
-```{r, echo=T, include=F}
-library(wooldridge)
+```{r, eval=F}
 library(rpart)
 library(rpart.plot)
 library(skimr)
 
-wage2 = wooldridge::wage2
-
+airbnb = read.csv('https://ec242.netlify.app/data/airbnb_chicago.csv')
 ```
 
-We've learned that our RMSE calculations have a hard time with `NA`s in the data. So let's use the `skim` output to tell us which variables have too many `NA` (see `n_missing`) values and should be dropped. Let's set a high bar here, and drop anything that isn't 100% complete. Of course, there are other things we can do (impute the `NA`s, or make dummies for them), but for now, it's easiest to drop them. 
+```{r, echo=F, include=F}
+library(rpart)
+library(rpart.plot)
+library(skimr)
 
-Remember, `skim()` is for your own exploration, it's not something that you should include in your output. 
+airbnb = read.csv(here('data/airbnb_chicago.csv'))
+```
+
+## Guess the price
+
+Here are three real listings. Write down a nightly price for each one.
+
+```{r}
+guess = airbnb[c(351, 7006, 1082), ]
+```
+
+```{r, echo=F}
+knitr::kable(guess %>%
+               dplyr::select(room_type, accommodates, bedrooms, bathrooms, minimum_nights,
+                             number_of_reviews, superhost, host_listings),
+             row.names = FALSE)
+```
+
+We've learned that our RMSE calculations have a hard time with `NA`s in the data. So let's use the `skim` output to tell us which variables have too many `NA` (see `n_missing`) values and should be dropped. Let's set a high bar here, and drop anything that isn't 100% complete. Of course, there are other things we can do (impute the `NA`s, or make dummies for them), but for now, it's easiest to drop them.
+
+Remember, `skim()` is for your own exploration, it's not something that you should include in your output.
 
 ```{r, eval=F}
-skim(wage2)
+skim(airbnb)
 ```
 
-The only three variables that aren't 100% complete are `brthord`, `meduc`, and `feduc`, so those are the ones we drop:
+The only two variables that aren't 100% complete are `review_scores_rating` and `reviews_per_month`, so those are the ones we drop. We also drop `listing_url`. It is a web address, not a predictor.
 
 ```{r, echo=T, include=T}
-wage_clean = wage2 %>%
-  dplyr::select(-brthord, -meduc, -feduc)
+airbnb_clean = airbnb %>%
+  dplyr::select(-review_scores_rating, -reviews_per_month, -listing_url)
 ```
 
-Once cleaned, we should be able to use `rpart(wage ~ ., data = wage_clean)` and not have any `NA`s in our prediction. That's what we'll do in our first Breakout.
+Once cleaned, we should be able to use `rpart(price ~ ., data = airbnb_clean)` and not have any `NA`s in our prediction. That's what we'll do in our first Breakout.
 
 ::: {.callout-note}
 
 ## TRY IT
 
-### Predicting wage
+### Predicting price
 
-I'm going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (`wooldridge`, `rpart` and `rpart.plot`, plus `dplyr` and `skimr`). Copy the `rmse` and `get_rmse` code into a blank R script (you don't have to use RMarkdown, just use a blank R script and run from there). You'll also want to have these functions from last week loaded:
+I'm going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (`rpart` and `rpart.plot`, plus `dplyr` and `skimr`). Copy the `rmse` and `get_rmse` code into a blank R script (you don't have to use RMarkdown, just use a blank R script and run from there). You'll also want to have these functions from last week loaded:
 
 ```{r}
 rmse = function(actual, predicted) {
@@ -59,27 +80,97 @@ get_rmse = function(model, data, response) {
 ```
 
 
-For the first breakout, all I want you to do is the following. We are trying to predict `wage` for this exercise:
+For the first breakout, all I want you to do is the following. We are trying to predict `price` for this exercise:
 
-- Estimate a default regression tree on `wage_clean` using the default parameters (use the whole dataset for now, we'll train-test on the problem set). 
-- Use `rpart.plot` to visualize your regression tree, and *talk through the interpretation* with each other. 
+- Estimate a default regression tree on `airbnb_clean` using the default parameters (use the whole dataset for now, we'll train-test on the problem set). Call it `onetree`.
+- Use `rpart.plot` to visualize your regression tree, and *talk through the interpretation* with each other.
 - Calculate the RMSE for your regression tree.
 
-We'll spend about 5 minutes on this. Remember, you can use `?wage2` to see the variable names. Make sure you know what variables are showing up in the plot and explaining `wage` in your model. You may find something odd at first and may need to drop more variables...
+We'll spend about 5 minutes on this. You may find something odd at first and may need to drop more variables...
 
 ```{r, echo=F, include=F, eval=T}
-wage_clean$lwage = NULL
+airbnb_clean$quote_per_night = NULL
+airbnb_clean$estimated_revenue = NULL
 
-onetree = rpart(wage ~ ., data = wage_clean)
+onetree = rpart(price ~ ., data = airbnb_clean)
 rpart.plot(onetree)
-
-predict(onetree, newdata = data.frame(
-  hours = 40, IQ = 100, KWW = 50, educ = 18, exper = 19, tenure = 15, age = 20, married = 1, black = 0, south = 0, urban = 1, sibs = 1))
+get_rmse(onetree, airbnb_clean, 'price')
 ```
 **5 minutes**
 
 ### Breakout #1 discussion
-Let's choose a group to share their plot and discuss the results. Use our sharing zoom link using the button up above. The odd thing you should have hit: `lwage` is just the log of `wage`, so the tree splits on it and nothing else, and predicts `wage` nearly perfectly. Drop it (`wage_clean$lwage = NULL`) and re-run before we move on -- we'll keep using `wage_clean` for the rest of today.
+Let's choose a group to share their plot and discuss the results. The odd thing you should have hit: `quote_per_night` is the nightly price from a booking quote, so the tree splits on it and nothing else. Drop it. Then look at `estimated_revenue`: what is it computed from? Drop that too (`airbnb_clean$estimated_revenue = NULL`), re-run, and we'll keep using `airbnb_clean` for the rest of today.
+
+- Who are the hosts with 89 or more listings, and why are they so expensive?
+- Why would a private room with a one-night minimum cost more than one with a longer minimum?
+
+### Check your guesses
+
+```{r, eval=F}
+predict(onetree, guess)
+guess$price
+```
+
+Who was closer, you or the tree?
+
+:::
+
+::: {.callout-note}
+
+## TRY IT
+
+### Breakout #2: Find the deals
+
+A deal is a listing with a price far below the tree's prediction.
+
+- Add the tree's prediction to `airbnb` as a new column, `pred`.
+- Make a new column, `deal = price - pred`.
+- Keep the listings with at least 10 reviews. Sort them by `deal`.
+- Open the `listing_url` for the top five. Why are they cheap?
+- Why do the top deals all have the same prediction?
+
+```{r, echo=F, include=F}
+airbnb %>%
+  mutate(pred = predict(onetree, airbnb),
+         deal = price - pred) %>%
+  filter(number_of_reviews >= 10) %>%
+  arrange(deal) %>%
+  select(price, pred, deal, accommodates, bathrooms, listing_url) %>%
+  head(5)
+```
+
+**5 minutes**
+
+:::
+
+::: {.callout-note}
+
+## TRY IT
+
+### Breakout #3: Map the tree
+
+Fit a tree on location only. Then predict a price for every point on a grid and plot it.
+
+```{r, eval=F}
+maptree = rpart(price ~ latitude + longitude, data = airbnb, cp = 0.005)
+
+grid = expand.grid(longitude = seq(min(airbnb$longitude), max(airbnb$longitude), length.out = 300),
+                   latitude  = seq(min(airbnb$latitude),  max(airbnb$latitude),  length.out = 300))
+grid$pred = predict(maptree, grid)
+
+ggplot(grid, aes(x = longitude, y = latitude, fill = pred)) +
+  geom_tile() +
+  geom_point(data = airbnb, aes(x = longitude, y = latitude),
+             inherit.aes = FALSE, size = .1, alpha = .2) +
+  coord_quickmap() +
+  scale_fill_viridis_c(labels = scales::label_dollar())
+```
+
+- Why are all the edges straight lines?
+- What does the tree predict for a listing in Lake Michigan? Why?
+- Change `cp` to 0.002. What changes?
+
+**5 minutes**
 
 :::
 
@@ -93,7 +184,7 @@ Once we have a list of things we want to iterate on, `lapply` lets us do somethi
 Let's say we wanted to repeat our **TRY IT** with the `cp` values of `c(0, .01, .02, .03)`. We could make a list of those values, and use `lapply` to run `rpart()` and use each of the 4 values of `cp`. One way we could try doing this would be something like:
 
 ```{r, eval = F}
-myList = lapply(c(0, .01, .02, .03), rpart, formula = wage ~ ., data = wage_clean, cp = ???)
+myList = lapply(c(0, .01, .02, .03), rpart, formula = price ~ ., data = airbnb_clean, cp = ???)
 ```
 
 The only problem here is that the first argument of `rpart` is not the `cp` parameter, so we can't just pass it in additional arguments.
@@ -102,7 +193,7 @@ Instead, we previously introduced the *anonymous function* in `lapply` as follow
 
 ```{r, eval = F}
 myList = lapply(c(0, .01, .02, .03), function(x){
-  rpart(wage ~ ., data = wage_clean, cp = x)
+  rpart(price ~ ., data = airbnb_clean, cp = x)
 })
 ```
 
@@ -127,13 +218,13 @@ So you can think of it like this:
 
 ````
 x = 0
-myList[[1]] = rpart(wage ~ ., data = wage_clean, cp = x)
+myList[[1]] = rpart(price ~ ., data = airbnb_clean, cp = x)
 
 x = 0.01
-myList[[2]] = rpart(wage ~ ., data = wage_clean, cp = x)
+myList[[2]] = rpart(price ~ ., data = airbnb_clean, cp = x)
 
 x = 0.02
-myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)
+myList[[3]] = rpart(price ~ ., data = airbnb_clean, cp = x)
 ````
 
 As long as every entry in the vector you iterate over is a valid value of `cp`, then you'll get the results in a list — here, a list of four fitted trees, not a list of `cp` values.  When the list holds single numbers instead of models, `unlist` coerces it to a vector. This is also the same way we get the RMSE, but instead of the anonymous function, we write one out and use that.
@@ -153,12 +244,12 @@ unlist(cpList)
 
 ## TRY IT
 
-### Breakout #2
-Using the loop method or the `lapply` method, generate 10 regression trees to explain `wage` in `wage_clean`. You can iterate through values of `cp`, the complexity parameter, **or** `minsplit`, the minimum # of points a node has to have before `rpart` will even try to split it.
+### Breakout #4
+Using the loop method or the `lapply` method, generate 10 regression trees to explain `price` in `airbnb_clean`. You can iterate through values of `cp`, the complexity parameter, **or** `minsplit`, the minimum # of points a node has to have before `rpart` will even try to split it. If you vary `minsplit`, also set `cp = 0`, or the default `cp` will stop every tree at the same size.
 
 **10 minutes**
 
-### Breakout #2 discussion
+### Breakout #4 discussion
 We'll ask someone to share (a few of) their group's 10 regression trees using `rpart.plot`. Use our website zoom link to share.
 
 :::
@@ -166,7 +257,7 @@ We'll ask someone to share (a few of) their group's 10 regression trees using `r
 ::: {.callout-note}
 ## TRY IT
 
-### Breakout #3 (if time)
+### Breakout #5 (if time)
 Use `lapply` to get a list of your RMSE's (one for each of your models). The anonymous function may come in handy here (though it's not necessary). Note that we are not yet splitting into `test` and `train` (which you **will** need to do on your lab assignment). That matters for what the plot looks like: because these are RMSEs on the same data we fit, they'll keep falling as the trees get bigger (as `cp` goes to zero, or as `minsplit` shrinks), so there's no bottom of the U to find here. The U only shows up once the RMSE is calculated on data the tree hasn't seen. 
 
 Once you have your list, **create the plot of RMSEs** similar to the one we made in last week's lab. Note: you can use `unlist(myRMSE)` to get a numeric vector of the RMSE's (as long as all of the elements in `myRMSE` are numeric). Then, it's a matter of plotting either with base `plot` or with `ggplot` (if you use `ggplot` you'll have to put the RMSEs in a data frame first, with a second column holding the `cp` or `minsplit` value that goes on the x-axis).

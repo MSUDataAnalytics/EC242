@@ -555,6 +555,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul class="collapse">
   <li><a href="#our-data-and-goal" id="toc-our-data-and-goal" class="nav-link active" data-scroll-target="#our-data-and-goal">Our data and goal</a></li>
+  <li><a href="#guess-the-price" id="toc-guess-the-price" class="nav-link" data-scroll-target="#guess-the-price">Guess the price</a></li>
   </ul>
 </nav>
     </div>
@@ -582,18 +583,92 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="our-data-and-goal" class="level2">
 <h2 class="anchored" data-anchor-id="our-data-and-goal">Our data and goal</h2>
-<p>We want to use the <code>wooldridge::wage2</code> data on wages to generate and tune a non-parametric model of wages using a regression tree (or decision tree, same thing). Use <code>?wage2</code> (after you’ve loaded the <code>wooldridge</code> package) to see the data dictionary.</p>
+<p>We’ll use every Chicago Airbnb listing scraped by <a href="https://insideairbnb.com/get-the-data/">Inside Airbnb</a> in September 2026 to build and tune a non-parametric model of nightly <code>price</code> using a regression tree (or decision tree, same thing). I’ve trimmed it to 17 columns and dropped the 1% of listings priced over $1,500.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>airbnb <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://ec242.netlify.app/data/airbnb_chicago.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="guess-the-price" class="level2">
+<h2 class="anchored" data-anchor-id="guess-the-price">Guess the price</h2>
+<p>Here are three real listings. Write down a nightly price for each one.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>guess <span class="ot">=</span> airbnb[<span class="fu">c</span>(<span class="dv">351</span>, <span class="dv">7006</span>, <span class="dv">1082</span>), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 9%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">room_type</th>
+<th style="text-align: right;">accommodates</th>
+<th style="text-align: right;">bedrooms</th>
+<th style="text-align: right;">bathrooms</th>
+<th style="text-align: right;">minimum_nights</th>
+<th style="text-align: right;">number_of_reviews</th>
+<th style="text-align: right;">superhost</th>
+<th style="text-align: right;">host_listings</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Private room</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Entire home/apt</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">118</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Entire home/apt</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">99</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>We’ve learned that our RMSE calculations have a hard time with <code>NA</code>s in the data. So let’s use the <code>skim</code> output to tell us which variables have too many <code>NA</code> (see <code>n_missing</code>) values and should be dropped. Let’s set a high bar here, and drop anything that isn’t 100% complete. Of course, there are other things we can do (impute the <code>NA</code>s, or make dummies for them), but for now, it’s easiest to drop them.</p>
 <p>Remember, <code>skim()</code> is for your own exploration, it’s not something that you should include in your output.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(wage2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(airbnb)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The only three variables that aren’t 100% complete are <code>brthord</code>, <code>meduc</code>, and <code>feduc</code>, so those are the ones we drop:</p>
+<p>The only two variables that aren’t 100% complete are <code>review_scores_rating</code> and <code>reviews_per_month</code>, so those are the ones we drop. We also drop <code>listing_url</code>. It is a web address, not a predictor.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wage_clean <span class="ot">=</span> wage2 <span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>brthord, <span class="sc">-</span>meduc, <span class="sc">-</span>feduc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>airbnb_clean <span class="ot">=</span> airbnb <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>review_scores_rating, <span class="sc">-</span>reviews_per_month, <span class="sc">-</span>listing_url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Once cleaned, we should be able to use <code>rpart(wage ~ ., data = wage_clean)</code> and not have any <code>NA</code>s in our prediction. That’s what we’ll do in our first Breakout.</p>
+<p>Once cleaned, we should be able to use <code>rpart(price ~ ., data = airbnb_clean)</code> and not have any <code>NA</code>s in our prediction. That’s what we’ll do in our first Breakout.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -604,34 +679,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<section id="predicting-wage" class="level3">
-<h3 class="anchored" data-anchor-id="predicting-wage">Predicting wage</h3>
-<p>I’m going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (<code>wooldridge</code>, <code>rpart</code> and <code>rpart.plot</code>, plus <code>dplyr</code> and <code>skimr</code>). Copy the <code>rmse</code> and <code>get_rmse</code> code into a blank R script (you don’t have to use RMarkdown, just use a blank R script and run from there). You’ll also want to have these functions from last week loaded:</p>
+<section id="predicting-price" class="level3">
+<h3 class="anchored" data-anchor-id="predicting-price">Predicting price</h3>
+<p>I’m going to have you form groups of 2-3 to work on live-coding. One person in the group will need to have Rstudio up, be able to share screen, and have the correct packages loaded (<code>rpart</code> and <code>rpart.plot</code>, plus <code>dplyr</code> and <code>skimr</code>). Copy the <code>rmse</code> and <code>get_rmse</code> code into a blank R script (you don’t have to use RMarkdown, just use a blank R script and run from there). You’ll also want to have these functions from last week loaded:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">=</span> <span class="cf">function</span>(actual, predicted) {</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((actual <span class="sc">-</span> predicted) <span class="sc">^</span> <span class="dv">2</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">=</span> <span class="cf">function</span>(actual, predicted) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((actual <span class="sc">-</span> predicted) <span class="sc">^</span> <span class="dv">2</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>get_rmse <span class="ot">=</span> <span class="cf">function</span>(model, data, response) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rmse</span>(<span class="at">actual =</span> <span class="fu">subset</span>(data, <span class="at">select =</span> response, <span class="at">drop =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">predicted =</span> <span class="fu">predict</span>(model, data))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>get_rmse <span class="ot">=</span> <span class="cf">function</span>(model, data, response) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rmse</span>(<span class="at">actual =</span> <span class="fu">subset</span>(data, <span class="at">select =</span> response, <span class="at">drop =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">predicted =</span> <span class="fu">predict</span>(model, data))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>For the first breakout, all I want you to do is the following. We are trying to predict <code>wage</code> for this exercise:</p>
+<p>For the first breakout, all I want you to do is the following. We are trying to predict <code>price</code> for this exercise:</p>
 <ul>
-<li>Estimate a default regression tree on <code>wage_clean</code> using the default parameters (use the whole dataset for now, we’ll train-test on the problem set).</li>
+<li>Estimate a default regression tree on <code>airbnb_clean</code> using the default parameters (use the whole dataset for now, we’ll train-test on the problem set). Call it <code>onetree</code>.</li>
 <li>Use <code>rpart.plot</code> to visualize your regression tree, and <em>talk through the interpretation</em> with each other.</li>
 <li>Calculate the RMSE for your regression tree.</li>
 </ul>
-<p>We’ll spend about 5 minutes on this. Remember, you can use <code>?wage2</code> to see the variable names. Make sure you know what variables are showing up in the plot and explaining <code>wage</code> in your model. You may find something odd at first and may need to drop more variables…</p>
+<p>We’ll spend about 5 minutes on this. You may find something odd at first and may need to drop more variables…</p>
 <p><strong>5 minutes</strong></p>
 </section>
 <section id="breakout-1-discussion" class="level3">
 <h3 class="anchored" data-anchor-id="breakout-1-discussion">Breakout #1 discussion</h3>
-<p>Let’s choose a group to share their plot and discuss the results. Use our sharing zoom link using the button up above. The odd thing you should have hit: <code>lwage</code> is just the log of <code>wage</code>, so the tree splits on it and nothing else, and predicts <code>wage</code> nearly perfectly. Drop it (<code>wage_clean$lwage = NULL</code>) and re-run before we move on – we’ll keep using <code>wage_clean</code> for the rest of today.</p>
+<p>Let’s choose a group to share their plot and discuss the results. The odd thing you should have hit: <code>quote_per_night</code> is the nightly price from a booking quote, so the tree splits on it and nothing else. Drop it. Then look at <code>estimated_revenue</code>: what is it computed from? Drop that too (<code>airbnb_clean$estimated_revenue = NULL</code>), re-run, and we’ll keep using <code>airbnb_clean</code> for the rest of today.</p>
+<ul>
+<li>Who are the hosts with 89 or more listings, and why are they so expensive?</li>
+<li>Why would a private room with a one-night minimum cost more than one with a longer minimum?</li>
+</ul>
+</section>
+<section id="check-your-guesses" class="level3">
+<h3 class="anchored" data-anchor-id="check-your-guesses">Check your guesses</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(onetree, guess)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>guess<span class="sc">$</span>price</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Who was closer, you or the tree?</p>
 </section>
 </div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>TRY IT
+</div>
+</div>
+<section id="breakout-2-find-the-deals" class="level3 callout-body-container callout-body">
+<h3 class="anchored" data-anchor-id="breakout-2-find-the-deals">Breakout #2: Find the deals</h3>
+<p>A deal is a listing with a price far below the tree’s prediction.</p>
+<ul>
+<li>Add the tree’s prediction to <code>airbnb</code> as a new column, <code>pred</code>.</li>
+<li>Make a new column, <code>deal = price - pred</code>.</li>
+<li>Keep the listings with at least 10 reviews. Sort them by <code>deal</code>.</li>
+<li>Open the <code>listing_url</code> for the top five. Why are they cheap?</li>
+<li>Why do the top deals all have the same prediction?</li>
+</ul>
+<p><strong>5 minutes</strong></p>
+</section>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>TRY IT
+</div>
+</div>
+<section id="breakout-3-map-the-tree" class="level3 callout-body-container callout-body">
+<h3 class="anchored" data-anchor-id="breakout-3-map-the-tree">Breakout #3: Map the tree</h3>
+<p>Fit a tree on location only. Then predict a price for every point on a grid and plot it.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>maptree <span class="ot">=</span> <span class="fu">rpart</span>(price <span class="sc">~</span> latitude <span class="sc">+</span> longitude, <span class="at">data =</span> airbnb, <span class="at">cp =</span> <span class="fl">0.005</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">=</span> <span class="fu">expand.grid</span>(<span class="at">longitude =</span> <span class="fu">seq</span>(<span class="fu">min</span>(airbnb<span class="sc">$</span>longitude), <span class="fu">max</span>(airbnb<span class="sc">$</span>longitude), <span class="at">length.out =</span> <span class="dv">300</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">latitude  =</span> <span class="fu">seq</span>(<span class="fu">min</span>(airbnb<span class="sc">$</span>latitude),  <span class="fu">max</span>(airbnb<span class="sc">$</span>latitude),  <span class="at">length.out =</span> <span class="dv">300</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>pred <span class="ot">=</span> <span class="fu">predict</span>(maptree, grid)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grid, <span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude, <span class="at">fill =</span> pred)) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> airbnb, <span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_quickmap</span>() <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Why are all the edges straight lines?</li>
+<li>What does the tree predict for a listing in Lake Michigan? Why?</li>
+<li>Change <code>cp</code> to 0.002. What changes?</li>
+</ul>
+<p><strong>5 minutes</strong></p>
+</section>
 </div>
 <section id="side-note-using-lapply-to-repeat-something" class="level3">
 <h3 class="anchored" data-anchor-id="side-note-using-lapply-to-repeat-something">Side note: using <code>lapply</code> to repeat something</h3>
@@ -639,14 +782,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Once we have a list of things we want to iterate on, <code>lapply</code> lets us do something to each element of the list, and then returns a list of results (of the same length as the input). The arguments of <code>lapply</code> are (1) the list we want to iterate over, (2) the function we want to use, and, when needed, (3) other arguments to pass to the function (that are the same for every element in the list). The list we want to iterate over might be a list of models (as we do when we want to use <code>get_rmse</code> on each model), or it might be a list (or a vector that can be coerced to a list) of tuning parameters.</p>
 <p>Let’s say we wanted to repeat our <strong>TRY IT</strong> with the <code>cp</code> values of <code>c(0, .01, .02, .03)</code>. We could make a list of those values, and use <code>lapply</code> to run <code>rpart()</code> and use each of the 4 values of <code>cp</code>. One way we could try doing this would be something like:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">03</span>), rpart, <span class="at">formula =</span> wage <span class="sc">~</span> ., <span class="at">data =</span> wage_clean, <span class="at">cp =</span> ???)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">03</span>), rpart, <span class="at">formula =</span> price <span class="sc">~</span> ., <span class="at">data =</span> airbnb_clean, <span class="at">cp =</span> ???)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The only problem here is that the first argument of <code>rpart</code> is not the <code>cp</code> parameter, so we can’t just pass it in additional arguments.</p>
 <p>Instead, we previously introduced the <em>anonymous function</em> in <code>lapply</code> as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">03</span>), <span class="cf">function</span>(x){</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(wage <span class="sc">~</span> ., <span class="at">data =</span> wage_clean, <span class="at">cp =</span> x)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">03</span>), <span class="cf">function</span>(x){</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(price <span class="sc">~</span> ., <span class="at">data =</span> airbnb_clean, <span class="at">cp =</span> x)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Well, it gets us the right answer, but whaaaaaat is going on? Curly brackets? <code>x</code>?</p>
 <p>This is an “anonymous function”, or a function created on the fly. Here’s how it works in <code>lapply</code>:</p>
@@ -666,21 +809,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The curly brackets are the temporary function you want to create.</p>
 <p>So you can think of it like this:</p>
 <pre><code>x = 0
-myList[[1]] = rpart(wage ~ ., data = wage_clean, cp = x)
+myList[[1]] = rpart(price ~ ., data = airbnb_clean, cp = x)
 
 x = 0.01
-myList[[2]] = rpart(wage ~ ., data = wage_clean, cp = x)
+myList[[2]] = rpart(price ~ ., data = airbnb_clean, cp = x)
 
 x = 0.02
-myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)</code></pre>
+myList[[3]] = rpart(price ~ ., data = airbnb_clean, cp = x)</code></pre>
 <p>As long as every entry in the vector you iterate over is a valid value of <code>cp</code>, then you’ll get the results in a list — here, a list of four fitted trees, not a list of <code>cp</code> values. When the list holds single numbers instead of models, <code>unlist</code> coerces it to a vector. This is also the same way we get the RMSE, but instead of the anonymous function, we write one out and use that.</p>
 <p>If you had a list of <code>rpart</code> objects and wanted to, say, extract the <code>cp</code> tuning parameter from each, you could also use an anonymous function. Each <code>rpart</code> object has a list called <code>control</code> that includes all of the control (tuning) parameters used in its estimation:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cpList <span class="ot">=</span> <span class="fu">lapply</span>(myList, <span class="cf">function</span>(y){</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  y<span class="sc">$</span>control<span class="sc">$</span>cp</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(cpList)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>cpList <span class="ot">=</span> <span class="fu">lapply</span>(myList, <span class="cf">function</span>(y){</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  y<span class="sc">$</span>control<span class="sc">$</span>cp</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(cpList)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -692,13 +835,13 @@ myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<section id="breakout-2" class="level3">
-<h3 class="anchored" data-anchor-id="breakout-2">Breakout #2</h3>
-<p>Using the loop method or the <code>lapply</code> method, generate 10 regression trees to explain <code>wage</code> in <code>wage_clean</code>. You can iterate through values of <code>cp</code>, the complexity parameter, <strong>or</strong> <code>minsplit</code>, the minimum # of points a node has to have before <code>rpart</code> will even try to split it.</p>
+<section id="breakout-4" class="level3">
+<h3 class="anchored" data-anchor-id="breakout-4">Breakout #4</h3>
+<p>Using the loop method or the <code>lapply</code> method, generate 10 regression trees to explain <code>price</code> in <code>airbnb_clean</code>. You can iterate through values of <code>cp</code>, the complexity parameter, <strong>or</strong> <code>minsplit</code>, the minimum # of points a node has to have before <code>rpart</code> will even try to split it. If you vary <code>minsplit</code>, also set <code>cp = 0</code>, or the default <code>cp</code> will stop every tree at the same size.</p>
 <p><strong>10 minutes</strong></p>
 </section>
-<section id="breakout-2-discussion" class="level3">
-<h3 class="anchored" data-anchor-id="breakout-2-discussion">Breakout #2 discussion</h3>
+<section id="breakout-4-discussion" class="level3">
+<h3 class="anchored" data-anchor-id="breakout-4-discussion">Breakout #4 discussion</h3>
 <p>We’ll ask someone to share (a few of) their group’s 10 regression trees using <code>rpart.plot</code>. Use our website zoom link to share.</p>
 </section>
 </div>
@@ -712,8 +855,8 @@ myList[[3]] = rpart(wage ~ ., data = wage_clean, cp = x)</code></pre>
 <span class="screen-reader-only">Note</span>TRY IT
 </div>
 </div>
-<section id="breakout-3-if-time" class="level3 callout-body-container callout-body">
-<h3 class="anchored" data-anchor-id="breakout-3-if-time">Breakout #3 (if time)</h3>
+<section id="breakout-5-if-time" class="level3 callout-body-container callout-body">
+<h3 class="anchored" data-anchor-id="breakout-5-if-time">Breakout #5 (if time)</h3>
 <p>Use <code>lapply</code> to get a list of your RMSE’s (one for each of your models). The anonymous function may come in handy here (though it’s not necessary). Note that we are not yet splitting into <code>test</code> and <code>train</code> (which you <strong>will</strong> need to do on your lab assignment). That matters for what the plot looks like: because these are RMSEs on the same data we fit, they’ll keep falling as the trees get bigger (as <code>cp</code> goes to zero, or as <code>minsplit</code> shrinks), so there’s no bottom of the U to find here. The U only shows up once the RMSE is calculated on data the tree hasn’t seen.</p>
 <p>Once you have your list, <strong>create the plot of RMSEs</strong> similar to the one we made in last week’s lab. Note: you can use <code>unlist(myRMSE)</code> to get a numeric vector of the RMSE’s (as long as all of the elements in <code>myRMSE</code> are numeric). Then, it’s a matter of plotting either with base <code>plot</code> or with <code>ggplot</code> (if you use <code>ggplot</code> you’ll have to put the RMSEs in a data frame first, with a second column holding the <code>cp</code> or <code>minsplit</code> value that goes on the x-axis).</p>
 </section>
