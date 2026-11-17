@@ -103,7 +103,7 @@ For the first breakout, all I want you to do is the following. We are trying to 
 - Use `rpart.plot` to visualize your regression tree, and *talk through the interpretation* with each other.
 - Calculate the RMSE for your regression tree.
 
-We'll spend about 5 minutes on this. You may find something odd at first and may need to drop more variables...
+We'll spend about 10-15 minutes on this. You may find something odd at first and may need to drop more variables...
 
 ```{r, echo=F, include=F, eval=T}
 airbnb_clean$quote_per_night = NULL
@@ -113,7 +113,7 @@ onetree = rpart(price ~ ., data = airbnb_clean)
 rpart.plot(onetree)
 get_rmse(onetree, airbnb_clean, 'price')
 ```
-**5 minutes**
+**10-15 minutes**
 
 ### Breakout #1 discussion
 Let's choose a group to share their plot and discuss the results. The odd thing you should have hit: `quote_per_night` is the nightly price from a booking quote, so the tree splits on it and nothing else. Drop it. Then look at `estimated_revenue`: what is it computed from? Drop that too (`airbnb_clean$estimated_revenue = NULL`), re-run, and we'll keep using `airbnb_clean` for the rest of today.
@@ -168,7 +168,7 @@ airbnb %>%
   head(5)
 ```
 
-**5 minutes**
+**10-15 minutes**
 
 :::
 
@@ -199,7 +199,7 @@ ggplot(grid, aes(x = longitude, y = latitude, fill = pred)) +
 - What does the tree predict for a listing in Lake Michigan? Why?
 - Change `cp` to 0.002. What changes?
 
-**5 minutes**
+**10-15 minutes**
 
 :::
 

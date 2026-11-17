@@ -587,7 +587,12 @@ window.Quarto = {
   <li><a href="#this-week-is-a-little-different" id="toc-this-week-is-a-little-different" class="nav-link" data-scroll-target="#this-week-is-a-little-different">This week is a little different</a>
   <ul class="collapse">
   <li><a href="#the-data-and-packages" id="toc-the-data-and-packages" class="nav-link" data-scroll-target="#the-data-and-packages">The data and packages</a></li>
+  <li><a href="#is-a-piano-worth-173-a-night" id="toc-is-a-piano-worth-173-a-night" class="nav-link" data-scroll-target="#is-a-piano-worth-173-a-night">Is a piano worth $173 a night?</a></li>
   <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
+  <li><a href="#part-1-ridge" id="toc-part-1-ridge" class="nav-link" data-scroll-target="#part-1-ridge">Part 1: Ridge</a></li>
+  <li><a href="#part-2-lasso" id="toc-part-2-lasso" class="nav-link" data-scroll-target="#part-2-lasso">Part 2: Lasso</a></li>
+  <li><a href="#part-3-choosing-lambda" id="toc-part-3-choosing-lambda" class="nav-link" data-scroll-target="#part-3-choosing-lambda">Part 3: Choosing <span class="math inline">\(\lambda\)</span></a></li>
+  <li><a href="#do-it-again.-and-again." id="toc-do-it-again.-and-again." class="nav-link" data-scroll-target="#do-it-again.-and-again.">Do it again. And again.</a></li>
   </ul></li>
   <li><a href="#random-forests" id="toc-random-forests" class="nav-link" data-scroll-target="#random-forests">Random Forests</a></li>
   <li><a href="#more-examples-of-bias-variance-and-model-flexibility" id="toc-more-examples-of-bias-variance-and-model-flexibility" class="nav-link" data-scroll-target="#more-examples-of-bias-variance-and-model-flexibility">More examples of bias, variance, and model flexibility</a>
@@ -635,32 +640,106 @@ window.Quarto = {
 </section>
 <section id="this-week-is-a-little-different" class="level1">
 <h1>This week is a little different</h1>
-<p>We will use the lecture slides from my friend and ace economist, Ed Rubin (U of Oregon). They are available <a href="https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#1"><strong>right here</strong></a>. A couple things first, though:</p>
+<p>We will use the lecture slides from my friend and ace economist, Ed Rubin (U of Oregon). We go through them in three parts. After each part, we stop and try it on the Chicago Airbnb data from last week. At the end, we run Tuesday’s simulation on this data.</p>
 <section id="the-data-and-packages" class="level2">
 <h2 class="anchored" data-anchor-id="the-data-and-packages">The data and packages</h2>
-<p>Dr.&nbsp;Rubin uses the <code>Credit</code> dataset from the <code>ISLR</code> package (which you may need to install). You’ll also want to install the <code>wooldridge</code> package for our later work:</p>
+<p>Dr.&nbsp;Rubin’s examples use the <code>Credit</code> data from the <code>ISLR</code> package. You do not need it. We use the Airbnb listings again, with 48 new columns. Each new column is 1 if the listing has that amenity and 0 if it does not: a hot tub, a gym, a lake view, an EV charger, a piano. That gives us 60 predictors.</p>
+<p>You need the <code>glmnet</code> package. It is new for us.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>credit <span class="ot">=</span> ISLR<span class="sc">::</span>Credit</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(credit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  ID  Income Limit Rating Cards Age Education Gender Student Married Ethnicity
-1  1  14.891  3606    283     2  34        11   Male      No     Yes Caucasian
-2  2 106.025  6645    483     3  82        15 Female     Yes     Yes     Asian
-3  3 104.593  7075    514     4  71        11   Male      No      No     Asian
-4  4 148.924  9504    681     3  36        11 Female      No      No     Asian
-5  5  55.882  4897    357     2  68        16   Male      No     Yes Caucasian
-6  6  80.180  8047    569     4  77        10   Male      No      No Caucasian
-  Balance
-1     333
-2     903
-3     580
-4     964
-5     331
-6    1151</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>airbnb <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'https://ec242.netlify.app/data/airbnb_chicago_amenities.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Shrinkage helps most when we have many predictors and few observations. So we train on only 300 listings and test on the rest.</p>
+<p><code>glmnet</code> does not take a formula. It takes a matrix of predictors, <code>x</code>, and a vector for the outcome, <code>y</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">242</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>train_idx <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(airbnb), <span class="dv">300</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>train <span class="ot">=</span> airbnb[train_idx, ]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>test  <span class="ot">=</span> airbnb[<span class="sc">-</span>train_idx, ]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">=</span> train <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>price) <span class="sc">%&gt;%</span> <span class="fu">as.matrix</span>()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">=</span> train<span class="sc">$</span>price</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>x_test  <span class="ot">=</span> test <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>price) <span class="sc">%&gt;%</span> <span class="fu">as.matrix</span>()</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>lambdas <span class="ot">=</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="at">length =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="is-a-piano-worth-173-a-night" class="level2">
+<h2 class="anchored" data-anchor-id="is-a-piano-worth-173-a-night">Is a piano worth $173 a night?</h2>
+<p>Start with plain OLS on the 300 training listings. <code>glmnet</code> with <code>lambda = 0</code> is OLS.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ols <span class="ot">=</span> <span class="fu">glmnet</span>(x_train, y_train, <span class="at">lambda =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here are the five amenities with the largest OLS coefficients.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 37%">
+<col style="width: 44%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Amenity</th>
+<th style="text-align: right;">OLS coefficient (per night)</th>
+<th style="text-align: right;">Listings in the 300 that have it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">piano</td>
+<td style="text-align: right;">$173</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lake access</td>
+<td style="text-align: right;">−$156</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">beach access</td>
+<td style="text-align: right;">$130</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ev charger</td>
+<td style="text-align: right;">−$122</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">record player</td>
+<td style="text-align: right;">−$94</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<p>We will also need to load the <code>caret</code> package (which you’ve used before), as well as the <code>glmnet</code> package, which is new for us.</p>
+<p>Do you believe a piano adds $173 a night? How many pianos did OLS see?</p>
+<p>OLS believes every coefficient. It cannot say “I am not sure.” Shrinkage gives it a way to say that.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Think of <span class="math inline">\(\lambda\)</span> as how skeptical the model is.</p>
+<ul>
+<li>At <span class="math inline">\(\lambda = 0\)</span>, the model believes everything. That is OLS.</li>
+<li>As <span class="math inline">\(\lambda\)</span> grows, every coefficient must pay a penalty. A coefficient stays large only if it improves the fit by more than it costs.</li>
+<li><strong>Ridge</strong> charges the <em>square</em> of each coefficient. A small coefficient costs almost nothing. So ridge shrinks every coefficient, but it keeps them all.</li>
+<li><strong>Lasso</strong> charges the <em>size</em> of each coefficient. Every dollar of coefficient costs the same. So a weak coefficient is cheaper to drop. The lasso sets it to exactly zero.</li>
+<li>At a very large <span class="math inline">\(\lambda\)</span>, every coefficient is zero. The model predicts the average price for every listing.</li>
+</ul>
+<p>Five pianos is weak evidence. A skeptical model should not believe it.</p>
+</div>
+</div>
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
@@ -669,37 +748,236 @@ window.Quarto = {
 <li><p><strong>Bias vs.&nbsp;Variance</strong>: We saw that super-overfit polynomial a couple weeks ago (where we took 20 observations and fit a 16th-degree polynomial). The model we fit was very flexible and bendy, but it did get most of the data points right. It had low <em>bias</em> as it was generally right, but had huge <em>variance</em> – it was all over the place, even within a small range of advertising mode spending. <strong>Bias vs.&nbsp;variance</strong> refers to the innate tradeoff between these two things. When we used the train and test samples to get the best <em>out</em> of sample fit, we were balancing bias and variance.</p></li>
 <li><p><strong>Cross validation</strong>: This is the term for splitting your sample into two (or more) different subsets (e.g.&nbsp;train and test), fitting the model on one and checking how it does on the other – and then rotating, so every chunk of the data gets a turn being held out.</p></li>
 </ol>
-<p>Now, back to the <a href="https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#5"><strong>lecture notes for today</strong></a></p>
+</section>
+<section id="part-1-ridge" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-ridge">Part 1: Ridge</h2>
+<p>Go through the slides from <a href="https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#shrinkage-intro"><strong>Shrinkage methods</strong></a> to the start of the Lasso section.</p>
+<p>Now fit a ridge regression on the training data. <code>alpha = 0</code> makes it ridge. <code>glmnet</code> standardizes the predictors for you.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ridge <span class="ot">=</span> <span class="fu">glmnet</span>(x_train, y_train, <span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">lambda =</span> lambdas)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+<span class="screen-reader-only">Note</span>TRY IT
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Try it! Use the <code>wooldridge::wage2</code> dataset and LASSO to predict <code>wage</code>. Since these shrinkage methods (LASSO, ridge) work well with many right-hand-side variables, we can create some additional variables. A good candidate would be squared versions of all of the numeric variables. To do this, we’ll use <code>mutate_if</code> along with <code>is.numeric</code>. The function <code>mutate_if</code>, when used in a pipe <code>%&gt;%</code>, will check each column to see if the given function is true, then will add a new mutation of that column when true. We need this because we don’t want to try to add a squared term for things like factor variables. It will look something like this:</p>
-<pre><code>data %&gt;%
-  mutate_if(is.numeric, list(squared = function(x) x^2))</code></pre>
-<p>We pass a list with potentially many functions, but only one here in the example. For each passed function, <code>mutate_if</code> will create a copy of each existing column, square the data, and name it by appending the name (here, ‘squared’) to the original column name.</p>
-<p>This will result in some columns we don’t want to keep – <code>wage_squared</code> should be dropped since <code>wage</code> is the outcome we want to predict. We should also drop <code>lwage</code> and <code>lwage_squared</code> since those are transformations of our outcome. We want our data to only have the outcome and all the possible predictors so we can simply pass everything but <code>wage</code> for our X’s and <code>wage</code> for our <code>y</code>. One warning before you start: <code>wage2</code> has missing values in <code>brthord</code>, <code>meduc</code>, and <code>feduc</code>, and <code>glmnet</code> flatly refuses an <code>x</code> matrix with <code>NA</code>s in it. Drop the incomplete rows with <code>na.omit()</code> before you build your matrix – or drop those three columns <em>before</em> you create the squared terms, since otherwise <code>brthord_squared</code> and friends carry the <code>NA</code>s right along.</p>
-<ol type="1">
-<li><p>Drop all of the copies of the outcome variable and transformations of the outcome variable. Also, drop any of the squared terms of binary variables – if a variable is <span class="math inline">\(\{0,1\}\)</span>, then the squared term is exactly the same. For instance, <code>married</code> and <code>married_squared</code> are exactly the same.</p></li>
-<li><p>How many predictors (right-side variables) do we have?</p></li>
-<li><p>Use <code>glmnet</code> from the <code>glmnet</code> package to run a LASSO (<code>alpha=1</code>) using all of the data you’ve assembled in the <code>wage2</code> dataset. Select a wide range of values for <code>lambda</code>. You can use <code>cv.glmnet</code> to do the cross-validation for you (see the Rubin lecture notes), or you can do it manually.</p></li>
-<li><p>Find the <code>lambda</code> that minimizes RMSE in the held-out data. You can extract the whole <em>sequence</em> of lambdas that <code>cv.glmnet</code> tried by referring to <code>object$lambda</code>, and the cross-validated RMSE at each of them using <code>sqrt(object$cvm)</code>. These can be used to make the plots in the Rubin lecture notes, and to find the <code>lambda</code> that minimizes RMSE. <code>object$lambda.min</code> will also tell you the optimal <code>lambda</code>.</p></li>
-<li><p>Using the optimal <code>lambda</code>, run a final LASSO model.</p></li>
-<li><p>Use <code>coef</code> to extract the coefficients from the optimal model. Coefficients that are zeroed out by the LASSO are shown as ‘.’</p></li>
-</ol>
 <ul>
-<li>Which variables were “kept” in the model?</li>
-<li>Which variables were eliminated from the model at the optimal <code>lambda</code>?</li>
-<li>Is the cross-validated RMSE lower than it would be if we just ran OLS with all of the variables? (If your <code>lambda</code> grid runs down near zero, the RMSE at the smallest <code>lambda</code> is basically OLS’s. Don’t ask this of the <em>train</em> RMSE – train RMSE is exactly the thing OLS minimizes, so shrinking anything can only make it worse.)</li>
+<li>Run <code>plot(ridge, xvar = "lambda")</code>. Each line is one coefficient. What happens to the coefficients as <span class="math inline">\(\lambda\)</span> grows?</li>
+<li>Does any coefficient reach exactly zero?</li>
 </ul>
 </div>
 </div>
+</section>
+<section id="part-2-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-lasso">Part 2: Lasso</h2>
+<p>Go through the slides from <a href="https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#lasso"><strong>Lasso</strong></a> to the start of the “Ridge or lasso?” section.</p>
+<p><code>alpha = 1</code> makes it a lasso.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lasso <span class="ot">=</span> <span class="fu">glmnet</span>(x_train, y_train, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">lambda =</span> lambdas)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here are both models on the same 300 listings. The five colored lines are the largest lasso coefficients. All coefficients are on a standardized scale, so we can compare them.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11b_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>TRY IT
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Compare the two panels. What does the lasso do that ridge does not?</li>
+<li>Which coefficient lasts the longest in the lasso?</li>
+<li>The <code>ev_charger</code> coefficient is negative. Why would an EV charger go with a lower price?</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="part-3-choosing-lambda" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-choosing-lambda">Part 3: Choosing <span class="math inline">\(\lambda\)</span></h2>
+<p>Go through the slides from <a href="https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#or"><strong>Ridge or lasso?</strong></a> to the end.</p>
+<p><code>cv.glmnet</code> does the cross-validation for you. It tries every <span class="math inline">\(\lambda\)</span> and keeps the one with the lowest held-out error.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">242</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>lasso_cv <span class="ot">=</span> <span class="fu">cv.glmnet</span>(x_train, y_train, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">lambda =</span> lambdas, <span class="at">nfolds =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11b_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>TRY IT
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Find the best <span class="math inline">\(\lambda\)</span> with <code>lasso_cv$lambda.min</code>.</li>
+<li>Run <code>coef(lasso_cv, s = "lambda.min")</code>. The lasso shows a dropped coefficient as <code>.</code>. Which amenities did it keep? Which did it drop? What happened to the piano?</li>
+<li><strong>Vote first.</strong> Will OLS or the lasso have the lower test RMSE? By how much?</li>
+<li>Predict <code>test$price</code> with <code>ols</code> and with the lasso. Use <code>x_test</code>, and <code>s = "lambda.min"</code> for the lasso. Use the <code>rmse</code> function from last week. What is the test RMSE of each? Which one wins?</li>
+<li>Change 300 to 3,000 and do it again. Which one wins now? Why?</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="do-it-again.-and-again." class="level2">
+<h2 class="anchored" data-anchor-id="do-it-again.-and-again.">Do it again. And again.</h2>
+<p>The lasso won by about $11. But that was one draw of 300 listings. Maybe we got lucky.</p>
+<p>On Tuesday we had the same problem. We drew a new dataset, fit the models, and did it again 250 times. Then we looked at the spread of the predictions. We do the same thing here.</p>
+<p>There is one difference. On Tuesday we knew the truth: <span class="math inline">\(f(x) = x^2\)</span>. We do not know the true price function for Chicago. So we pretend:</p>
+<ul>
+<li>All 7,116 listings are the <strong>population</strong>.</li>
+<li>The OLS fit on all 7,116 listings is the <strong>truth</strong>. With 7,116 listings, OLS does not overfit.</li>
+<li>Each simulation draws 300 listings from the population. That is one training set.</li>
+</ul>
+<p>We predict one listing: <strong>listing C</strong> from last week’s guessing game. It has 2 bedrooms, sleeps 4, and costs $954 a night. We leave it out of every draw. We also track the piano coefficient.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x_all <span class="ot">=</span> airbnb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>price) <span class="sc">%&gt;%</span> <span class="fu">as.matrix</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y_all <span class="ot">=</span> airbnb<span class="sc">$</span>price</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>population  <span class="ot">=</span> <span class="fu">glmnet</span>(x_all, y_all, <span class="at">lambda =</span> <span class="dv">0</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>best_lambda <span class="ot">=</span> lasso_cv<span class="sc">$</span>lambda.min</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>listing_C <span class="ot">=</span> x_all[<span class="dv">1082</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>truth_C   <span class="ot">=</span> <span class="fu">predict</span>(population, listing_C)[<span class="dv">1</span>]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>B <span class="ot">=</span> <span class="dv">200</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">draw =</span> <span class="dv">1</span><span class="sc">:</span>B, <span class="at">ols =</span> <span class="cn">NA</span>, <span class="at">lasso =</span> <span class="cn">NA</span>, <span class="at">ols_piano =</span> <span class="cn">NA</span>, <span class="at">lasso_piano =</span> <span class="cn">NA</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">242</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (b <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>B) {</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  rows    <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">setdiff</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(airbnb), <span class="dv">1082</span>), <span class="dv">300</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  ols_b   <span class="ot">=</span> <span class="fu">glmnet</span>(x_all[rows, ], y_all[rows], <span class="at">lambda =</span> <span class="dv">0</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  lasso_b <span class="ot">=</span> <span class="fu">glmnet</span>(x_all[rows, ], y_all[rows], <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">lambda =</span> lambdas)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  sims<span class="sc">$</span>ols[b]         <span class="ot">=</span> <span class="fu">predict</span>(ols_b, listing_C)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  sims<span class="sc">$</span>lasso[b]       <span class="ot">=</span> <span class="fu">predict</span>(lasso_b, listing_C, <span class="at">s =</span> best_lambda)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  sims<span class="sc">$</span>ols_piano[b]   <span class="ot">=</span> <span class="fu">coef</span>(ols_b)[<span class="st">"piano"</span>, <span class="dv">1</span>]</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  sims<span class="sc">$</span>lasso_piano[b] <span class="ot">=</span> <span class="fu">coef</span>(lasso_b, <span class="at">s =</span> best_lambda)[<span class="st">"piano"</span>, <span class="dv">1</span>]</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="guesses-for-listing-c" class="level3">
+<h3 class="anchored" data-anchor-id="guesses-for-listing-c">200 guesses for listing C</h3>
+<p>Each dot is one model fit on one draw of 300 listings.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11b_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we split the error into bias and variance. These are the same functions from Tuesday.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>get_bias <span class="ot">=</span> <span class="cf">function</span>(estimate, truth) <span class="fu">mean</span>(estimate) <span class="sc">-</span> truth</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>get_var  <span class="ot">=</span> <span class="cf">function</span>(estimate) <span class="fu">mean</span>((estimate <span class="sc">-</span> <span class="fu">mean</span>(estimate))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>get_mse  <span class="ot">=</span> <span class="cf">function</span>(truth, estimate) <span class="fu">mean</span>((estimate <span class="sc">-</span> truth)<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">Average guess</th>
+<th style="text-align: right;">Bias Squared</th>
+<th style="text-align: right;">Variance</th>
+<th style="text-align: right;">Mean Squared Error</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">OLS</td>
+<td style="text-align: right;">$524</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">16,067</td>
+<td style="text-align: right;">16,128</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lasso</td>
+<td style="text-align: right;">$457</td>
+<td style="text-align: right;">3,495</td>
+<td style="text-align: right;">6,586</td>
+<td style="text-align: right;">10,082</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="pianos" class="level3">
+<h3 class="anchored" data-anchor-id="pianos">200 pianos</h3>
+<p>Here is the piano coefficient from each draw. The black line is the truth.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11b_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-tradeoff-lambda-by-lambda" class="level3">
+<h3 class="anchored" data-anchor-id="the-tradeoff-lambda-by-lambda">The tradeoff, <span class="math inline">\(\lambda\)</span> by <span class="math inline">\(\lambda\)</span></h3>
+<p>Above, we used one value of <span class="math inline">\(\lambda\)</span>. Now we use all 100. We also use 500 listings instead of one, and average over them. For each <span class="math inline">\(\lambda\)</span>, we get the squared bias and the variance, like Tuesday.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11b_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is the bias-variance plot from Tuesday, made with real data. The x-axis runs the other way. A small <span class="math inline">\(\lambda\)</span> is a flexible model.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>TRY IT
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>In the first plot, which model is closer to the truth on average? Which model is steadier?</li>
+<li>Look at the table. Which part of the error does the lasso cut? What does it pay for that?</li>
+<li>Listing C costs $954. The truth from all 7,116 listings is about $516. Why can no model close that gap? What did Tuesday call this error?</li>
+<li>OLS gives the piano a value in every draw. How wide is the range? How often does the lasso say “no piano effect”?</li>
+<li>Find the bottom of the black curve. Where did cross-validation put <span class="math inline">\(\lambda\)</span>? Cross-validation saw only 300 listings. How did it do?</li>
+<li>Run the simulation code with <code>hot_tub</code> in place of <code>piano</code>. About 1 in 18 listings has a hot tub. What changes?</li>
+</ol>
+</div>
+</div>
+</section>
 </section>
 </section>
 <section id="random-forests" class="level1">
@@ -738,38 +1016,38 @@ Note
 <h2 class="anchored" data-anchor-id="model-flexibility">Model Flexibility</h2>
 <p>Let’s return to the simulated dataset we used occasionally in the linear regression content. Recall there was a single feature <span class="math inline">\(x\)</span> with the following properties:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define regression function</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cubic_mean <span class="ot">=</span> <span class="cf">function</span>(x) {</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> x <span class="sc">-</span> <span class="dv">3</span> <span class="sc">*</span> x <span class="sc">^</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">5</span> <span class="sc">*</span> x <span class="sc">^</span> <span class="dv">3</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define regression function</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>cubic_mean <span class="ot">=</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> x <span class="sc">-</span> <span class="dv">3</span> <span class="sc">*</span> x <span class="sc">^</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">5</span> <span class="sc">*</span> x <span class="sc">^</span> <span class="dv">3</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We then generated some data around this function with some added noise:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define full data generating process</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>gen_slr_data <span class="ot">=</span> <span class="cf">function</span>(<span class="at">sample_size =</span> <span class="dv">100</span>, mu) {</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">runif</span>(<span class="at">n =</span> sample_size, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">=</span> <span class="fu">mu</span>(x) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="at">n =</span> sample_size)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(x, y)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define full data generating process</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gen_slr_data <span class="ot">=</span> <span class="cf">function</span>(<span class="at">sample_size =</span> <span class="dv">100</span>, mu) {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">runif</span>(<span class="at">n =</span> sample_size, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">=</span> <span class="fu">mu</span>(x) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="at">n =</span> sample_size)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(x, y)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>After defining the data generating process, we generate and split the data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate entire dataset</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sim_slr_data <span class="ot">=</span> <span class="fu">gen_slr_data</span>(<span class="at">sample_size =</span> <span class="dv">100</span>, <span class="at">mu =</span> cubic_mean)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># test-train split</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>slr_trn_idx <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(sim_slr_data), <span class="at">size =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(sim_slr_data))</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>slr_trn <span class="ot">=</span> sim_slr_data[slr_trn_idx, ]</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>slr_tst <span class="ot">=</span> sim_slr_data[<span class="sc">-</span>slr_trn_idx, ]</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation-validation split</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>slr_est_idx <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(slr_trn), <span class="at">size =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(slr_trn))</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>slr_est <span class="ot">=</span> slr_trn[slr_est_idx, ]</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>slr_val <span class="ot">=</span> slr_trn[<span class="sc">-</span>slr_est_idx, ]</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># check data</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(slr_trn, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate entire dataset</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>sim_slr_data <span class="ot">=</span> <span class="fu">gen_slr_data</span>(<span class="at">sample_size =</span> <span class="dv">100</span>, <span class="at">mu =</span> cubic_mean)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># test-train split</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>slr_trn_idx <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(sim_slr_data), <span class="at">size =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(sim_slr_data))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>slr_trn <span class="ot">=</span> sim_slr_data[slr_trn_idx, ]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>slr_tst <span class="ot">=</span> sim_slr_data[<span class="sc">-</span>slr_trn_idx, ]</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation-validation split</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>slr_est_idx <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(slr_trn), <span class="at">size =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(slr_trn))</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>slr_est <span class="ot">=</span> slr_trn[slr_est_idx, ]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>slr_val <span class="ot">=</span> slr_trn[<span class="sc">-</span>slr_est_idx, ]</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># check data</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(slr_trn, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 2
         x      y
@@ -788,10 +1066,10 @@ Note
 </div>
 <p>For validating models, we will use RMSE.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for calculating RMSE</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>calc_rmse <span class="ot">=</span> <span class="cf">function</span>(actual, predicted) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((actual <span class="sc">-</span> predicted) <span class="sc">^</span> <span class="dv">2</span>))</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for calculating RMSE</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>calc_rmse <span class="ot">=</span> <span class="cf">function</span>(actual, predicted) {</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((actual <span class="sc">-</span> predicted) <span class="sc">^</span> <span class="dv">2</span>))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s check how linear, k-nearest neighbors, and decision tree models fit to this data make errors, while paying attention to their flexibility.</p>
 <div class="cell">
@@ -809,25 +1087,25 @@ Note
 <h3 class="anchored" data-anchor-id="linear-models">Linear Models</h3>
 <p>First up, linear models. We will fit polynomial models with degree from one to nine, and then validate.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit polynomial models</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>poly_mod_est_list <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_1_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">1</span>), <span class="at">data =</span> slr_est),</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_2_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">2</span>), <span class="at">data =</span> slr_est),</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_3_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">3</span>), <span class="at">data =</span> slr_est),</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_4_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">4</span>), <span class="at">data =</span> slr_est),</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_5_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">5</span>), <span class="at">data =</span> slr_est),</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_6_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">6</span>), <span class="at">data =</span> slr_est),</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_7_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">7</span>), <span class="at">data =</span> slr_est),</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_8_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">8</span>), <span class="at">data =</span> slr_est),</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_9_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">9</span>), <span class="at">data =</span> slr_est)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit polynomial models</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>poly_mod_est_list <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_1_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">1</span>), <span class="at">data =</span> slr_est),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_2_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">2</span>), <span class="at">data =</span> slr_est),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_3_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">3</span>), <span class="at">data =</span> slr_est),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_4_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">4</span>), <span class="at">data =</span> slr_est),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_5_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">5</span>), <span class="at">data =</span> slr_est),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_6_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">6</span>), <span class="at">data =</span> slr_est),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_7_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">7</span>), <span class="at">data =</span> slr_est),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_8_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">8</span>), <span class="at">data =</span> slr_est),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">poly_mod_9_est =</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">9</span>), <span class="at">data =</span> slr_est)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The plot below visualizes the results.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="11b_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="11b_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -844,25 +1122,25 @@ Note
 <h3 class="anchored" data-anchor-id="k-nearest-neighbors">k-Nearest Neighbors</h3>
 <p>Next up, k-nearest neighbors. We will consider values for <span class="math inline">\(k\)</span> that are odd and between <span class="math inline">\(1\)</span> and <span class="math inline">\(45\)</span> inclusive.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for fitting knn models</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>fit_knn_mod <span class="ot">=</span> <span class="cf">function</span>(neighbors) {</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">knnreg</span>(y <span class="sc">~</span> x, <span class="at">data =</span> slr_est, <span class="at">k =</span> neighbors)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for fitting knn models</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>fit_knn_mod <span class="ot">=</span> <span class="cf">function</span>(neighbors) {</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">knnreg</span>(y <span class="sc">~</span> x, <span class="at">data =</span> slr_est, <span class="at">k =</span> neighbors)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define values of tuning parameter k to evaluate</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>k_to_try <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">45</span>, <span class="at">by =</span> <span class="dv">2</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit knn models</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>knn_mod_est_list <span class="ot">=</span> <span class="fu">lapply</span>(k_to_try, fit_knn_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define values of tuning parameter k to evaluate</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>k_to_try <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">45</span>, <span class="at">by =</span> <span class="dv">2</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit knn models</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>knn_mod_est_list <span class="ot">=</span> <span class="fu">lapply</span>(k_to_try, fit_knn_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The plot below visualizes the results.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="11b_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="11b_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -878,26 +1156,26 @@ Note
 <h3 class="anchored" data-anchor-id="decision-trees">Decision Trees</h3>
 <p>Lastly, we evaluate some decision tree models. We choose some arbitrary values of <code>cp</code> to evaluate, while holding <code>minsplit</code> constant at <code>5</code>. These are arbitrary choices that produce a plot that is useful for discussion.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for fitting decision tree models</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>tree_knn_mod <span class="ot">=</span> <span class="cf">function</span>(flex) {</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(y <span class="sc">~</span> x, <span class="at">data =</span> slr_est, <span class="at">cp =</span> flex, <span class="at">minsplit =</span> <span class="dv">5</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function for fitting decision tree models</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>tree_knn_mod <span class="ot">=</span> <span class="cf">function</span>(flex) {</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(y <span class="sc">~</span> x, <span class="at">data =</span> slr_est, <span class="at">cp =</span> flex, <span class="at">minsplit =</span> <span class="dv">5</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define values of tuning parameter cp to evaluate</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>cp_to_try <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>, <span class="fl">0.001</span>, <span class="fl">0.0001</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit decision tree models</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>tree_mod_est_list <span class="ot">=</span> <span class="fu">lapply</span>(cp_to_try, tree_knn_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define values of tuning parameter cp to evaluate</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>cp_to_try <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>, <span class="fl">0.001</span>, <span class="fl">0.0001</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit decision tree models</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>tree_mod_est_list <span class="ot">=</span> <span class="fu">lapply</span>(cp_to_try, tree_knn_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The plot below visualizes the results.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="11b_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="11b_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

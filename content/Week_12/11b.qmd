@@ -16,118 +16,376 @@ output:
 - What is LASSO?
 
 # This week is a little different
-We will use the lecture slides from my friend and ace economist, Ed Rubin (U of Oregon). They are available [**right here**](https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#1). A couple things first, though:
+We will use the lecture slides from my friend and ace economist, Ed Rubin (U of Oregon). We go through them in three parts. After each part, we stop and try it on the Chicago Airbnb data from last week. At the end, we run Tuesday's simulation on this data.
 
 ## The data and packages
 
-Dr. Rubin uses the `Credit` dataset from the `ISLR` package (which you may need to install). You'll also want to install the `wooldridge` package for our later work:
+Dr. Rubin's examples use the `Credit` data from the `ISLR` package. You do not need it. We use the Airbnb listings again, with 48 new columns. Each new column is 1 if the listing has that amenity and 0 if it does not: a hot tub, a gym, a lake view, an EV charger, a piano. That gives us 60 predictors.
 
-```{r credit-data, echo = T}
-library(ISLR)
-credit = ISLR::Credit
-head(credit)
+You need the `glmnet` package. It is new for us.
 
+```{r, eval=F}
+library(glmnet)
+
+airbnb = read.csv('https://ec242.netlify.app/data/airbnb_chicago_amenities.csv')
 ```
 
-We will also need to load the `caret` package (which you've used before), as well as the `glmnet` package, which is new for us.
+```{r, echo=F, include=F}
+library(glmnet)
+
+airbnb = read.csv(here('data/airbnb_chicago_amenities.csv'))
+```
+
+Shrinkage helps most when we have many predictors and few observations. So we train on only 300 listings and test on the rest.
+
+`glmnet` does not take a formula. It takes a matrix of predictors, `x`, and a vector for the outcome, `y`.
+
+```{r}
+set.seed(242)
+train_idx = sample(nrow(airbnb), 300)
+train = airbnb[train_idx, ]
+test  = airbnb[-train_idx, ]
+
+x_train = train %>% dplyr::select(-price) %>% as.matrix()
+y_train = train$price
+x_test  = test %>% dplyr::select(-price) %>% as.matrix()
+
+lambdas = 10^seq(3, -1, length = 100)
+```
+
+## Is a piano worth $173 a night?
+
+Start with plain OLS on the 300 training listings. `glmnet` with `lambda = 0` is OLS.
+
+```{r}
+ols = glmnet(x_train, y_train, lambda = 0)
+```
+
+Here are the five amenities with the largest OLS coefficients.
+
+```{r, echo=F}
+amenities = names(airbnb)[which(names(airbnb) == "host_listings") + 1:48]
+ols_b = as.matrix(coef(ols))[amenities, 1]
+data.frame(Amenity = gsub("_", " ", amenities),
+           b = ols_b,
+           n = colSums(x_train[, amenities])) %>%
+  slice_max(abs(b), n = 5) %>%
+  mutate(b = scales::dollar(round(b), style_negative = "minus")) %>%
+  knitr::kable(col.names = c("Amenity", "OLS coefficient (per night)", "Listings in the 300 that have it"),
+               align = "lrr", row.names = FALSE)
+```
+
+Do you believe a piano adds $173 a night? How many pianos did OLS see?
+
+OLS believes every coefficient. It cannot say "I am not sure." Shrinkage gives it a way to say that.
+
+::: {.callout-tip}
+## The idea
+
+Think of $\lambda$ as how skeptical the model is.
+
+- At $\lambda = 0$, the model believes everything. That is OLS.
+- As $\lambda$ grows, every coefficient must pay a penalty. A coefficient stays large only if it improves the fit by more than it costs.
+- **Ridge** charges the *square* of each coefficient. A small coefficient costs almost nothing. So ridge shrinks every coefficient, but it keeps them all.
+- **Lasso** charges the *size* of each coefficient. Every dollar of coefficient costs the same. So a weak coefficient is cheaper to drop. The lasso sets it to exactly zero.
+- At a very large $\lambda$, every coefficient is zero. The model predicts the average price for every listing.
+
+Five pianos is weak evidence. A skeptical model should not believe it.
+:::
 
 ## Terminology
 I used to have this lecture at the end of our semester, but I think the intuition behind LASSO and ridge regression helps understand our "overfitting" problem. There are two terms I want to cover before we dive into the slides:
 
 1. **Bias vs. Variance**: We saw that super-overfit polynomial a couple weeks ago (where we took 20 observations and fit a 16th-degree polynomial). The model we fit was very flexible and bendy, but it did get most of the data points right. It had low *bias* as it was generally right, but had huge *variance* -- it was all over the place, even within a small range of advertising mode spending. **Bias vs. variance** refers to the innate tradeoff between these two things. When we used the train and test samples to get the best *out* of sample fit, we were balancing bias and variance.
 
-2. **Cross validation**: This is the term for splitting your sample into two (or more) different subsets (e.g. train and test), fitting the model on one and checking how it does on the other -- and then rotating, so every chunk of the data gets a turn being held out. 
+2. **Cross validation**: This is the term for splitting your sample into two (or more) different subsets (e.g. train and test), fitting the model on one and checking how it does on the other -- and then rotating, so every chunk of the data gets a turn being held out.
 
-Now, back to the [**lecture notes for today**](https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#5)
+## Part 1: Ridge
 
+Go through the slides from [**Shrinkage methods**](https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#shrinkage-intro) to the start of the Lasso section.
 
+Now fit a ridge regression on the training data. `alpha = 0` makes it ridge. `glmnet` standardizes the predictors for you.
 
-
+```{r}
+ridge = glmnet(x_train, y_train, alpha = 0, lambda = lambdas)
+```
 
 ::: {.callout-note}
-Try it! Use the `wooldridge::wage2` dataset and LASSO to predict `wage`. Since these shrinkage methods (LASSO, ridge) work well with many right-hand-side variables, we can create some additional variables. A good candidate would be squared versions of all of the numeric variables. To do this, we'll use `mutate_if` along with `is.numeric`. The function `mutate_if`, when used in a pipe `%>%`, will check each column to see if the given function is true, then will add a new mutation of that column when true. We need this because we don't want to try to add a squared term for things like factor variables. It will look something like this:
+## TRY IT
 
-```
-data %>%
-  mutate_if(is.numeric, list(squared = function(x) x^2))
-```
-
-
-We pass a list with potentially many functions, but only one here in the example. For each passed function, `mutate_if` will create a copy of each existing column, square the data, and name it by appending the name (here, 'squared') to the original column name.
-
-This will result in some columns we don't want to keep -- `wage_squared` should be dropped since `wage` is the outcome we want to predict. We should also drop `lwage` and `lwage_squared` since those are transformations of our outcome. We want our data to only have the outcome and all the possible predictors so we can simply pass everything but `wage` for our X's and `wage` for our `y`. One warning before you start: `wage2` has missing values in `brthord`, `meduc`, and `feduc`, and `glmnet` flatly refuses an `x` matrix with `NA`s in it. Drop the incomplete rows with `na.omit()` before you build your matrix -- or drop those three columns *before* you create the squared terms, since otherwise `brthord_squared` and friends carry the `NA`s right along. 
-
-1. Drop all of the copies of the outcome variable and transformations of the outcome variable. Also, drop any of the squared terms of binary variables -- if a variable is $\{0,1\}$, then the squared term is exactly the same. For instance, `married` and `married_squared` are exactly the same.
-
-2. How many predictors (right-side variables) do we have?
-
-3. Use `glmnet` from the `glmnet` package to run a LASSO (`alpha=1`) using all of the data you've assembled in the `wage2` dataset. Select a wide range of values for `lambda`. You can use `cv.glmnet` to do the cross-validation for you (see the Rubin lecture notes), or you can do it manually.
-
-4. Find the `lambda` that minimizes RMSE in the held-out data. You can extract the whole *sequence* of lambdas that `cv.glmnet` tried by referring to `object$lambda`, and the cross-validated RMSE at each of them using `sqrt(object$cvm)`. These can be used to make the plots in the Rubin lecture notes, and to find the `lambda` that minimizes RMSE. `object$lambda.min` will also tell you the optimal `lambda`.
-
-5. Using the optimal `lambda`, run a final LASSO model.
-
-6. Use `coef` to extract the coefficients from the optimal model. Coefficients that are zeroed out by the LASSO are shown as '.'
-- Which variables were "kept" in the model?
-- Which variables were eliminated from the model at the optimal `lambda`?
-- Is the cross-validated RMSE lower than it would be if we just ran OLS with all of the variables? (If your `lambda` grid runs down near zero, the RMSE at the smallest `lambda` is basically OLS's. Don't ask this of the *train* RMSE -- train RMSE is exactly the thing OLS minimizes, so shrinking anything can only make it worse.)
-
+- Run `plot(ridge, xvar = "lambda")`. Each line is one coefficient. What happens to the coefficients as $\lambda$ grows?
+- Does any coefficient reach exactly zero?
 :::
 
-```{r, eval = F, echo=F}
-library(wooldridge)
-library(glmnet)
+## Part 2: Lasso
 
-wage2 = wooldridge::wage2 %>%
-   mutate_if(is.numeric, list(squared = function(x) x^2)) %>%
-  dplyr::select(-wage_squared, -lwage, -lwage_squared, -married_squared, -black_squared, -south_squared, -urban_squared) %>%
-  na.omit()
+Go through the slides from [**Lasso**](https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#lasso) to the start of the "Ridge or lasso?" section.
 
+`alpha = 1` makes it a lasso.
 
-lasso_cv = cv.glmnet(
-  x = wage2 %>% dplyr::select(-wage) %>% as.matrix(),
-  y = wage2$wage,
-  standardize = FALSE,
-  alpha = 1,
-  lambda = 10^seq(from = 1, to = -4, length = 100),
-  type.measure = 'mse',
-  nfolds = 5
-)
-
-## Extract results
-lasso_cv_df = data.frame(
-  lambda = lasso_cv$lambda,
-  rmse = sqrt(lasso_cv$cvm)
-)
-# Plot
-ggplot(
-  data = lasso_cv_df,
-  aes(x = lambda, y = rmse)
-) +
-geom_line() +
-geom_point(
-  data = lasso_cv_df %>% filter(rmse == min(rmse)),
-  size = 3.5,
-  color = '#18453b'
-) +
-scale_y_continuous("RMSE") +
-scale_x_continuous(
-  expression(lambda),
-  trans = "log10",
-  labels = c("0.1", "10", "1,000", "100,000"),
-  breaks = c(0.1, 10, 1000, 100000),
-) +
-theme_minimal(base_size = 20, base_family = "Fira Sans Book")
-
-lasso_cv_fin = glmnet(
-  x = wage2 %>% dplyr::select(-wage) %>% as.matrix(),
-  y = wage2$wage,
-  standardize = TRUE,
-  alpha = 1,
-  lambda = lasso_cv$lambda.min
-)
-
+```{r}
+lasso = glmnet(x_train, y_train, alpha = 1, lambda = lambdas)
 ```
+
+Here are both models on the same 300 listings. The five colored lines are the largest lasso coefficients. All coefficients are on a standardized scale, so we can compare them.
+
+```{r, echo=F, fig.width=9, fig.height=4.5}
+sdx = apply(x_train, 2, sd)
+coef_path = function(fit, model_name) {
+  b = as.matrix(coef(fit))[-1, ] * sdx
+  as.data.frame(t(b)) %>%
+    mutate(lambda = fit$lambda) %>%
+    tidyr::pivot_longer(-lambda) %>%
+    mutate(model = model_name)
+}
+paths = bind_rows(coef_path(ridge, "Ridge"), coef_path(lasso, "Lasso")) %>%
+  mutate(model = factor(model, levels = c("Ridge", "Lasso")))
+top5 = paths %>%
+  filter(model == "Lasso") %>%
+  group_by(name) %>%
+  summarize(biggest = max(abs(value))) %>%
+  slice_max(biggest, n = 5) %>%
+  pull(name)
+
+ggplot(paths, aes(x = lambda, y = value, group = name)) +
+  geom_hline(yintercept = 0, color = "grey60") +
+  geom_line(data = paths %>% filter(!name %in% top5), color = "grey80", linewidth = .4) +
+  geom_line(data = paths %>% filter(name %in% top5), aes(color = name), linewidth = 1) +
+  scale_x_log10(labels = scales::label_number(big.mark = ",", drop0trailing = TRUE)) +
+  facet_wrap(~model) +
+  labs(x = expression(lambda), y = "Coefficient (standardized)", color = NULL) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "bottom", panel.grid.minor = element_blank())
+```
+
+::: {.callout-note}
+## TRY IT
+
+- Compare the two panels. What does the lasso do that ridge does not?
+- Which coefficient lasts the longest in the lasso?
+- The `ev_charger` coefficient is negative. Why would an EV charger go with a lower price?
+:::
+
+## Part 3: Choosing $\lambda$
+
+Go through the slides from [**Ridge or lasso?**](https://raw.githack.com/edrubin/EC524W20/master/lecture/005/005-slides.html#or) to the end.
+
+`cv.glmnet` does the cross-validation for you. It tries every $\lambda$ and keeps the one with the lowest held-out error.
+
+```{r}
+set.seed(242)
+lasso_cv = cv.glmnet(x_train, y_train, alpha = 1, lambda = lambdas, nfolds = 10)
+```
+
+```{r, echo=F, fig.width=7, fig.height=4}
+cv_df = data.frame(lambda = lasso_cv$lambda,
+                   rmse   = sqrt(lasso_cv$cvm),
+                   kept   = lasso_cv$nzero)
+best = cv_df %>% filter(rmse == min(rmse))
+
+ggplot(cv_df, aes(x = lambda, y = rmse)) +
+  geom_line(linewidth = 1, color = "#18453b") +
+  geom_point(data = best, size = 3.5, color = "#18453b") +
+  expand_limits(y = best$rmse - 8) +
+  annotate("text", x = best$lambda, y = best$rmse, vjust = 2, size = 4.5,
+           label = paste0("Best: ", best$kept, " of ", ncol(x_train), " predictors kept")) +
+  scale_x_log10(labels = scales::label_number(big.mark = ",", drop0trailing = TRUE)) +
+  scale_y_continuous(labels = scales::label_dollar()) +
+  labs(x = expression(lambda), y = "Cross-validated RMSE") +
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank())
+```
+
+::: {.callout-note}
+## TRY IT
+
+1. Find the best $\lambda$ with `lasso_cv$lambda.min`.
+2. Run `coef(lasso_cv, s = "lambda.min")`. The lasso shows a dropped coefficient as `.`. Which amenities did it keep? Which did it drop? What happened to the piano?
+3. **Vote first.** Will OLS or the lasso have the lower test RMSE? By how much?
+4. Predict `test$price` with `ols` and with the lasso. Use `x_test`, and `s = "lambda.min"` for the lasso. Use the `rmse` function from last week. What is the test RMSE of each? Which one wins?
+5. Change 300 to 3,000 and do it again. Which one wins now? Why?
+:::
+
+```{r, eval=F, echo=F}
+rmse = function(actual, predicted) sqrt(mean((actual - predicted)^2))
+rmse(test$price, predict(ols, x_test))                             # about 162
+rmse(test$price, predict(lasso_cv, x_test, s = "lambda.min"))      # about 151
+# At 3,000 the two tie (about 138). With many observations, OLS does not overfit, so shrinkage has nothing to fix.
+```
+
+## Do it again. And again.
+
+The lasso won by about $11. But that was one draw of 300 listings. Maybe we got lucky.
+
+On Tuesday we had the same problem. We drew a new dataset, fit the models, and did it again 250 times. Then we looked at the spread of the predictions. We do the same thing here.
+
+There is one difference. On Tuesday we knew the truth: $f(x) = x^2$. We do not know the true price function for Chicago. So we pretend:
+
+- All 7,116 listings are the **population**.
+- The OLS fit on all 7,116 listings is the **truth**. With 7,116 listings, OLS does not overfit.
+- Each simulation draws 300 listings from the population. That is one training set.
+
+We predict one listing: **listing C** from last week's guessing game. It has 2 bedrooms, sleeps 4, and costs $954 a night. We leave it out of every draw. We also track the piano coefficient.
+
+```{r}
+x_all = airbnb %>% dplyr::select(-price) %>% as.matrix()
+y_all = airbnb$price
+
+population  = glmnet(x_all, y_all, lambda = 0)
+best_lambda = lasso_cv$lambda.min
+
+listing_C = x_all[1082, , drop = FALSE]
+truth_C   = predict(population, listing_C)[1]
+
+B = 200
+sims = data.frame(draw = 1:B, ols = NA, lasso = NA, ols_piano = NA, lasso_piano = NA)
+
+set.seed(242)
+for (b in 1:B) {
+  rows    = sample(setdiff(1:nrow(airbnb), 1082), 300)
+  ols_b   = glmnet(x_all[rows, ], y_all[rows], lambda = 0)
+  lasso_b = glmnet(x_all[rows, ], y_all[rows], alpha = 1, lambda = lambdas)
+
+  sims$ols[b]         = predict(ols_b, listing_C)
+  sims$lasso[b]       = predict(lasso_b, listing_C, s = best_lambda)
+  sims$ols_piano[b]   = coef(ols_b)["piano", 1]
+  sims$lasso_piano[b] = coef(lasso_b, s = best_lambda)["piano", 1]
+}
+```
+
+### 200 guesses for listing C
+
+Each dot is one model fit on one draw of 300 listings.
+
+```{r, echo=F, fig.width=9, fig.height=4}
+model_colors = c(OLS = "darkorange", Lasso = "#18453b")
+guesses = sims %>%
+  tidyr::pivot_longer(c(ols, lasso), names_to = "model", values_to = "pred") %>%
+  mutate(model = factor(ifelse(model == "ols", "OLS", "Lasso"), levels = c("Lasso", "OLS")))
+guess_means = guesses %>% group_by(model) %>% summarize(pred = mean(pred))
+
+ggplot(guesses, aes(x = pred, y = model, color = model)) +
+  geom_vline(xintercept = truth_C, linewidth = 1) +
+  geom_vline(xintercept = y_all[1082], linetype = "dashed", color = "grey40") +
+  geom_jitter(height = .2, width = 0, alpha = .45, size = 2) +
+  geom_point(data = guess_means, shape = 23, size = 5, fill = "white", stroke = 1.5) +
+  annotate("label", x = truth_C, y = 2.6, label = paste0("Truth: ", scales::dollar(round(truth_C))), size = 4) +
+  annotate("label", x = y_all[1082], y = 2.6, label = paste0("Actual price: ", scales::dollar(round(y_all[1082]))),
+           size = 4, color = "grey40", hjust = 1) +
+  scale_color_manual(values = model_colors, guide = "none") +
+  scale_x_continuous(labels = scales::label_dollar()) +
+  coord_cartesian(clip = "off") +
+  labs(x = "Predicted price for listing C", y = NULL,
+       caption = "White diamond = average of the 200 guesses") +
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank(), panel.grid.major.y = element_blank(),
+        plot.margin = margin(20, 10, 5, 5))
+```
+
+Now we split the error into bias and variance. These are the same functions from Tuesday.
+
+```{r}
+get_bias = function(estimate, truth) mean(estimate) - truth
+get_var  = function(estimate) mean((estimate - mean(estimate))^2)
+get_mse  = function(truth, estimate) mean((estimate - truth)^2)
+```
+
+```{r, echo=F}
+data.frame(Model = c("OLS", "Lasso"),
+           avg   = c(mean(sims$ols), mean(sims$lasso)),
+           bias2 = c(get_bias(sims$ols, truth_C), get_bias(sims$lasso, truth_C))^2,
+           vars  = c(get_var(sims$ols), get_var(sims$lasso)),
+           mse   = c(get_mse(truth_C, sims$ols), get_mse(truth_C, sims$lasso))) %>%
+  mutate(avg = scales::dollar(round(avg)),
+         across(c(bias2, vars, mse), ~ scales::comma(round(.x)))) %>%
+  knitr::kable(col.names = c("Model", "Average guess", "Bias Squared", "Variance", "Mean Squared Error"),
+               align = "lrrrr")
+```
+
+### 200 pianos
+
+Here is the piano coefficient from each draw. The black line is the truth.
+
+```{r, echo=F, fig.width=9, fig.height=4}
+pianos = sims %>%
+  tidyr::pivot_longer(c(ols_piano, lasso_piano), names_to = "model", values_to = "b") %>%
+  mutate(model = factor(ifelse(model == "ols_piano", "OLS", "Lasso"), levels = c("OLS", "Lasso")))
+truth_piano = coef(population)["piano", 1]
+zero_share = mean(sims$lasso_piano == 0)
+
+ggplot(pianos, aes(x = b, fill = model)) +
+  geom_histogram(binwidth = 20, boundary = 10, color = "white") +
+  geom_vline(xintercept = truth_piano, linewidth = 1) +
+  facet_wrap(~model, ncol = 1, scales = "free_y") +
+  geom_text(data = data.frame(model = factor("Lasso", levels = c("OLS", "Lasso"))),
+            aes(x = 120, y = Inf, label = paste0(scales::percent(zero_share), " of draws: exactly zero")),
+            inherit.aes = FALSE, hjust = 0, vjust = 1.5, size = 4.5) +
+  scale_fill_manual(values = model_colors, guide = "none") +
+  scale_x_continuous(labels = scales::label_dollar(style_negative = "minus")) +
+  labs(x = "Piano coefficient (dollars per night)", y = "Draws") +
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank())
+```
+
+### The tradeoff, $\lambda$ by $\lambda$
+
+Above, we used one value of $\lambda$. Now we use all 100. We also use 500 listings instead of one, and average over them. For each $\lambda$, we get the squared bias and the variance, like Tuesday.
+
+```{r, echo=F}
+set.seed(1)
+eval_rows = sample(setdiff(1:nrow(airbnb), 1082), 500)
+pool      = setdiff(1:nrow(airbnb), c(1082, eval_rows))
+truth_E   = predict(population, x_all[eval_rows, ])[, 1]
+
+path_preds = array(NA, c(B, length(lambdas), 500))
+for (b in 1:B) {
+  rows = sample(pool, 300)
+  fit  = glmnet(x_all[rows, ], y_all[rows], alpha = 1, lambda = lambdas)
+  path_preds[b, , ] = t(predict(fit, x_all[eval_rows, ]))
+}
+avg_pred  = apply(path_preds, c(2, 3), mean)
+var_pred  = apply(path_preds, c(2, 3), get_var)
+tradeoff = data.frame(lambda   = lambdas,
+                      bias2    = rowMeans(sweep(avg_pred, 2, truth_E)^2),
+                      variance = rowMeans(var_pred)) %>%
+  mutate(mse = bias2 + variance)
+```
+
+```{r, echo=F, fig.width=9, fig.height=5}
+best_sim = tradeoff %>% filter(mse == min(mse))
+tradeoff_long = tradeoff %>%
+  tidyr::pivot_longer(-lambda) %>%
+  mutate(name = factor(name, levels = c("bias2", "variance", "mse"),
+                       labels = c("Squared Bias", "Variance", "Mean Squared Error")))
+
+ggplot(tradeoff_long, aes(x = lambda, y = value, color = name, linetype = name)) +
+  geom_vline(xintercept = best_lambda, color = "grey60", linetype = "dashed") +
+  geom_line(linewidth = 1.2) +
+  geom_point(data = best_sim, aes(x = lambda, y = mse), inherit.aes = FALSE, size = 3.5) +
+  annotate("label", x = best_lambda, y = 9200, size = 4,
+           label = "Cross-validation picked this\nfrom one sample of 300") +
+  scale_color_manual(values = c("dodgerblue", "darkorange", "black")) +
+  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  scale_x_log10(labels = scales::label_number(big.mark = ",", drop0trailing = TRUE)) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  coord_cartesian(xlim = c(.1, 100), ylim = c(0, 10000)) +
+  labs(x = "λ       (← more flexible  |  simpler →)", y = "Error (dollars squared)", color = NULL, linetype = NULL) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "bottom", legend.key.width = unit(2, "cm"), panel.grid.minor = element_blank())
+```
+
+This is the bias-variance plot from Tuesday, made with real data. The x-axis runs the other way. A small $\lambda$ is a flexible model.
+
+::: {.callout-note}
+## TRY IT
+
+1. In the first plot, which model is closer to the truth on average? Which model is steadier?
+2. Look at the table. Which part of the error does the lasso cut? What does it pay for that?
+3. Listing C costs $954. The truth from all 7,116 listings is about $`r round(truth_C)`. Why can no model close that gap? What did Tuesday call this error?
+4. OLS gives the piano a value in every draw. How wide is the range? How often does the lasso say "no piano effect"?
+5. Find the bottom of the black curve. Where did cross-validation put $\lambda$? Cross-validation saw only 300 listings. How did it do?
+6. Run the simulation code with `hot_tub` in place of `piano`. About 1 in 18 listings has a hot tub. What changes?
+:::
 
 # Random Forests
 
