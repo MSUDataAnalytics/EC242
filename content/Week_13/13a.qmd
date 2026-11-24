@@ -3,6 +3,22 @@ title: "Text as Data"
 
 ---
 
+## Gobble gobble. {#gobble-gobble}
+
+**Weekly Writing 13.** It’s the Tuesday before Thanksgiving. The grocery shoppers you track bought 27 whole turkeys on Monday and another 27 on Tuesday.[^turkey-sales] Your manager wants a number for Wednesday. Would you bet on 27 again?
+
+Open the [R Markdown starter](turkey-sales.Rmd) and look at the product labels. The file uses `^WHOLE` to decide which purchases count. Find one item you’d accidentally include and one you’d miss if you searched for `TURKEY` instead.
+
+Now run the two k-nearest neighbors models in the starter. Both use the date to predict sales one day ahead. With **`k = 1`**, you predict that shoppers will buy as many birds as they bought yesterday. With **`k = 7`**, you use the average of the past seven days. The starter shows what each model would have predicted for Monday and Tuesday using only the sales known the night before.
+
+**Before you look at Wednesday’s sales, pick your k.** Enter `1` or `7` in the last chunk and run it.
+
+In about 150 words, give your manager your Wednesday forecast. What did you see on Monday or Tuesday that made you choose that model? Use at least one number. Then tell her how far off you were on Wednesday and why averaging more days helped or hurt this time.
+
+Knit your memo to PDF and submit it to D2L by **Saturday, November 28, at 11:59 p.m. Eastern**.
+
+[^turkey-sales]: This week's assignment comes from the [Complete Journey study](https://bradleyboehmke.github.io/completejourney/). The study tracked grocery purchases by 2,469 households at one retailer. The counts show how many whole turkeys those households bought each day from November 6 to 22, 2017.
+
 ## Required Reading
 
 - This page.

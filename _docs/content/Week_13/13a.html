@@ -554,7 +554,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#required-reading" id="toc-required-reading" class="nav-link active" data-scroll-target="#required-reading">Required Reading</a></li>
+  <li><a href="#gobble-gobble" id="toc-gobble-gobble" class="nav-link active" data-scroll-target="#gobble-gobble">Gobble gobble.</a></li>
+  <li><a href="#required-reading" id="toc-required-reading" class="nav-link" data-scroll-target="#required-reading">Required Reading</a></li>
   <li><a href="#string-processing" id="toc-string-processing" class="nav-link" data-scroll-target="#string-processing">String processing</a>
   <ul class="collapse">
   <li><a href="#the-stringr-package" id="toc-the-stringr-package" class="nav-link" data-scroll-target="#the-stringr-package">The stringr package</a></li>
@@ -603,6 +604,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="gobble-gobble" class="level2">
+<h2 class="anchored" data-anchor-id="gobble-gobble">Gobble gobble.</h2>
+<p><strong>Weekly Writing 13.</strong> It’s the Tuesday before Thanksgiving. The grocery shoppers you track bought 27 whole turkeys on Monday and another 27 on Tuesday.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Your manager wants a number for Wednesday. Would you bet on 27 again?</p>
+<p>Open the <a href="turkey-sales.Rmd">R Markdown starter</a> and look at the product labels. The file uses <code>^WHOLE</code> to decide which purchases count. Find one item you’d accidentally include and one you’d miss if you searched for <code>TURKEY</code> instead.</p>
+<p>Now run the two k-nearest neighbors models in the starter. Both use the date to predict sales one day ahead. With <strong><code>k = 1</code></strong>, you predict that shoppers will buy as many birds as they bought yesterday. With <strong><code>k = 7</code></strong>, you use the average of the past seven days. The starter shows what each model would have predicted for Monday and Tuesday using only the sales known the night before.</p>
+<p><strong>Before you look at Wednesday’s sales, pick your k.</strong> Enter <code>1</code> or <code>7</code> in the last chunk and run it.</p>
+<p>In about 150 words, give your manager your Wednesday forecast. What did you see on Monday or Tuesday that made you choose that model? Use at least one number. Then tell her how far off you were on Wednesday and why averaging more days helped or hurt this time.</p>
+<p>Knit your memo to PDF and submit it to D2L by <strong>Saturday, November 28, at 11:59 p.m. Eastern</strong>.</p>
+</section>
 <section id="required-reading" class="level2">
 <h2 class="anchored" data-anchor-id="required-reading">Required Reading</h2>
 <ul>
@@ -1107,7 +1117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="regular-expressions" class="level2">
 <h2 class="anchored" data-anchor-id="regular-expressions">Regular expressions</h2>
-<p>A regular expression (regex) is a way to describe specific patterns of characters of text. They can be used to determine if a given string matches the pattern. A set of rules has been defined to do this efficiently and precisely and here we show some examples. We can learn more about these rules by reading a detailed tutorials<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. This RStudio cheat sheet<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> is also very useful.</p>
+<p>A regular expression (regex) is a way to describe specific patterns of characters of text. They can be used to determine if a given string matches the pattern. A set of rules has been defined to do this efficiently and precisely and here we show some examples. We can learn more about these rules by reading a detailed tutorials<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. This RStudio cheat sheet<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> is also very useful.</p>
 <p>The patterns supplied to the <strong>stringr</strong> functions can be a regex rather than a standard string. We will learn how this works through a series of examples.</p>
 <p>Throughout this section you will see that we create strings to test out our regex. To do this, we define patterns that we know should match and also patterns that we know should not. We will call them <code>yes</code> and <code>no</code>, respectively. This permits us to check for the two types of errors: failing to match and incorrectly matching.</p>
 <section id="strings-are-a-regex" class="level3">
@@ -1185,7 +1195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>There are many other special characters. We will learn some others below, but you can see most or all of them in the cheat sheet<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> mentioned earlier.</p>
+<p>There are many other special characters. We will learn some others below, but you can see most or all of them in the cheat sheet<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> mentioned earlier.</p>
 </section>
 <section id="character-classes" class="level3">
 <h3 class="anchored" data-anchor-id="character-classes">Character classes</h3>
@@ -1935,7 +1945,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 9    Medical sciences              18.8                11.2</code></pre>
 </div>
 </div>
-<p>The data comes from a paper published in the Proceedings of the National Academy of Science (PNAS)<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, a widely read scientific journal. However, the data is not provided in a spreadsheet; it is in a table in a PDF document. Here is a screenshot of the table:</p>
+<p>The data comes from a paper published in the Proceedings of the National Academy of Science (PNAS)<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, a widely read scientific journal. However, the data is not provided in a spreadsheet; it is in a table in a PDF document. Here is a screenshot of the table:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1945,7 +1955,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>(Source: Romy van der Lee and Naomi Ellemers, PNAS 2015 112 (40) 12349-12353<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.)</p>
+<p>(Source: Romy van der Lee and Naomi Ellemers, PNAS 2015 112 (40) 12349-12353<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.)</p>
 <p>We could extract the numbers by hand, but this could lead to human error. Instead, we can try to wrangle the data using R. We start by downloading the pdf document, then importing into R:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb171"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"pdftools"</span>)</span>
@@ -2231,7 +2241,7 @@ gapminder %>%
 </div>
 </div>
 </div>
-<p>(Web page courtesy of Wikipedia<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. CC-BY-SA-3.0 license<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Screenshot of part of the page.)</p>
+<p>(Web page courtesy of Wikipedia<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. CC-BY-SA-3.0 license<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. Screenshot of part of the page.)</p>
 <p>Unfortunately, there is no link to a data file. To make the data frame that is loaded when we type <code>data(murders)</code>, we had to do some <em>web scraping</em>.</p>
 <p><em>Web scraping</em>, or <em>web harvesting</em>, is the term we use to describe the process of extracting data from a website. The reason we can do this is because the information used by a browser to render webpages is received as a text file from a server. The text is code written in hyper text markup language (HTML). Every browser has a way to show the html source code for a page, each one different. On Chrome, you can use Control-U on a PC and command+alt+U on a Mac. You will see something like this:</p>
 <div class="cell">
@@ -2280,7 +2290,7 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 &lt;/tr&gt;
 &lt;tr&gt;</code></pre>
 <p>You can actually see the data, except data values are surrounded by html code such as <code>&lt;td&gt;</code>. We can also see a pattern of how it is stored. If you know HTML, you can write programs that leverage knowledge of these patterns to extract what we want. We also take advantage of a language widely used to make webpages look “pretty” called Cascading Style Sheets (CSS).</p>
-<p>Although we provide tools that make it possible to scrape data without knowing HTML, as a data scientist it is quite useful to learn some HTML and CSS. Not only does this improve your scraping skills, but it might come in handy if you are creating a webpage to showcase your work. There are plenty of online courses and tutorials for learning these. Two examples are Codeacademy<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> and W3schools<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>.</p>
+<p>Although we provide tools that make it possible to scrape data without knowing HTML, as a data scientist it is quite useful to learn some HTML and CSS. Not only does this improve your scraping skills, but it might come in handy if you are creating a webpage to showcase your work. There are plenty of online courses and tutorials for learning these. Two examples are Codeacademy<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> and W3schools<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>.</p>
 </section>
 <section id="the-rvest-package" class="level2">
 <h2 class="anchored" data-anchor-id="the-rvest-package">The rvest package</h2>
@@ -2303,9 +2313,9 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb203"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a>h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{html_document}
-&lt;html class="client-nojs vector-feature-language-in-header-enabled vector-feature-language-in-main-menu-disabled vector-feature-language-in-main-page-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 skin-theme-clientpref-day vector-feature-navigation-update-disabled vector-sticky-header-enabled vector-toc-available skin-thumbsize-clientpref-standard" lang="en" dir="ltr"&gt;
+&lt;html class="client-nojs vector-feature-language-in-header-enabled vector-feature-language-in-main-menu-disabled vector-feature-language-in-main-page-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 skin-theme-clientpref-day vector-sticky-header-enabled vector-toc-available skin-thumbsize-clientpref-standard skin-underline-clientpref-browser" lang="en" dir="ltr"&gt;
 [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
-[2] &lt;body class="skin--responsive skin-vector skin-vector-search-vue mediawik ...</code></pre>
+[2] &lt;body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt action-view skin ...</code></pre>
 </div>
 </div>
 <p>We can see all the code that defines the downloaded webpage using the <code>html_text</code> function like this:</p>
@@ -2364,7 +2374,7 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <h2 class="anchored" data-anchor-id="css-selectors">CSS selectors</h2>
 <p>The default look of a webpage made with the most basic HTML is quite unattractive. The aesthetically pleasing pages we see today are made using CSS to define the look and style of webpages. The fact that all pages for a company have the same style usually results from their use of the same CSS file to define the style. The general way these CSS files work is by defining how each of the elements of a webpage will look. The title, headings, itemized lists, tables, and links, for example, each receive their own style including font, color, size, and distance from the margin. CSS does this by leveraging patterns used to define these elements, referred to as <em>selectors</em>. An example of such a pattern, which we used above, is <code>table</code>, but there are many, many more.</p>
 <p>If we want to grab data from a webpage and we happen to know a selector that is unique to the part of the page containing this data, we can use the <code>html_nodes</code> function. However, knowing which selector can be quite complicated. In fact, the complexity of webpages has been increasing as they become more sophisticated. For some of the more advanced ones, it seems almost impossible to find the nodes that define a particular piece of data. However, selector gadgets actually make this possible.</p>
-<p>SelectorGadget<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> is a piece of software that allows you to interactively determine what CSS selector you need to extract specific components from the webpage. If you plan on scraping data other than tables from html pages, we highly recommend you install it. A Chrome extension is available which permits you to turn on the gadget and then, as you click through the page, it highlights parts and shows you the selector you need to extract these parts. There are various demos of how to do this including <strong>rvest</strong> author Hadley Wickham’s vignette<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> and other tutorials based on the vignette<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> <a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>.</p>
+<p>SelectorGadget<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> is a piece of software that allows you to interactively determine what CSS selector you need to extract specific components from the webpage. If you plan on scraping data other than tables from html pages, we highly recommend you install it. A Chrome extension is available which permits you to turn on the gadget and then, as you click through the page, it highlights parts and shows you the selector you need to extract these parts. There are various demos of how to do this including <strong>rvest</strong> author Hadley Wickham’s vignette<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> and other tutorials based on the vignette<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> <a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>.</p>
 </section>
 <section id="json" class="level2">
 <h2 class="anchored" data-anchor-id="json">JSON</h2>
@@ -2424,20 +2434,21 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>https://www.regular-expressions.info/tutorial.html<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>http://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>This week’s assignment comes from the <a href="https://bradleyboehmke.github.io/completejourney/">Complete Journey study</a>. The study tracked grocery purchases by 2,469 households at one retailer. The counts show how many whole turkeys those households bought each day from November 6 to 22, 2017.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://www.regular-expressions.info/tutorial.html<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>http://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>http://www.pnas.org/content/112/40/12349.abstract<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>http://www.pnas.org/content/112/40/12349<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>https://en.wikipedia.org/w/index.php?title=Gun_violence_in_the_United_States_by_state&amp;direction=prev&amp;oldid=810166167<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>https://www.codecademy.com/learn/learn-html<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p>https://www.w3schools.com/<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn11"><p>http://selectorgadget.com/<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn12"><p>https://rvest.tidyverse.org/articles/selectorgadget.html<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn13"><p>https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn14"><p>https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>http://www.pnas.org/content/112/40/12349.abstract<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>http://www.pnas.org/content/112/40/12349<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>https://en.wikipedia.org/w/index.php?title=Gun_violence_in_the_United_States_by_state&amp;direction=prev&amp;oldid=810166167<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>https://www.codecademy.com/learn/learn-html<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>https://www.w3schools.com/<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>http://selectorgadget.com/<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>https://rvest.tidyverse.org/articles/selectorgadget.html<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
